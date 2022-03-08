@@ -2,6 +2,7 @@ package Domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AssemblyLine {
 	
@@ -17,5 +18,21 @@ public class AssemblyLine {
 	
 	public List<WorkPost> getWorkPosts() {
 		return new ArrayList<WorkPost>(this.workPosts);
+	}
+	
+	public List<AssemblyTask> givePendingAssemblyTasksFromWorkPost(int workPostId) {
+		WorkPost workPost = findWorkPost(workPostId);
+		return workPost.givePendingAssemblyTasks();
+	}
+	
+	private WorkPost findWorkPost(int id) {
+		Optional<WorkPost> workPost = workPosts.stream()
+				.filter(wp -> wp.getId() == id)
+				.findFirst();
+		
+		if (!workPost.isPresent())
+			throw new IllegalArgumentException("Workpost not found");
+		
+		return workPost.get();
 	}
 }
