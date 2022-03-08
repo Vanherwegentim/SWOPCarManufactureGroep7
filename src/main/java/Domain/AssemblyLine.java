@@ -25,6 +25,11 @@ public class AssemblyLine {
 		return workPost.givePendingAssemblyTasks();
 	}
 	
+	public void completeAssemblyTask(int workPostId, int assemblyTaskId) {
+		WorkPost workPost = findWorkPost(workPostId);
+		workPost.completeAssemblyTask(assemblyTaskId);
+	}
+	
 	private WorkPost findWorkPost(int id) {
 		Optional<WorkPost> workPost = workPosts.stream()
 				.filter(wp -> wp.getId() == id)

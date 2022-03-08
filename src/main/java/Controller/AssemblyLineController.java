@@ -24,7 +24,7 @@ public class AssemblyLineController {
 	
 	public List<String> givePendingAssemblyTasks(int postId) {
 		// TODO: implement proper error handling
-		// TODO: maybe better way to show tasks?
+		// TODO: better way to show tasks
 		
 		List<String> output = new ArrayList<String>();
 		List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
@@ -37,5 +37,10 @@ public class AssemblyLineController {
 		}
 		
 		return output;
+	}
+	
+	public List<String> completeAssemblyTask(int workPostId, int taskId) {
+		assemblyLine.completeAssemblyTask(workPostId, taskId);
+		return givePendingAssemblyTasks(workPostId);
 	}
 } 
