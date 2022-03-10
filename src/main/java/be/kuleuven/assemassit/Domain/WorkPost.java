@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 
 public class WorkPost {
 	private int id;
+	private String name;
 	private List<AssemblyTask> assemblyTasks;
 	
-	public WorkPost() {
+	public WorkPost(String name) {
+		this.name = name;
 		this.assemblyTasks = new ArrayList<AssemblyTask>();
 	}
 	
@@ -36,5 +38,9 @@ public class WorkPost {
 			throw new IllegalArgumentException("Workpost not found");
 		
 		return assemblyTask.get();
+	}
+
+	public String getName() {
+		return name;
 	}
 }

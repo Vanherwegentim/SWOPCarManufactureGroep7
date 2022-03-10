@@ -8,10 +8,12 @@ public class AssemblyTask {
 	private boolean pending;
 	private List<String> actions;
 	private int id;
+	private String name;
 	private LocalDateTime completionTime;
 	
-	public AssemblyTask(int id) {
+	public AssemblyTask(int id, String name) {
 		this.id = id;
+		this.name = name;
 	}
 	
 	public boolean getPending() {
@@ -42,4 +44,9 @@ public class AssemblyTask {
 		this.pending = false;
 		this.completionTime = LocalDateTime.now();
 	}
+
+	public String getName() {
+		return name;
+	}
+
 }
