@@ -1,4 +1,4 @@
 package be.kuleuven.assemassit.UI;
 
-public class TestUI {
+public class UI {
 }
