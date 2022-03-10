@@ -11,3 +11,4 @@ public class CarModel {
     private List<Body> bodyOptions;
     private List<Color> colorOptions;
     private List<Engine> engineOptions;
+}
