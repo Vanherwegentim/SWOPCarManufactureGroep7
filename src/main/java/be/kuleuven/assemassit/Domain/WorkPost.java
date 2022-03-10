@@ -10,13 +10,27 @@ import java.util.stream.Collectors;
 public class WorkPost {
   private int id;
   private List<AssemblyTask> assemblyTasks;
+  private AssemblyTask activeAssemblyTask;
 
-  public WorkPost() {
-    this.assemblyTasks = new ArrayList<AssemblyTask>();
+  public WorkPost(int id, List<AssemblyTask> assemblyTasks) {
+    this.id = id;
+    this.assemblyTasks = assemblyTasks;
   }
 
   public int getId() {
     return this.id;
+  }
+
+  public List<AssemblyTask> getAssemblyTasks() {
+    return List.copyOf(assemblyTasks);
+  }
+
+  public AssemblyTask getActiveAssemblyTask() {
+    return this.activeAssemblyTask;
+  }
+
+  public void setActiveAssemblyTask() {
+    this.activeAssemblyTask = activeAssemblyTask;
   }
 
   public List<AssemblyTask> givePendingAssemblyTasks() {
