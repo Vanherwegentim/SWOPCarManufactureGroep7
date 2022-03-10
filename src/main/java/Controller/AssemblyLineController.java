@@ -1,40 +1,59 @@
 package Controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import Domain.AssemblyLine;
 import Domain.AssemblyTask;
-import Domain.WorkPost;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class AssemblyLineController {
-    private AssemblyLine assemblyLine;
 
-    public List<WorkPost> giveAllWorkPosts(){
-        return assemblyLine.getWorkPosts();
-    }
+	private AssemblyLine assemblyLine;
 
-    public List<AssemblyTask> givePendingAssemblyTasks(int workPostId){
-        WorkPost workPost = assemblyLine.getWorkPosts().get(workPostId);
-        return workPost.givePendingAssemblyTasks();
-    }
+	public AssemblyLineController(AssemblyLine assemblyLine) {
+		this.assemblyLine = assemblyLine;
+	}
 
-    //    HOE?
-    public void giveAssemblyTaskInformation(int taskId){
-    }
+	public List<Integer> giveAllWorkPosts() {
+		return assemblyLine.getWorkPosts()
+				.stream()
+				.map(workPost -> workPost.getId())
+				.collect(Collectors.toList());
+	}
 
-    //    HOE?
-    public void completeAssemblyTask(int taskId, LocalDateTime time){
-        return;
-    }
+	public List<String> givePendingAssemblyTasks(int postId) {
+		// TODO: implement proper error handling
+		// TODO: better way to show tasks
 
-    //    HOE?
-    public void giveAssemblyLineStatus(int id){
-        return;
-    }
+		List<String> output = new ArrayList<String>();
+		List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
-    public void moveAssemblyLine(int id, int minutes){
-        return;
-    }
+		for (AssemblyTask assemblyTask : pendingAssemblyTasks) {
+			output.add(Integer.toString(assemblyTask.getId()));
 
+			for (String action : assemblyTask.getActions())
+				output.add(action);
+		}
+
+		return output;
+	}
+
+	public List<String> completeAssemblyTask(int workPostId, int taskId) {
+		assemblyLine.completeAssemblyTask(workPostId, taskId);
+		return givePendingAssemblyTasks(workPostId);
+	}
+
+	// TODO
+	public void giveAssemblyTaskInformation(int taskId){
+	}
+
+	// TODO
+	public void giveAssemblyLineStatus(int id){
+	}
+
+	// TODO
+	public void moveAssemblyLine(int id, int minutes){
+	}
 }
+

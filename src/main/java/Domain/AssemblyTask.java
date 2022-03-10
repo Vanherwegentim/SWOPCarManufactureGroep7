@@ -1,26 +1,45 @@
 package Domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AssemblyTask {
-    private LocalDateTime finishedTime;
-    private boolean isFinished;
-    private String epitome;
+	private boolean pending;
+	private List<String> actions;
+	private int id;
+	private LocalDateTime completionTime;
 
-    public AssemblyTask(String epitome) {
-        this.epitome = epitome;
-        this.isFinished = false;
-    }
+	public AssemblyTask(int id) {
+		this.id = id;
+	}
 
-    public boolean isFinished() {
-        return isFinished;
-    }
+	public boolean getPending() {
+		return this.pending;
+	}
 
-    public String getEpitome() {
-        return epitome;
-    }
+	public void setPending(boolean pending) {
+		this.pending = pending;
+	}
 
-    public void complete(LocalDateTime finishedTime){
-        this.finishedTime = finishedTime;
-    }
+	public List<String> getActions() {
+		return new ArrayList<String>(actions);
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public LocalDateTime completionTime() {
+
+		if (!pending)
+			throw new IllegalStateException();
+
+		return this.completionTime;
+	}
+
+	public void complete() {
+		this.pending = false;
+		this.completionTime = LocalDateTime.now();
+	}
 }
