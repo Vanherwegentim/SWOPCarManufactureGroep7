@@ -1,11 +1,9 @@
-package Controller;
+package be.kuleuven.assemassit.Controller;
 
-import Domain.CarOrder;
-import Domain.GarageHolder;
+import be.kuleuven.assemassit.Domain.CarOrder;
+import be.kuleuven.assemassit.Domain.GarageHolder;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class OrderController {
 

@@ -1,6 +1,6 @@
-package Domain;
+package be.kuleuven.assemassit.Domain;
 
-import Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Enums.*;
 
 import java.util.List;
 

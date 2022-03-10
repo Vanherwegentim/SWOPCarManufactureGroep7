@@ -8,9 +8,6 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();

@@ -1,11 +1,11 @@
-package Controller;
+package be.kuleuven.assemassit.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Domain.AssemblyLine;
-import Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.AssemblyTask;
 
 public class AssemblyLineController {
 	
