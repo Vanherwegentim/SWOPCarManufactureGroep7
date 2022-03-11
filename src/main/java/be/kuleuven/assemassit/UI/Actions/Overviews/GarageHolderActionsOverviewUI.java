@@ -1,5 +1,6 @@
-package be.kuleuven.assemassit.UI.Actions;
+package be.kuleuven.assemassit.UI.Actions.Overviews;
 
+import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.MainUI;
 
 import java.util.Scanner;

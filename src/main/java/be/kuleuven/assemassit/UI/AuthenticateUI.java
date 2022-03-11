@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.UI;
 
-import be.kuleuven.assemassit.UI.Actions.CarMechanicActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.GarageHolderActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.ManagerActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.Overviews.ManagerActionsOverviewUI;
 
 import java.util.Scanner;
 
