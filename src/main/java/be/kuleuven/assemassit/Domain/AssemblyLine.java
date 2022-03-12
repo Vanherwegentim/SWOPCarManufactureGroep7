@@ -8,6 +8,7 @@ public class AssemblyLine {
   private WorkPost drivetrainPost;
   private WorkPost accessoriesPost;
 	private Queue<CarAssemblyProcess> carAssemblyProcesses;
+	private List<CarAssemblyProcess> finishedCars;
 
 
 	//TODO Hoe worden carAssemblyProcesses nu gezet? want das nodig voor de move() methode
@@ -66,6 +67,21 @@ public class AssemblyLine {
     workPostPairs.put("Drivetrain Post", drivetrainPost.getActiveAssemblyTask());
     workPostPairs.put("Accessories Post", accessoriesPost.getActiveAssemblyTask());
 
+
+    return workPostPairs;
+  }
+
+  //TODO check if this is a correct/good implementation
+  public Map<String, AssemblyTask> giveFutureTasksOverview() throws CloneNotSupportedException{
+    AssemblyLine dummyAssemblyLine = (AssemblyLine) this.clone();
+    dummyAssemblyLine.move(60);
+    Map<String, AssemblyTask> workPostPairs = new HashMap<>();
+
+    workPostPairs.put("Car Body Post", dummyAssemblyLine.carBodyPost.getActiveAssemblyTask());
+    workPostPairs.put("Drivetrain Post", dummyAssemblyLine.drivetrainPost.getActiveAssemblyTask());
+    workPostPairs.put("Accessories Post", dummyAssemblyLine.accessoriesPost.getActiveAssemblyTask());
+
+
     return workPostPairs;
   }
 
@@ -118,7 +134,7 @@ public class AssemblyLine {
     if(canMove()){
 
         //Remove the car from the third post
-        //TODO
+        finishedCars.add(accessoriesPost.getCarAssemblyProcess());
         //Give the third post the car of the second post
         accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
         //Give the second post the car of the first post
@@ -126,6 +142,9 @@ public class AssemblyLine {
         //Give the first post a car from the queue;
         carBodyPost.addProcessToWorkPost(carAssemblyProcesses.poll());
 
+    }
+    else{
+      throw new IllegalStateException("Can not move the assembly line");
     }
   }
 }
