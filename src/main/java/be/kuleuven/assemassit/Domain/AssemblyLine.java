@@ -1,5 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
+
 import java.util.*;
 
 public class AssemblyLine {

@@ -1,10 +1,12 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssemblyTask {
+public abstract class AssemblyTask {
 	private boolean pending;
 	private List<String> actions;
 	private int id;
@@ -38,6 +40,8 @@ public class AssemblyTask {
 	public String getName() {
 	  return this.name;
   }
+
+  public abstract AssemblyTaskType getAssemblyTaskType();
 
 	public LocalDateTime completionTime() {
 
