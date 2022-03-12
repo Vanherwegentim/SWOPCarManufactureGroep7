@@ -12,21 +12,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class OrderController {
-  public OrderController(AssemblyLine assemblyLine){
-    this.assemblyLine = assemblyLine;
-  }
-  
-  public OrderController() {
-    garageHolderRepository = new GarageHolderRepository();
-    garageHolders = garageHolderRepository.getGarageHolders();
-  }
 
   private List<GarageHolder> garageHolders;
   private GarageHolder loggedInGarageHolder;
   private AssemblyLine assemblyLine;
   private GarageHolderRepository garageHolderRepository;
 
-  private GarageHolder loggedInGarageHolder;
+  public OrderController(AssemblyLine assemblyLine){
+    this.assemblyLine = assemblyLine;
+  }
+
+  public OrderController() {
+    garageHolderRepository = new GarageHolderRepository();
+    garageHolders = garageHolderRepository.getGarageHolders();
+  }
+
   public List<CarOrder> giveNewCarOrders(GarageHolder garageHolder){
     return List.copyOf(garageHolder.getCarOrders());
   }
@@ -41,14 +41,24 @@ public class OrderController {
   }
 
   public CarOrder chooseOrder(int orderId){
-        return loggedInGarageHolder.getOrder(orderId);
+    return loggedInGarageHolder.getOrder(orderId);
+  }
+
+  public void logOffGarageHolder() {
+    this.loggedInGarageHolder = null;
   }
 
   public void setLoggedInGarageHolder(int garageHolderId) {
     this.loggedInGarageHolder = garageHolders.get(garageHolderId);
   }
+
   public String giveLoggedInGarageHolderName() {
     return loggedInGarageHolder.getName();
   }
 
+  public Map<Integer, String> giveGarageHolders() {
+    return this.garageHolders
+      .stream()
+      .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
+  }
 }
