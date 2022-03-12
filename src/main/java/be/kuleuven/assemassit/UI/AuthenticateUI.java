@@ -29,6 +29,7 @@ public class AuthenticateUI {
           int garageHolderId = -1;
 
           do {
+            System.out.println("Please select your name:");
             for (int key : garageHolders.keySet()) System.out.println(key + ":" + garageHolders.get(key));
             garageHolderId = input.nextInt();
           } while (!garageHolders.keySet().contains(garageHolderId));

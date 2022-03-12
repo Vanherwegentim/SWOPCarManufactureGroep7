@@ -21,8 +21,8 @@ public class OrderController {
     garageHolders = garageHolderRepository.getGarageHolders();
   }
 
-  public GarageHolder getLoggedInGarageHolder() {
-    return loggedInGarageHolder;
+  public String giveLoggedInGarageHolderName() {
+    return loggedInGarageHolder.getName();
   }
 
   public void setLoggedInGarageHolder(int garageHolderId) {

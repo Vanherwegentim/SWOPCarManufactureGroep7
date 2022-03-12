@@ -11,9 +11,11 @@ public class GarageHolderActionsOverviewUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
 
-    System.out.println("Welcome ___");
+    String loggedInGarageHolderName = orderController.giveLoggedInGarageHolderName();
+
+    System.out.println("Welcome " + loggedInGarageHolderName);
     System.out.println("Please choose an action:");
-    System.out.println("1: Perform assembly task");
+    System.out.println("1: Order new car");
     System.out.println("0: Logout and go back");
 
     int action = scanner.nextInt();

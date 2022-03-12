@@ -11,7 +11,7 @@ public class ManagerActionsOverviewUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
 
-    System.out.println("Welcome ___");
+    System.out.println("Welcome");
     System.out.println("Please choose an action:");
     System.out.println("1: Advance assembly line");
     System.out.println("0: Logout and go back");
