@@ -13,12 +13,23 @@ public class OrderController {
     private List<GarageHolder> garageHolders;
     private GarageHolderRepository garageHolderRepository;
 
+    // TODO: move this association to assemblyline
+    private GarageHolder loggedInGarageHolder;
+
     public OrderController() {
       garageHolderRepository = new GarageHolderRepository();
       garageHolders = garageHolderRepository.getGarageHolders();
     }
 
-    public Map<Integer, String> giveGarageHolders() {
+  public GarageHolder getLoggedInGarageHolder() {
+    return loggedInGarageHolder;
+  }
+
+  public void setLoggedInGarageHolder(int garageHolderId) {
+      this.loggedInGarageHolder = garageHolders.get(garageHolderId);
+  }
+
+  public Map<Integer, String> giveGarageHolders() {
       return this.garageHolders
         .stream()
         .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));

@@ -13,6 +13,10 @@ public class AssemblyLineController {
 
 	private AssemblyLine assemblyLine;
 
+	public AssemblyLineController() {
+	  this.assemblyLine = new AssemblyLine();
+  }
+
 	public AssemblyLineController(AssemblyLine assemblyLine) {
 		this.assemblyLine = assemblyLine;
 	}

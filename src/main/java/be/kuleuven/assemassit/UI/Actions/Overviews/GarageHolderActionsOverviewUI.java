@@ -1,12 +1,14 @@
 package be.kuleuven.assemassit.UI.Actions.Overviews;
 
+import be.kuleuven.assemassit.Controller.AssemblyLineController;
+import be.kuleuven.assemassit.Controller.OrderController;
 import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.MainUI;
 
 import java.util.Scanner;
 
 public class GarageHolderActionsOverviewUI {
-  public static void run() {
+  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("Welcome ___");
@@ -21,7 +23,7 @@ public class GarageHolderActionsOverviewUI {
         PerformAssemblyTasksActionUI.run();
         break;
       case 0:
-        MainUI.run();
+        MainUI.run(orderController, assemblyLineController);
     }
   }
 }

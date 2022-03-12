@@ -10,7 +10,7 @@ public class AssemblyLine {
 	private List<CarAssemblyProcess> carAssemblyProcesses;
 
 
-	public AssemblyLine(List<WorkPost> workPosts) {
+	public AssemblyLine() {
 	  //TODO: is this the way to go?
 	  this.carBodyPost = new WorkPost(0, Arrays.asList(new AssemblyTask("Assembly car body"), new AssemblyTask("Paint car")));
 	  this.drivetrainPost = new WorkPost(1, Arrays.asList(new AssemblyTask("Insert engine"), new AssemblyTask("Insert engine")));
