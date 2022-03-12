@@ -1,25 +1,37 @@
 package be.kuleuven.assemassit.Controller;
 
+import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarModel;
 import be.kuleuven.assemassit.Domain.CarOrder;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderController {
-  //assemblyLine moet nog meegegeven worden in de constructor omdat we carModels nodig hebben om weer te geven in de ui
-  public OrderController(){}
+  public OrderController(AssemblyLine assemblyLine){
+    this.assemblyLine = assemblyLine;
+  }
+
   private List<GarageHolder> garageHolders;
   private GarageHolder loggedInGarageHolder;
+  private AssemblyLine assemblyLine;
 
   public List<CarOrder> giveNewCarOrders(GarageHolder garageHolder){
     return List.copyOf(garageHolder.getCarOrders());
   }
 
-  //should carModel be String or CarModel object?
-
+  //TODO ask sander what we should we with the persistence of garageholder
   public void placeCarOrder(CarModel carModel, String body, String color, String engine, String gearbox, String seats, String airco, String wheels){
-    // ik heb hier geen logica gezet die het car object aanmaakt met deze variabelen door low-coupling, klopt dit?
     loggedInGarageHolder.addCarOrder(carModel, body, color, engine, gearbox, seats, airco, wheels);
   }
+
+  public LocalDateTime getCompletionDate(int orderId){
+    return loggedInGarageHolder.getCompletionTimeFromOrder(orderId);
+  }
+
+  public CarOrder chooseOrder(int orderId){
+        return loggedInGarageHolder.getOrder(orderId);
+  }
+
 }

@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 public class CarOrder {
 
+    private int id;
     private Car car;
+    //private CarAssemblyProcess
     private boolean pending = true;
     private LocalDateTime completionTime;
     private LocalDateTime estimatedCompletionTime;
@@ -32,5 +34,9 @@ public class CarOrder {
 
     public LocalDateTime getDeliveryTime() {
         return deliveryTime;
+    }
+
+    public int getId(){
+      return id;
     }
 }
