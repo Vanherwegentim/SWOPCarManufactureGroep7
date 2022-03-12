@@ -29,6 +29,10 @@ public class OrderController {
       this.loggedInGarageHolder = garageHolders.get(garageHolderId);
   }
 
+  public void logOffGarageHolder() {
+      this.loggedInGarageHolder = null;
+  }
+
   public Map<Integer, String> giveGarageHolders() {
       return this.garageHolders
         .stream()

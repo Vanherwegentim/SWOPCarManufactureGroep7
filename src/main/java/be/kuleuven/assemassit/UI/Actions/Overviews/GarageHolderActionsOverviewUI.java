@@ -20,9 +20,10 @@ public class GarageHolderActionsOverviewUI {
 
     switch (action) {
       case 1:
-        PerformAssemblyTasksActionUI.run();
+        PerformAssemblyTasksActionUI.run(orderController, assemblyLineController);
         break;
       case 0:
+        orderController.logOffGarageHolder();
         MainUI.run(orderController, assemblyLineController);
     }
   }

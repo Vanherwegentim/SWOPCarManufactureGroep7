@@ -20,7 +20,7 @@ public class ManagerActionsOverviewUI {
 
     switch (action) {
       case 1:
-        AdvanceAssemblyLineActionUI.run();
+        AdvanceAssemblyLineActionUI.run(orderController, assemblyLineController);
         break;
       case 0:
         MainUI.run(orderController, assemblyLineController);

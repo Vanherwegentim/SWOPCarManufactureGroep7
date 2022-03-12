@@ -20,7 +20,7 @@ public class CarMechanicActionsOverviewUI {
 
     switch (action) {
       case 1:
-        OrderNewCarActionUI.run();
+        OrderNewCarActionUI.run(orderController, assemblyLineController);
         break;
       case 0:
         MainUI.run(orderController, assemblyLineController);
