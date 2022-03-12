@@ -4,19 +4,29 @@ import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarModel;
 import be.kuleuven.assemassit.Domain.CarOrder;
 import be.kuleuven.assemassit.Domain.GarageHolder;
+import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class OrderController {
   public OrderController(AssemblyLine assemblyLine){
     this.assemblyLine = assemblyLine;
   }
+  
+  public OrderController() {
+    garageHolderRepository = new GarageHolderRepository();
+    garageHolders = garageHolderRepository.getGarageHolders();
+  }
 
   private List<GarageHolder> garageHolders;
   private GarageHolder loggedInGarageHolder;
   private AssemblyLine assemblyLine;
+  private GarageHolderRepository garageHolderRepository;
 
+  private GarageHolder loggedInGarageHolder;
   public List<CarOrder> giveNewCarOrders(GarageHolder garageHolder){
     return List.copyOf(garageHolder.getCarOrders());
   }
@@ -32,6 +42,13 @@ public class OrderController {
 
   public CarOrder chooseOrder(int orderId){
         return loggedInGarageHolder.getOrder(orderId);
+  }
+
+  public void setLoggedInGarageHolder(int garageHolderId) {
+    this.loggedInGarageHolder = garageHolders.get(garageHolderId);
+  }
+  public String giveLoggedInGarageHolderName() {
+    return loggedInGarageHolder.getName();
   }
 
 }

@@ -9,6 +9,11 @@ public class AssemblyTask {
 	private List<String> actions;
 	private int id;
 	private LocalDateTime completionTime;
+	private String name;
+
+	public AssemblyTask(String name) {
+	  this.name = name;
+  }
 
 	public AssemblyTask(int id) {
 		this.id = id;
@@ -29,6 +34,10 @@ public class AssemblyTask {
 	public int getId() {
 		return this.id;
 	}
+
+	public String getName() {
+	  return this.name;
+  }
 
 	public LocalDateTime completionTime() {
 
