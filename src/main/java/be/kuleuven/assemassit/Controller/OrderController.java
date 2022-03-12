@@ -3,7 +3,6 @@ package be.kuleuven.assemassit.Controller;
 import be.kuleuven.assemassit.Domain.CarOrder;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

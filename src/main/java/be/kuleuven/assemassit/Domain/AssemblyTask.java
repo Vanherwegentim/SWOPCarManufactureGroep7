@@ -51,4 +51,11 @@ public class AssemblyTask {
 		this.pending = false;
 		this.completionTime = LocalDateTime.now();
 	}
+
+  public boolean equals(Object object){
+	  if(object instanceof AssemblyTask task) task.actions.equals(this.actions);
+	  return false;
+  }
+
+
 }
