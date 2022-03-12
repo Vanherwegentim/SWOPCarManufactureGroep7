@@ -13,7 +13,7 @@ public class AssemblyLine {
 	public AssemblyLine() {
 	  //TODO: is this the way to go?
 	  this.carBodyPost = new WorkPost(0, Arrays.asList(new AssemblyTask("Assembly car body"), new AssemblyTask("Paint car")));
-	  this.drivetrainPost = new WorkPost(1, Arrays.asList(new AssemblyTask("Insert engine"), new AssemblyTask("Insert engine")));
+	  this.drivetrainPost = new WorkPost(1, Arrays.asList(new AssemblyTask("Insert engine"), new AssemblyTask("Insert gearbox")));
 	  this.accessoriesPost = new WorkPost(2, Arrays.asList(new AssemblyTask("Install seats"), new AssemblyTask("Install airco"), new AssemblyTask("Mount wheels")));
 		this.carAssemblyProcesses = new ArrayList<>();
 	}
