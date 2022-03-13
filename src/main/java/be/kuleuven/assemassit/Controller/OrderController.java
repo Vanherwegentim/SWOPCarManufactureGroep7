@@ -97,12 +97,15 @@ public class OrderController {
     ).toString());
   }
 
+  /*
   public void placeNewCarOrder() {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
     //TODO: implement method
   }
+  */
+
 
   public Map<Integer, String> giveGarageHolders() {
     return this.garageHolders
