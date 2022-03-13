@@ -90,6 +90,7 @@ public class OrderController {
   //TODO: this is temp code purely written for UI development
   public List<String> giveListOfCarModels() {
     return Arrays.asList(new CarModel(
+      0,
       "Porsche Super Duper Turbo Go Go",
       List.of(Wheel.values()),
       List.of(Gearbox.values()),

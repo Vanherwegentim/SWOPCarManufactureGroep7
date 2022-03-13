@@ -5,6 +5,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import java.util.List;
 
 public class CarModel {
+  private int id;
   private String name;
 
   private List<Wheel> wheelOptions;
@@ -14,7 +15,8 @@ public class CarModel {
   private List<Color> colorOptions;
   private List<Engine> engineOptions;
 
-  public CarModel(String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions) {
+  public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions) {
+    this.id = id;
     this.name = name;
     this.wheelOptions = List.copyOf(wheelOptions);
     this.gearboxOptions = List.copyOf(gearboxOptions);
