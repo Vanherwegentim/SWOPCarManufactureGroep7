@@ -42,8 +42,11 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
-  public List<String> giveCompletedCarOrders(GarageHolder garageHolder){
-    return garageHolder.getCarOrders()
+  public List<String> giveCompletedCarOrders(){
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+    return loggedInGarageHolder.getCarOrders()
       .stream()
       .filter(co -> !co.isPending())
       .map(co -> co.toString())
