@@ -5,6 +5,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import java.util.List;
 
 public class CarModel {
+  private int id;
   private String name;
 
   private List<Wheel> wheelOptions;
@@ -13,8 +14,10 @@ public class CarModel {
   private List<Body> bodyOptions;
   private List<Color> colorOptions;
   private List<Engine> engineOptions;
+  private List<Airco> aircoOptions;
 
-  public CarModel(String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions) {
+  public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions) {
+    this.id = id;
     this.name = name;
     this.wheelOptions = List.copyOf(wheelOptions);
     this.gearboxOptions = List.copyOf(gearboxOptions);
@@ -22,6 +25,11 @@ public class CarModel {
     this.bodyOptions = List.copyOf(bodyOptions);
     this.colorOptions = List.copyOf(colorOptions);
     this.engineOptions = List.copyOf(engineOptions);
+    this.aircoOptions = List.copyOf(aircoOptions);
+  }
+
+  public int getId() {
+    return this.id;
   }
 
   public String getName() {
@@ -52,8 +60,18 @@ public class CarModel {
     return engineOptions;
   }
 
+  public boolean isValidConfiguration(Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
+    return
+      bodyOptions.contains(body) &&
+      colorOptions.contains(color) &&
+      engineOptions.contains(engine) &&
+      gearboxOptions.contains(gearbox) &&
+      seatOptions.contains(seats) &&
+      aircoOptions.contains(airco);
+  }
+
   @Override
   public String toString() {
-    return "Model " + name;
+    return Integer.toString(id) + ": " + name;
   }
 }
