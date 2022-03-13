@@ -3,7 +3,6 @@ package be.kuleuven.assemassit.UI;
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class MainUI {
