@@ -34,7 +34,7 @@ public class AuthenticateUI {
             garageHolderId = input.nextInt();
           } while (!garageHolders.keySet().contains(garageHolderId));
 
-          orderController.setLoggedInGarageHolder(garageHolderId);
+          orderController.logInGarageHolder(garageHolderId);
           GarageHolderActionsOverviewUI.run(orderController, assemblyLineController);
           break;
         case 2:
