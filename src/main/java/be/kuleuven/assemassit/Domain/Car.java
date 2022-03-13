@@ -54,4 +54,16 @@ public class Car {
     public Wheel getWheels() {
         return wheels;
     }
+
+    public String toString() {
+      String result = "Body: " + body.toString() + "\n";
+
+      result += "Color: " + color.toString() + "\n";
+      result += "Engine: " + engine.toString() + "\n";
+      result += "Gearbox: " + gearbox.toString() + "\n";
+      result += "Airco: " + airco.toString() + "\n";
+      result += "Wheels: " + wheels.toString();
+
+      return result;
+    }
 }
