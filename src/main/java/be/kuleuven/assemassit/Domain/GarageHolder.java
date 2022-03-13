@@ -38,9 +38,11 @@ public class GarageHolder {
   public CarOrder getOrder(int id){
     return findCarOrder(id);
   }
+
   public LocalDateTime getCompletionTimeFromOrder(int orderId){
     return findCarOrder(orderId).getCompletionTime();
   }
+
   private CarOrder findCarOrder(int id) {
     Optional<CarOrder> carOrder = carOrders.stream()
       .filter(wp -> wp.getId() == id)
