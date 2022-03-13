@@ -19,6 +19,7 @@ public class AssemblyLine {
 	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS,AssemblyTaskType.MOUNT_WHEELS));
 
 	  this.carAssemblyProcesses = new ArrayDeque<>();
+
 	}
 
 	public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess){

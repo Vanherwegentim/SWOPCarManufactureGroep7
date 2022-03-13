@@ -3,55 +3,72 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 
 public class Car {
-    CarModel carModel;
-    Body body;
-    Color color;
-    Engine engine;
-    Gearbox gearbox;
-    Seat seats;
-    Airco airco;
-    Wheel wheels;
+  private CarModel carModel;
+  private Body body;
+  private Color color;
+  private Engine engine;
+  private Gearbox gearbox;
+  private Seat seats;
+  private Airco airco;
+  private Wheel wheels;
 
-    public Car(CarModel model, Body body, Color color, Engine engine, Gearbox gearbox,Seat seats, Airco airco, Wheel wheels ){
-        this.carModel = model;
-        this.body = body;
-        this.color = color;
-        this.engine = engine;
-        this.gearbox = gearbox;
-        this.seats = seats;
-        this.airco = airco;
-        this.wheels = wheels;
-    }
+  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels ) {
 
-    public CarModel getCarModel() {
-        return carModel;
-    }
+    if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
+      throw new IllegalArgumentException("Invalid car configuration");
 
-    public Body getBody() {
-        return body;
-    }
+    this.carModel = carModel;
+    this.body = body;
+    this.color = color;
+    this.engine = engine;
+    this.gearbox = gearbox;
+    this.seats = seats;
+    this.airco = airco;
+    this.wheels = wheels;
+  }
 
-    public Color getColor() {
-        return color;
-    }
+  public CarModel getCarModel() {
+      return carModel;
+  }
 
-    public Engine getEngine() {
-        return engine;
-    }
+  public Body getBody() {
+      return body;
+  }
 
-    public Gearbox getGearbox() {
-        return gearbox;
-    }
+  public Color getColor() {
+      return color;
+  }
 
-    public Seat getSeats() {
-        return seats;
-    }
+  public Engine getEngine() {
+      return engine;
+  }
 
-    public Airco getAirco() {
-        return airco;
-    }
+  public Gearbox getGearbox() {
+      return gearbox;
+  }
 
-    public Wheel getWheels() {
-        return wheels;
-    }
+  public Seat getSeats() {
+      return seats;
+  }
+
+  public Airco getAirco() {
+      return airco;
+  }
+
+  public Wheel getWheels() {
+      return wheels;
+  }
+
+  public String toString() {
+    String result = "Car with model: " + carModel.getName() + "\n";
+    result = "Body: " + body.toString() + "\n";
+
+    result += "Color: " + color.toString() + "\n";
+    result += "Engine: " + engine.toString() + "\n";
+    result += "Gearbox: " + gearbox.toString() + "\n";
+    result += "Airco: " + airco.toString() + "\n";
+    result += "Wheels: " + wheels.toString();
+
+    return result;
+  }
 }
