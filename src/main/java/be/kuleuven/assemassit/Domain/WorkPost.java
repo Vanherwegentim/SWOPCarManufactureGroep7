@@ -39,25 +39,23 @@ public class WorkPost {
     return this.activeAssemblyTask;
   }
 
-  // the method receives a carAssemblyProcces with the assemblytasks that are necessary for the carOrder
-  // The method then checks if one of tasks that the CarAssemblyProcces has should be done by this workpost
   public void setActiveAssemblyTask(int assemblyTaskId) {
-    for(AssemblyTask assemblyTask: carAssemblyProcess.getAssemblyTasks()){
-      if(assemblyTask.getId() == assemblyTaskId){
-        this.activeAssemblyTask = assemblyTask;
-      }
-    }
+    this.activeAssemblyTask = findAssemblyTask(assemblyTaskId);
     if(activeAssemblyTask == null){
-      throw new IllegalArgumentException("There is no Assembly Task with that id");
+      throw new IllegalArgumentException("There is no Assembly Task with that id.");
     }
 
   }
 
+  public List<AssemblyTask> getAllAssemblyTasks(){
+    return carAssemblyProcess.getAssemblyTasks().stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType())).collect(Collectors.toList());
+  }
+
   public List<AssemblyTask> givePendingAssemblyTasks() {
-    //TODO filter on the tasks that need to be completed by this workpost
     List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
+    tasks = (List<AssemblyTask>) tasks.stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType()));
     return tasks.stream()
-      .filter(at -> at.getPending() == true)
+      .filter(at -> at.getPending())
       .collect(Collectors.toList());
   }
 

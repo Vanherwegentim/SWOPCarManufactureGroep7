@@ -10,7 +10,8 @@ public abstract class AssemblyTask {
 	private boolean pending;
 	private List<String> actions;
 	private int id;
-	private LocalDateTime completionTime;
+	//in minutes
+	private int completionTime;
 	private String name;
 
 	public AssemblyTask(String name) {
@@ -30,7 +31,7 @@ public abstract class AssemblyTask {
 	}
 
 	public List<String> getActions() {
-		return new ArrayList<String>(actions);
+		return new ArrayList<>(actions);
 	}
 
 	public int getId() {
@@ -41,9 +42,12 @@ public abstract class AssemblyTask {
 	  return this.name;
   }
 
+  public void setCompletionTime(int minutes){
+	  this.completionTime = minutes;
+  }
   public abstract AssemblyTaskType getAssemblyTaskType();
 
-	public LocalDateTime completionTime() {
+	public int completionTime() {
 
 		if (!pending)
 			throw new IllegalStateException();
@@ -53,7 +57,6 @@ public abstract class AssemblyTask {
 
 	public void complete() {
 		this.pending = false;
-		this.completionTime = LocalDateTime.now();
 	}
 
   public boolean equals(Object object){
