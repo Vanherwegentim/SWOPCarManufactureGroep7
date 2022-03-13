@@ -60,6 +60,10 @@ public class CarModel {
     return engineOptions;
   }
 
+  public List<Airco> getAircoOptions() {
+    return aircoOptions;
+  }
+
   public boolean isValidConfiguration(Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
     return
       bodyOptions.contains(body) &&
