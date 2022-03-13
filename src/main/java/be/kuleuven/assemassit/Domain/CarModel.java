@@ -14,8 +14,9 @@ public class CarModel {
   private List<Body> bodyOptions;
   private List<Color> colorOptions;
   private List<Engine> engineOptions;
+  private List<Airco> aircoOptions;
 
-  public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions) {
+  public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions) {
     this.id = id;
     this.name = name;
     this.wheelOptions = List.copyOf(wheelOptions);
@@ -24,6 +25,7 @@ public class CarModel {
     this.bodyOptions = List.copyOf(bodyOptions);
     this.colorOptions = List.copyOf(colorOptions);
     this.engineOptions = List.copyOf(engineOptions);
+    this.aircoOptions = List.copyOf(aircoOptions);
   }
 
   public int getId() {
@@ -56,6 +58,16 @@ public class CarModel {
 
   public List<Engine> getEngineOptions() {
     return engineOptions;
+  }
+
+  public boolean isValidConfiguration(Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
+    return
+      bodyOptions.contains(body) &&
+      colorOptions.contains(color) &&
+      engineOptions.contains(engine) &&
+      gearboxOptions.contains(gearbox) &&
+      seatOptions.contains(seats) &&
+      aircoOptions.contains(airco);
   }
 
   @Override

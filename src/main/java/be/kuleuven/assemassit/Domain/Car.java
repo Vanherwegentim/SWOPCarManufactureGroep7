@@ -3,17 +3,21 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 
 public class Car {
-  CarModel carModel;
-  Body body;
-  Color color;
-  Engine engine;
-  Gearbox gearbox;
-  Seat seats;
-  Airco airco;
-  Wheel wheels;
+  private CarModel carModel;
+  private Body body;
+  private Color color;
+  private Engine engine;
+  private Gearbox gearbox;
+  private Seat seats;
+  private Airco airco;
+  private Wheel wheels;
 
-  public Car(CarModel model, Body body, Color color, Engine engine, Gearbox gearbox,Seat seats, Airco airco, Wheel wheels ){
-    this.carModel = model;
+  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels ) {
+
+    if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
+      throw new IllegalArgumentException("Invalid car configuration");
+
+    this.carModel = carModel;
     this.body = body;
     this.color = color;
     this.engine = engine;

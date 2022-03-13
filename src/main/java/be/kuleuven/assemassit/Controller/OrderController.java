@@ -53,12 +53,25 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
-  //TODO ask sander what we should we with the persistence of garageholder
-  public void placeCarOrder(CarModel carModel, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
+  public void placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
-    loggedInGarageHolder.addCarOrder(carModel, body, color, engine, gearbox, seats, airco, wheels);
+    CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
+    Car car = new Car
+      (
+        carModel,
+        Body.valueOf(body),
+        Color.valueOf(color),
+        Engine.valueOf(engine),
+        Gearbox.valueOf(gearbox),
+        Seat.valueOf(seats),
+        Airco.valueOf(airco),
+        Wheel.valueOf(wheels)
+      );
+
+    CarOrder carOrder = new CarOrder(car);
+    loggedInGarageHolder.addCarOrder(carOrder);
   }
 
   public LocalDateTime getCompletionDate(int orderId) {

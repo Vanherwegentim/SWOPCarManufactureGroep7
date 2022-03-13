@@ -36,7 +36,8 @@ public class CarModelRepository {
           List.of(Seat.values()),
           List.of(Body.values()),
           List.of(Color.values()),
-          List.of(Engine.values())
+          List.of(Engine.values()),
+          List.of(Airco.values())
         ));
       }
 
