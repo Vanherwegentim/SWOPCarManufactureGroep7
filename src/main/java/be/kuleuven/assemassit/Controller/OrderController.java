@@ -3,10 +3,12 @@ package be.kuleuven.assemassit.Controller;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarModel;
 import be.kuleuven.assemassit.Domain.CarOrder;
+import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -80,6 +82,26 @@ public class OrderController {
 
   public String giveLoggedInGarageHolderName() {
     return loggedInGarageHolder.getName();
+  }
+
+  //TODO: this is temp code purely written for UI development
+  public List<String> giveListOfCarModels() {
+    return Arrays.asList(new CarModel(
+      "Porsche Super Duper Turbo Go Go",
+      List.of(Wheel.values()),
+      List.of(Gearbox.values()),
+      List.of(Seat.values()),
+      List.of(Body.values()),
+      List.of(Color.values()),
+      List.of(Engine.values())
+    ).toString());
+  }
+
+  public void placeNewCarOrder() {
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+    //TODO: implement method
   }
 
   public Map<Integer, String> giveGarageHolders() {

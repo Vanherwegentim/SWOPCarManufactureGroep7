@@ -51,4 +51,9 @@ public class CarModel {
   public List<Engine> getEngineOptions() {
     return engineOptions;
   }
+
+  @Override
+  public String toString() {
+    return "Model " + name;
+  }
 }
