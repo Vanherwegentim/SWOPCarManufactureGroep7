@@ -1,13 +1,13 @@
 package be.kuleuven.assemassit.Controller;
 
+import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.AssemblyTask;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import be.kuleuven.assemassit.Domain.AssemblyLine;
-import be.kuleuven.assemassit.Domain.AssemblyTask;
 
 public class AssemblyLineController {
 
@@ -45,8 +45,8 @@ public class AssemblyLineController {
 		return output;
 	}
 
-	public List<String> completeAssemblyTask(int workPostId, int taskId) {
-		assemblyLine.completeAssemblyTask(workPostId, taskId);
+	public List<String> completeAssemblyTask(int workPostId) {
+		assemblyLine.completeAssemblyTask(workPostId);
 		return givePendingAssemblyTasks(workPostId);
 	}
 
