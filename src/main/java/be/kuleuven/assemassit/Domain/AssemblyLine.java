@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
+import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
 import java.util.*;
 
@@ -14,15 +15,15 @@ public class AssemblyLine {
 
 
 	public AssemblyLine() {
-	  this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR));
-	  this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX));
-	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS,AssemblyTaskType.MOUNT_WHEELS));
+	  this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST);
+	  this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST);
+	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS), WorkPostType.ACCESSORIES_POST);
 
 	  this.carAssemblyProcesses = new ArrayDeque<>();
 
 	}
 
-	public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess){
+	public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
 	  carAssemblyProcesses.add(carAssemblyProcess);
   }
 
