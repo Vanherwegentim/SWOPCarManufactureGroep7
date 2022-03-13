@@ -1,7 +1,5 @@
 package be.kuleuven.assemassit.Domain;
 
-import be.kuleuven.assemassit.Domain.Enums.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,23 +7,22 @@ import java.util.Optional;
 
 public class GarageHolder {
 
-    private int id;
-    private String name;
-    private List<CarOrder> carOrders = new ArrayList<>();
+  private int id;
+  private String name;
+  private List<CarOrder> carOrders = new ArrayList<>();
 
-    public GarageHolder(int id, String name) {
-      this.id = id;
-      this.name = name;
-    }
+  public GarageHolder(int id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-    public int getId() {
-      return this.id;
-    }
+  public int getId() {
+    return this.id;
+  }
 
-
-    public String getName() {
-      return this.name;
-    }
+  public String getName() {
+    return this.name;
+  }
 
   public List<CarOrder> getCarOrders(){
     return List.copyOf(carOrders);
@@ -53,5 +50,4 @@ public class GarageHolder {
 
     return carOrder.get();
   }
-
 }
