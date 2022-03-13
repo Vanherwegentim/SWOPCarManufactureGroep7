@@ -26,6 +26,10 @@ public class CarModel {
     this.engineOptions = List.copyOf(engineOptions);
   }
 
+  public int getId() {
+    return this.id;
+  }
+
   public String getName() {
     return name;
   }
@@ -56,6 +60,6 @@ public class CarModel {
 
   @Override
   public String toString() {
-    return "Model " + name;
+    return Integer.toString(id) + ": " + name;
   }
 }

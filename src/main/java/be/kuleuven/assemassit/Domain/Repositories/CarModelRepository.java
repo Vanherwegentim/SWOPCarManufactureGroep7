@@ -19,6 +19,7 @@ public class CarModelRepository {
     return List.copyOf(carModels);
   }
 
+  //TODO: if we get more Car Models with other options, we need to refactor this method
   private void readCarModelsFromFile() {
     List<CarModel> carModels = new ArrayList<>();
     try (Scanner input = new Scanner(new FileReader("src/main/resources/car-models.txt"))) {

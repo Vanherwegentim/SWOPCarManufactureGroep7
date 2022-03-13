@@ -1,14 +1,12 @@
 package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Domain.AssemblyLine;
-import be.kuleuven.assemassit.Domain.CarModel;
-import be.kuleuven.assemassit.Domain.CarOrder;
+import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
-import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,13 +17,15 @@ public class OrderController {
   private GarageHolder loggedInGarageHolder;
   private AssemblyLine assemblyLine;
   private GarageHolderRepository garageHolderRepository;
+  private CarManufactoringCompany carManufactoringCompany;
 
   //TODO: still needed?
   public OrderController(AssemblyLine assemblyLine){
     this.assemblyLine = assemblyLine;
   }
 
-  public OrderController() {
+  public OrderController(CarManufactoringCompany carManufactoringCompany) {
+    this.carManufactoringCompany = carManufactoringCompany;
     garageHolderRepository = new GarageHolderRepository();
     garageHolders = garageHolderRepository.getGarageHolders();
   }
@@ -87,29 +87,27 @@ public class OrderController {
     return loggedInGarageHolder.getName();
   }
 
-  //TODO: this is temp code purely written for UI development
   public List<String> giveListOfCarModels() {
-    return Arrays.asList(new CarModel(
-      0,
-      "Porsche Super Duper Turbo Go Go",
-      List.of(Wheel.values()),
-      List.of(Gearbox.values()),
-      List.of(Seat.values()),
-      List.of(Body.values()),
-      List.of(Color.values()),
-      List.of(Engine.values())
-    ).toString());
+    return this.carManufactoringCompany
+      .getCarModels()
+      .stream()
+      .map(cm -> cm.toString())
+      .collect(Collectors.toList());
   }
 
-  /*
-  public void placeNewCarOrder() {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
+  public Map<String, List<String>> givePossibleOptionsOfCarModel(int carModelId) {
+    Map<String, List<String>> carModelOptions = new HashMap<>();
+    CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
 
-    //TODO: implement method
+    carModelOptions.put("Wheels", carModel.getWheelOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("GearBox", carModel.getGearboxOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Seats", carModel.getSeatOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Body", carModel.getBodyOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Color", carModel.getColorOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Engine", carModel.getEngineOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+
+    return carModelOptions;
   }
-  */
-
 
   public Map<Integer, String> giveGarageHolders() {
     return this.garageHolders
