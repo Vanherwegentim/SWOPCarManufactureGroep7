@@ -56,7 +56,8 @@ public class Car {
   }
 
   public String toString() {
-    String result = "Body: " + body.toString() + "\n";
+    String result = "Car with model: " + carModel.getName() + "\n";
+    result = "Body: " + body.toString() + "\n";
 
     result += "Color: " + color.toString() + "\n";
     result += "Engine: " + engine.toString() + "\n";
