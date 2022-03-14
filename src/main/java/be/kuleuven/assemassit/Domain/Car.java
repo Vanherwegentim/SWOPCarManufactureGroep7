@@ -13,9 +13,13 @@ public class Car {
   private Wheel wheels;
 
   public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels ) {
-
+    if(carModel == null)
+      throw new IllegalArgumentException("Car Model cannot be null");
+    if(body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null)
+      throw new IllegalArgumentException("Assembly tasks cannot be null");
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
       throw new IllegalArgumentException("Invalid car configuration");
+
 
     this.carModel = carModel;
     this.body = body;
