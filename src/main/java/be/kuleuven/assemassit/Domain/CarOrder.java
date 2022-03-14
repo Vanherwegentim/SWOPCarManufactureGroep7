@@ -13,8 +13,10 @@ public class CarOrder {
     private LocalDateTime deliveryTime;
 
     public CarOrder(Car car) {
-        this.car = car;
-        this.pending = true;
+      if(car == null)
+        throw new IllegalArgumentException("Car cannot be null");
+      this.car = car;
+      this.pending = true;
     }
 
     public boolean isPending() {
