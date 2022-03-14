@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,10 +21,10 @@ public class AssemblyLineTest {
 
   @BeforeEach
   public void beforeEach(){
-    this.assemblyLine = new AssemblyLine(new ArrayList<>());
-    this.carBodyPost = new WorkPost(0, Arrays.asList(new AssemblyTask("Assembly car body"), new AssemblyTask("Paint car")));
-    this.drivetrainPost = new WorkPost(1, Arrays.asList(new AssemblyTask("Insert engine"), new AssemblyTask("Insert gearbox")));
-    this.accessoriesPost = new WorkPost(2, Arrays.asList(new AssemblyTask("Install seats"), new AssemblyTask("Install airco"), new AssemblyTask("Mount wheels")));
+    this.assemblyLine = new AssemblyLine();
+    this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR));
+    this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX));
+    this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS,AssemblyTaskType.MOUNT_WHEELS));
 
   }
 
@@ -42,10 +43,11 @@ public class AssemblyLineTest {
 
   @Test
   public void giveTasksOverviewTest(){
+    //TODO: ouwe test, moet nog geüpdated worden met de nieuwe code
     Map<String, List<AssemblyTask>> expected = new HashMap<>();
-    expected.put("Car Body Post", carBodyPost.getAssemblyTasks());
-    expected.put("Drivetrain Post", drivetrainPost.getAssemblyTasks());
-    expected.put("Accessories Post", accessoriesPost.getAssemblyTasks());
+    expected.put("Car Body Post", carBodyPost.getAllAssemblyTasks());
+    expected.put("Drivetrain Post", drivetrainPost.getAllAssemblyTasks());
+    expected.put("Accessories Post", accessoriesPost.getAllAssemblyTasks());
 
     Map<String, List<AssemblyTask>> actual = assemblyLine.giveTasksOverview();
     assertEquals(expected.size(), actual.size());
