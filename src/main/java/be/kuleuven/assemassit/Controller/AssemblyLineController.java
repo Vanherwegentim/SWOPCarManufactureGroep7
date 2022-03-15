@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,11 +22,11 @@ public class AssemblyLineController {
 		this.assemblyLine = assemblyLine;
 	}
 
-	public List<Integer> giveAllWorkPosts() {
+	public Map<Integer, String> giveAllWorkPosts() {
 	  return List
       .of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
-      .stream().map(post -> post.getId())
-      .collect(Collectors.toList());
+      .stream()
+      .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
 	}
 
 	public List<String> givePendingAssemblyTasks(int postId) {
