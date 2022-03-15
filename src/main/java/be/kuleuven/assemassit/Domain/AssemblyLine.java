@@ -20,7 +20,6 @@ public class AssemblyLine {
 	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS), WorkPostType.ACCESSORIES_POST, 60);
 
 	  this.carAssemblyProcesses = new ArrayDeque<>();
-
 	}
 
 	public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
@@ -180,5 +179,27 @@ public class AssemblyLine {
     minutes += carBodyPost.remainingTimeInMinutes();
 
     return minutes;
+  }
+
+  public AssemblyTask giveCarAssemblyTask(int carAssemblyProcessId, int assemblyTaskId) {
+    return findCarAssemblyProcess(carAssemblyProcessId).giveAssemblyTask(carAssemblyProcessId);
+  }
+
+  private CarAssemblyProcess findCarAssemblyProcess(int id) {
+    Optional<CarAssemblyProcess> carAssemblyProcess = carAssemblyProcesses.stream()
+      .filter(p -> p.getId() == id)
+      .findFirst();
+
+    if (carAssemblyProcess.isEmpty()) {
+      carAssemblyProcess = finishedCars
+        .stream()
+        .filter(p -> p.getId() == id)
+        .findFirst();
+
+      if (carAssemblyProcess.isEmpty())
+        throw new IllegalArgumentException("Car assembly process not found");
+    }
+
+    return carAssemblyProcess.get();
   }
 }

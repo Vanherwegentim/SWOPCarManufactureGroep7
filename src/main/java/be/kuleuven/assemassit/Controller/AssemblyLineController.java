@@ -42,6 +42,10 @@ public class AssemblyLineController {
 		return givePendingAssemblyTasks(workPostId);
 	}
 
+	public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskid) {
+    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
+  }
+
 	public Map<String, List<String>> giveAssemblyLineStatusAndOverview(int statusId) {
 	  //TODO: !!!REFACTOR THIS SHIT!!!
 
