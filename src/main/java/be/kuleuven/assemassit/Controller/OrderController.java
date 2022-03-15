@@ -3,8 +3,10 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Enums.Color;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,6 +75,7 @@ public class OrderController {
 
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
+    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
   }
 
   public LocalDateTime getCompletionDate(int orderId) {

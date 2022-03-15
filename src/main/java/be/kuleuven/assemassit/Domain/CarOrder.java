@@ -11,10 +11,12 @@ public class CarOrder {
     private LocalDateTime completionTime;
     private LocalDateTime estimatedCompletionTime;
     private LocalDateTime deliveryTime;
+    private LocalDateTime orderTime;
 
     public CarOrder(Car car) {
         this.car = car;
         this.pending = true;
+        this.orderTime = LocalDateTime.now();
     }
 
     public boolean isPending() {
@@ -41,6 +43,10 @@ public class CarOrder {
 
     public int getId() {
       return id;
+    }
+
+    public LocalDateTime getOrderTime() {
+      return this.orderTime;
     }
 
     @Override
