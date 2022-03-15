@@ -2,38 +2,47 @@ package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class PerformAssemblyTasksActionUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
 
-    List<String> allWorkPosts = assemblyLineController.giveAllWorkPosts().stream().map(Objects::toString).toList();
+    Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
     int chosenWorkPostId = displayChooseWorkPost(allWorkPosts);
 
-    // TODO choose the right method
-    List<String> allAssemblyTasks = assemblyLineController.giveAllWorkPosts().stream().map(Objects::toString).toList();
+    List<String> allAssemblyTasks= assemblyLineController.givePendingAssemblyTasks(chosenWorkPostId);
+
     int displayChooseAssemblyTask = displayChooseAssemblyTask(allAssemblyTasks);
+
+    List<String> actions;
+    actions = assemblyLineController.giveAssemblyTaskInformation();
+    actions.forEach(System.out::println);
+
+    System.out.println("Press ENTER to continue...");
+    Scanner scanner = new Scanner(System.in);
+    scanner.nextLine();
 
   }
 
-  public static Integer displayChooseWorkPost(List<String> workPosts) {
+  private static Integer displayChooseWorkPost(Map<Integer, String> workPosts) {
     Scanner scanner = new Scanner(System.in);
     int workPostId;
 
     do {
       System.out.println("Please choose a workPost:");
-      workPosts.forEach(System.out::println);
+      workPosts.forEach((id, name) -> System.out.println(id + ": " + name));
       workPostId = scanner.nextInt();
-    } while (workPostId < 0 || workPostId > workPosts.size() - 1);
+    } while (!workPosts.containsKey(workPostId));
 
     System.out.println("Chosen workpost: " + workPosts.get(workPostId));
     return workPostId;
   }
 
-  public static Integer displayChooseAssemblyTask(List<String> assemblyTasks) {
+  private static Integer displayChooseAssemblyTask(List<String> assemblyTasks) {
     Scanner scanner = new Scanner(System.in);
     int assemblyTaskId;
 
