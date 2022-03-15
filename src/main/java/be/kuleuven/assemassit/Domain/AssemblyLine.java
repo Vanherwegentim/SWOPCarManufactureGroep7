@@ -191,7 +191,10 @@ public class AssemblyLine {
 
     // car can still be manufactured today
     if (carAssemblyProcesses.size() <= remainingCarsForToday) {
-      return LocalDateTime.now().plusMinutes(maxTimeNeededForWorkPostOnLine() * carAssemblyProcesses.size());
+      LocalDateTime dateTime = LocalDateTime.now();
+      if (dateTime.getHour() < 6)
+        dateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), dateTime.getDayOfMonth(), 6, 0);
+      return dateTime.plusMinutes(giveManufacturingDurationInMinutes() * carAssemblyProcesses.size());
     }
 
     // car can not be manufactured today
@@ -200,7 +203,7 @@ public class AssemblyLine {
 
 
     // return date of tomorrow + days needed + minutes needed
-    int remainingMinutesForLastDay = ((carAssemblyProcesses.size() - remainingCarsForToday) % amountOfCarsWholeDay) * maxTimeNeededForWorkPostOnLine();
+    int remainingMinutesForLastDay = ((carAssemblyProcesses.size() - remainingCarsForToday) % amountOfCarsWholeDay) * giveManufacturingDurationInMinutes();
     return LocalDateTime.now().plusDays(1).plusDays(daysNeeded).plusMinutes(remainingMinutesForLastDay);
   }
 
