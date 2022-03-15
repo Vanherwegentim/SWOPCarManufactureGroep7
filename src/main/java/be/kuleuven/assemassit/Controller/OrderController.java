@@ -112,12 +112,11 @@ public class OrderController {
     return loggedInGarageHolder.getName();
   }
 
-  public List<String> giveListOfCarModels() {
+  public Map<Integer, String> giveListOfCarModels() {
     return this.carManufactoringCompany
       .getCarModels()
       .stream()
-      .map(cm -> cm.toString())
-      .collect(Collectors.toList());
+      .collect(Collectors.toMap(CarModel::getId, CarModel::getName));
   }
 
   public Map<String, List<String>> givePossibleOptionsOfCarModel(int carModelId) {
