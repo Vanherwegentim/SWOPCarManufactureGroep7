@@ -42,7 +42,7 @@ public class AuthenticateUI {
 
     do {
       System.out.println("Please select your name:");
-      garageHolders.forEach((id, name) -> System.out.println(id + ": " + name));
+      garageHolders.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
       garageHolderId = scanner.nextInt();
     } while (!garageHolders.containsKey(garageHolderId));
 
