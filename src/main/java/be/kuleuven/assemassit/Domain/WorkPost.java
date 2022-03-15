@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
+import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,14 +12,20 @@ public class WorkPost {
   private List<AssemblyTaskType> assemblyTaskTypes;
   private AssemblyTask activeAssemblyTask;
   private CarAssemblyProcess carAssemblyProcess;
+  private WorkPostType workPostType;
 
-  public WorkPost(int id, List<AssemblyTaskType> assemblyTaskTypes) {
+  public WorkPost(int id, List<AssemblyTaskType> assemblyTaskTypes, WorkPostType workPostType) {
     this.id = id;
     this.assemblyTaskTypes = assemblyTaskTypes;
+    this.workPostType = workPostType;
   }
 
   public int getId() {
     return this.id;
+  }
+
+  public WorkPostType getWorkPostType() {
+    return this.workPostType;
   }
 
   public void addProcessToWorkPost(CarAssemblyProcess carAssemblyProcess){

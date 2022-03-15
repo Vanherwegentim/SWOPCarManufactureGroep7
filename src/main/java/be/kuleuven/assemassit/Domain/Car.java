@@ -1,6 +1,9 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Enums.Color;
+
+import java.awt.*;
 
 public class Car {
   private CarModel carModel;
@@ -12,7 +15,7 @@ public class Car {
   private Airco airco;
   private Wheel wheels;
 
-  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels ) {
+  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
 
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
       throw new IllegalArgumentException("Invalid car configuration");

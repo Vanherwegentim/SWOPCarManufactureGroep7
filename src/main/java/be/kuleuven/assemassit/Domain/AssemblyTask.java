@@ -12,6 +12,7 @@ public abstract class AssemblyTask {
 	private int id;
 	//in minutes
 	private int completionTime;
+	// TODO: we probalby don't need a name
 	private String name;
 
 	public AssemblyTask(String name) {

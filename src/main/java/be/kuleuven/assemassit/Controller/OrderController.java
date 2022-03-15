@@ -1,9 +1,20 @@
-package be.kuleuven.assemassit.Controller;
+<<<<<<<HEAD
+  =======
+
+  >>>>>>>fa3f1af8ad2fbaf69ff1f74c467496f00ac15d76
+  package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
+<<<<<<<HEAD
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
+=======
+import be.kuleuven.assemassit.Domain.Enums.Color;
+import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+
+import java.awt.*;
+>>>>>>>fa3f1af8ad2fbaf69ff1f74c467496f00ac15d76
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +31,7 @@ public class OrderController {
   private CarManufactoringCompany carManufactoringCompany;
 
   //TODO: still needed?
-  public OrderController(AssemblyLine assemblyLine){
+  public OrderController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
   }
 
@@ -42,7 +53,7 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
-  public List<String> giveCompletedCarOrders(){
+  public List<String> giveCompletedCarOrders() {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -72,6 +83,10 @@ public class OrderController {
 
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
+<<<<<<<HEAD
+      =======
+    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+>>>>>>>fa3f1af8ad2fbaf69ff1f74c467496f00ac15d76
   }
 
   public LocalDateTime getCompletionDate(int orderId) {
