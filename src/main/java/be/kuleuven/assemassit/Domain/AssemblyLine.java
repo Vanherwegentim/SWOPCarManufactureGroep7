@@ -16,7 +16,6 @@ public class AssemblyLine {
 	private Queue<CarAssemblyProcess> carAssemblyProcesses;
 	private List<CarAssemblyProcess> finishedCars;
 
-
 	public AssemblyLine() {
 	  this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
 	  this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);

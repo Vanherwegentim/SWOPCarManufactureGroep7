@@ -18,7 +18,6 @@ public abstract class AssemblyTask {
 	  this.id = AssemblyTask.runningId++;
 	  this.name = name;
     actions = new ArrayList<>();
-
   }
 
 	public boolean getPending() {
