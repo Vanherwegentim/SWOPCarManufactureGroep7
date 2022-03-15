@@ -20,10 +20,6 @@ public abstract class AssemblyTask {
     actions = new ArrayList<>();
   }
 
-	public AssemblyTask(int id) {
-		this.id = id;
-	}
-
 	public boolean getPending() {
 		return this.pending;
 	}
@@ -47,6 +43,7 @@ public abstract class AssemblyTask {
   public void setCompletionTime(int minutes){
 	  this.completionTime = minutes;
   }
+
   public abstract AssemblyTaskType getAssemblyTaskType();
 
 	public int completionTime() {
