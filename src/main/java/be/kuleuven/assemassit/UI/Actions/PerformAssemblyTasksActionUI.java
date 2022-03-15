@@ -14,13 +14,14 @@ public class PerformAssemblyTasksActionUI {
     Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
     int chosenWorkPostId = displayChooseWorkPost(allWorkPosts);
 
-    List<String> allAssemblyTasks= assemblyLineController.givePendingAssemblyTasks(chosenWorkPostId);
 
-    int displayChooseAssemblyTask = displayChooseAssemblyTask(allAssemblyTasks);
+    Map<Integer, java.lang.String> allAssemblyTasks = assemblyLineController.givePendingAssemblyTasks(chosenWorkPostId);
+
+//    int displayChooseAssemblyTask = displayChooseAssemblyTask(allAssemblyTasks);
 
     List<String> actions;
-    actions = assemblyLineController.giveAssemblyTaskInformation();
-    actions.forEach(System.out::println);
+//    actions = assemblyLineController.giveAssemblyTaskInformation();
+//    actions.forEach(System.out::println);
 
     System.out.println("Press ENTER to continue...");
     Scanner scanner = new Scanner(System.in);
