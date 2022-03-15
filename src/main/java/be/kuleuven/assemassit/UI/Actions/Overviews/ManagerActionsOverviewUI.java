@@ -10,20 +10,20 @@ import java.util.Scanner;
 public class ManagerActionsOverviewUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
+    int action;
 
-    System.out.println("Welcome");
-    System.out.println("Please choose an action:");
-    System.out.println("1: Advance assembly line");
-    System.out.println("0: Logout and go back");
+    do {
+      System.out.println("Welcome");
+      System.out.println("Please choose an action:");
+      System.out.println(" 1: Advance assembly line");
+      System.out.println("-1: Logout and go back");
 
-    int action = scanner.nextInt();
+      action = scanner.nextInt();
 
-    switch (action) {
-      case 1:
-        AdvanceAssemblyLineActionUI.run(orderController, assemblyLineController);
-        break;
-      case 0:
-        MainUI.run(orderController, assemblyLineController);
-    }
+      switch (action) {
+        case 1 -> AdvanceAssemblyLineActionUI.run(orderController, assemblyLineController);
+        case 0 -> MainUI.run(orderController, assemblyLineController);
+      }
+    } while (action != -1 && action != 1);
   }
 }

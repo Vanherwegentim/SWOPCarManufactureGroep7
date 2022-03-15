@@ -6,6 +6,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,13 +32,13 @@ public class CarModelRepository {
           new CarModel(
           id,
           name,
-          List.of(Wheel.values()),
-          List.of(Gearbox.values()),
-          List.of(Seat.values()),
-          List.of(Body.values()),
-          List.of(Color.values()),
-          List.of(Engine.values()),
-          List.of(Airco.values())
+          Arrays.asList(Wheel.values()),
+          Arrays.asList(Gearbox.values()),
+          Arrays.asList(Seat.values()),
+          Arrays.asList(Body.values()),
+          Arrays.asList(Color.values()),
+          Arrays.asList(Engine.values()),
+          Arrays.asList(Airco.values())
         ));
       }
 
