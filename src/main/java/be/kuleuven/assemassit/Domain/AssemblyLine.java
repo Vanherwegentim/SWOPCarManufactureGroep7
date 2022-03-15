@@ -194,7 +194,7 @@ public class AssemblyLine {
       LocalDateTime dateTime = LocalDateTime.now();
       if (dateTime.getHour() < 6)
         dateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), dateTime.getDayOfMonth(), 6, 0);
-      return dateTime.plusMinutes(giveManufacturingDurationInMinutes() * carAssemblyProcesses.size());
+      return dateTime.plusMinutes((long) giveManufacturingDurationInMinutes() * carAssemblyProcesses.size());
     }
 
     // car can not be manufactured today
