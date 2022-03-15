@@ -8,6 +8,7 @@ import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +86,8 @@ public class OrderController {
     loggedInGarageHolder.addCarOrder(carOrder);
 
     carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
-    return carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
+    LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
+    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
   }
 
   //TODO: will not be used
