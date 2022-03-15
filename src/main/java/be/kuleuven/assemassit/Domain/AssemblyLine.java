@@ -167,7 +167,7 @@ public class AssemblyLine {
       giveManufacturingDurationInMinutes() - // time needed to manufacture a car
       (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
       maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-      1) / 60;
+      60) / 60;
 
     // calculate cars for a whole day (2)
     int amountOfCarsWholeDay =
@@ -175,7 +175,7 @@ public class AssemblyLine {
       giveManufacturingDurationInMinutes() - // time needed to manufacture a car
       (openingTime.getHour() * 60 + openingTime.getMinute()) - // opening time
       maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-      1) / 60;
+      60) / 60;
 
     // car can still be manufactured today
     if (carAssemblyProcesses.size() <= remainingCarsForToday) {
@@ -187,7 +187,7 @@ public class AssemblyLine {
     int daysNeeded = (carAssemblyProcesses.size() - remainingCarsForToday) / amountOfCarsWholeDay;
 
 
-    // return date of tomorrow + days needed
+    // return date of tomorrow + days needed + minutes needed
     int remainingMinutesForLastDay = ((carAssemblyProcesses.size() - remainingCarsForToday) % amountOfCarsWholeDay) * maxTimeNeededForWorkPostOnLine();
     return LocalDateTime.now().plusDays(1).plusDays(daysNeeded).plusMinutes(remainingMinutesForLastDay);
   }
@@ -210,31 +210,4 @@ public class AssemblyLine {
   private List<WorkPost> giveWorkPostsAsList() {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
-
-  /*private int calculateEstimatedCompletionTime(CarAssemblyProcess carAssemblyProcess) {
-
-    List<Integer> expectedWorkPostDurations = new ArrayList<>();
-    expectedWorkPostDurations.add(carBodyPost.remainingTimeInMinutes());
-    expectedWorkPostDurations.add(drivetrainPost.remainingTimeInMinutes());
-    expectedWorkPostDurations.add(accessoriesPost.remainingTimeInMinutes());
-    int minutes = expectedWorkPostDurations.stream().mapToInt(i -> i).max().orElse(0);
-
-    minutes += this.carAssemblyProcesses.stream().map(p ->{
-      int result = 0;
-
-      // take the max of getExpectedWorkPostDurationInMinutes()
-      if (carBodyPost.canPerformTasksForProcess(p))
-        result += carBodyPost.getExpectedWorkPostDurationInMinutes();
-      if (drivetrainPost.canPerformTasksForProcess(p))
-        result += drivetrainPost.getExpectedWorkPostDurationInMinutes();
-      if (accessoriesPost.canPerformTasksForProcess(p))
-        result += accessoriesPost.getExpectedWorkPostDurationInMinutes();
-
-      return result;
-    }).reduce(0, (subtotal, elem) -> subtotal+elem);
-
-    minutes += carBodyPost.remainingTimeInMinutes();
-
-    return minutes;
-  }*/
 }
