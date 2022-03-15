@@ -4,15 +4,22 @@ import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class CarAssemblyProcess {
+  private static int idRunner = 0;
+
   private List<AssemblyTask> assemblyTasks;
   private CarOrder carOrder;
+  private int id;
 
   public CarAssemblyProcess(CarOrder carOrder) {
     if(carOrder == null){
       throw new NullPointerException("The car order can't be null");
     }
+
+    this.id = CarAssemblyProcess.idRunner++;
+
     this.carOrder = carOrder;
     this.assemblyTasks = Arrays.asList(
       new CarBodyAssemblyTask("", carOrder.getCar().getBody()),
@@ -28,5 +35,20 @@ public class CarAssemblyProcess {
 
   public List<AssemblyTask> getAssemblyTasks(){
     return assemblyTasks;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public AssemblyTask giveAssemblyTask(int id) {
+    Optional<AssemblyTask> carAssemblyProcess = assemblyTasks.stream()
+      .filter(p -> p.getId() == id)
+      .findFirst();
+
+    if (carAssemblyProcess.isPresent())
+      throw new IllegalArgumentException("Assembly task not found");
+
+    return carAssemblyProcess.get();
   }
 }
