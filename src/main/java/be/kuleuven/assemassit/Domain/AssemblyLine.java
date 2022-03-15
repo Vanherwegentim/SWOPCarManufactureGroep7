@@ -159,9 +159,12 @@ public class AssemblyLine {
   }
 
   private int calculateEstimatedCompletionTime(CarAssemblyProcess carAssemblyProcess) {
-    int minutes = carBodyPost.getExpectedWorkPostDurationInMinutes();
-    minutes += drivetrainPost.getExpectedWorkPostDurationInMinutes();
-    minutes += accessoriesPost.getExpectedWorkPostDurationInMinutes();
+
+    List<Integer> expectedWorkPostDurations = new ArrayList<>();
+    expectedWorkPostDurations.add(carBodyPost.remainingTimeInMinutes());
+    expectedWorkPostDurations.add(drivetrainPost.remainingTimeInMinutes());
+    expectedWorkPostDurations.add(accessoriesPost.remainingTimeInMinutes());
+    int minutes = expectedWorkPostDurations.stream().mapToInt(i -> i).max().orElse(0);
 
     minutes += this.carAssemblyProcesses.stream().map(p ->{
       int result = 0;
