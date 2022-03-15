@@ -12,40 +12,40 @@ import java.util.Scanner;
 public class AuthenticateUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner input = new Scanner(System.in);
-    int choice = -1;
+    int choice;
 
     do {
-      System.out.println("Please select the correct option");
-      System.out.println("1: I am a garage holder");
-      System.out.println("2: I am a car mechanic");
-      System.out.println("3: I am a manager");
-      System.out.println("0: Go back");
+      System.out.println("Please authenticate yourself:");
+      System.out.println(" 1: I am a garage holder");
+      System.out.println(" 2: I am a car mechanic");
+      System.out.println(" 3: I am a manager");
+      System.out.println("-1: Go back");
 
       choice = input.nextInt();
 
-      switch(choice) {
-        case 1:
-          Map<Integer, String> garageHolders = orderController.giveGarageHolders();
-          int garageHolderId = -1;
-
-          do {
-            System.out.println("Please select your name:");
-            for (int key : garageHolders.keySet()) System.out.println(key + ":" + garageHolders.get(key));
-            garageHolderId = input.nextInt();
-          } while (!garageHolders.keySet().contains(garageHolderId));
-
-          orderController.logInGarageHolder(garageHolderId);
+      switch (choice) {
+        case 1 -> {
+          int selectedGarageHolderId = displayGarageHolderForm(orderController.giveGarageHolders());
+          orderController.logInGarageHolder(selectedGarageHolderId);
           GarageHolderActionsOverviewUI.run(orderController, assemblyLineController);
-          break;
-        case 2:
-          CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
-          break;
-        case 3:
-          ManagerActionsOverviewUI.run(orderController, assemblyLineController);
-          break;
-        case 0:
-          MainUI.run(orderController, assemblyLineController);
+        }
+        case 2 -> CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
+        case 3 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
+        case -1 -> MainUI.run(orderController, assemblyLineController);
       }
-    } while (choice < 0 || choice > 3);
+    } while (choice != -1 && (choice < 1 || choice > 3));
+  }
+
+  private static int displayGarageHolderForm(Map<Integer, String> garageHolders) {
+    Scanner scanner = new Scanner(System.in);
+    int garageHolderId;
+
+    do {
+      System.out.println("Please select your name:");
+      garageHolders.forEach((id, name) -> System.out.println(id + ": " + name));
+      garageHolderId = scanner.nextInt();
+    } while (!garageHolders.containsKey(garageHolderId));
+
+    return garageHolderId;
   }
 }
