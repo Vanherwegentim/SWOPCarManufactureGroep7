@@ -1,3 +1,4 @@
+
 package be.kuleuven.assemassit.Domain;
 
 import java.time.LocalDateTime;

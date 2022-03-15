@@ -1,50 +1,100 @@
 package be.kuleuven.assemassit.Domain;
 
-import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
+import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class WorkPost {
   private int id;
-  private List<AssemblyTask> assemblyTasks;
+  private List<AssemblyTaskType> assemblyTaskTypes;
   private AssemblyTask activeAssemblyTask;
+  private CarAssemblyProcess carAssemblyProcess;
+  private WorkPostType workPostType;
+  private int expectedWorkPostDurationInMinutes;
 
-  public WorkPost(int id, List<AssemblyTask> assemblyTasks) {
+  public WorkPost(int id, List<AssemblyTaskType> assemblyTaskTypes, WorkPostType workPostType, int expectedWorkPostDurationInMinutes) {
     this.id = id;
-    this.assemblyTasks = assemblyTasks;
+    this.assemblyTaskTypes = assemblyTaskTypes;
+    this.workPostType = workPostType;
+    this.expectedWorkPostDurationInMinutes = expectedWorkPostDurationInMinutes;
   }
 
   public int getId() {
     return this.id;
   }
 
-  public List<AssemblyTask> getAssemblyTasks() {
-    return List.copyOf(assemblyTasks);
+  public WorkPostType getWorkPostType() {
+    return this.workPostType;
+  }
+
+  public void addProcessToWorkPost(CarAssemblyProcess carAssemblyProcess){
+      this.carAssemblyProcess = carAssemblyProcess;
+  }
+
+  public CarAssemblyProcess getCarAssemblyProcess() {
+    return carAssemblyProcess;
+  }
+
+  public int getExpectedWorkPostDurationInMinutes() {
+    return this.expectedWorkPostDurationInMinutes;
+  }
+
+  public CarAssemblyProcess removeProcessFromWorkPost(){
+    CarAssemblyProcess temporaryProcess = this.carAssemblyProcess;
+    this.carAssemblyProcess = null;
+    return temporaryProcess;
   }
 
   public AssemblyTask getActiveAssemblyTask() {
     return this.activeAssemblyTask;
   }
 
-  public void setActiveAssemblyTask() {
-    this.activeAssemblyTask = activeAssemblyTask;
+  public void setActiveAssemblyTask(int assemblyTaskId) {
+    this.activeAssemblyTask = findAssemblyTask(assemblyTaskId);
+    if(activeAssemblyTask == null){
+      throw new IllegalArgumentException("There is no Assembly Task with that id.");
+    }
+
+  }
+
+  public List<AssemblyTask> getAllAssemblyTasks(){
+    return carAssemblyProcess.getAssemblyTasks().stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType())).collect(Collectors.toList());
   }
 
   public List<AssemblyTask> givePendingAssemblyTasks() {
-    return assemblyTasks.stream()
-      .filter(at -> at.getPending() == true)
+    List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
+    tasks = (List<AssemblyTask>) tasks.stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType()));
+    return tasks.stream()
+      .filter(at -> at.getPending())
       .collect(Collectors.toList());
   }
 
-  public void completeAssemblyTask(int assemblyTaskId) {
-    findAssemblyTask(assemblyTaskId).complete();
+  public void completeAssemblyTask() {
+    activeAssemblyTask.complete();
+    activeAssemblyTask = null;
+  }
+
+  public int remainingTimeInMinutes() {
+    List<AssemblyTask> assemblyTasksFromWorkPost = carAssemblyProcess
+      .getAssemblyTasks()
+      .stream()
+      .filter(p -> assemblyTaskTypes.contains(p.getAssemblyTaskType()))
+      .collect(Collectors.toList());
+
+    if (assemblyTasksFromWorkPost.size() == 0) return 0;
+
+    return (int)Math.floor(expectedWorkPostDurationInMinutes / assemblyTasksFromWorkPost.size() * assemblyTasksFromWorkPost.stream().filter(wp -> wp.getPending()).count());
+  }
+
+  public boolean canPerformTasksForProcess(CarAssemblyProcess carAssemblyProcess) {
+    return true;
   }
 
   private AssemblyTask findAssemblyTask(int id) {
-    Optional<AssemblyTask> assemblyTask = assemblyTasks.stream()
+    Optional<AssemblyTask> assemblyTask = carAssemblyProcess.getAssemblyTasks().stream()
       .filter(at -> at.getId() == id)
       .findFirst();
 

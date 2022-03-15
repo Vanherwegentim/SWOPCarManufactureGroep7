@@ -1,9 +1,12 @@
+
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Enums.Color;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +27,14 @@ public class OrderController {
     this.assemblyLine = assemblyLine;
   }
 
+  public OrderController(CarManufactoringCompany carManufactoringCompany, AssemblyLine assemblyLine) {
+    this.carManufactoringCompany = carManufactoringCompany;
+    this.assemblyLine = assemblyLine;
+    garageHolderRepository = new GarageHolderRepository();
+    garageHolders = garageHolderRepository.getGarageHolders();
+  }
+
+  //TODO: this constructor can be removed when code is refactored
   public OrderController(CarManufactoringCompany carManufactoringCompany) {
     this.carManufactoringCompany = carManufactoringCompany;
     garageHolderRepository = new GarageHolderRepository();
@@ -72,6 +83,7 @@ public class OrderController {
 
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
+    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
   }
 
   public LocalDateTime getCompletionDate(int orderId) {

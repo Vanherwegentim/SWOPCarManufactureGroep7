@@ -1,14 +1,18 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssemblyTask {
+public abstract class AssemblyTask {
 	private boolean pending;
 	private List<String> actions;
 	private int id;
-	private LocalDateTime completionTime;
+	//in minutes
+	private int completionTime;
+	// TODO: we probalby don't need a name
 	private String name;
 
 	public AssemblyTask(String name) {
@@ -28,7 +32,7 @@ public class AssemblyTask {
 	}
 
 	public List<String> getActions() {
-		return new ArrayList<String>(actions);
+		return new ArrayList<>(actions);
 	}
 
 	public int getId() {
@@ -39,7 +43,12 @@ public class AssemblyTask {
 	  return this.name;
   }
 
-	public LocalDateTime completionTime() {
+  public void setCompletionTime(int minutes){
+	  this.completionTime = minutes;
+  }
+  public abstract AssemblyTaskType getAssemblyTaskType();
+
+	public int completionTime() {
 
 		if (!pending)
 			throw new IllegalStateException();
@@ -49,6 +58,12 @@ public class AssemblyTask {
 
 	public void complete() {
 		this.pending = false;
-		this.completionTime = LocalDateTime.now();
 	}
+
+  public boolean equals(Object object){
+	  if(object instanceof AssemblyTask task) task.actions.equals(this.actions);
+	  return false;
+  }
+
+
 }
