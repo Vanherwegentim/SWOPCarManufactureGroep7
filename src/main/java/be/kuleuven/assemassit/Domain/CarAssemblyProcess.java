@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +14,14 @@ public class CarAssemblyProcess {
   private int id;
 
   public CarAssemblyProcess(CarOrder carOrder) {
+    if(carOrder == null){
+      throw new NullPointerException("The car order can't be null");
+    }
+
     this.id = CarAssemblyProcess.idRunner++;
+
     this.carOrder = carOrder;
-    this.assemblyTasks = List.of(
+    this.assemblyTasks = Arrays.asList(
       new CarBodyAssemblyTask("", carOrder.getCar().getBody()),
       new InsertGearboxAssemblyTask("", carOrder.getCar().getGearbox()),
       new InsertEngineAssemblyTask("", carOrder.getCar().getEngine()),
@@ -25,10 +31,7 @@ public class CarAssemblyProcess {
     );
   }
 
-  public CarAssemblyProcess(CarOrder carOrder, List<AssemblyTask> assemblyTasks) {
-    this.carOrder = carOrder;
-    this.assemblyTasks = List.copyOf(assemblyTasks);
-  }
+
 
   public List<AssemblyTask> getAssemblyTasks(){
     return assemblyTasks;

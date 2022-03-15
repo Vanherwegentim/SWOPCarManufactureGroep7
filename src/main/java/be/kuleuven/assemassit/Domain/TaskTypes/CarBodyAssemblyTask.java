@@ -17,4 +17,14 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   public AssemblyTaskType getAssemblyTaskType() {
     return this.assemblyTaskType;
   }
+
+  //Pattern matching not working here for some reason
+
+  @Override
+  public boolean equals(Object o){
+    if(o instanceof CarBodyAssemblyTask){
+      return this.getId() == ((CarBodyAssemblyTask) o).getId();
+    }
+    return false;
+  }
 }

@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AssemblyLine {
 
@@ -17,13 +18,24 @@ public class AssemblyLine {
 	public AssemblyLine() {
 	  this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
 	  this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
-	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS), WorkPostType.ACCESSORIES_POST, 60);
-
+	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
+    this.finishedCars = new ArrayList<>();
 	  this.carAssemblyProcesses = new ArrayDeque<>();
 	}
 
 	public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
 	  carAssemblyProcesses.add(carAssemblyProcess);
+  }
+
+  public List<CarAssemblyProcess> getCarAssemblyProcesses(){
+    List<CarAssemblyProcess> carAssemblyProcessList = carAssemblyProcesses.stream().collect(Collectors.toList());
+    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
+    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
+    if (!finishedCars.isEmpty()) {
+      carAssemblyProcessList.addAll(finishedCars);
+    }
+    return carAssemblyProcessList;
   }
 
 	public WorkPost getCarBodyPost() {

@@ -34,6 +34,10 @@ public class WorkPost {
       this.carAssemblyProcess = carAssemblyProcess;
   }
 
+  public List<AssemblyTaskType> getAssemblyTaskTypes(){
+    return assemblyTaskTypes;
+  }
+
   public CarAssemblyProcess getCarAssemblyProcess() {
     return carAssemblyProcess;
   }
