@@ -18,4 +18,13 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   public AssemblyTaskType getAssemblyTaskType() {
     return this.assemblyTaskType;
   }
+
+  //Pattern matching not working here for some reason
+  @Override
+  public boolean equals(Object o){
+    if(o instanceof InstallSeatsAssemblyTask){
+      return this.getId() == ((InstallSeatsAssemblyTask) o).getId();
+    }
+    return false;
+  }
 }

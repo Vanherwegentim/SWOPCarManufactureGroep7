@@ -17,6 +17,7 @@ public abstract class AssemblyTask {
 
 	public AssemblyTask(String name) {
 	  this.name = name;
+    actions = new ArrayList<>();
   }
 
 	public AssemblyTask(int id) {
@@ -60,8 +61,9 @@ public abstract class AssemblyTask {
 		this.pending = false;
 	}
 
+  @Override
   public boolean equals(Object object){
-	  if(object instanceof AssemblyTask task) task.actions.equals(this.actions);
+	  if(object instanceof AssemblyTask task) task.id = this.id;
 	  return false;
   }
 

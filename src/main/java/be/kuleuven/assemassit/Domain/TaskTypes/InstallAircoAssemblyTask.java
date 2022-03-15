@@ -18,4 +18,13 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
   public AssemblyTaskType getAssemblyTaskType() {
     return this.assemblyTaskType;
   }
+
+  //Pattern matching not working here for some reason
+  @Override
+  public boolean equals(Object o){
+    if(o instanceof InstallAircoAssemblyTask){
+      return this.getId() == ((InstallAircoAssemblyTask) o).getId();
+    }
+    return false;
+  }
 }

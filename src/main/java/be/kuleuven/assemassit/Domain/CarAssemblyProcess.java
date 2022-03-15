@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class CarAssemblyProcess {
@@ -9,8 +10,11 @@ public class CarAssemblyProcess {
   private CarOrder carOrder;
 
   public CarAssemblyProcess(CarOrder carOrder) {
+    if(carOrder == null){
+      throw new NullPointerException("The car order can't be null");
+    }
     this.carOrder = carOrder;
-    this.assemblyTasks = List.of(
+    this.assemblyTasks = Arrays.asList(
       new CarBodyAssemblyTask("", carOrder.getCar().getBody()),
       new InsertGearboxAssemblyTask("", carOrder.getCar().getGearbox()),
       new InsertEngineAssemblyTask("", carOrder.getCar().getEngine()),
