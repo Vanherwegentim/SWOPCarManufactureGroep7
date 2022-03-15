@@ -29,24 +29,15 @@ public class AssemblyLineController {
       .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
 	}
 
-	public List<String> givePendingAssemblyTasks(int postId) {
-		// TODO: implement proper error handling
-		// TODO: better way to show tasks
-
-		List<String> output = new ArrayList<String>();
+	public Map<Integer, String> givePendingAssemblyTasks(int postId) {
 		List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
-		for (AssemblyTask assemblyTask : pendingAssemblyTasks) {
-			output.add(Integer.toString(assemblyTask.getId()));
-
-			for (String action : assemblyTask.getActions())
-				output.add(action);
-		}
-
-		return output;
+		return pendingAssemblyTasks
+      .stream()
+      .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
 	}
 
-	public List<String> completeAssemblyTask(int workPostId) {
+	public Map<Integer, String> completeAssemblyTask(int workPostId) {
 		assemblyLine.completeAssemblyTask(workPostId);
 		return givePendingAssemblyTasks(workPostId);
 	}
