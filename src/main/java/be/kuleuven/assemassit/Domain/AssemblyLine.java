@@ -177,11 +177,19 @@ public class AssemblyLine {
       maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
       1) / 60;
 
+    // car can still be manufactured today
+    if (carAssemblyProcesses.size() <= remainingCarsForToday) {
+      return LocalDateTime.now().plusMinutes(maxTimeNeededForWorkPostOnLine() * carAssemblyProcesses.size());
+    }
+
+    // car can not be manufactured today
     // Math.ceil(list - (1) / (2)) = days needed
-    int daysNeeded = (int)Math.ceil((carAssemblyProcesses.size() - remainingCarsForToday) / amountOfCarsWholeDay);
+    int daysNeeded = (carAssemblyProcesses.size() - remainingCarsForToday) / amountOfCarsWholeDay;
+
 
     // return date of tomorrow + days needed
-    return LocalDateTime.now().plusDays(1).plusDays(daysNeeded);
+    int remainingMinutesForLastDay = ((carAssemblyProcesses.size() - remainingCarsForToday) % amountOfCarsWholeDay) * maxTimeNeededForWorkPostOnLine();
+    return LocalDateTime.now().plusDays(1).plusDays(daysNeeded).plusMinutes(remainingMinutesForLastDay);
   }
 
   private int maxTimeNeededForWorkPostOnLine() {
