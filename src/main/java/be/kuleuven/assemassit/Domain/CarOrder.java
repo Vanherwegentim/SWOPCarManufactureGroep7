@@ -14,9 +14,12 @@ public class CarOrder {
     private LocalDateTime orderTime;
 
     public CarOrder(Car car) {
+        if(car == null)
+          throw new IllegalArgumentException("Car cannot be null");
         this.car = car;
         this.pending = true;
         this.orderTime = LocalDateTime.now();
+
     }
 
     public boolean isPending() {
@@ -48,6 +51,7 @@ public class CarOrder {
     public LocalDateTime getOrderTime() {
       return this.orderTime;
     }
+
 
     @Override
     public String toString() {
