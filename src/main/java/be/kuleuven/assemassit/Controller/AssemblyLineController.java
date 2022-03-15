@@ -1,13 +1,14 @@
 package be.kuleuven.assemassit.Controller;
 
+import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.WorkPost;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import be.kuleuven.assemassit.Domain.AssemblyLine;
-import be.kuleuven.assemassit.Domain.AssemblyTask;
 
 public class AssemblyLineController {
 
@@ -21,34 +22,29 @@ public class AssemblyLineController {
 		this.assemblyLine = assemblyLine;
 	}
 
-	public List<Integer> giveAllWorkPosts() {
+	public Map<Integer, String> giveAllWorkPosts() {
 	  return List
       .of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
-      .stream().map(post -> post.getId())
-      .collect(Collectors.toList());
+      .stream()
+      .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
 	}
 
-	public List<String> givePendingAssemblyTasks(int postId) {
-		// TODO: implement proper error handling
-		// TODO: better way to show tasks
-
-		List<String> output = new ArrayList<String>();
+	public Map<Integer, String> givePendingAssemblyTasks(int postId) {
 		List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
-		for (AssemblyTask assemblyTask : pendingAssemblyTasks) {
-			output.add(Integer.toString(assemblyTask.getId()));
-
-			for (String action : assemblyTask.getActions())
-				output.add(action);
-		}
-
-		return output;
+		return pendingAssemblyTasks
+      .stream()
+      .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
 	}
 
-	public List<String> completeAssemblyTask(int workPostId, int taskId) {
-		assemblyLine.completeAssemblyTask(workPostId, taskId);
+	public Map<Integer, String> completeAssemblyTask(int workPostId) {
+		assemblyLine.completeAssemblyTask(workPostId);
 		return givePendingAssemblyTasks(workPostId);
 	}
+
+	public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskid) {
+    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
+  }
 
 	public Map<String, List<String>> giveAssemblyLineStatusAndOverview(int statusId) {
 	  //TODO: !!!REFACTOR THIS SHIT!!!
