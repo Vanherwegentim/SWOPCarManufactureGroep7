@@ -10,18 +10,16 @@ public abstract class AssemblyTask {
 	private boolean pending;
 	private List<String> actions;
 	private int id;
-	//in minutes
 	private int completionTime;
-	// TODO: we probalby don't need a name
 	private String name;
+	private static int runningId = 0;
 
 	public AssemblyTask(String name) {
+	  this.id = AssemblyTask.runningId++;
 	  this.name = name;
-  }
+    actions = new ArrayList<>();
 
-	public AssemblyTask(int id) {
-		this.id = id;
-	}
+  }
 
 	public boolean getPending() {
 		return this.pending;
@@ -46,6 +44,7 @@ public abstract class AssemblyTask {
   public void setCompletionTime(int minutes){
 	  this.completionTime = minutes;
   }
+
   public abstract AssemblyTaskType getAssemblyTaskType();
 
 	public int completionTime() {
@@ -60,10 +59,9 @@ public abstract class AssemblyTask {
 		this.pending = false;
 	}
 
+  @Override
   public boolean equals(Object object){
-	  if(object instanceof AssemblyTask task) task.actions.equals(this.actions);
+	  if(object instanceof AssemblyTask task) task.id = this.id;
 	  return false;
   }
-
-
 }

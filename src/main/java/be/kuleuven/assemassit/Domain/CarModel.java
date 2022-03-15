@@ -17,6 +17,13 @@ public class CarModel {
   private List<Airco> aircoOptions;
 
   public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions) {
+    if(name == "" || name.equals(null))
+      throw new IllegalArgumentException("Car model name cannot be empty or null");
+    if(wheelOptions == null||gearboxOptions == null||seatOptions == null|| bodyOptions == null|| colorOptions == null|| engineOptions == null|| aircoOptions == null||
+      wheelOptions.isEmpty()|| gearboxOptions.isEmpty()|| seatOptions.isEmpty()|| bodyOptions.isEmpty()|| colorOptions.isEmpty()|| engineOptions.isEmpty()|| aircoOptions.isEmpty())
+      throw new IllegalArgumentException("Car model options cannot be empty or null");
+    if(wheelOptions.contains(null)||gearboxOptions.contains(null)||seatOptions.contains(null)||bodyOptions.contains(null)||colorOptions.contains(null)||engineOptions.contains(null)||aircoOptions.contains(null))
+      throw new IllegalArgumentException("Car model options cannot contain null");
     this.id = id;
     this.name = name;
     this.wheelOptions = List.copyOf(wheelOptions);

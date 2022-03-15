@@ -18,4 +18,13 @@ public class MountWheelsAssemblyTask extends AssemblyTask {
   public AssemblyTaskType getAssemblyTaskType() {
     return this.assemblyTaskType;
   }
+
+  //Pattern matching not working here for some reason
+  @Override
+  public boolean equals(Object o){
+    if(o instanceof MountWheelsAssemblyTask){
+      return this.getId() == ((MountWheelsAssemblyTask) o).getId();
+    }
+    return false;
+  }
 }

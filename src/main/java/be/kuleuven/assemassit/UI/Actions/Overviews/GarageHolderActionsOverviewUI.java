@@ -10,22 +10,25 @@ import java.util.Scanner;
 public class GarageHolderActionsOverviewUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
+    int action;
 
-    String loggedInGarageHolderName = orderController.giveLoggedInGarageHolderName();
+    do {
+      String loggedInGarageHolderName = orderController.giveLoggedInGarageHolderName();
 
-    System.out.println("Welcome " + loggedInGarageHolderName);
-    System.out.println("Please choose an action:");
-    System.out.println("1: Order new car");
-    System.out.println("0: Logout and go back");
+      System.out.println("Welcome " + loggedInGarageHolderName);
+      System.out.println("Please choose an action:");
+      System.out.println(" 1: Order new car");
+      System.out.println("-1: Logout and go back");
 
-    int action = scanner.nextInt();
+      action = scanner.nextInt();
 
-    switch (action) {
-      case 1 -> OrderNewCarActionUI.run(orderController, assemblyLineController);
-      case 0 -> {
-        orderController.logOffGarageHolder();
-        MainUI.run(orderController, assemblyLineController);
+      switch (action) {
+        case 1 -> OrderNewCarActionUI.run(orderController, assemblyLineController);
+        case -1 -> {
+          orderController.logOffGarageHolder();
+          MainUI.run(orderController, assemblyLineController);
+        }
       }
-    }
+    } while (action != -1 && action != 1);
   }
 }

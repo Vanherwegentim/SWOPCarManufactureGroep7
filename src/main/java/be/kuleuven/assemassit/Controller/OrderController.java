@@ -22,6 +22,14 @@ public class OrderController {
     this.assemblyLine = assemblyLine;
   }
 
+  public OrderController(CarManufactoringCompany carManufactoringCompany, AssemblyLine assemblyLine) {
+    this.carManufactoringCompany = carManufactoringCompany;
+    this.assemblyLine = assemblyLine;
+    garageHolderRepository = new GarageHolderRepository();
+    garageHolders = garageHolderRepository.getGarageHolders();
+  }
+
+  //TODO: this constructor can be removed when code is refactored
   public OrderController(CarManufactoringCompany carManufactoringCompany) {
     this.carManufactoringCompany = carManufactoringCompany;
     garageHolderRepository = new GarageHolderRepository();
@@ -51,7 +59,7 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
-  public void placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
+  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -70,9 +78,12 @@ public class OrderController {
 
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
-    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+
+    carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+    return carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
   }
 
+  //TODO: will not be used
   public LocalDateTime getCompletionDate(int orderId) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
@@ -99,12 +110,11 @@ public class OrderController {
     return loggedInGarageHolder.getName();
   }
 
-  public List<String> giveListOfCarModels() {
+  public Map<Integer, String> giveListOfCarModels() {
     return this.carManufactoringCompany
       .getCarModels()
       .stream()
-      .map(cm -> cm.toString())
-      .collect(Collectors.toList());
+      .collect(Collectors.toMap(CarModel::getId, CarModel::getName));
   }
 
   public Map<String, List<String>> givePossibleOptionsOfCarModel(int carModelId) {
