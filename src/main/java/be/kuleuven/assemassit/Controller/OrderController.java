@@ -88,6 +88,8 @@ public class OrderController {
     carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
     LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
+
+    return estimatedCompletionTime;
   }
 
   //TODO: will not be used
