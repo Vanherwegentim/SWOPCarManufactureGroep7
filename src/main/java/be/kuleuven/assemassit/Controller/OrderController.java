@@ -56,7 +56,7 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
-  public void placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
+  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -75,9 +75,12 @@ public class OrderController {
 
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
-    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+
+    carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+    return carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
   }
 
+  //TODO: will not be used
   public LocalDateTime getCompletionDate(int orderId) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();

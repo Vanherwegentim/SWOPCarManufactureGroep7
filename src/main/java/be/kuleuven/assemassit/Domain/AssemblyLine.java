@@ -3,6 +3,8 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 public class AssemblyLine {
@@ -20,11 +22,11 @@ public class AssemblyLine {
 	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS), WorkPostType.ACCESSORIES_POST, 60);
 
 	  this.carAssemblyProcesses = new ArrayDeque<>();
-
 	}
 
 	public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
 	  carAssemblyProcesses.add(carAssemblyProcess);
+	  // return here the new schedule?
   }
 
 	public WorkPost getCarBodyPost() {
@@ -158,7 +160,50 @@ public class AssemblyLine {
       carBodyPost.addProcessToWorkPost(carAssemblyProcesses.poll());
   }
 
-  private int calculateEstimatedCompletionTime(CarAssemblyProcess carAssemblyProcess) {
+  public LocalDateTime giveEstimatedCompletionDateOfLatestProcess(LocalTime openingTime, LocalTime closingTime) {
+    // calculate remaining cars for this day (1)
+    int remainingCarsForToday =
+      ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      giveManufacturingDurationInMinutes() - // time needed to manufacture a car
+      (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
+      maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
+      1) / 60;
+
+    // calculate cars for a whole day (2)
+    int amountOfCarsWholeDay =
+      ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      giveManufacturingDurationInMinutes() - // time needed to manufacture a car
+      (openingTime.getHour() * 60 + openingTime.getMinute()) - // opening time
+      maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
+      1) / 60;
+
+    // Math.ceil(list - (1) / (2)) = days needed
+    int daysNeeded = (int)Math.ceil((carAssemblyProcesses.size() - remainingCarsForToday) / amountOfCarsWholeDay);
+
+    // return date of tomorrow + days needed
+    return LocalDateTime.now().plusDays(1).plusDays(daysNeeded);
+  }
+
+  private int maxTimeNeededForWorkPostOnLine() {
+    return giveWorkPostsAsList()
+      .stream()
+      .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
+      .max()
+      .orElse(0);
+  }
+
+  private int giveManufacturingDurationInMinutes() {
+    return giveWorkPostsAsList()
+      .stream()
+      .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
+      .reduce(0, Integer::sum);
+  }
+
+  private List<WorkPost> giveWorkPostsAsList() {
+    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
+  }
+
+  /*private int calculateEstimatedCompletionTime(CarAssemblyProcess carAssemblyProcess) {
 
     List<Integer> expectedWorkPostDurations = new ArrayList<>();
     expectedWorkPostDurations.add(carBodyPost.remainingTimeInMinutes());
@@ -183,5 +228,5 @@ public class AssemblyLine {
     minutes += carBodyPost.remainingTimeInMinutes();
 
     return minutes;
-  }
+  }*/
 }
