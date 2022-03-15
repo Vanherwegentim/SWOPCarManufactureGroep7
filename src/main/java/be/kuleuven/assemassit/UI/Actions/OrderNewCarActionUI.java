@@ -58,11 +58,7 @@ public class OrderNewCarActionUI {
             System.out.println("Chosen: " + options.get(optionIndex));
           }
 
-          orderController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
-          //LocalDateTime estimatedCompletionDate = orderController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
-          // TODO: placeCarOrder geeft een localdatetime terug
-
-          LocalDateTime estimatedCompletionDate = LocalDateTime.now().plusDays(3);
+          LocalDateTime estimatedCompletionDate = orderController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
           System.out.println("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));

@@ -1,9 +1,15 @@
+
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Enums.Color;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+
+import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +24,7 @@ public class OrderController {
   private CarManufactoringCompany carManufactoringCompany;
 
   //TODO: still needed?
-  public OrderController(AssemblyLine assemblyLine) {
+  public OrderController(AssemblyLine assemblyLine){
     this.assemblyLine = assemblyLine;
   }
 
@@ -48,7 +54,7 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
-  public List<String> giveCompletedCarOrders() {
+  public List<String> giveCompletedCarOrders(){
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -80,7 +86,10 @@ public class OrderController {
     loggedInGarageHolder.addCarOrder(carOrder);
 
     carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
-    return carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
+    LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
+    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
+
+    return estimatedCompletionTime;
   }
 
   //TODO: will not be used

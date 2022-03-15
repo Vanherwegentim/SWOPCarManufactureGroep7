@@ -52,6 +52,14 @@ public class CarOrder {
       return this.orderTime;
     }
 
+    public void setEstimatedCompletionTime(LocalDateTime estimatedCompletionTime) {
+      this.estimatedCompletionTime = LocalDateTime.of(estimatedCompletionTime.getYear(),
+        estimatedCompletionTime.getMonth(),
+        estimatedCompletionTime.getDayOfMonth(),
+        estimatedCompletionTime.getHour(),
+        estimatedCompletionTime.getMinute());
+    }
+
 
     @Override
     public String toString() {
