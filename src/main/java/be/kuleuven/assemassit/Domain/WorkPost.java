@@ -13,11 +13,13 @@ public class WorkPost {
   private AssemblyTask activeAssemblyTask;
   private CarAssemblyProcess carAssemblyProcess;
   private WorkPostType workPostType;
+  private int expectedWorkPostDurationInMinutes;
 
-  public WorkPost(int id, List<AssemblyTaskType> assemblyTaskTypes, WorkPostType workPostType) {
+  public WorkPost(int id, List<AssemblyTaskType> assemblyTaskTypes, WorkPostType workPostType, int expectedWorkPostDurationInMinutes) {
     this.id = id;
     this.assemblyTaskTypes = assemblyTaskTypes;
     this.workPostType = workPostType;
+    this.expectedWorkPostDurationInMinutes = expectedWorkPostDurationInMinutes;
   }
 
   public int getId() {
@@ -34,6 +36,10 @@ public class WorkPost {
 
   public CarAssemblyProcess getCarAssemblyProcess() {
     return carAssemblyProcess;
+  }
+
+  public int getExpectedWorkPostDurationInMinutes() {
+    return this.expectedWorkPostDurationInMinutes;
   }
 
   public CarAssemblyProcess removeProcessFromWorkPost(){
@@ -69,6 +75,22 @@ public class WorkPost {
   public void completeAssemblyTask() {
     activeAssemblyTask.complete();
     activeAssemblyTask = null;
+  }
+
+  public int remainingTimeInMinutes() {
+    List<AssemblyTask> assemblyTasksFromWorkPost = carAssemblyProcess
+      .getAssemblyTasks()
+      .stream()
+      .filter(p -> assemblyTaskTypes.contains(p.getAssemblyTaskType()))
+      .collect(Collectors.toList());
+
+    if (assemblyTasksFromWorkPost.size() == 0) return 0;
+
+    return (int)Math.floor(expectedWorkPostDurationInMinutes / assemblyTasksFromWorkPost.size() * assemblyTasksFromWorkPost.stream().filter(wp -> wp.getPending()).count());
+  }
+
+  public boolean canPerformTasksForProcess(CarAssemblyProcess carAssemblyProcess) {
+    return true;
   }
 
   private AssemblyTask findAssemblyTask(int id) {

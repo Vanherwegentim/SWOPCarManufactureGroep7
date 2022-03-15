@@ -15,9 +15,9 @@ public class AssemblyLine {
 
 
 	public AssemblyLine() {
-	  this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST);
-	  this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST);
-	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS), WorkPostType.ACCESSORIES_POST);
+	  this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
+	  this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
+	  this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS), WorkPostType.ACCESSORIES_POST, 60);
 
 	  this.carAssemblyProcesses = new ArrayDeque<>();
 
@@ -156,5 +156,29 @@ public class AssemblyLine {
       drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
       //Give the first post a car from the queue;
       carBodyPost.addProcessToWorkPost(carAssemblyProcesses.poll());
+  }
+
+  private int calculateEstimatedCompletionTime(CarAssemblyProcess carAssemblyProcess) {
+    int minutes = carBodyPost.getExpectedWorkPostDurationInMinutes();
+    minutes += drivetrainPost.getExpectedWorkPostDurationInMinutes();
+    minutes += accessoriesPost.getExpectedWorkPostDurationInMinutes();
+
+    minutes += this.carAssemblyProcesses.stream().map(p ->{
+      int result = 0;
+
+      // take the max of getExpectedWorkPostDurationInMinutes()
+      if (carBodyPost.canPerformTasksForProcess(p))
+        result += carBodyPost.getExpectedWorkPostDurationInMinutes();
+      if (drivetrainPost.canPerformTasksForProcess(p))
+        result += drivetrainPost.getExpectedWorkPostDurationInMinutes();
+      if (accessoriesPost.canPerformTasksForProcess(p))
+        result += accessoriesPost.getExpectedWorkPostDurationInMinutes();
+
+      return result;
+    }).reduce(0, (subtotal, elem) -> subtotal+elem);
+
+    minutes += carBodyPost.remainingTimeInMinutes();
+
+    return minutes;
   }
 }
