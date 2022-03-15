@@ -16,7 +16,7 @@ public class ControllerFactory {
     return new OrderController(carManufactoringCompany, assemblyLine);
   }
 
-  public AssemblyLineController createAssembyLineController() {
+  public AssemblyLineController createAssemblyLineController() {
     return new AssemblyLineController(assemblyLine);
   }
 }

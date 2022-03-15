@@ -7,6 +7,6 @@ public class App {
 
   public static void main(String[] args) {
     ControllerFactory controllerFactory = new ControllerFactory();
-    MainUI.run(controllerFactory.createOrderController(), controllerFactory.createAssembyLineController());
+    MainUI.run(controllerFactory.createOrderController(), controllerFactory.createAssemblyLineController());
   }
 }
