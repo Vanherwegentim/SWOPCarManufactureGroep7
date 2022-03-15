@@ -16,6 +16,7 @@ public abstract class AssemblyTask {
 	private String name;
 
 	public AssemblyTask(String name) {
+    pending = true;
 	  this.name = name;
     actions = new ArrayList<>();
   }

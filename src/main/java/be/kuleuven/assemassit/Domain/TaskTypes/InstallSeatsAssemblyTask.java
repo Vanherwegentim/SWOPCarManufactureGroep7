@@ -20,6 +20,7 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   }
 
   //Pattern matching not working here for some reason
+
   @Override
   public boolean equals(Object o){
     if(o instanceof InstallSeatsAssemblyTask){
