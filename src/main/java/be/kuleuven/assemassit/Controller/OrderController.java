@@ -27,6 +27,14 @@ public class OrderController {
     this.assemblyLine = assemblyLine;
   }
 
+  public OrderController(CarManufactoringCompany carManufactoringCompany, AssemblyLine assemblyLine) {
+    this.carManufactoringCompany = carManufactoringCompany;
+    this.assemblyLine = assemblyLine;
+    garageHolderRepository = new GarageHolderRepository();
+    garageHolders = garageHolderRepository.getGarageHolders();
+  }
+
+  //TODO: this constructor can be removed when code is refactored
   public OrderController(CarManufactoringCompany carManufactoringCompany) {
     this.carManufactoringCompany = carManufactoringCompany;
     garageHolderRepository = new GarageHolderRepository();
