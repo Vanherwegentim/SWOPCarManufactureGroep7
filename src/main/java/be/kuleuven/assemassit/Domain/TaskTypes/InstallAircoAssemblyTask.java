@@ -23,7 +23,7 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o){
     if(o instanceof InstallAircoAssemblyTask){
-      return this.getId() == ((InstallAircoAssemblyTask) o).getId();
+      return this.airco == ((InstallAircoAssemblyTask) o).airco;
     }
     return false;
   }

@@ -103,7 +103,7 @@ public class WorkPost {
       .findFirst();
 
     if (!assemblyTask.isPresent())
-      throw new IllegalArgumentException("Workpost not found");
+      throw new IllegalArgumentException("AssemblyTask not found");
 
     return assemblyTask.get();
   }

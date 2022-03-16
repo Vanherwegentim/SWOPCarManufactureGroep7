@@ -24,7 +24,7 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o){
     if(o instanceof InstallSeatsAssemblyTask){
-      return this.getId() == ((InstallSeatsAssemblyTask) o).getId();
+      return this.seat == ((InstallSeatsAssemblyTask) o).seat;
     }
     return false;
   }

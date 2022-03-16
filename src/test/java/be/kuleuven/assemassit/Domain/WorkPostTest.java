@@ -16,7 +16,6 @@ public class WorkPostTest {
       List<AssemblyTaskType> list;
       WorkPostType type;
       CarAssemblyProcess carAssemblyProcess;
-      WorkPost workPost;
       CarOrder carOrder;
 
 
@@ -37,12 +36,13 @@ public class WorkPostTest {
         Airco.MANUAL,
         Wheel.SPORT));
     carAssemblyProcess = new CarAssemblyProcess(carOrder);
-    this.workPost = new WorkPost(0,list,type,60);
 
   }
 
   @Test
   public void contructorTest(){
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
     assert workPost.getId() == 0;
     assertEquals(workPost.getAssemblyTaskTypes(), list);
     assertEquals(workPost.getWorkPostType(), type);
@@ -51,27 +51,38 @@ public class WorkPostTest {
 
   @Test
   public void addProcessToWorkPostTest(){
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
     workPost.addProcessToWorkPost(carAssemblyProcess);
     assertEquals(workPost.getCarAssemblyProcess(), carAssemblyProcess);
   }
 
   @Test
   public void removeProcessFromWorkPost(){
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
     workPost.addProcessToWorkPost(carAssemblyProcess);
     assertEquals(carAssemblyProcess, workPost.removeProcessFromWorkPost() );
   }
 
   @Test
   public void setActiveAssemblyTaskTest(){
-    assertThrows(NullPointerException.class,()-> workPost.setActiveAssemblyTask(10));
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
+    assertThrows(NullPointerException.class,()-> workPost.setActiveAssemblyTask(100000));
     workPost.addProcessToWorkPost(carAssemblyProcess);
-    workPost.setActiveAssemblyTask(0);
+    for(AssemblyTask assemblyTask: workPost.getAllAssemblyTasks()){
+      System.out.println(assemblyTask.getId());
+    }
+    workPost.setActiveAssemblyTask(16);
     assertEquals(workPost.getActiveAssemblyTask(), new CarBodyAssemblyTask("", Body.SEAD));
 
   }
 
   @Test
   public void givePendingAssemblyTasks(){
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
     workPost.addProcessToWorkPost(carAssemblyProcess);
     System.out.println(workPost.givePendingAssemblyTasks());
     assertEquals(workPost.givePendingAssemblyTasks(), Arrays.asList(new CarBodyAssemblyTask("", carOrder.getCar().getBody()), new PaintCarAssemblyTask("", carOrder.getCar().getColor())));
@@ -79,8 +90,11 @@ public class WorkPostTest {
 
   @Test
   public void completeAssemblyTaskTest(){
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
     workPost.addProcessToWorkPost(carAssemblyProcess);
-    workPost.setActiveAssemblyTask(0);
+
+    workPost.setActiveAssemblyTask(9);
     assertFalse(workPost.getActiveAssemblyTask() == null);
     workPost.completeAssemblyTask();
     assertTrue(workPost.getActiveAssemblyTask() == null);
@@ -100,7 +114,12 @@ public class WorkPostTest {
 
   @Test
   public void findAssemblyTaskTest(){
-      workPost.addProcessToWorkPost(carAssemblyProcess);
-      assertTrue(workPost.findAssemblyTask(0).equals(new CarBodyAssemblyTask("", Body.SEAD)));
+    WorkPost workPost = new WorkPost(0,list,type,60);
+
+    workPost.addProcessToWorkPost(carAssemblyProcess);
+    for(AssemblyTask assemblyTask: workPost.getAllAssemblyTasks()){
+      System.out.println(assemblyTask.getId());
+    }
+      assertTrue(workPost.findAssemblyTask(38).equals(new CarBodyAssemblyTask("", Body.SEAD)));
   }
 }
