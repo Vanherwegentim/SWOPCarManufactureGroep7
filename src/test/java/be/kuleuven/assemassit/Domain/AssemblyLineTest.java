@@ -47,7 +47,7 @@ public class AssemblyLineTest {
   @Test
   public void addCarAssemblyProcessTest(){
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-    assert assemblyLine.getCarAssemblyProcesses().contains(carAssemblyProcess);
+    assert assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
   }
 
   public void givePendingAssemblyTasksFromWorkPostTest(){
@@ -75,9 +75,9 @@ public class AssemblyLineTest {
 //  public void giveTasksOverviewTest(){
 //    //TODO: ouwe test, moet nog geüpdated worden met de nieuwe code
 //    Map<String, List<AssemblyTask>> expected = new HashMap<>();
-//    expected.put("Car Body Post", carBodyPost.getAllAssemblyTasks());
-//    expected.put("Drivetrain Post", drivetrainPost.getAllAssemblyTasks());
-//    expected.put("Accessories Post", accessoriesPost.getAllAssemblyTasks());
+//    expected.put("Car Body Post", carBodyPost.getWorkPostAssemblyTasks());
+//    expected.put("Drivetrain Post", drivetrainPost.getWorkPostAssemblyTasks());
+//    expected.put("Accessories Post", accessoriesPost.getWorkPostAssemblyTasks());
 //
 //    Map<String, List<AssemblyTask>> actual = assemblyLine.giveTasksOverview();
 //    assertEquals(expected.size(), actual.size());

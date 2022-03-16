@@ -41,7 +41,7 @@ public class AdvanceAssemblyLineActionUI {
          List<String> blockingWorkPosts = assemblyLineController.moveAssemblyLine(minutes);
 
          if (!blockingWorkPosts.isEmpty()){
-           String s = "These workposts are stopping you from moving forward:";
+           System.out.println( "These workposts are stopping you from moving forward:");
            blockingWorkPosts.forEach(System.out::println);
          }else {
            System.out.println("Assembly line moved.");
