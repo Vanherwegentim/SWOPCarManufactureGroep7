@@ -23,7 +23,6 @@ public class PerformAssemblyTasksActionUI {
     System.out.println("Press ENTER to continue...");
     Scanner scanner = new Scanner(System.in);
     scanner.nextLine();
-
   }
 
   private static Integer displayChooseWorkPost(Map<Integer, String> workPosts) {
@@ -31,6 +30,7 @@ public class PerformAssemblyTasksActionUI {
     int workPostId;
 
     do {
+      System.out.println();
       System.out.println("Please choose a workPost:");
       workPosts.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
       workPostId = scanner.nextInt();
