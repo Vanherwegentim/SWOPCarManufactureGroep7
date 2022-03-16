@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,14 +62,19 @@ public class WorkPost {
     if(activeAssemblyTask == null){
       throw new IllegalArgumentException("There is no Assembly Task with that id.");
     }
-
   }
 
   public List<AssemblyTask> getAllAssemblyTasks(){
+    if (carAssemblyProcess == null)
+      return new ArrayList<>();
+
     return carAssemblyProcess.getAssemblyTasks().stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType())).collect(Collectors.toList());
   }
 
   public List<AssemblyTask> givePendingAssemblyTasks() {
+    if (carAssemblyProcess == null)
+      return new ArrayList<>();
+
     List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
     tasks =  tasks.stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType())).collect(Collectors.toList());
     return tasks.stream()
