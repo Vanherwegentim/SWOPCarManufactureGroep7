@@ -46,7 +46,7 @@ public class AssemblyLineController {
     return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
   }
 
-	public Map<String, List<String>> giveAssemblyLineStatusAndOverview(int statusId) {
+	public Map<String, List<String>> giveAssemblyLineStatusAndOverview() {
 	  //TODO: !!!REFACTOR THIS SHIT!!!
 
     Map<String, List<String>> output = new HashMap<>();
