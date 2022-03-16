@@ -53,8 +53,8 @@ public class AssemblyLineController {
   public LinkedHashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    LinkedHashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
-    LinkedHashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
+    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
 
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
@@ -62,14 +62,14 @@ public class AssemblyLineController {
   public LinkedHashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    LinkedHashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
-    LinkedHashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
+    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
 
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
   private LinkedHashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
-    LinkedHashMap<String, AssemblyTask> assemblyLineStatus, Map<String, List<AssemblyTask>> giveTasksOverview) {
+    HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> giveTasksOverview) {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
     LinkedHashMap<String, List<String>> output = new LinkedHashMap<>();
