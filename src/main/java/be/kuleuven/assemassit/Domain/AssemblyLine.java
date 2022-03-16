@@ -71,7 +71,7 @@ public class AssemblyLine {
     workPost.completeAssemblyTask();
   }
 
-  public LinkedHashMap<String, AssemblyTask> giveStatus() {
+  public HashMap<String, AssemblyTask> giveStatus() {
     LinkedHashMap<String, AssemblyTask> workPostStatuses = new LinkedHashMap<>();
 
     workPostStatuses.put("Car Body Post", carBodyPost.getActiveAssemblyTask());
@@ -81,7 +81,7 @@ public class AssemblyLine {
     return workPostStatuses;
   }
 
-  public LinkedHashMap<String, List<AssemblyTask>> giveTasksOverview() {
+  public HashMap<String, List<AssemblyTask>> giveTasksOverview() {
     LinkedHashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
 
     workPostPairs.put("Car Body Post", carBodyPost.getAllAssemblyTasks());
@@ -92,9 +92,7 @@ public class AssemblyLine {
   }
 
   //TODO check if this is a correct/good implementation
-  public LinkedHashMap<String, List<AssemblyTask>> giveFutureTasksOverview() {
-    // TODO: FIX THE CLONE
-    //AssemblyLine dummyAssemblyLine = (AssemblyLine) this.clone();
+  public HashMap<String, List<AssemblyTask>> giveFutureTasksOverview() {
     AssemblyLine dummyAssemblyLine = new AssemblyLine(carBodyPost, drivetrainPost, accessoriesPost, carAssemblyProcesses, finishedCars);
     dummyAssemblyLine.moveWithoutRestrictions();
     LinkedHashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();

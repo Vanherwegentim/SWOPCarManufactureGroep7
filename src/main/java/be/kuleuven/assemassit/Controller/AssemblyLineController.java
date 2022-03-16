@@ -50,7 +50,7 @@ public class AssemblyLineController {
     return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
   }
 
-  public LinkedHashMap<String, List<String>> giveAssemblyLineStatusOverview() {
+  public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
     HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
@@ -59,7 +59,7 @@ public class AssemblyLineController {
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
-  public LinkedHashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
+  public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
     HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
@@ -68,7 +68,7 @@ public class AssemblyLineController {
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
-  private LinkedHashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
+  private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
     HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> giveTasksOverview) {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
