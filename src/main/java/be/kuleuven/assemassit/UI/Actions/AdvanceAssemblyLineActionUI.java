@@ -13,10 +13,10 @@ public class AdvanceAssemblyLineActionUI {
 
     do {
       System.out.println("--- Current assembly line status ---");
-      displayStatus(assemblyLineController.giveAssemblyLineStatusAndOverview(0));
+      displayStatus(assemblyLineController.giveAssemblyLineStatusAndOverview());
 
       System.out.println("--- Future assembly line status ---");
-      displayStatus(assemblyLineController.giveAssemblyLineStatusAndOverview(1));
+      displayStatus(assemblyLineController.giveAssemblyLineStatusAndOverview());
 
       System.out.println("Please choose an action:");
       System.out.println("1: Move assembly line forward");
@@ -39,7 +39,7 @@ public class AdvanceAssemblyLineActionUI {
           System.out.println("Assembly line moved.");
 
           System.out.println("--- Current assembly line status ---");
-          displayStatus(assemblyLineController.giveAssemblyLineStatusAndOverview(0));
+          displayStatus(assemblyLineController.giveAssemblyLineStatusAndOverview());
 
           Scanner inspector = new Scanner(System.in);
           boolean quit;
