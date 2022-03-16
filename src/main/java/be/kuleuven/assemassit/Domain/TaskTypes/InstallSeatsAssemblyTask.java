@@ -20,10 +20,11 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   }
 
   //Pattern matching not working here for some reason
+
   @Override
   public boolean equals(Object o){
     if(o instanceof InstallSeatsAssemblyTask){
-      return this.getId() == ((InstallSeatsAssemblyTask) o).getId();
+      return this.seat == ((InstallSeatsAssemblyTask) o).seat;
     }
     return false;
   }

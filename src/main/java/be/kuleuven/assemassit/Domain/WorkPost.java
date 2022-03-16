@@ -76,7 +76,7 @@ public class WorkPost {
       return new ArrayList<>();
 
     List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
-    tasks = (List<AssemblyTask>) tasks.stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType()));
+    tasks =  tasks.stream().filter(e1 -> assemblyTaskTypes.contains(e1.getAssemblyTaskType())).collect(Collectors.toList());
     return tasks.stream()
       .filter(at -> at.getPending())
       .collect(Collectors.toList());
@@ -103,13 +103,13 @@ public class WorkPost {
     return true;
   }
 
-  private AssemblyTask findAssemblyTask(int id) {
+  public AssemblyTask findAssemblyTask(int id) {
     Optional<AssemblyTask> assemblyTask = carAssemblyProcess.getAssemblyTasks().stream()
       .filter(at -> at.getId() == id)
       .findFirst();
 
     if (!assemblyTask.isPresent())
-      throw new IllegalArgumentException("Workpost not found");
+      throw new IllegalArgumentException("AssemblyTask not found");
 
     return assemblyTask.get();
   }

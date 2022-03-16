@@ -23,7 +23,7 @@ public class PaintCarAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o){
     if(o instanceof PaintCarAssemblyTask){
-      return this.getId() == ((PaintCarAssemblyTask) o).getId();
+      return this.color == ((PaintCarAssemblyTask) o).color;
     }
     return false;
   }
