@@ -57,7 +57,7 @@ public class AdvanceAssemblyLineActionUI {
     } while (action < 0 || action > 1);
   }
 
-  private static void displayStatus(Map<String, List<String>> status) {
+  private static void displayStatus(LinkedHashMap<String, List<String>> status) {
     List<String> statusKeys = new ArrayList<>(status.keySet());
 
     for (String workPostName : statusKeys) {
