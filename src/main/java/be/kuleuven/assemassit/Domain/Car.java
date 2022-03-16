@@ -3,8 +3,6 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Enums.Color;
 
-import java.awt.*;
-
 public class Car {
   private static int idRunner = 0;
 
@@ -72,18 +70,5 @@ public class Car {
 
   public int getId() {
     return this.id;
-  }
-
-  public String toString() {
-    String result = "Car with model: " + carModel.getName() + "\n";
-    result = "Body: " + body.toString() + "\n";
-
-    result += "Color: " + color.toString() + "\n";
-    result += "Engine: " + engine.toString() + "\n";
-    result += "Gearbox: " + gearbox.toString() + "\n";
-    result += "Airco: " + airco.toString() + "\n";
-    result += "Wheels: " + wheels.toString();
-
-    return result;
   }
 }
