@@ -51,7 +51,7 @@ public class AssemblyLineControllerTest {
   public void givePendingAssemblyTaskTest_throws() {
     assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(-1));
 
-    when(mockedAssemblyLine.givePendingAssemblyTasksFromWorkPost(0)).thenThrow(NullPointerException.class);
+    when(mockedAssemblyLine.givePendingAssemblyTasksFromWorkPost(0)).thenThrow(IllegalArgumentException.class);
     assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(0));
   }
 

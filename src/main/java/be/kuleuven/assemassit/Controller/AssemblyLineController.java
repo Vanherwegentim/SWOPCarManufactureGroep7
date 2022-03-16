@@ -34,12 +34,8 @@ public class AssemblyLineController {
     if (postId < 0)
       throw new IllegalArgumentException("postId cannot be smaller than 0");
     // TODO: better way to show tasks
-    List<AssemblyTask> pendingAssemblyTasks;
-    try {
-      pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
-    } catch (NullPointerException e) {
-      throw new IllegalArgumentException("there does not exist a workpost with the given postId");
-    }
+    List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
+
 
     return pendingAssemblyTasks
       .stream()
