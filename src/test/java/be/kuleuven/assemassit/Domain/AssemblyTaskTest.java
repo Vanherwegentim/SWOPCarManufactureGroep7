@@ -36,7 +36,7 @@ public class AssemblyTaskTest {
   @Test
   public void completeTest(){
     AssemblyTask assemblyTask = new CarBodyAssemblyTask("", Body.BREAK);
-    assertFalse(assemblyTask.getPending());
+    assertFalse(!assemblyTask.getPending());
   }
 
   @Test

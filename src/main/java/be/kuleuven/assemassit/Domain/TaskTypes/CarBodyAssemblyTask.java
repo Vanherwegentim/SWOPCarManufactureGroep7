@@ -20,10 +20,11 @@ public class CarBodyAssemblyTask extends AssemblyTask {
 
   //Pattern matching not working here for some reason
 
+  //TODO pas deze equals aan tot iets decent
   @Override
   public boolean equals(Object o){
     if(o instanceof CarBodyAssemblyTask){
-      return this.getId() == ((CarBodyAssemblyTask) o).getId();
+      return this.body == ((CarBodyAssemblyTask) o).body;
     }
     return false;
   }

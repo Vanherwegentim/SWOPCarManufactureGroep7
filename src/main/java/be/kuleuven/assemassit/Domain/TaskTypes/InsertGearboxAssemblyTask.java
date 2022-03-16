@@ -23,7 +23,7 @@ public class InsertGearboxAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o){
     if(o instanceof InsertGearboxAssemblyTask){
-      return this.getId() == ((InsertGearboxAssemblyTask) o).getId();
+      return this.gearbox == ((InsertGearboxAssemblyTask) o).gearbox;
     }
     return false;
   }
