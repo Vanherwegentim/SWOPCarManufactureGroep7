@@ -13,6 +13,7 @@ public class CarMechanicActionsOverviewUI {
     int action;
 
     do {
+      System.out.println();
       System.out.println("Welcome");
       System.out.println("Please choose an action:");
       System.out.println(" 1: Perform assembly task");
