@@ -5,6 +5,7 @@ import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,29 +50,29 @@ public class AssemblyLineController {
     return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
   }
 
-  public Map<String, List<String>> giveAssemblyLineStatusOverview() {
+  public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    Map<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
-    Map<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
+    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
 
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
-  public Map<String, List<String>> giveFutureAssemblyLineStatusOverview() {
+  public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    Map<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
-    Map<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
+    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
 
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
-  private Map<String, List<String>> evaluateAssemblyLineStatusOverview(
-    Map<String, AssemblyTask> assemblyLineStatus, Map<String, List<AssemblyTask>> giveTasksOverview) {
+  private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
+    HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> giveTasksOverview) {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    Map<String, List<String>> output = new HashMap<>();
+    HashMap<String, List<String>> output = new LinkedHashMap<>();
 
     for (String key : giveTasksOverview.keySet()) {
       List<AssemblyTask> values = giveTasksOverview.get(key);
