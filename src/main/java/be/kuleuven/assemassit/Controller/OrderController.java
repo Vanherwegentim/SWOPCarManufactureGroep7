@@ -22,11 +22,6 @@ public class OrderController {
   private GarageHolderRepository garageHolderRepository;
   private CarManufactoringCompany carManufactoringCompany;
 
-  //TODO: still needed?
-  public OrderController(AssemblyLine assemblyLine) {
-    this.assemblyLine = assemblyLine;
-  }
-
   public OrderController(CarManufactoringCompany carManufactoringCompany, AssemblyLine assemblyLine) {
     this.carManufactoringCompany = carManufactoringCompany;
     this.assemblyLine = assemblyLine;
@@ -66,7 +61,8 @@ public class OrderController {
       .append(spacer)
       .append("Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
-      .append("\n");;
+      .append("\n");
+    ;
 
     Map<String, String> parts = Map.of(
       "Body", carOrder.getCar().getBody().name(),
@@ -133,7 +129,9 @@ public class OrderController {
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
 
-    carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+
+    carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
     LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
 

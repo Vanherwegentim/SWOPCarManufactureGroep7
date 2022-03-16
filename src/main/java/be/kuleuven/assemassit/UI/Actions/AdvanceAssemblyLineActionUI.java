@@ -16,9 +16,11 @@ public class AdvanceAssemblyLineActionUI {
       System.out.println("Current assembly line status: ");
       displayStatus(assemblyLineController.giveAssemblyLineStatusOverview());
 
+      System.out.println();
       System.out.println("Future assembly line status: ");
       displayStatus(assemblyLineController.giveFutureAssemblyLineStatusOverview());
 
+      System.out.println();
       System.out.println("Please choose an action:");
       System.out.println("1: Move assembly line forward");
       System.out.println("0: Go back");
@@ -31,24 +33,27 @@ public class AdvanceAssemblyLineActionUI {
           int minutes;
 
           do {
+            System.out.println();
             System.out.println("What was the amount of minutes spent during the current phase:");
             minutes = input.nextInt();
-          } while (!(minutes > 0 && minutes < 180));
+          } while (!(minutes >= 0 && minutes < 180));
 
-          assemblyLineController.moveAssemblyLine(minutes);
+         List<String> blockingWorkPosts = assemblyLineController.moveAssemblyLine(minutes);
 
-          System.out.println("Assembly line moved.");
+         if (!blockingWorkPosts.isEmpty()){
+           System.out.println( "These workposts are stopping you from moving forward:");
+           blockingWorkPosts.forEach(System.out::println);
+         }else {
+           System.out.println("Assembly line moved.");
+         }
 
-          System.out.println("--- Current assembly line status ---");
+          System.out.println();
+          System.out.println("Current assembly line status: ");
           displayStatus(assemblyLineController.giveAssemblyLineStatusOverview());
 
+          System.out.println("Press ENTER to continue...");
           Scanner inspector = new Scanner(System.in);
-          boolean quit;
-
-          do {
-            System.out.println("Press any key to continue...");
-            quit = inspector.hasNext();
-          } while (!quit);
+          inspector.nextLine();
 
           ManagerActionsOverviewUI.run(orderController, assemblyLineController);
         }
@@ -61,9 +66,13 @@ public class AdvanceAssemblyLineActionUI {
     List<String> statusKeys = new ArrayList<>(status.keySet());
 
     for (String workPostName : statusKeys) {
-      System.out.println(workPostName);
+      System.out.println("  > " + workPostName);
+
+      if (status.get(workPostName).isEmpty()) {
+        System.out.println("      - " + "no pending or active tasks");
+      }
       for (int j = 0; j < status.get(workPostName).size(); j++) {
-        System.out.println(" ".repeat(4) + status.get(workPostName).get(j));
+        System.out.println("      - " + status.get(workPostName).get(j));
       }
     }
   }

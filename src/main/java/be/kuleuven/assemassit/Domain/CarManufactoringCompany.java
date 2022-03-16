@@ -47,6 +47,9 @@ public class CarManufactoringCompany {
   }
 
   public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
+    if (carAssemblyProcess == null) {
+      throw new IllegalArgumentException("CarAssemblyProcess not found");
+    }
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
   }
 

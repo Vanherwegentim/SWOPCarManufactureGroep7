@@ -4,10 +4,7 @@ import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,13 +66,13 @@ public class AssemblyLineController {
   }
 
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
-    HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> giveTasksOverview) {
+    HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> workPostPairs) {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
     HashMap<String, List<String>> output = new LinkedHashMap<>();
 
-    for (String key : giveTasksOverview.keySet()) {
-      List<AssemblyTask> values = giveTasksOverview.get(key);
+    for (String key : workPostPairs.keySet()) {
+      List<AssemblyTask> values = workPostPairs.get(key);
       List<String> valuesString = values.stream().map(AssemblyTask::getName).collect(Collectors.toList());
 
       for (int i = 0; i < valuesString.size(); i++) {
@@ -96,8 +93,20 @@ public class AssemblyLineController {
     return output;
   }
 
-  public String moveAssemblyLine(int minutes) {
-    return assemblyLine.move(minutes);
+  public List<String> moveAssemblyLine(int minutes) {
+    if (!assemblyLine.canMove()) {
+      List<String> blockingWorkPosts = new ArrayList<>();
+      List<WorkPost> workPosts = assemblyLine.giveWorkPostsAsList();
+      for (WorkPost workPost : workPosts) {
+        if (!workPost.givePendingAssemblyTasks().isEmpty()) {
+          blockingWorkPosts.add(workPost.getWorkPostType().toString());
+        }
+      }
+      return blockingWorkPosts;
+    } else {
+      assemblyLine.move(minutes);
+      return new ArrayList<>();
+    }
   }
 }
 
