@@ -186,19 +186,19 @@ public class AssemblyLine {
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess(LocalTime openingTime, LocalTime closingTime) {
     // calculate remaining cars for this day (1)
     int remainingCarsForToday =
-      ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      (int)((double)((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
         (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / 60;
+        60) / (double)60);
 
     // calculate cars for a whole day (2)
     int amountOfCarsWholeDay =
-      ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      (int)((double)((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
         (openingTime.getHour() * 60 + openingTime.getMinute()) - // opening time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / 60;
+        60) / (double)60);
 
     // car can still be manufactured today
     if (carAssemblyProcesses.size() <= remainingCarsForToday) {
@@ -214,8 +214,9 @@ public class AssemblyLine {
 
 
     // return date of tomorrow + days needed + minutes needed
+    LocalDateTime today = LocalDateTime.now();
     int remainingMinutesForLastDay = ((carAssemblyProcesses.size() - remainingCarsForToday) % amountOfCarsWholeDay) * giveManufacturingDurationInMinutes();
-    return LocalDateTime.now().plusDays(1).plusDays(daysNeeded).plusMinutes(remainingMinutesForLastDay);
+    return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), openingTime.getHour(), openingTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(remainingMinutesForLastDay);
   }
 
   private int maxTimeNeededForWorkPostOnLine() {
