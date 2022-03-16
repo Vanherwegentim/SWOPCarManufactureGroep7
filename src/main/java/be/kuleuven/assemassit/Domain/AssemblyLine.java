@@ -136,7 +136,9 @@ public class AssemblyLine {
         }
 
         //Remove the car from the third post
-        finishedCars.add(accessoriesPost.getCarAssemblyProcess());
+        if(accessoriesPost.getCarAssemblyProcess() != null) {
+          finishedCars.add(accessoriesPost.getCarAssemblyProcess());
+        }
         //Give the third post the car of the second post
         accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
         //Give the second post the car of the first post
