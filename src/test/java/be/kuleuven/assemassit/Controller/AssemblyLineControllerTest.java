@@ -49,7 +49,7 @@ public class AssemblyLineControllerTest {
 
   @Test
   public void giveAssemblyLineStatusAndOverviewTest() {
-    LinkedHashMap<String, AssemblyTask> mockedWorkPostStatuses = new LinkedHashMap<>();
+    HashMap<String, AssemblyTask> mockedWorkPostStatuses = new LinkedHashMap<>();
 
     AssemblyTask mockedCarBodyAssemblyTask = mock(CarBodyAssemblyTask.class);
     when(mockedCarBodyAssemblyTask.getName()).thenReturn("mockedCarBodyAssemblyTaskName");
@@ -70,7 +70,7 @@ public class AssemblyLineControllerTest {
 
     when(mockedAssemblyLine.giveStatus()).thenReturn(mockedWorkPostStatuses);
 
-    LinkedHashMap<String, List<AssemblyTask>> mockedTasksOverview = new LinkedHashMap<>();
+    HashMap<String, List<AssemblyTask>> mockedTasksOverview = new LinkedHashMap<>();
 
     mockedTasksOverview.put("Car Body Post", Arrays.asList(mockedCarBodyAssemblyTask, mockedInsertEngineAssemblyTask, mockedDrivetrainAssemblyTask, mockedAccessoriesAssemblyTask));
     mockedTasksOverview.put("Drivetrain Post", Arrays.asList(mockedDrivetrainAssemblyTask, mockedAccessoriesAssemblyTask));
