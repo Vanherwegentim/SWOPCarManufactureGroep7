@@ -15,14 +15,16 @@ public class OrderNewCarActionUI {
     int choice;
 
     do {
+      System.out.println();
       System.out.println("Orders placed by: " + orderController.giveLoggedInGarageHolderName());
 
       System.out.println("Pending:");
-      orderController.givePendingCarOrders().forEach(System.out::println);
+      displayCarOrders(orderController.givePendingCarOrders());
 
       System.out.println("History:");
-      orderController.giveCompletedCarOrders().forEach(System.out::println);
+      displayCarOrders(orderController.giveCompletedCarOrders());
 
+      System.out.println();
       System.out.println("Please choose an action:");
       System.out.println(" 1: Place a new order");
       System.out.println("-1: Go back");
@@ -43,13 +45,14 @@ public class OrderNewCarActionUI {
             int optionIndex;
             List<String> options = part.getValue();
             do {
+              System.out.println();
               System.out.println("Choose the option for: " + part.getKey());
               for (int i = 0; i < options.size(); i++) {
                 System.out.println(String.format("%2d", i) + ": " + options.get(i));
               }
               System.out.println("-1: Cancel placing the order");
               optionIndex = scanner2.nextInt();
-              if (optionIndex == -1){
+              if (optionIndex == -1) {
                 OrderNewCarActionUI.run(orderController, assemblyLineController);
                 break;
               }
@@ -60,8 +63,14 @@ public class OrderNewCarActionUI {
 
           LocalDateTime estimatedCompletionDate = orderController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
 
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+          System.out.println();
           System.out.println("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
+
+          System.out.println();
+          System.out.println("Press ENTER to continue...");
+          Scanner scanner3 = new Scanner(System.in);
+          scanner3.nextLine();
 
           OrderNewCarActionUI.run(orderController, assemblyLineController);
         }
@@ -70,13 +79,20 @@ public class OrderNewCarActionUI {
     } while (choice != -1 && (choice != 1));
   }
 
+  private static void displayCarOrders(List<String> carOrders) {
+    for (int i = 0; i < carOrders.size(); i++) {
+      System.out.println(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
+    }
+  }
+
   private static Integer displayChooseCarModel(Map<Integer, String> carModels) {
     Scanner scanner = new Scanner(System.in);
     int carModelId;
 
     do {
+      System.out.println();
       System.out.println("Please choose the model:");
-      carModels.forEach((id, name) -> System.out.println(id + ": " + name));
+      carModels.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
       carModelId = scanner.nextInt();
     } while (!carModels.containsKey(carModelId));
 
@@ -103,7 +119,7 @@ public class OrderNewCarActionUI {
 
         optionIndex = scanner.nextInt();
 
-        if (optionIndex == -1){
+        if (optionIndex == -1) {
           // TODO: stop the code and return to menu
         }
       } while (optionIndex < 0 || optionIndex > options.size() - 1);
