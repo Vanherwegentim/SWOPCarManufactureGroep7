@@ -14,10 +14,10 @@ public class CarManufactoringCompany {
   private LocalTime openingTime;
   private LocalTime closingTime;
 
-  public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime) {
+  public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     this.carModelRepository = new CarModelRepository();
     this.carModels = carModelRepository.getCarModels();
-    this.assemblyLine = new AssemblyLine();
+    this.assemblyLine = assemblyLine;
     this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
     this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
   }

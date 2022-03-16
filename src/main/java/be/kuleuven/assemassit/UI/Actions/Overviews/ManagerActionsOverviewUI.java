@@ -13,10 +13,12 @@ public class ManagerActionsOverviewUI {
     int action;
 
     do {
+      System.out.println();
       System.out.println("Welcome");
       System.out.println("Please choose an action:");
       System.out.println(" 1: Advance assembly line");
       System.out.println("-1: Logout and go back");
+      System.out.println("\n");
 
       action = scanner.nextInt();
 

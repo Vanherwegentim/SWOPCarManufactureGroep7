@@ -19,12 +19,12 @@ public class AssemblyTaskTest {
 
   @Test
   public void constructorTest(){
-    AssemblyTask assemblyTask = new CarBodyAssemblyTask("", Body.BREAK);
+    AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assertTrue(assemblyTask.getName().equals(""));
   }
   @Test
   public void completionTimeTest(){
-    AssemblyTask assemblyTask = new CarBodyAssemblyTask("", Body.BREAK);
+    AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assemblyTask.setPending(false);
     assertThrows(IllegalStateException.class,()-> assemblyTask.completionTime() );
     assemblyTask.setCompletionTime(60);
@@ -35,14 +35,14 @@ public class AssemblyTaskTest {
 
   @Test
   public void completeTest(){
-    AssemblyTask assemblyTask = new CarBodyAssemblyTask("", Body.BREAK);
+    AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assertFalse(!assemblyTask.getPending());
   }
 
   @Test
   public void equalsTest(){
-    AssemblyTask assemblyTask = new CarBodyAssemblyTask("", Body.BREAK);
-    AssemblyTask assemblyTask1 = new CarBodyAssemblyTask("", Body.BREAK);
+    AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
+    AssemblyTask assemblyTask1 = new CarBodyAssemblyTask(Body.BREAK);
     assemblyTask.equals(assemblyTask1);
 
   }

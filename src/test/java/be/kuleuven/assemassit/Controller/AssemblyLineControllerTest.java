@@ -2,14 +2,9 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
-import be.kuleuven.assemassit.Domain.Enums.Airco;
-import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
-import be.kuleuven.assemassit.Domain.Enums.Body;
-import be.kuleuven.assemassit.Domain.Enums.Engine;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertEngineAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertGearboxAssemblyTask;
-import be.kuleuven.assemassit.Domain.TaskTypes.InstallAircoAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,15 +94,15 @@ public class AssemblyLineControllerTest {
        mockedAccessoriesAssemblyTaskName (active)\r
       """;
 
-    Map<String, List<String>> assemblyLineStatusAndOverview = assemblyLineController.giveAssemblyLineStatusAndOverview(0);
-    String actual = "";
+    Map<String, List<String>> assemblyLineStatusAndOverview = assemblyLineController.giveAssemblyLineStatusOverview();
+    StringBuilder actual = new StringBuilder();
     for (String key : assemblyLineStatusAndOverview.keySet()) {
-      actual += String.format("%s:%n", key);
+      actual.append(String.format("%s:%n", key));
       for (String task : assemblyLineStatusAndOverview.get(key)) {
-        actual += String.format(" %s%n", task);
+        actual.append(String.format(" %s%n", task));
       }
     }
 
-    assertEquals(expected, actual);
+    assertEquals(expected, actual.toString());
   }
 }

@@ -8,8 +8,8 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   private Body body;
   private AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
 
-  public CarBodyAssemblyTask(String name, Body body) {
-    super(name);
+  public CarBodyAssemblyTask(Body body) {
+    super("Assembly car body");
     this.body = body;
   }
 

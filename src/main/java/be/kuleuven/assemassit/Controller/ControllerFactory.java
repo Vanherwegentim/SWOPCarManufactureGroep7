@@ -11,7 +11,7 @@ public class ControllerFactory {
 
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
-    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6,0), LocalTime.of(22,0));
+    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6,0), LocalTime.of(22,0), assemblyLine);
   }
 
   public OrderController createOrderController() {
