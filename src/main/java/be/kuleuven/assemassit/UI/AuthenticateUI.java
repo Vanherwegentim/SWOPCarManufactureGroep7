@@ -15,10 +15,11 @@ public class AuthenticateUI {
     int choice;
 
     do {
+      System.out.println();
       System.out.println("Please authenticate yourself:");
       System.out.println(" 1: I am a garage holder");
-      System.out.println(" 2: I am a car mechanic");
-      System.out.println(" 3: I am a manager");
+      System.out.println(" 2: I am a manager");
+      System.out.println(" 3: I am a car mechanic");
       System.out.println("-1: Go back");
 
       choice = input.nextInt();
@@ -29,8 +30,8 @@ public class AuthenticateUI {
           orderController.logInGarageHolder(selectedGarageHolderId);
           GarageHolderActionsOverviewUI.run(orderController, assemblyLineController);
         }
-        case 2 -> CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
-        case 3 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
+        case 2 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
+        case 3 -> CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
         case -1 -> MainUI.run(orderController, assemblyLineController);
       }
     } while (choice != -1 && (choice < 1 || choice > 3));
@@ -41,6 +42,7 @@ public class AuthenticateUI {
     int garageHolderId;
 
     do {
+      System.out.println();
       System.out.println("Please select your name:");
       garageHolders.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
       garageHolderId = scanner.nextInt();
