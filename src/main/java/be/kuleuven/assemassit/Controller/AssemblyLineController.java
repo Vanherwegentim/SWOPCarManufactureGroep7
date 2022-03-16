@@ -76,8 +76,8 @@ public class AssemblyLineController {
     return output;
   }
 
-  public void moveAssemblyLine(int id, int minutes) {
-	  //TODO: implement
+  public String moveAssemblyLine(int minutes) {
+	  return assemblyLine.move(minutes);
   }
 }
 
