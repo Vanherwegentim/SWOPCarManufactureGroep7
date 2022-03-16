@@ -4,10 +4,7 @@ import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -96,8 +93,19 @@ public class AssemblyLineController {
     return output;
   }
 
-  public String moveAssemblyLine(int minutes) {
-    return assemblyLine.move(minutes);
+  public List<String> moveAssemblyLine(int minutes) {
+    if (assemblyLine.canMove()) {
+      assemblyLine.move(minutes);
+    }
+    List<String> blockingWorkPosts = new ArrayList<>();
+
+    List<WorkPost> workPosts = assemblyLine.giveWorkPostsAsList();
+    for (WorkPost workPost : workPosts) {
+      if (!(workPost.givePendingAssemblyTasks().isEmpty() || workPost.getCarAssemblyProcess() == null)) {
+        blockingWorkPosts.add(workPost.getWorkPostType().toString());
+      }
+    }
+    return blockingWorkPosts;
   }
 }
 

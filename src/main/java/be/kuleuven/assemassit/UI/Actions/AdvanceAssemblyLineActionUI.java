@@ -38,9 +38,14 @@ public class AdvanceAssemblyLineActionUI {
             minutes = input.nextInt();
           } while (!(minutes >= 0 && minutes < 180));
 
-          assemblyLineController.moveAssemblyLine(minutes);
+         List<String> blockingWorkPosts = assemblyLineController.moveAssemblyLine(minutes);
 
-          System.out.println("Assembly line moved.");
+         if (!blockingWorkPosts.isEmpty()){
+           String s = "These workposts are stopping you from moving forward:";
+           blockingWorkPosts.forEach(System.out::println);
+         }else {
+           System.out.println("Assembly line moved.");
+         }
 
           System.out.println();
           System.out.println("Current assembly line status: ");

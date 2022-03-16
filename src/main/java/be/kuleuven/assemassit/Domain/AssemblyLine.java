@@ -101,7 +101,6 @@ public class AssemblyLine {
     workPostPairs.put("Drivetrain Post", dummyAssemblyLine.drivetrainPost.getAllAssemblyTasks());
     workPostPairs.put("Accessories Post", dummyAssemblyLine.accessoriesPost.getAllAssemblyTasks());
 
-
     return workPostPairs;
   }
 
@@ -128,46 +127,34 @@ public class AssemblyLine {
     return true;
   }
 
-  public String move(int minutes) {
-    //TODO refactor to observer pattern?
-    if (canMove()) {
-      //Give every task that was done, the time given.
-      for (AssemblyTask assemblyTask : carBodyPost.getAllAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
-      for (AssemblyTask assemblyTask : drivetrainPost.getAllAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
-      for (AssemblyTask assemblyTask : accessoriesPost.getAllAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
-      //Remove the car from the third post
-      if (accessoriesPost.getCarAssemblyProcess() != null) {
-        finishedCars.add(accessoriesPost.getCarAssemblyProcess());
-      }
-      //Give the third post the car of the second post
-      accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
-      //Give the second post the car of the first post
-      drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
-      //Give the first post a car from the queue;
-      carBodyPost.addProcessToWorkPost(carAssemblyProcesses.poll());
-      return "";
-    } else {
-      String s = "These workposts are stopping you from moving forward:";
-      if (!(carBodyPost.givePendingAssemblyTasks().isEmpty() || carBodyPost.getCarAssemblyProcess() == null)) {
-        s = s + "Carbody WorkPost, ";
-      }
-      if (!(drivetrainPost.givePendingAssemblyTasks().isEmpty() || drivetrainPost.getCarAssemblyProcess() == null)) {
-        s = s + "Drivetrain Workpost, ";
-      }
-      if (!(accessoriesPost.givePendingAssemblyTasks().isEmpty() || accessoriesPost.getCarAssemblyProcess() == null)) {
-        s = s + "Accessories Workpost, ";
-      }
-      return s;
+  public void move(int minutes) {
+    if (!canMove()) {
+      throw new IllegalStateException("AssemblyLine cannot be moved forward!");
     }
+
+    //Give every task that was done, the time given.
+    for (AssemblyTask assemblyTask : carBodyPost.getAllAssemblyTasks()) {
+      assemblyTask.setCompletionTime(minutes);
+    }
+
+    for (AssemblyTask assemblyTask : drivetrainPost.getAllAssemblyTasks()) {
+      assemblyTask.setCompletionTime(minutes);
+    }
+
+    for (AssemblyTask assemblyTask : accessoriesPost.getAllAssemblyTasks()) {
+      assemblyTask.setCompletionTime(minutes);
+    }
+
+    //Remove the car from the third post
+    if (accessoriesPost.getCarAssemblyProcess() != null) {
+      finishedCars.add(accessoriesPost.getCarAssemblyProcess());
+    }
+    //Give the third post the car of the second post
+    accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
+    //Give the second post the car of the first post
+    drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
+    //Give the first post a car from the queue;
+    carBodyPost.addProcessToWorkPost(carAssemblyProcesses.poll());
   }
 
   private void moveWithoutRestrictions() {
@@ -184,19 +171,19 @@ public class AssemblyLine {
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess(LocalTime openingTime, LocalTime closingTime) {
     // calculate remaining cars for this day (1)
     int remainingCarsForToday =
-      (int)((double)((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      (int) ((double) ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
         (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / (double)60);
+        60) / (double) 60);
 
     // calculate cars for a whole day (2)
     int amountOfCarsWholeDay =
-      (int)((double)((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      (int) ((double) ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
         (openingTime.getHour() * 60 + openingTime.getMinute()) - // opening time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / (double)60);
+        60) / (double) 60);
 
     // car can still be manufactured today
     if (carAssemblyProcesses.size() <= remainingCarsForToday) {
@@ -232,7 +219,7 @@ public class AssemblyLine {
       .reduce(0, Integer::sum);
   }
 
-  private List<WorkPost> giveWorkPostsAsList() {
+  public List<WorkPost> giveWorkPostsAsList() {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
