@@ -72,7 +72,7 @@ public class AssemblyLine {
   }
 
   public HashMap<String, AssemblyTask> giveStatus() {
-    LinkedHashMap<String, AssemblyTask> workPostStatuses = new LinkedHashMap<>();
+    HashMap<String, AssemblyTask> workPostStatuses = new LinkedHashMap<>();
 
     workPostStatuses.put("Car Body Post", carBodyPost.getActiveAssemblyTask());
     workPostStatuses.put("Drivetrain Post", drivetrainPost.getActiveAssemblyTask());
@@ -82,7 +82,7 @@ public class AssemblyLine {
   }
 
   public HashMap<String, List<AssemblyTask>> giveTasksOverview() {
-    LinkedHashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
+    HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
 
     workPostPairs.put("Car Body Post", carBodyPost.getAllAssemblyTasks());
     workPostPairs.put("Drivetrain Post", drivetrainPost.getAllAssemblyTasks());
@@ -95,7 +95,7 @@ public class AssemblyLine {
   public HashMap<String, List<AssemblyTask>> giveFutureTasksOverview() {
     AssemblyLine dummyAssemblyLine = new AssemblyLine(carBodyPost, drivetrainPost, accessoriesPost, carAssemblyProcesses, finishedCars);
     dummyAssemblyLine.moveWithoutRestrictions();
-    LinkedHashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
+    HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
 
     workPostPairs.put("Car Body Post", dummyAssemblyLine.carBodyPost.getAllAssemblyTasks());
     workPostPairs.put("Drivetrain Post", dummyAssemblyLine.drivetrainPost.getAllAssemblyTasks());

@@ -72,7 +72,7 @@ public class AssemblyLineController {
     HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> giveTasksOverview) {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    LinkedHashMap<String, List<String>> output = new LinkedHashMap<>();
+    HashMap<String, List<String>> output = new LinkedHashMap<>();
 
     for (String key : giveTasksOverview.keySet()) {
       List<AssemblyTask> values = giveTasksOverview.get(key);
