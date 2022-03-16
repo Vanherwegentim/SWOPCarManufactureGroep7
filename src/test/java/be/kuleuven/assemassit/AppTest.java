@@ -17,24 +17,24 @@ public class AppTest {
         System.setOut(new PrintStream(outContent));
     }
 
-    @Test
-    public void testAppConstructor() {
-        try {
-            new be.kuleuven.assemassit.App();
-        } catch (Exception e) {
-            fail("Construction failed.");
-        }
-    }
+//    @Test
+//    public void testAppConstructor() {
+//        try {
+//            new be.kuleuven.assemassit.App();
+//        } catch (Exception e) {
+//            fail("Construction failed.");
+//        }
+//    }
 
-    @Test
-    public void testAppMain() {
-        be.kuleuven.assemassit.App.main(null);
-        try {
-            assertEquals("Hello World!" + System.getProperty("line.separator"), outContent.toString());
-        } catch (AssertionError e) {
-            fail("\"message\" is not \"Hello World!\"");
-        }
-    }
+//    @Test
+//    public void testAppMain() {
+//        be.kuleuven.assemassit.App.main(null);
+//        try {
+//            assertEquals("Hello World!" + System.getProperty("line.separator"), outContent.toString());
+//        } catch (AssertionError e) {
+//            fail("\"message\" is not \"Hello World!\"");
+//        }
+//    }
 
     @AfterEach
     public void cleanUpStreams() {
