@@ -6,10 +6,9 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Enums.Color;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
-import java.awt.*;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class OrderController {
   private CarManufactoringCompany carManufactoringCompany;
 
   //TODO: still needed?
-  public OrderController(AssemblyLine assemblyLine){
+  public OrderController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
   }
 
@@ -42,6 +41,55 @@ public class OrderController {
     garageHolders = garageHolderRepository.getGarageHolders();
   }
 
+  private String carOrderFormattedString(CarOrder carOrder) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    String spacer = " ".repeat(4);
+    StringBuilder result = new StringBuilder();
+    result
+      .append("Order ID: ")
+      .append(carOrder.getId())
+      .append(spacer);
+
+    if (carOrder.isPending())
+      result
+        .append("[Estimation time: ")
+        .append(carOrder.getEstimatedCompletionTime().format(formatter))
+        .append("]");
+    else
+      result
+        .append("[Completed at: ")
+        .append(carOrder.getCompletionTime().format(formatter))
+        .append("]");
+    result.append("\n");
+
+    result
+      .append(spacer)
+      .append("Car model: ")
+      .append(carOrder.getCar().getCarModel().getName())
+      .append("\n");;
+
+    Map<String, String> parts = Map.of(
+      "Body", carOrder.getCar().getBody().name(),
+      "Color", carOrder.getCar().getColor().name(),
+      "Engine", carOrder.getCar().getEngine().name(),
+      "Gearbox", carOrder.getCar().getGearbox().name(),
+      "Airco", carOrder.getCar().getAirco().name(),
+      "Wheels", carOrder.getCar().getWheels().name(),
+      "Seats", carOrder.getCar().getSeats().name()
+    );
+
+    for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
+      result
+        .append(spacer.repeat(2))
+        .append(partWithOption.getKey())
+        .append(": ")
+        .append(partWithOption.getValue())
+        .append("\n");
+    }
+
+    return result.toString();
+  }
+
   public List<String> givePendingCarOrders() {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
@@ -49,19 +97,19 @@ public class OrderController {
     return loggedInGarageHolder
       .getCarOrders()
       .stream()
-      .filter(co -> co.isPending())
-      .map(co -> co.toString())
+      .filter(CarOrder::isPending)
+      .map(this::carOrderFormattedString)
       .collect(Collectors.toList());
   }
 
-  public List<String> giveCompletedCarOrders(){
+  public List<String> giveCompletedCarOrders() {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
     return loggedInGarageHolder.getCarOrders()
       .stream()
       .filter(co -> !co.isPending())
-      .map(co -> co.toString())
+      .map(this::carOrderFormattedString)
       .collect(Collectors.toList());
   }
 
