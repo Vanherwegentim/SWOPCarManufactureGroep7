@@ -23,7 +23,7 @@ public class InsertEngineAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o){
     if(o instanceof InsertEngineAssemblyTask){
-      return this.getId() == ((InsertEngineAssemblyTask) o).getId();
+      return this.engine == ((InsertEngineAssemblyTask) o).engine;
     }
     return false;
   }

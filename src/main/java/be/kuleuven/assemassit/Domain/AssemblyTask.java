@@ -15,6 +15,7 @@ public abstract class AssemblyTask {
 	private static int runningId = 0;
 
 	public AssemblyTask(String name) {
+    pending = true;
 	  this.id = AssemblyTask.runningId++;
 	  this.name = name;
     actions = new ArrayList<>();

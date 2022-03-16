@@ -23,7 +23,7 @@ public class MountWheelsAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o){
     if(o instanceof MountWheelsAssemblyTask){
-      return this.getId() == ((MountWheelsAssemblyTask) o).getId();
+      return this.wheel == ((MountWheelsAssemblyTask) o).wheel;
     }
     return false;
   }
