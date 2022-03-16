@@ -34,7 +34,7 @@ public class AdvanceAssemblyLineActionUI {
             minutes = input.nextInt();
           } while (!(minutes > 0 && minutes < 180));
 
-          assemblyLineController.moveAssemblyLine(0, minutes);
+          assemblyLineController.moveAssemblyLine(minutes);
 
           System.out.println("Assembly line moved.");
 
