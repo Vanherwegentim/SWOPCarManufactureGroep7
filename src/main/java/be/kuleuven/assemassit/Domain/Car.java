@@ -1,12 +1,14 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
-import be.kuleuven.assemassit.Domain.Enums.Color;
 
 public class Car {
   private static int idRunner = 0;
 
   private int id;
+  /**
+   * @representationObject
+   */
   private CarModel carModel;
   private Body body;
   private Color color;
@@ -17,6 +19,26 @@ public class Car {
   private Wheel wheels;
 
 
+  /**
+   * @param carModel the corresponding car model that the car is based on
+   * @param body
+   * @param color
+   * @param engine
+   * @param gearbox
+   * @param seats
+   * @param airco
+   * @param wheels`
+   * @throws IllegalArgumentException | carModel == null
+   * @throws IllegalArgumentException | body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null
+   * @post | this.carModel = carModel
+   * @post | this.body = body
+   * @post | this.color = Color
+   * @post | this.engine = engine
+   * @post | this.gearbox = gearbox
+   * @post | this.seats = seats
+   * @post | this.airco = airco
+   * @post | this.wheels = wheels
+   */
   public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
     if (carModel == null)
       throw new IllegalArgumentException("Car Model cannot be null");
