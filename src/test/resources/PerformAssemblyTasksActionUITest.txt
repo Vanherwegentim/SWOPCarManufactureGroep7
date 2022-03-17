@@ -2,27 +2,6 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
-<-1
-X0
-Ejava -cp target/classes be.kuleuven.assemassit.App
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<8
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Go back
-<-1
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
 <1
 >
 >Please authenticate yourself:
@@ -37,78 +16,16 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1:  Louis Brooks
 > 2:  Charlie Hunt
 > 3:  Sebastian Henderson
-<0
->
->Welcome  Joe Lamb
->Please choose an action:
-> 1: Order new car
-> 2: FAST Order car -> logout -> go back
->-1: Logout and go back
-<-1
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
 <1
 >
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Go back
-<1
->
->Please select your name:
-> 0:  Joe Lamb
-> 1:  Louis Brooks
-> 2:  Charlie Hunt
-> 3:  Sebastian Henderson
-<0
->
->Welcome  Joe Lamb
+>Welcome  Louis Brooks
 >Please choose an action:
 > 1: Order new car
 > 2: FAST Order car -> logout -> go back
 >-1: Logout and go back
 <1
 >
->Orders placed by:  Joe Lamb
->Pending:
->History:
->
->Please choose an action:
-> 1: Place a new order
->-1: Go back
-<-1
->
->Welcome  Joe Lamb
->Please choose an action:
-> 1: Order new car
-> 2: FAST Order car -> logout -> go back
->-1: Logout and go back
-<1
->
->Orders placed by:  Joe Lamb
->Pending:
->History:
->
->Please choose an action:
-> 1: Place a new order
->-1: Go back
-<1
->
->Please choose the model:
-> 0:  Tolkswagen Rolo
-> 1:  Limoën C4
-<0
->Chosen model:  Tolkswagen Rolo
->
->Choose the option for: GearBox
-> 0: MANUAL
-> 1: AUTOMATIC
->-1: Cancel placing the order
-<-1
->
->Orders placed by:  Joe Lamb
+>Orders placed by:  Louis Brooks
 >Pending:
 >History:
 >
@@ -180,7 +97,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Press ENTER to continue...
 <\n
 >
->Orders placed by:  Joe Lamb
+>Orders placed by:  Louis Brooks
 >Pending:
 > 1: Order ID: 0    [Estimation time: %date%]
 >    Car model:  Tolkswagen Rolo
@@ -199,10 +116,109 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >-1: Go back
 <-1
 >
->Welcome  Joe Lamb
+>Welcome  Louis Brooks
 >Please choose an action:
 > 1: Order new car
 > 2: FAST Order car -> logout -> go back
+>-1: Logout and go back
+<-1
+>------- ASSEMASSIST ------
+> 1: Authenticate
+>-1: Quit
+<1
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Go back
+<2
+>
+>Welcome
+>Please choose an action:
+> 1: Advance assembly line
+>-1: Logout and go back
+<1
+>
+>Current assembly line status:
+>  * Car Body Post
+>      - no pending or active tasks
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>
+>Future assembly line status:
+>  * Car Body Post
+>      - Assembly car body (pending)
+>      - Paint car (pending)
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>
+>Please choose an action:
+>1: Move assembly line forward
+>0: Go back
+<1
+>
+>What was the amount of minutes spent during the current phase:
+<60
+>Assembly line moved.
+>
+>Current assembly line status:
+>  * Car Body Post
+>      - Assembly car body (pending)
+>      - Paint car (pending)
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>Press ENTER to continue...
+<\n
+>
+>Welcome
+>Please choose an action:
+> 1: Advance assembly line
+>-1: Logout and go back
+<-1
+>------- ASSEMASSIST ------
+> 1: Authenticate
+>-1: Quit
+<1
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Go back
+<3
+>
+>Welcome
+>Please choose an action:
+> 1: Perform assembly task
+>-1: Logout and go back
+<1
+>
+>Please choose a work post:
+> 0: CAR_BODY_POST
+> 1: DRIVETRAIN_POST
+> 2: ACCESSORIES_POST
+<0
+>Chosen workpost: CAR_BODY_POST
+>
+>Please choose an assembly task:
+> 0: Assembly car body
+> 5: Paint car
+<0
+>Chosen assembly task: Assembly car body
+>Installing the SEAD body
+>Press ENTER when the task if finished
+<\n
+>
+>Welcome
+>Please choose an action:
+> 1: Perform assembly task
 >-1: Logout and go back
 <-1
 >------- ASSEMASSIST ------
