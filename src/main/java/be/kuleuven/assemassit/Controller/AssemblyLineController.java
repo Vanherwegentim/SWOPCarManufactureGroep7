@@ -43,8 +43,8 @@ public class AssemblyLineController {
     return givePendingAssemblyTasks(workPostId);
   }
 
-  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
-    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
+  public List<String> giveAssemblyTaskActions(int assemblyTaskId) {
+    return assemblyLine.giveCarAssemblyTask(assemblyTaskId).getActions();
   }
 
   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
@@ -107,6 +107,11 @@ public class AssemblyLineController {
       assemblyLine.move(minutes);
       return new ArrayList<>();
     }
+  }
+
+  public void setActiveTask(int workPostId, int assemblyTaskId) {
+    WorkPost workPost = assemblyLine.findWorkPost(workPostId);
+    assemblyLine.setActiveTask(workPost, assemblyTaskId);
   }
 }
 

@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.UI.AuthenticateUI;
 
 import java.util.*;
 
@@ -11,7 +12,6 @@ public class PerformAssemblyTasksActionUI {
     Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
     int chosenWorkPostId = displayChooseWorkPost(allWorkPosts);
 
-
     Map<Integer, String> allAssemblyTasks = assemblyLineController.givePendingAssemblyTasks(chosenWorkPostId);
 
     if (allAssemblyTasks.isEmpty()) {
@@ -20,9 +20,11 @@ public class PerformAssemblyTasksActionUI {
       return;
     }
 
-    int assemblyTaskId = displayChooseAssemblyTask(allAssemblyTasks);
+    int chosenAssemblyTaskId = displayChooseAssemblyTask(allAssemblyTasks);
+    assemblyLineController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
 
-    List<String> actions = assemblyLineController.giveAssemblyTaskActions(chosenWorkPostId, assemblyTaskId);
+    //todo refactor met workpostid
+    List<String> actions = assemblyLineController.giveAssemblyTaskActions(chosenAssemblyTaskId);
     actions.forEach(System.out::println);
 
     //todo task to active
@@ -30,6 +32,7 @@ public class PerformAssemblyTasksActionUI {
     Scanner scanner = new Scanner(System.in);
     scanner.nextLine();
     //todo task to doene
+    AuthenticateUI.run(orderController, assemblyLineController);
   }
 
   private static int displayChooseWorkPost(Map<Integer, String> workPosts) {

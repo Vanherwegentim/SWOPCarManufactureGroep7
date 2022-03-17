@@ -63,11 +63,13 @@ public class AssemblyLine {
     return this.accessoriesPost;
   }
 
+  // TODO naar controller
   public List<AssemblyTask> givePendingAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.givePendingAssemblyTasks();
   }
 
+  // TODO naar controller
   public void completeAssemblyTask(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     workPost.completeAssemblyTask();
@@ -137,13 +139,15 @@ public class AssemblyLine {
     return allAssemblyTasks.stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
   }
 
-  private WorkPost findWorkPost(int id) {
-    //TODO: refactor?
-    if (carBodyPost.getId() == id) return carBodyPost;
-    if (drivetrainPost.getId() == id) return drivetrainPost;
-    if (accessoriesPost.getId() == id) return accessoriesPost;
+  public WorkPost findWorkPost(int workPostId) {
+    List<WorkPost> workPosts = this.giveWorkPostsAsList();
 
-    throw new IllegalArgumentException("Workpost not found");
+    Optional<WorkPost> optionalWorkPost = workPosts.stream().filter(workPost -> workPost.getId() == workPostId).findFirst();
+
+    if (optionalWorkPost.isEmpty()) {
+      throw new IllegalArgumentException("Workpost not found");
+    }
+    return optionalWorkPost.get();
   }
 
   public boolean canMove() {
@@ -244,31 +248,53 @@ public class AssemblyLine {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
-  public AssemblyTask giveCarAssemblyTask(int carAssemblyProcessId, int assemblyTaskId) {
-    return findCarAssemblyProcess(carAssemblyProcessId).giveAssemblyTask(assemblyTaskId);
+  // TODO naar controller
+  public AssemblyTask giveCarAssemblyTask(int assemblyTaskId) {
+    List<CarAssemblyProcess> allCarAssemblyProcesses = this.allCarAssemblyProcesses();
+
+    AssemblyTask assemblyTask = null;
+    for (CarAssemblyProcess assemblyProcess : allCarAssemblyProcesses) {
+      Optional<AssemblyTask> optionalAssemblyTask = assemblyProcess.giveOptionalAssemblyTask(assemblyTaskId);
+      if (optionalAssemblyTask.isPresent()) assemblyTask = optionalAssemblyTask.get();
+    }
+
+    if (assemblyTask == null) {
+      throw new IllegalArgumentException("AssemblyTask cannot be found!");
+    }
+    return assemblyTask;
   }
 
-  private CarAssemblyProcess findCarAssemblyProcess(int id) {
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
-    for (WorkPost workPost : workPosts) {
+  public AssemblyTask giveCarAssemblyTask(int workPostId, int assemblyTaskId) {
+    WorkPost workPost = findWorkPost(workPostId);
+    return workPost.findAssemblyTask(assemblyTaskId);
+  }
+
+  private List<CarAssemblyProcess> allCarAssemblyProcesses() {
+    List<CarAssemblyProcess> carAssemblyProcesses = new ArrayList<>();
+
+    for (WorkPost workPost : this.giveWorkPostsAsList()) {
       CarAssemblyProcess workPostCarAssemblyProcess = workPost.getCarAssemblyProcess();
-      if (workPostCarAssemblyProcess != null && workPostCarAssemblyProcess.getId() == id) {
-        return workPostCarAssemblyProcess;
+      if (workPostCarAssemblyProcess != null) {
+        carAssemblyProcesses.add(workPostCarAssemblyProcess);
       }
     }
 
-    Optional<CarAssemblyProcess> queueCarAssemblyProcess = carAssemblyProcessesQueue
-      .stream()
-      .filter(p -> p.getId() == id)
-      .findFirst();
-    if (queueCarAssemblyProcess.isPresent()) return queueCarAssemblyProcess.get();
+    for (CarAssemblyProcess queueCarAssemblyProcess : this.carAssemblyProcessesQueue) {
+      if (queueCarAssemblyProcess != null) {
+        carAssemblyProcesses.add(queueCarAssemblyProcess);
+      }
+    }
 
-    Optional<CarAssemblyProcess> finishedCarsCarAssemblyProcess = finishedCars
-      .stream()
-      .filter(p -> p.getId() == id)
-      .findFirst();
-    if (finishedCarsCarAssemblyProcess.isPresent()) return finishedCarsCarAssemblyProcess.get();
+    for (CarAssemblyProcess finishedCarsCarAssemblyProcess : this.finishedCars) {
+      if (finishedCarsCarAssemblyProcess != null) {
+        carAssemblyProcesses.add(finishedCarsCarAssemblyProcess);
+      }
+    }
 
-    throw new IllegalArgumentException("CarAssemblyProcess not found");
+    return carAssemblyProcesses;
+  }
+
+  public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
+    workPost.setActiveAssemblyTask(assemblyTaskId);
   }
 }
