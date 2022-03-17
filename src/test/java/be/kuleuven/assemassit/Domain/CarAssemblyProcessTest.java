@@ -50,9 +50,6 @@ public class CarAssemblyProcessTest {
     CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
     assert !carAssemblyProcess.getAssemblyTasks().isEmpty();
     for (int i = 0; i < assemblyTasks.size(); i++) {
-      System.out.println(carAssemblyProcess.getAssemblyTasks().get(i).getId());
-      System.out.println(assemblyTasks.get(i).getId());
-      System.out.println(" ");
 
       //all id's of assemblytask are 0 now so this is trivial
       assertEquals(carAssemblyProcess.getAssemblyTasks().get(i), (assemblyTasks.get(i)));

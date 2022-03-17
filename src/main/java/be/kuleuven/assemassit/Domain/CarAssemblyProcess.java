@@ -42,9 +42,7 @@ public class CarAssemblyProcess {
   }
 
   public AssemblyTask giveAssemblyTask(int id) {
-    Optional<AssemblyTask> carAssemblyProcess = assemblyTasks.stream()
-      .filter(p -> p.getId() == id)
-      .findFirst();
+    Optional<AssemblyTask> carAssemblyProcess = giveOptionalAssemblyTask(id);
 
     if (carAssemblyProcess.isEmpty())
       throw new IllegalArgumentException("Assembly task not found");
@@ -54,5 +52,11 @@ public class CarAssemblyProcess {
 
   public void determineCompletionTime() {
     carOrder.setCompletionTime(LocalDateTime.now());
+  }
+  
+  public Optional<AssemblyTask> giveOptionalAssemblyTask(int id) {
+    return assemblyTasks.stream()
+      .filter(p -> p.getId() == id)
+      .findFirst();
   }
 }
