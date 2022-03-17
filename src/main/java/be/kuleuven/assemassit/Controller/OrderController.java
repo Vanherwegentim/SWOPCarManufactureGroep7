@@ -25,6 +25,68 @@ public class OrderController {
     garageHolders = garageHolderRepository.getGarageHolders();
   }
 
+  public void logInGarageHolder(int garageHolderId) {
+    if (garageHolderId < 0)
+      throw new IllegalArgumentException("GarageHolderId cannot be smaller than 0");
+
+    this.loggedInGarageHolder = garageHolders.get(garageHolderId);
+  }
+
+  public void logOffGarageHolder() {
+    this.loggedInGarageHolder = null;
+  }
+
+  public String giveLoggedInGarageHolderName() {
+    return loggedInGarageHolder.getName();
+  }
+
+  public Map<Integer, String> giveGarageHolders() {
+    return this.garageHolders
+      .stream()
+      .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
+  }
+
+  public LocalDateTime getCompletionDate(int orderId) {
+    if (orderId < 0)
+      throw new IllegalArgumentException("OrderId cannot be smaller than 0");
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+    return loggedInGarageHolder.getCompletionTimeFromOrder(orderId);
+  }
+
+  public CarOrder chooseOrder(int orderId) {
+    if (orderId < 0)
+      throw new IllegalArgumentException("OrderId cannot be smaller than 0");
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+    return loggedInGarageHolder.getOrder(orderId);
+  }
+
+  public List<String> givePendingCarOrders() {
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+    return loggedInGarageHolder
+      .getCarOrders()
+      .stream()
+      .filter(CarOrder::isPending)
+      .map(this::carOrderFormattedString)
+      .collect(Collectors.toList());
+  }
+
+  public List<String> giveCompletedCarOrders() {
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+    return loggedInGarageHolder.getCarOrders()
+      .stream()
+      .filter(co -> !co.isPending())
+      .map(this::carOrderFormattedString)
+      .collect(Collectors.toList());
+  }
+
   private String carOrderFormattedString(CarOrder carOrder) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
     String spacer = " ".repeat(4);
@@ -74,27 +136,26 @@ public class OrderController {
     return result.toString();
   }
 
-  public List<String> givePendingCarOrders() {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
-
-    return loggedInGarageHolder
-      .getCarOrders()
+  public Map<Integer, String> giveListOfCarModels() {
+    return this.carManufactoringCompany
+      .getCarModels()
       .stream()
-      .filter(CarOrder::isPending)
-      .map(this::carOrderFormattedString)
-      .collect(Collectors.toList());
+      .collect(Collectors.toMap(CarModel::getId, CarModel::getName));
   }
 
-  public List<String> giveCompletedCarOrders() {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
+  public Map<String, List<String>> givePossibleOptionsOfCarModel(int carModelId) {
+    Map<String, List<String>> carModelOptions = new HashMap<>();
+    CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
 
-    return loggedInGarageHolder.getCarOrders()
-      .stream()
-      .filter(co -> !co.isPending())
-      .map(this::carOrderFormattedString)
-      .collect(Collectors.toList());
+    carModelOptions.put("Body", carModel.getBodyOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Color", carModel.getColorOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Engine", carModel.getEngineOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("GearBox", carModel.getGearboxOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Seats", carModel.getSeatOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Airco", carModel.getAircoOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+    carModelOptions.put("Wheels", carModel.getWheelOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
+
+    return carModelOptions;
   }
 
   public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
@@ -124,59 +185,5 @@ public class OrderController {
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
 
     return estimatedCompletionTime;
-  }
-
-  public LocalDateTime getCompletionDate(int orderId) {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
-
-    return loggedInGarageHolder.getCompletionTimeFromOrder(orderId);
-  }
-
-  public CarOrder chooseOrder(int orderId) {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
-
-    return loggedInGarageHolder.getOrder(orderId);
-  }
-
-  public void logOffGarageHolder() {
-    this.loggedInGarageHolder = null;
-  }
-
-  public void logInGarageHolder(int garageHolderId) {
-    this.loggedInGarageHolder = garageHolders.get(garageHolderId);
-  }
-
-  public String giveLoggedInGarageHolderName() {
-    return loggedInGarageHolder.getName();
-  }
-
-  public Map<Integer, String> giveListOfCarModels() {
-    return this.carManufactoringCompany
-      .getCarModels()
-      .stream()
-      .collect(Collectors.toMap(CarModel::getId, CarModel::getName));
-  }
-
-  public Map<String, List<String>> givePossibleOptionsOfCarModel(int carModelId) {
-    Map<String, List<String>> carModelOptions = new HashMap<>();
-    CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
-
-    carModelOptions.put("Body", carModel.getBodyOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-    carModelOptions.put("Color", carModel.getColorOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-    carModelOptions.put("Engine", carModel.getEngineOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-    carModelOptions.put("GearBox", carModel.getGearboxOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-    carModelOptions.put("Seats", carModel.getSeatOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-    carModelOptions.put("Airco", carModel.getAircoOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-    carModelOptions.put("Wheels", carModel.getWheelOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-
-    return carModelOptions;
-  }
-
-  public Map<Integer, String> giveGarageHolders() {
-    return this.garageHolders
-      .stream()
-      .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
   }
 }
