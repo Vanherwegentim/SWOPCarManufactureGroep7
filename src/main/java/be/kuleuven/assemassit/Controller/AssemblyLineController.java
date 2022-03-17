@@ -43,8 +43,8 @@ public class AssemblyLineController {
     return givePendingAssemblyTasks(workPostId);
   }
 
-  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskid) {
-    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
+  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
+    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
   }
 
   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {

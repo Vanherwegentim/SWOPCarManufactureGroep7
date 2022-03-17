@@ -108,20 +108,20 @@ public class AssemblyLine {
     List<AssemblyTask> futureDrivetrainPostAssemblyProcessAssemblyTasks = new ArrayList<>();
     if (this.carBodyPost.getCarAssemblyProcess() != null) {
       //if (this.carBodyPost.givePendingAssemblyTasks().isEmpty()) {
-        futureDrivetrainPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
-          new ArrayList<>(this.carBodyPost.getCarAssemblyProcess().getAssemblyTasks()),
-          this.drivetrainPost.getAssemblyTaskTypes()
-        );
+      futureDrivetrainPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
+        new ArrayList<>(this.carBodyPost.getCarAssemblyProcess().getAssemblyTasks()),
+        this.drivetrainPost.getAssemblyTaskTypes()
+      );
     }
 
 
     List<AssemblyTask> futureAccessoriesPostAssemblyProcessAssemblyTasks = new ArrayList<>();
     if (this.drivetrainPost.getCarAssemblyProcess() != null) {
       //if (this.drivetrainPost.givePendingAssemblyTasks().isEmpty()) {
-        futureAccessoriesPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
-          new ArrayList<>(this.drivetrainPost.getCarAssemblyProcess().getAssemblyTasks()),
-          this.accessoriesPost.getAssemblyTaskTypes()
-        );
+      futureAccessoriesPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
+        new ArrayList<>(this.drivetrainPost.getCarAssemblyProcess().getAssemblyTasks()),
+        this.accessoriesPost.getAssemblyTaskTypes()
+      );
     }
 
     HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
@@ -245,24 +245,30 @@ public class AssemblyLine {
   }
 
   public AssemblyTask giveCarAssemblyTask(int carAssemblyProcessId, int assemblyTaskId) {
-    return findCarAssemblyProcess(carAssemblyProcessId).giveAssemblyTask(carAssemblyProcessId);
+    return findCarAssemblyProcess(carAssemblyProcessId).giveAssemblyTask(assemblyTaskId);
   }
 
   private CarAssemblyProcess findCarAssemblyProcess(int id) {
-    Optional<CarAssemblyProcess> carAssemblyProcess = carAssemblyProcessesQueue.stream()
-      .filter(p -> p.getId() == id)
-      .findFirst();
-
-    if (carAssemblyProcess.isEmpty()) {
-      carAssemblyProcess = finishedCars
-        .stream()
-        .filter(p -> p.getId() == id)
-        .findFirst();
-
-      if (carAssemblyProcess.isEmpty())
-        throw new IllegalArgumentException("Car assembly process not found");
+    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    for (WorkPost workPost : workPosts) {
+      CarAssemblyProcess workPostCarAssemblyProcess = workPost.getCarAssemblyProcess();
+      if (workPostCarAssemblyProcess != null && workPostCarAssemblyProcess.getId() == id) {
+        return workPostCarAssemblyProcess;
+      }
     }
 
-    return carAssemblyProcess.get();
+    Optional<CarAssemblyProcess> queueCarAssemblyProcess = carAssemblyProcessesQueue
+      .stream()
+      .filter(p -> p.getId() == id)
+      .findFirst();
+    if (queueCarAssemblyProcess.isPresent()) return queueCarAssemblyProcess.get();
+
+    Optional<CarAssemblyProcess> finishedCarsCarAssemblyProcess = finishedCars
+      .stream()
+      .filter(p -> p.getId() == id)
+      .findFirst();
+    if (finishedCarsCarAssemblyProcess.isPresent()) return finishedCarsCarAssemblyProcess.get();
+
+    throw new IllegalArgumentException("CarAssemblyProcess not found");
   }
 }

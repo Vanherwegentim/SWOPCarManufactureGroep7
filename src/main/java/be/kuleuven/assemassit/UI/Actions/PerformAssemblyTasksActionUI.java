@@ -14,24 +14,31 @@ public class PerformAssemblyTasksActionUI {
 
     Map<Integer, String> allAssemblyTasks = assemblyLineController.givePendingAssemblyTasks(chosenWorkPostId);
 
-    int assemblyTaskId = displayChooseAssemblyTask(allAssemblyTasks);
+    if (allAssemblyTasks.isEmpty()) {
+      System.out.println("There are currently no pending tasks for this work post");
+      PerformAssemblyTasksActionUI.run(orderController, assemblyLineController);
+      return;
+    }
 
+    int assemblyTaskId = displayChooseAssemblyTask(allAssemblyTasks);
 
     List<String> actions = assemblyLineController.giveAssemblyTaskActions(chosenWorkPostId, assemblyTaskId);
     actions.forEach(System.out::println);
 
-    System.out.println("Press ENTER to continue...");
+    //todo task to active
+    System.out.println("Press ENTER when the task if finished");
     Scanner scanner = new Scanner(System.in);
     scanner.nextLine();
+    //todo task to doene
   }
 
-  private static Integer displayChooseWorkPost(Map<Integer, String> workPosts) {
+  private static int displayChooseWorkPost(Map<Integer, String> workPosts) {
     Scanner scanner = new Scanner(System.in);
     int workPostId;
 
     do {
       System.out.println();
-      System.out.println("Please choose a workPost:");
+      System.out.println("Please choose a work post:");
       workPosts.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
       workPostId = scanner.nextInt();
     } while (!workPosts.containsKey(workPostId));
@@ -40,11 +47,12 @@ public class PerformAssemblyTasksActionUI {
     return workPostId;
   }
 
-  private static Integer displayChooseAssemblyTask(Map<Integer, String> assemblyTasks) {
+  private static int displayChooseAssemblyTask(Map<Integer, String> assemblyTasks) {
     Scanner scanner = new Scanner(System.in);
     int assemblyTaskId;
 
     do {
+      System.out.println();
       System.out.println("Please choose an assembly task:");
       assemblyTasks.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
       assemblyTaskId = scanner.nextInt();
