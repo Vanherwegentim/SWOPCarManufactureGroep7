@@ -3,11 +3,14 @@ package be.kuleuven.assemassit.UI.Actions;
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI;
-import be.kuleuven.assemassit.UI.MainUI;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
 
 public class OrderNewCarActionUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {

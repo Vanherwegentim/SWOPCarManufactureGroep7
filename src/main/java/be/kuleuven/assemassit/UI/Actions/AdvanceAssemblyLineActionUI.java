@@ -4,7 +4,10 @@ import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.ManagerActionsOverviewUI;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 public class AdvanceAssemblyLineActionUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
@@ -22,8 +25,8 @@ public class AdvanceAssemblyLineActionUI {
 
       System.out.println();
       System.out.println("Please choose an action:");
-      System.out.println("1: Move assembly line forward");
-      System.out.println("0: Go back");
+      System.out.println(" 1: Move assembly line forward");
+      System.out.println("-1: Go back");
 
       action = scanner.nextInt();
 
@@ -38,14 +41,14 @@ public class AdvanceAssemblyLineActionUI {
             minutes = input.nextInt();
           } while (!(minutes >= 0 && minutes < 180));
 
-         List<String> blockingWorkPosts = assemblyLineController.moveAssemblyLine(minutes);
+          List<String> blockingWorkPosts = assemblyLineController.moveAssemblyLine(minutes);
 
-         if (!blockingWorkPosts.isEmpty()){
-           System.out.println( "These workposts are stopping you from moving forward:");
-           blockingWorkPosts.forEach(System.out::println);
-         }else {
-           System.out.println("Assembly line moved.");
-         }
+          if (!blockingWorkPosts.isEmpty()) {
+            System.out.println("These workposts are stopping you from moving forward:");
+            blockingWorkPosts.forEach(System.out::println);
+          } else {
+            System.out.println("Assembly line moved.");
+          }
 
           System.out.println();
           System.out.println("Current assembly line status: ");
@@ -57,7 +60,7 @@ public class AdvanceAssemblyLineActionUI {
 
           ManagerActionsOverviewUI.run(orderController, assemblyLineController);
         }
-        case 0 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
+        case -1 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
       }
     } while (action < 0 || action > 1);
   }
@@ -66,7 +69,7 @@ public class AdvanceAssemblyLineActionUI {
     List<String> statusKeys = new ArrayList<>(status.keySet());
 
     for (String workPostName : statusKeys) {
-      System.out.println("  > " + workPostName);
+      System.out.println("  * " + workPostName);
 
       if (status.get(workPostName).isEmpty()) {
         System.out.println("      - " + "no pending or active tasks");

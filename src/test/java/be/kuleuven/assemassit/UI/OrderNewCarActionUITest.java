@@ -5,17 +5,20 @@ import org.junit.jupiter.api.Test;
 import textuitester.TextUITestScriptRunner;
 import textuitester.TextUITester;
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class OrderNewCarActionUITest {
 
   private String classpath;
 
   @BeforeEach
-  public void beforeEach(){
+  public void beforeEach() {
 
     classpath = System.getProperty("java.class.path").split(File.pathSeparator)[4];
+    System.out.println(classpath);
+    System.out.println();
   }
 
   /**
@@ -25,7 +28,7 @@ public class OrderNewCarActionUITest {
    */
   @Test
   public void StartAppAndQuitImmediatelyTest() {
-    TextUITester tester = new TextUITester("java -cp " + classpath + " be.kuleuven.assemassit.App");
+    TextUITester tester = new TextUITester("java -cp \"" + classpath + "\" be.kuleuven.assemassit.App");
     tester.expectLine("------- ASSEMASSIST ------");
     tester.expectLine(" 1: Authenticate");
     tester.expectLine("-1: Quit");
