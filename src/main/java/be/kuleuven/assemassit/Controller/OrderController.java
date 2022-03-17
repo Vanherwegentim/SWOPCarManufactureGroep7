@@ -10,6 +10,7 @@ import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,11 +22,6 @@ public class OrderController {
   private AssemblyLine assemblyLine;
   private GarageHolderRepository garageHolderRepository;
   private CarManufactoringCompany carManufactoringCompany;
-
-  //TODO: still needed?
-  public OrderController(AssemblyLine assemblyLine) {
-    this.assemblyLine = assemblyLine;
-  }
 
   public OrderController(CarManufactoringCompany carManufactoringCompany, AssemblyLine assemblyLine) {
     this.carManufactoringCompany = carManufactoringCompany;
@@ -66,9 +62,11 @@ public class OrderController {
       .append(spacer)
       .append("Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
-      .append("\n");;
+      .append("\n");
+    ;
 
-    Map<String, String> parts = Map.of(
+
+      Map<String, String> parts = new LinkedHashMap<>(Map.of(
       "Body", carOrder.getCar().getBody().name(),
       "Color", carOrder.getCar().getColor().name(),
       "Engine", carOrder.getCar().getEngine().name(),
@@ -76,7 +74,7 @@ public class OrderController {
       "Airco", carOrder.getCar().getAirco().name(),
       "Wheels", carOrder.getCar().getWheels().name(),
       "Seats", carOrder.getCar().getSeats().name()
-    );
+    ));
 
     for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
       result
@@ -133,7 +131,9 @@ public class OrderController {
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
 
-    carManufactoringCompany.addCarAssemblyProcess(new CarAssemblyProcess(carOrder));
+    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+
+    carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
     LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
 
