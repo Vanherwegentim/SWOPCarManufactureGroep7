@@ -75,6 +75,7 @@ public class WorkPost {
   }
 
   public List<AssemblyTask> givePendingAssemblyTasks() {
+
     if (carAssemblyProcess == null)
       return new ArrayList<>();
 

@@ -15,7 +15,7 @@ public class GarageHolderTest {
   private CarOrder carOrder;
 
   @BeforeEach
-  public void beforeEach(){
+  public void beforeEach() {
     garageHolder = new GarageHolder(0, "testGarageHolder");
     carOrder = new CarOrder(
       new Car(
@@ -39,7 +39,7 @@ public class GarageHolderTest {
   public void findCarOrderTest(){
     //assertThrows(IllegalArgumentException.class, ()-> garageHolder.findCarOrder(0));
     garageHolder.addCarOrder(carOrder);
-    assertEquals(garageHolder.findCarOrder(0), carOrder);
+    assertEquals(garageHolder.findCarOrder(carOrder.getId()), carOrder);
   }
 
   public void getCompletionTimeTest(){
