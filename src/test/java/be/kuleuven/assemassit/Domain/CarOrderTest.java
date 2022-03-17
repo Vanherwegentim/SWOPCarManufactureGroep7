@@ -32,7 +32,7 @@ public class CarOrderTest {
   @Test
   public void carOrderTest_succeeds(){
       CarOrder carOrder = new CarOrder(car);
-      assertTrue(carOrder.isPending());
+    assertTrue(carOrder.isPending());
   }
 
   @Test

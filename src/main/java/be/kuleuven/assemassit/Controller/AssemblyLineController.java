@@ -4,19 +4,13 @@ import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AssemblyLineController {
 
   private AssemblyLine assemblyLine;
-
-  public AssemblyLineController() {
-    this.assemblyLine = new AssemblyLine();
-  }
 
   public AssemblyLineController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
@@ -26,7 +20,6 @@ public class AssemblyLineController {
     return Stream.of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
       .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
   }
-
 
   public Map<Integer, String> givePendingAssemblyTasks(int postId) {
     if (postId < 0)
@@ -45,58 +38,75 @@ public class AssemblyLineController {
     return givePendingAssemblyTasks(workPostId);
   }
 
-  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskid) {
-    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskid).getActions();
+  public List<String> giveAssemblyTaskActions(int assemblyTaskId) {
+    return assemblyLine.giveCarAssemblyTask(assemblyTaskId).getActions();
   }
 
-  public Map<String, List<String>> giveAssemblyLineStatusOverview() {
+  public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    Map<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
-    Map<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
+    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
 
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
-  public Map<String, List<String>> giveFutureAssemblyLineStatusOverview() {
+  public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    Map<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
-    Map<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
+    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
 
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
-  private Map<String, List<String>> evaluateAssemblyLineStatusOverview(
-    Map<String, AssemblyTask> assemblyLineStatus, Map<String, List<AssemblyTask>> giveTasksOverview) {
+  private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
+    HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> workPostPairs) {
     //TODO: !!!REFACTOR THIS SHIT!!!
 
-    Map<String, List<String>> output = new HashMap<>();
+    HashMap<String, List<String>> output = new LinkedHashMap<>();
 
-    for (String key : giveTasksOverview.keySet()) {
-      List<AssemblyTask> values = giveTasksOverview.get(key);
-      List<String> valuesString = values.stream().map(AssemblyTask::getName).collect(Collectors.toList());
+    for (String key : workPostPairs.keySet()) {
+      List<AssemblyTask> assemblyTasks = workPostPairs.get(key);
+      List<String> assemblyTasksNames = new ArrayList<>(assemblyTasks.stream().map(AssemblyTask::getName).toList());
 
-      for (int i = 0; i < valuesString.size(); i++) {
-        if (assemblyLineStatus.get(key) == values.get(i)) {
-          String newValue = valuesString.get(i) + " (active)";
-          valuesString.set(i, newValue);
+      for (int i = 0; i < assemblyTasksNames.size(); i++) {
+        if (assemblyLineStatus.get(key) == assemblyTasks.get(i)) {
+          String assemblyTaskName = assemblyTasksNames.get(i) + " (active)";
+          assemblyTasksNames.set(i, assemblyTaskName);
         }
 
-        if (values.get(i).getPending()) {
-          String newValue = valuesString.get(i) + " (pending)";
-          valuesString.set(i, newValue);
+        if (assemblyTasks.get(i).getPending()) {
+          String assemblyTaskName = assemblyTasksNames.get(i) + " (pending)";
+          assemblyTasksNames.set(i, assemblyTaskName);
         }
       }
 
-      output.put(key, valuesString);
+      output.put(key, assemblyTasksNames);
     }
 
     return output;
   }
 
-  public String moveAssemblyLine(int minutes) {
-    return assemblyLine.move(minutes);
+  public List<String> moveAssemblyLine(int minutes) {
+    if (!assemblyLine.canMove()) {
+      List<String> blockingWorkPosts = new ArrayList<>();
+      List<WorkPost> workPosts = assemblyLine.giveWorkPostsAsList();
+      for (WorkPost workPost : workPosts) {
+        if (!workPost.givePendingAssemblyTasks().isEmpty()) {
+          blockingWorkPosts.add(workPost.getWorkPostType().toString());
+        }
+      }
+      return blockingWorkPosts;
+    } else {
+      assemblyLine.move(minutes);
+      return new ArrayList<>();
+    }
+  }
+
+  public void setActiveTask(int workPostId, int assemblyTaskId) {
+    WorkPost workPost = assemblyLine.findWorkPost(workPostId);
+    assemblyLine.setActiveTask(workPost, assemblyTaskId);
   }
 }
 

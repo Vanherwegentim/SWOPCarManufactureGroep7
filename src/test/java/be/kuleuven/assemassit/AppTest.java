@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class AppTest {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
-    @BeforeEach
-    public void setUpStreams() {
-        System.setOut(new PrintStream(outContent));
-    }
+  @BeforeEach
+  public void setUpStreams() {
+    System.setOut(new PrintStream(outContent));
+  }
 
 //    @Test
 //    public void testAppConstructor() {
@@ -36,9 +36,9 @@ public class AppTest {
 //        }
 //    }
 
-    @AfterEach
-    public void cleanUpStreams() {
-        System.setOut(null);
-    }
+  @AfterEach
+  public void cleanUpStreams() {
+    System.setOut(null);
+  }
 
 }
