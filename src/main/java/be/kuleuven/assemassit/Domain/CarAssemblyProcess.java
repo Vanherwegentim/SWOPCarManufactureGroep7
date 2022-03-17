@@ -14,7 +14,7 @@ public class CarAssemblyProcess {
   private int id;
 
   public CarAssemblyProcess(CarOrder carOrder) {
-    if(carOrder == null){
+    if (carOrder == null) {
       throw new NullPointerException("The car order can't be null");
     }
 
@@ -32,7 +32,7 @@ public class CarAssemblyProcess {
     );
   }
 
-  public List<AssemblyTask> getAssemblyTasks(){
+  public List<AssemblyTask> getAssemblyTasks() {
     return assemblyTasks;
   }
 

@@ -66,7 +66,7 @@ public class OrderController {
     ;
 
 
-      Map<String, String> parts = new LinkedHashMap<>(Map.of(
+    Map<String, String> parts = new LinkedHashMap<>(Map.of(
       "Body", carOrder.getCar().getBody().name(),
       "Color", carOrder.getCar().getColor().name(),
       "Engine", carOrder.getCar().getEngine().name(),
