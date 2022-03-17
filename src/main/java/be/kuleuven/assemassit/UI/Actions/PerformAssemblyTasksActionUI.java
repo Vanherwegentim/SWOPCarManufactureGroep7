@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.AuthenticateUI;
 
 import java.util.*;
@@ -31,8 +32,9 @@ public class PerformAssemblyTasksActionUI {
     System.out.println("Press ENTER when the task if finished");
     Scanner scanner = new Scanner(System.in);
     scanner.nextLine();
-    //todo task to doene
-    AuthenticateUI.run(orderController, assemblyLineController);
+    assemblyLineController.completeAssemblyTask(chosenWorkPostId);
+
+    CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
   }
 
   private static int displayChooseWorkPost(Map<Integer, String> workPosts) {
