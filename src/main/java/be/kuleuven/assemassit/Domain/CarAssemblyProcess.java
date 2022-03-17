@@ -7,13 +7,35 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @invar | getAssemblyTasks() != null
+ * @invar | getCarOrder() != null
+ */
 public class CarAssemblyProcess {
   private static int idRunner = 0;
 
+  /**
+   * @invar | assemblyTasks != null
+   * @invar | carOrder != null
+   * @representationObject
+   * @representationObjects
+   */
   private List<AssemblyTask> assemblyTasks;
+  /**
+   * @representationObject
+   */
   private CarOrder carOrder;
   private int id;
 
+  /**
+   * @param carOrder the order that should be connected to the car assembly process
+   * @throws | carOrder == null
+   * @post | this.id > -1
+   * @post | this.carOrder = carOrder
+   * @post | this.assemblyTasks != null
+   * @inspects | carOrder
+   * @mutates | this
+   */
   public CarAssemblyProcess(CarOrder carOrder) {
     if (carOrder == null) {
       throw new NullPointerException("The car order can't be null");
@@ -37,10 +59,21 @@ public class CarAssemblyProcess {
     return assemblyTasks;
   }
 
+  public CarOrder getCarOrder() {
+    return this.carOrder;
+  }
+
   public int getId() {
     return this.id;
   }
 
+  /**
+   * Searches in the list of assembly tasks to find the corresponding assembly task
+   *
+   * @param id of the assembly task
+   * @return the assembly task
+   * @throws IllegalArgumentException id is not found | giveOptionalAssemblyTask(id).isEmpty()
+   */
   public AssemblyTask giveAssemblyTask(int id) {
     Optional<AssemblyTask> carAssemblyProcess = giveOptionalAssemblyTask(id);
 
@@ -50,10 +83,23 @@ public class CarAssemblyProcess {
     return carAssemblyProcess.get();
   }
 
+  /**
+   * Sets the completion time of a process.
+   * This method is called when a process is finished on the assembly line.
+   *
+   * @mutates | this
+   */
   public void determineCompletionTime() {
     carOrder.setCompletionTime(LocalDateTime.now());
   }
-  
+
+  /**
+   * Searches in the list of assembly tasks to find the corresponding assembly task but returns an optional
+   *
+   * @param id the id of the assembly task
+   * @return an optional of the assembly task (found or not found)
+   * @inspects | this
+   */
   public Optional<AssemblyTask> giveOptionalAssemblyTask(int id) {
     return assemblyTasks.stream()
       .filter(p -> p.getId() == id)
