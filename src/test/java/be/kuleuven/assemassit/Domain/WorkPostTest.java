@@ -71,7 +71,7 @@ public class WorkPostTest {
     workPost.addProcessToWorkPost(carAssemblyProcess);
 
     // TODO nakijken of dit een correcte test is
-    workPost.setActiveAssemblyTask(workPost.getAllAssemblyTasks().get(0).getId());
+    workPost.setActiveAssemblyTask(workPost.getWorkPostAssemblyTasks().get(0).getId());
     assertEquals(workPost.getActiveAssemblyTask(), new CarBodyAssemblyTask(Body.SEAD));
   }
 
@@ -111,6 +111,7 @@ public class WorkPostTest {
     WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
+
     assertTrue(workPost.findAssemblyTask(38).equals(new CarBodyAssemblyTask(Body.SEAD)));
   }
 }

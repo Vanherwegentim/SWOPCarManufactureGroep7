@@ -8,10 +8,7 @@ import be.kuleuven.assemassit.Domain.TaskTypes.InsertGearboxAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -52,7 +49,7 @@ public class AssemblyLineControllerTest {
 
   @Test
   public void giveAssemblyLineStatusAndOverviewTest() {
-    Map<String, AssemblyTask> mockedWorkPostStatuses = new HashMap<>();
+    HashMap<String, AssemblyTask> mockedWorkPostStatuses = new LinkedHashMap<>();
 
     AssemblyTask mockedCarBodyAssemblyTask = mock(CarBodyAssemblyTask.class);
     when(mockedCarBodyAssemblyTask.getName()).thenReturn("mockedCarBodyAssemblyTaskName");
@@ -73,7 +70,7 @@ public class AssemblyLineControllerTest {
 
     when(mockedAssemblyLine.giveStatus()).thenReturn(mockedWorkPostStatuses);
 
-    Map<String, List<AssemblyTask>> mockedTasksOverview = new HashMap<>();
+    HashMap<String, List<AssemblyTask>> mockedTasksOverview = new LinkedHashMap<>();
 
     mockedTasksOverview.put("Car Body Post", Arrays.asList(mockedCarBodyAssemblyTask, mockedInsertEngineAssemblyTask, mockedDrivetrainAssemblyTask, mockedAccessoriesAssemblyTask));
     mockedTasksOverview.put("Drivetrain Post", Arrays.asList(mockedDrivetrainAssemblyTask, mockedAccessoriesAssemblyTask));

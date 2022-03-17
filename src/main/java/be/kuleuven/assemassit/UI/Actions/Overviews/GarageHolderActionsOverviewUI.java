@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.UI.Actions.Overviews;
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
 import be.kuleuven.assemassit.UI.Actions.OrderNewCarActionUI;
+import be.kuleuven.assemassit.UI.AuthenticateUI;
 import be.kuleuven.assemassit.UI.MainUI;
 
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ public class GarageHolderActionsOverviewUI {
           System.out.println("\n");
 
           orderController.logOffGarageHolder();
-          MainUI.run(orderController, assemblyLineController);
+          AuthenticateUI.run(orderController, assemblyLineController);
         }
         case -1 -> {
           orderController.logOffGarageHolder();

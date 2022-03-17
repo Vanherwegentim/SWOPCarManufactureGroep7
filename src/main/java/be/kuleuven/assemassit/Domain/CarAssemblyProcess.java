@@ -45,7 +45,7 @@ public class CarAssemblyProcess {
       .filter(p -> p.getId() == id)
       .findFirst();
 
-    if (carAssemblyProcess.isPresent())
+    if (carAssemblyProcess.isEmpty())
       throw new IllegalArgumentException("Assembly task not found");
 
     return carAssemblyProcess.get();
