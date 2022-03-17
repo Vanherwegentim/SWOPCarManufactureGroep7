@@ -14,6 +14,8 @@ public class AssemblyLine {
   private WorkPost accessoriesPost;
   private Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
   private List<CarAssemblyProcess> finishedCars;
+  private LocalTime startTime;
+  private LocalTime endTime;
 
   public AssemblyLine() {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
@@ -21,6 +23,14 @@ public class AssemblyLine {
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
+  }
+
+  public void setStartTime(LocalTime startTime) {
+    this.startTime = startTime;
+  }
+
+  public void setEndTime(LocalTime endTime) {
+    this.endTime = endTime;
   }
 
   //TODO remove when clone works
@@ -36,8 +46,6 @@ public class AssemblyLine {
     if (carAssemblyProcess == null) {
       throw new IllegalArgumentException("CarAssemblyProcess not found");
     }
-    carAssemblyProcessesQueue.add(carAssemblyProcess);
-    // return here the new schedule?
   }
 
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
@@ -184,15 +192,16 @@ public class AssemblyLine {
       drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
     }
     //Give the first post a car from the queue;
-    if (!carAssemblyProcessesQueue.isEmpty()) {
+    //The queue can not be empty and there still must be enough time to produce the whole car
+    if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
       carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
     }
   }
 
-  public LocalDateTime giveEstimatedCompletionDateOfLatestProcess(LocalTime openingTime, LocalTime closingTime) {
+  public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     // calculate remaining cars for this day (1)
     int remainingCarsForToday =
-      (int) ((double) ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      (int) ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
         (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
@@ -200,9 +209,9 @@ public class AssemblyLine {
 
     // calculate cars for a whole day (2)
     int amountOfCarsWholeDay =
-      (int) ((double) ((closingTime.getHour() * 60 + closingTime.getMinute()) - // end time
+      (int) ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
-        (openingTime.getHour() * 60 + openingTime.getMinute()) - // opening time
+        (startTime.getHour() * 60 + startTime.getMinute()) - // opening time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
         60) / (double) 60);
 
@@ -225,7 +234,7 @@ public class AssemblyLine {
     // return date of tomorrow + days needed + minutes needed
     LocalDateTime today = LocalDateTime.now();
     int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - remainingCarsForToday) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine();
-    return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), openingTime.getHour(), openingTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes(remainingMinutesForLastDay);
+    return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), startTime.getHour(), startTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes(remainingMinutesForLastDay);
   }
 
   private int maxTimeNeededForWorkPostOnLine() {

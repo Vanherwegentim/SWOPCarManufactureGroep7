@@ -12,10 +12,6 @@ public class AssemblyLineController {
 
   private AssemblyLine assemblyLine;
 
-  public AssemblyLineController() {
-    this.assemblyLine = new AssemblyLine();
-  }
-
   public AssemblyLineController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
   }
@@ -24,7 +20,6 @@ public class AssemblyLineController {
     return Stream.of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
       .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
   }
-
 
   public Map<Integer, String> givePendingAssemblyTasks(int postId) {
     if (postId < 0)
