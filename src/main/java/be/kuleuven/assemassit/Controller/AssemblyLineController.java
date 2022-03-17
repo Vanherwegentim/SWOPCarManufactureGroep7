@@ -33,9 +33,8 @@ public class AssemblyLineController {
       .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
   }
 
-  public Map<Integer, String> completeAssemblyTask(int workPostId) {
+  public void completeAssemblyTask(int workPostId) {
     assemblyLine.completeAssemblyTask(workPostId);
-    return givePendingAssemblyTasks(workPostId);
   }
 
   public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
