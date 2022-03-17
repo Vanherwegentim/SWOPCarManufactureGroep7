@@ -1,0 +1,4 @@
+Ejava -cp examplebin textuitesterexample.Echo
+<Hello World!
+>Bye World!
+
