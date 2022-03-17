@@ -24,44 +24,28 @@ public class AssemblyLineController {
   public Map<Integer, String> givePendingAssemblyTasks(int postId) {
     if (postId < 0)
       throw new IllegalArgumentException("postId cannot be smaller than 0");
-    // TODO: better way to show tasks
-    List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
+    List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
     return pendingAssemblyTasks
       .stream()
       .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
   }
 
-  public void completeAssemblyTask(int workPostId) {
-    assemblyLine.completeAssemblyTask(workPostId);
-  }
-
-  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
-    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
-  }
-
-  public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
-    //TODO: !!!REFACTOR THIS SHIT!!!
-
+   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
-
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
   public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
-    //TODO: !!!REFACTOR THIS SHIT!!!
-
     HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
-
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
     HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> workPostPairs) {
-    //TODO: !!!REFACTOR THIS SHIT!!!
 
     HashMap<String, List<String>> output = new LinkedHashMap<>();
 
@@ -88,6 +72,9 @@ public class AssemblyLineController {
   }
 
   public List<String> moveAssemblyLine(int minutes) {
+    if (minutes < 0)
+      throw new IllegalArgumentException("Minutes cannot be smaller than 0");
+
     if (!assemblyLine.canMove()) {
       List<String> blockingWorkPosts = new ArrayList<>();
       List<WorkPost> workPosts = assemblyLine.giveWorkPostsAsList();
@@ -103,9 +90,29 @@ public class AssemblyLineController {
     }
   }
 
+  public void completeAssemblyTask(int workPostId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    assemblyLine.completeAssemblyTask(workPostId);
+  }
+
   public void setActiveTask(int workPostId, int assemblyTaskId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
+
     WorkPost workPost = assemblyLine.findWorkPost(workPostId);
     assemblyLine.setActiveTask(workPost, assemblyTaskId);
+  }
+
+  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
+
+    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
   }
 }
 
