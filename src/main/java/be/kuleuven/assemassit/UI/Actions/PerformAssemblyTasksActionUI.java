@@ -3,9 +3,10 @@ package be.kuleuven.assemassit.UI.Actions;
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
-import be.kuleuven.assemassit.UI.AuthenticateUI;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class PerformAssemblyTasksActionUI {
   public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
@@ -24,8 +25,7 @@ public class PerformAssemblyTasksActionUI {
     int chosenAssemblyTaskId = displayChooseAssemblyTask(allAssemblyTasks);
     assemblyLineController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
 
-    //todo refactor met workpostid
-    List<String> actions = assemblyLineController.giveAssemblyTaskActions(chosenAssemblyTaskId);
+    List<String> actions = assemblyLineController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
     actions.forEach(System.out::println);
 
     //todo task to active

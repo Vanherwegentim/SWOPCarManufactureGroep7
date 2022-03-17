@@ -1,11 +1,8 @@
-
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
-import be.kuleuven.assemassit.Domain.Enums.Color;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
-
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,20 +14,11 @@ import java.util.stream.Collectors;
 
 public class OrderController {
 
-  private List<GarageHolder> garageHolders;
+  private final List<GarageHolder> garageHolders;
+  private final GarageHolderRepository garageHolderRepository;
+  private final CarManufactoringCompany carManufactoringCompany;
   private GarageHolder loggedInGarageHolder;
-  private AssemblyLine assemblyLine;
-  private GarageHolderRepository garageHolderRepository;
-  private CarManufactoringCompany carManufactoringCompany;
 
-  public OrderController(CarManufactoringCompany carManufactoringCompany, AssemblyLine assemblyLine) {
-    this.carManufactoringCompany = carManufactoringCompany;
-    this.assemblyLine = assemblyLine;
-    garageHolderRepository = new GarageHolderRepository();
-    garageHolders = garageHolderRepository.getGarageHolders();
-  }
-
-  //TODO: this constructor can be removed when code is refactored
   public OrderController(CarManufactoringCompany carManufactoringCompany) {
     this.carManufactoringCompany = carManufactoringCompany;
     garageHolderRepository = new GarageHolderRepository();
@@ -63,17 +51,16 @@ public class OrderController {
       .append("Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
       .append("\n");
-    ;
 
 
-      Map<String, String> parts = new LinkedHashMap<>();
-      parts.put("Body", carOrder.getCar().getBody().name());
-      parts.put("Color", carOrder.getCar().getColor().name());
-      parts.put("Engine", carOrder.getCar().getEngine().name());
-      parts.put("Gearbox", carOrder.getCar().getGearbox().name());
-      parts.put("Airco", carOrder.getCar().getAirco().name());
-      parts.put("Wheels", carOrder.getCar().getWheels().name());
-      parts.put("Seats", carOrder.getCar().getSeats().name());
+    Map<String, String> parts = new LinkedHashMap<>();
+    parts.put("Body", carOrder.getCar().getBody().name());
+    parts.put("Color", carOrder.getCar().getColor().name());
+    parts.put("Engine", carOrder.getCar().getEngine().name());
+    parts.put("Gearbox", carOrder.getCar().getGearbox().name());
+    parts.put("Airco", carOrder.getCar().getAirco().name());
+    parts.put("Wheels", carOrder.getCar().getWheels().name());
+    parts.put("Seats", carOrder.getCar().getSeats().name());
 
     for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
       result
@@ -139,7 +126,6 @@ public class OrderController {
     return estimatedCompletionTime;
   }
 
-  //TODO: will not be used
   public LocalDateTime getCompletionDate(int orderId) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();

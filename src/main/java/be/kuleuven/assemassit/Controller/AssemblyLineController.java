@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class AssemblyLineController {
 
-  private AssemblyLine assemblyLine;
+  private final AssemblyLine assemblyLine;
 
   public AssemblyLineController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
@@ -38,8 +38,8 @@ public class AssemblyLineController {
     return givePendingAssemblyTasks(workPostId);
   }
 
-  public List<String> giveAssemblyTaskActions(int assemblyTaskId) {
-    return assemblyLine.giveCarAssemblyTask(assemblyTaskId).getActions();
+  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
+    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
   }
 
   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
