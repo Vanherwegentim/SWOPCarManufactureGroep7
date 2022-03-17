@@ -18,8 +18,14 @@ public class CarManufactoringCompany {
     this.carModelRepository = new CarModelRepository();
     this.carModels = carModelRepository.getCarModels();
     this.assemblyLine = assemblyLine;
+    this.assemblyLine.setStartTime(openingTime);
+    this.assemblyLine.setEndTime(closingTime);
     this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
     this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
+  }
+
+  public AssemblyLine getAssemblyLine() {
+    return assemblyLine;
   }
 
   public List<CarModel> getCarModels() {
@@ -54,6 +60,6 @@ public class CarManufactoringCompany {
   }
 
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
-    return assemblyLine.giveEstimatedCompletionDateOfLatestProcess(this.openingTime, this.closingTime);
+    return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
   }
 }
