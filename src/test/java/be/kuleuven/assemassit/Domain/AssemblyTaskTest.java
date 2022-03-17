@@ -20,7 +20,7 @@ public class AssemblyTaskTest {
   @Test
   public void constructorTest(){
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
-    assertTrue(assemblyTask.getName().equals(""));
+    assertTrue(assemblyTask.getName().equals("Assembly car body"));
   }
   @Test
   public void completionTimeTest(){
