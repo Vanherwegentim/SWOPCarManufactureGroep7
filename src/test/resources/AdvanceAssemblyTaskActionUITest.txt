@@ -185,44 +185,5 @@ Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureG
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
-<1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Go back
-<3
->
->Welcome
->Please choose an action:
-> 1: Perform assembly task
->-1: Logout and go back
-<1
->
->Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
-<0
->Chosen workpost: CAR_BODY_POST
->
->Please choose an assembly task:
-> 0: Assembly car body
-> 5: Paint car
-<0
->Chosen assembly task: Assembly car body
->Installing the BREAK body
->Press ENTER when the task if finished
-<\n
->
->Welcome
->Please choose an action:
-> 1: Perform assembly task
->-1: Logout and go back
-<-1
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
 <-1
 K0

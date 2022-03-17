@@ -175,14 +175,14 @@ Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureG
 <0
 >Chosen: LEATHER_BLACK
 >
->The estimated completion date for the order is: 17/03/2022 at 16:07
+>The estimated completion date for the order is: %date%
 >
 >Press ENTER to continue...
 <\n
 >
 >Orders placed by:  Joe Lamb
 >Pending:
-> 1: Order ID: 0    [Estimation time: 17/03/2022 at 16:07]
+> 1: Order ID: 0    [Estimation time: %date%]
 >    Car model:  Tolkswagen Rolo
 >        Body: SEAD
 >        Color: RED
