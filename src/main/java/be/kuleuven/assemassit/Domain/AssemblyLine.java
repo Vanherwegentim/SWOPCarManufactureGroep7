@@ -175,6 +175,9 @@ public class AssemblyLine {
       for (AssemblyTask assemblyTask : accessoriesPost.getWorkPostAssemblyTasks()) {
         assemblyTask.setCompletionTime(minutes);
       }
+
+      CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
+      carAssemblyProcess.determineCompletionTime();
       finishedCars.add(accessoriesPost.getCarAssemblyProcess());
     }
     //Give the third post the car of the second post

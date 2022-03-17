@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -49,5 +50,9 @@ public class CarAssemblyProcess {
       throw new IllegalArgumentException("Assembly task not found");
 
     return carAssemblyProcess.get();
+  }
+
+  public void determineCompletionTime() {
+    carOrder.setCompletionTime(LocalDateTime.now());
   }
 }
