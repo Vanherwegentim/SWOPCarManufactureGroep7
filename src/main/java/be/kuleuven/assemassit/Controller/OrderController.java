@@ -10,6 +10,7 @@ import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,7 +65,8 @@ public class OrderController {
       .append("\n");
     ;
 
-    Map<String, String> parts = Map.of(
+
+      Map<String, String> parts = new LinkedHashMap<>(Map.of(
       "Body", carOrder.getCar().getBody().name(),
       "Color", carOrder.getCar().getColor().name(),
       "Engine", carOrder.getCar().getEngine().name(),
@@ -72,7 +74,7 @@ public class OrderController {
       "Airco", carOrder.getCar().getAirco().name(),
       "Wheels", carOrder.getCar().getWheels().name(),
       "Seats", carOrder.getCar().getSeats().name()
-    );
+    ));
 
     for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
       result
