@@ -18,13 +18,12 @@ public class ManagerActionsOverviewUI {
       System.out.println("Please choose an action:");
       System.out.println(" 1: Advance assembly line");
       System.out.println("-1: Logout and go back");
-      System.out.println("\n");
 
       action = scanner.nextInt();
 
       switch (action) {
         case 1 -> AdvanceAssemblyLineActionUI.run(orderController, assemblyLineController);
-        case 0 -> MainUI.run(orderController, assemblyLineController);
+        case -1 -> MainUI.run(orderController, assemblyLineController);
       }
     } while (action != -1 && action != 1);
   }

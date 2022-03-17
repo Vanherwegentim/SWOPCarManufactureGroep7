@@ -4,6 +4,9 @@ import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.Body;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarBodyAssemblyTask extends AssemblyTask {
   private Body body;
   private AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
@@ -11,6 +14,13 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   public CarBodyAssemblyTask(Body body) {
     super("Assembly car body");
     this.body = body;
+  }
+
+  @Override
+  public List<String> getActions() {
+    List<String> actions = new ArrayList<>();
+    actions.add("Installing the " + body + " body");
+    return actions;
   }
 
   @Override
@@ -22,8 +32,8 @@ public class CarBodyAssemblyTask extends AssemblyTask {
 
   //TODO pas deze equals aan tot iets decent
   @Override
-  public boolean equals(Object o){
-    if(o instanceof CarBodyAssemblyTask){
+  public boolean equals(Object o) {
+    if (o instanceof CarBodyAssemblyTask) {
       return this.body == ((CarBodyAssemblyTask) o).body;
     }
     return false;

@@ -33,8 +33,9 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT)));
   }
+
   @Test
-  public void checkCorrectAssemblyTasksPerWorkpost(){
+  public void checkCorrectAssemblyTasksPerWorkpost() {
     assertEquals(this.assemblyLine.getCarBodyPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR));
     assertEquals(this.assemblyLine.getDrivetrainPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX));
     assertEquals(this.assemblyLine.getAccessoriesPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS));
@@ -42,7 +43,7 @@ public class AssemblyLineTest {
   @Test
   public void addCarAssemblyProcessTest(){
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-    assert assemblyLine.getCarAssemblyProcesses().contains(carAssemblyProcess);
+    assert assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
   }
 
   @Test
@@ -63,7 +64,6 @@ public class AssemblyLineTest {
 //    assemblyLine.move(2);
 //    assemblyLine.completeAssemblyTask(0);
 //
-//    assemblyLine.givePendingAssemblyTasksFromWorkPost(0).stream().forEach(t-> System.out.println(t.getName()));
 //
 //  }
 
@@ -84,9 +84,9 @@ public class AssemblyLineTest {
 //  public void giveTasksOverviewTest(){
 //    //TODO: ouwe test, moet nog geüpdated worden met de nieuwe code
 //    Map<String, List<AssemblyTask>> expected = new HashMap<>();
-//    expected.put("Car Body Post", carBodyPost.getAllAssemblyTasks());
-//    expected.put("Drivetrain Post", drivetrainPost.getAllAssemblyTasks());
-//    expected.put("Accessories Post", accessoriesPost.getAllAssemblyTasks());
+//    expected.put("Car Body Post", carBodyPost.getWorkPostAssemblyTasks());
+//    expected.put("Drivetrain Post", drivetrainPost.getWorkPostAssemblyTasks());
+//    expected.put("Accessories Post", accessoriesPost.getWorkPostAssemblyTasks());
 //
 //    Map<String, List<AssemblyTask>> actual = assemblyLine.giveTasksOverview();
 //    assertEquals(expected.size(), actual.size());

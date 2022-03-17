@@ -6,6 +6,7 @@ import textuitester.TextUITestScriptRunner;
 import textuitester.TextUITester;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class OrderNewCarActionUITest {
 
@@ -13,6 +14,7 @@ public class OrderNewCarActionUITest {
 
   @BeforeEach
   public void beforeEach(){
+
     classpath = System.getProperty("java.class.path").split(File.pathSeparator)[4];
   }
 
