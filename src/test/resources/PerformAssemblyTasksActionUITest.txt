@@ -1,4 +1,4 @@
-Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureGroep7\\target\\classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
@@ -212,7 +212,7 @@ Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureG
 > 5: Paint car
 <0
 >Chosen assembly task: Assembly car body
->Installing the BREAK body
+>Installing the SEAD body
 >Press ENTER when the task if finished
 <\n
 >

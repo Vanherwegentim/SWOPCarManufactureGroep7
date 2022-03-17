@@ -42,12 +42,10 @@ public class OrderNewCarActionUITest {
   }
 
   /**
-   * Deze methode haalt het OrderNewCarActionUITest.txt script op uit resources en voert het uit.
-   * De classpath staat wel hardcoded en lijn 185-193 bevat dynamische content waardoor deze test
-   * daar meestal faalt.
+   * The withHour has to be change every hour to work because of the error in the estimatedTime algorithm
    */
   @Test
-  public void Test() throws IOException {
+  public void OrderNewCarUseCaseTest() throws IOException {
 
     LocalDateTime localDateTimeNow = LocalDateTime.now();
     LocalDateTime actualDate = LocalDateTime.now();
@@ -60,7 +58,7 @@ public class OrderNewCarActionUITest {
     }
     if (localDateTimeNow.getHour() > 19) {
       //The withHour has to be change every hour to work because of the error in the estimatedTime algorithm
-      actualDate = actualDate.plusDays(1).withHour(13).withMinute(0);
+      actualDate = actualDate.plusDays(1).withHour(14).withMinute(0);
     }
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
     String str = Files.readString(Path.of("src/test/resources/OrderNewCarActionUITest.txt"));

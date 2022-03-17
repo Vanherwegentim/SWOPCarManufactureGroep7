@@ -1,10 +1,10 @@
-Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureGroep7\\target\\classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
 <-1
 X0
-Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureGroep7\\target\\classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
