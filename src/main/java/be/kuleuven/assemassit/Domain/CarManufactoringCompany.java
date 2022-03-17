@@ -22,6 +22,10 @@ public class CarManufactoringCompany {
     this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
   }
 
+  public AssemblyLine getAssemblyLine() {
+    return assemblyLine;
+  }
+
   public List<CarModel> getCarModels() {
     return List.copyOf(carModels);
   }

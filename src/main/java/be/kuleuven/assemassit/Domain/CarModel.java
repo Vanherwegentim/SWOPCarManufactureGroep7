@@ -78,7 +78,8 @@ public class CarModel {
         engineOptions.contains(engine) &&
         gearboxOptions.contains(gearbox) &&
         seatOptions.contains(seats) &&
-        aircoOptions.contains(airco);
+        aircoOptions.contains(airco) &&
+        wheelOptions.contains(wheels);
   }
 
   @Override
