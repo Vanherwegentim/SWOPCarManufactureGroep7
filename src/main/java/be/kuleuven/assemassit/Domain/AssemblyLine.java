@@ -46,6 +46,7 @@ public class AssemblyLine {
     if (carAssemblyProcess == null) {
       throw new IllegalArgumentException("CarAssemblyProcess not found");
     }
+    carAssemblyProcessesQueue.add(carAssemblyProcess);
   }
 
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
