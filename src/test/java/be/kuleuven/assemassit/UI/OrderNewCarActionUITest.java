@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class OrderNewCarActionUITest {
 
   private String classpath;
@@ -24,6 +25,8 @@ public class OrderNewCarActionUITest {
   public void beforeEach() {
 
     classpath = System.getProperty("java.class.path").split(File.pathSeparator)[4];
+    System.out.println(classpath);
+    System.out.println();
   }
 
   /**
@@ -33,7 +36,7 @@ public class OrderNewCarActionUITest {
    */
   @Test
   public void StartAppAndQuitImmediatelyTest() {
-    TextUITester tester = new TextUITester("java -cp " + classpath + " be.kuleuven.assemassit.App");
+    TextUITester tester = new TextUITester("java -cp \"" + classpath + "\" be.kuleuven.assemassit.App");
     tester.expectLine("------- ASSEMASSIST ------");
     tester.expectLine(" 1: Authenticate");
     tester.expectLine("-1: Quit");

@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,10 @@ public class CarAssemblyProcess {
     return carAssemblyProcess.get();
   }
 
+  public void determineCompletionTime() {
+    carOrder.setCompletionTime(LocalDateTime.now());
+  }
+  
   public Optional<AssemblyTask> giveOptionalAssemblyTask(int id) {
     return assemblyTasks.stream()
       .filter(p -> p.getId() == id)

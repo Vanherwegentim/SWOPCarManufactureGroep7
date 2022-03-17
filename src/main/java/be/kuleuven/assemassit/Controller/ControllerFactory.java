@@ -6,8 +6,8 @@ import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import java.time.LocalTime;
 
 public class ControllerFactory {
-  private AssemblyLine assemblyLine;
-  private CarManufactoringCompany carManufactoringCompany;
+  private final AssemblyLine assemblyLine;
+  private final CarManufactoringCompany carManufactoringCompany;
 
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
@@ -15,7 +15,7 @@ public class ControllerFactory {
   }
 
   public OrderController createOrderController() {
-    return new OrderController(carManufactoringCompany, assemblyLine);
+    return new OrderController(carManufactoringCompany);
   }
 
   public AssemblyLineController createAssemblyLineController() {

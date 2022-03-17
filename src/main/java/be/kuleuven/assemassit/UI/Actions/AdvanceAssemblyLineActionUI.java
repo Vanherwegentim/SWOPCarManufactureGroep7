@@ -25,8 +25,8 @@ public class AdvanceAssemblyLineActionUI {
 
       System.out.println();
       System.out.println("Please choose an action:");
-      System.out.println("1: Move assembly line forward");
-      System.out.println("0: Go back");
+      System.out.println(" 1: Move assembly line forward");
+      System.out.println("-1: Go back");
 
       action = scanner.nextInt();
 
@@ -60,7 +60,7 @@ public class AdvanceAssemblyLineActionUI {
 
           ManagerActionsOverviewUI.run(orderController, assemblyLineController);
         }
-        case 0 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
+        case -1 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
       }
     } while (action < 0 || action > 1);
   }
