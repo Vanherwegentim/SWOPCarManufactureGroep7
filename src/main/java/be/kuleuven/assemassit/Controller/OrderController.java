@@ -66,15 +66,14 @@ public class OrderController {
     ;
 
 
-    Map<String, String> parts = new LinkedHashMap<>(Map.of(
-      "Body", carOrder.getCar().getBody().name(),
-      "Color", carOrder.getCar().getColor().name(),
-      "Engine", carOrder.getCar().getEngine().name(),
-      "Gearbox", carOrder.getCar().getGearbox().name(),
-      "Airco", carOrder.getCar().getAirco().name(),
-      "Wheels", carOrder.getCar().getWheels().name(),
-      "Seats", carOrder.getCar().getSeats().name()
-    ));
+      Map<String, String> parts = new LinkedHashMap<>();
+      parts.put("Body", carOrder.getCar().getBody().name());
+      parts.put("Color", carOrder.getCar().getColor().name());
+      parts.put("Engine", carOrder.getCar().getEngine().name());
+      parts.put("Gearbox", carOrder.getCar().getGearbox().name());
+      parts.put("Airco", carOrder.getCar().getAirco().name());
+      parts.put("Wheels", carOrder.getCar().getWheels().name());
+      parts.put("Seats", carOrder.getCar().getSeats().name());
 
     for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
       result
