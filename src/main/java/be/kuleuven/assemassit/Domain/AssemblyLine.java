@@ -244,7 +244,7 @@ public class AssemblyLine {
 
     // return date of tomorrow + days needed + minutes needed
     LocalDateTime today = LocalDateTime.now();
-    int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - Math.abs(remainingCarsForToday)) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine();
+    int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - remainingCarsForToday) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine();
     return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), startTime.getHour(), startTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes(remainingMinutesForLastDay);
   }
 
