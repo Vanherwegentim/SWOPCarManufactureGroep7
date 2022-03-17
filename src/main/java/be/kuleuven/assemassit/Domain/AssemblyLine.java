@@ -101,7 +101,6 @@ public class AssemblyLine {
 
     List<AssemblyTask> futureDrivetrainPostAssemblyProcessAssemblyTasks = new ArrayList<>();
     if (this.carBodyPost.getCarAssemblyProcess() != null) {
-      //if (this.carBodyPost.givePendingAssemblyTasks().isEmpty()) {
       futureDrivetrainPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
         new ArrayList<>(this.carBodyPost.getCarAssemblyProcess().getAssemblyTasks()),
         this.drivetrainPost.getAssemblyTaskTypes()
