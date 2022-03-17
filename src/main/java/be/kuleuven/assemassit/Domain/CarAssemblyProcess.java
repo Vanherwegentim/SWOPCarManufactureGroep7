@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * @mutable
  * @invar | getAssemblyTasks() != null
  * @invar | getCarOrder() != null
  */

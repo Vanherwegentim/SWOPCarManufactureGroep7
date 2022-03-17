@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 /**
+ * @mutable
  * @invar | getCarBodyPost() != null
  * @invar | getDriveTrainPost() != null
  * @invar | getAccessoriesPost() != null
@@ -48,13 +49,7 @@ public class AssemblyLine {
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
-  /**
-   * @representationObject
-   */
   private LocalTime startTime;
-  /**
-   * representationObject
-   */
   private LocalTime endTime;
 
   /**

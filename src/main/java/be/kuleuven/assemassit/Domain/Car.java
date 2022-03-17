@@ -2,6 +2,17 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
 
+/**
+ * @mutable
+ * @invar | getCarModel() != null
+ * @invar | getBody() != null
+ * @invar | getColor() != null
+ * @invar | getEngine() != null
+ * @invar | getGearbox() != null
+ * @invar | getSeats() != null
+ * @invar | getAirco() != null
+ * @invar | getWheels() != null
+ */
 public class Car {
   private static int idRunner = 0;
 

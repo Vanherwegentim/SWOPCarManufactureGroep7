@@ -6,6 +6,7 @@ import java.util.List;
 
 public abstract class AssemblyTask {
   /**
+   * @mutable
    * @invar | name != null && !name.equals("")
    */
   private static int runningId = 0;
