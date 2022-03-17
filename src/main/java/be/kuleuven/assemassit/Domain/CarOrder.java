@@ -27,10 +27,9 @@ public class CarOrder {
     return pending;
   }
 
-  //TODO: calculate completionTime!
+  // TODO: this value returns null if the order is not completed, do we keep it this way?
   public LocalDateTime getCompletionTime() {
-    //return completionTime;
-    return LocalDateTime.now(); // THIS IS VERY TEMPORARY
+    return this.completionTime;
   }
 
   public Car getCar() {
@@ -43,6 +42,10 @@ public class CarOrder {
 
   public LocalDateTime getDeliveryTime() {
     return deliveryTime;
+  }
+
+  public void setCompletionTime(LocalDateTime completionTime) {
+    this.completionTime = completionTime;
   }
 
   public int getId() {

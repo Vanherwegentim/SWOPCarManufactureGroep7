@@ -15,7 +15,7 @@ public class GarageHolderTest {
   private CarOrder carOrder;
 
   @BeforeEach
-  public void beforeEach(){
+  public void beforeEach() {
     garageHolder = new GarageHolder(0, "testGarageHolder");
     carOrder = new CarOrder(
       new Car(

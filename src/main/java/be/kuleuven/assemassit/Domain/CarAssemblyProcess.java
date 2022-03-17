@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class CarAssemblyProcess {
   private int id;
 
   public CarAssemblyProcess(CarOrder carOrder) {
-    if(carOrder == null){
+    if (carOrder == null) {
       throw new NullPointerException("The car order can't be null");
     }
 
@@ -32,7 +33,7 @@ public class CarAssemblyProcess {
     );
   }
 
-  public List<AssemblyTask> getAssemblyTasks(){
+  public List<AssemblyTask> getAssemblyTasks() {
     return assemblyTasks;
   }
 
@@ -41,13 +42,21 @@ public class CarAssemblyProcess {
   }
 
   public AssemblyTask giveAssemblyTask(int id) {
-    Optional<AssemblyTask> carAssemblyProcess = assemblyTasks.stream()
-      .filter(p -> p.getId() == id)
-      .findFirst();
+    Optional<AssemblyTask> carAssemblyProcess = giveOptionalAssemblyTask(id);
 
     if (carAssemblyProcess.isEmpty())
       throw new IllegalArgumentException("Assembly task not found");
 
     return carAssemblyProcess.get();
+  }
+
+  public void determineCompletionTime() {
+    carOrder.setCompletionTime(LocalDateTime.now());
+  }
+  
+  public Optional<AssemblyTask> giveOptionalAssemblyTask(int id) {
+    return assemblyTasks.stream()
+      .filter(p -> p.getId() == id)
+      .findFirst();
   }
 }

@@ -10,11 +10,7 @@ import java.util.stream.Stream;
 
 public class AssemblyLineController {
 
-  private AssemblyLine assemblyLine;
-
-  public AssemblyLineController() {
-    this.assemblyLine = new AssemblyLine();
-  }
+  private final AssemblyLine assemblyLine;
 
   public AssemblyLineController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
@@ -25,75 +21,60 @@ public class AssemblyLineController {
       .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
   }
 
-
   public Map<Integer, String> givePendingAssemblyTasks(int postId) {
     if (postId < 0)
       throw new IllegalArgumentException("postId cannot be smaller than 0");
-    // TODO: better way to show tasks
-    List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
+    List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
 
     return pendingAssemblyTasks
       .stream()
       .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
   }
 
-  public Map<Integer, String> completeAssemblyTask(int workPostId) {
-    assemblyLine.completeAssemblyTask(workPostId);
-    return givePendingAssemblyTasks(workPostId);
-  }
-
-  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
-    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
-  }
-
-  public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
-    //TODO: !!!REFACTOR THIS SHIT!!!
-
+   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
-
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
   public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
-    //TODO: !!!REFACTOR THIS SHIT!!!
-
     HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
-
     return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
   }
 
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
     HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> workPostPairs) {
-    //TODO: !!!REFACTOR THIS SHIT!!!
 
     HashMap<String, List<String>> output = new LinkedHashMap<>();
 
     for (String key : workPostPairs.keySet()) {
-      List<AssemblyTask> values = workPostPairs.get(key);
-      List<String> valuesString = values.stream().map(AssemblyTask::getName).collect(Collectors.toList());
+      List<AssemblyTask> assemblyTasks = workPostPairs.get(key);
+      List<String> assemblyTasksNames = new ArrayList<>(assemblyTasks.stream().map(AssemblyTask::getName).toList());
 
-      for (int i = 0; i < valuesString.size(); i++) {
-        if (assemblyLineStatus.get(key) == values.get(i)) {
-          String newValue = valuesString.get(i) + " (active)";
-          valuesString.set(i, newValue);
+      for (int i = 0; i < assemblyTasksNames.size(); i++) {
+        if (assemblyLineStatus.get(key) == assemblyTasks.get(i)) {
+          String assemblyTaskName = assemblyTasksNames.get(i) + " (active)";
+          assemblyTasksNames.set(i, assemblyTaskName);
         }
 
-        if (values.get(i).getPending()) {
-          String newValue = valuesString.get(i) + " (pending)";
-          valuesString.set(i, newValue);
+        if (assemblyTasks.get(i).getPending()) {
+          String assemblyTaskName = assemblyTasksNames.get(i) + " (pending)";
+          assemblyTasksNames.set(i, assemblyTaskName);
         }
       }
 
-      output.put(key, valuesString);
+      output.put(key, assemblyTasksNames);
     }
 
     return output;
   }
 
   public List<String> moveAssemblyLine(int minutes) {
+    if (minutes < 0)
+      throw new IllegalArgumentException("Minutes cannot be smaller than 0");
+
     if (!assemblyLine.canMove()) {
       List<String> blockingWorkPosts = new ArrayList<>();
       List<WorkPost> workPosts = assemblyLine.giveWorkPostsAsList();
@@ -107,6 +88,31 @@ public class AssemblyLineController {
       assemblyLine.move(minutes);
       return new ArrayList<>();
     }
+  }
+
+  public void completeAssemblyTask(int workPostId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    assemblyLine.completeAssemblyTask(workPostId);
+  }
+
+  public void setActiveTask(int workPostId, int assemblyTaskId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
+
+    WorkPost workPost = assemblyLine.findWorkPost(workPostId);
+    assemblyLine.setActiveTask(workPost, assemblyTaskId);
+  }
+
+  public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
+
+    return assemblyLine.giveCarAssemblyTask(workPostId, assemblyTaskId).getActions();
   }
 }
 

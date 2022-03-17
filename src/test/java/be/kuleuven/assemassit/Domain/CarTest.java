@@ -41,7 +41,7 @@ public class CarTest {
 
   @Test
   public void carTest_throws(){
-    assertThrows(IllegalArgumentException.class, ()->
+    assertThrows(IllegalArgumentException.class, () ->
       new Car(carModel, Body.SEAD, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
     );
     assertThrows(IllegalArgumentException.class, ()->

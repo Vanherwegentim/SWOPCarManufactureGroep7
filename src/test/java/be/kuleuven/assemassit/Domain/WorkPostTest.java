@@ -69,6 +69,7 @@ public class WorkPostTest {
 
     assertThrows(NullPointerException.class, () -> workPost.setActiveAssemblyTask(100000));
     workPost.addProcessToWorkPost(carAssemblyProcess);
+
     for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
       System.out.println(assemblyTask.getId());
     }
@@ -119,6 +120,7 @@ public class WorkPostTest {
     for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
       System.out.println(assemblyTask.getId());
     }
+
     assertTrue(workPost.findAssemblyTask(38).equals(new CarBodyAssemblyTask(Body.SEAD)));
   }
 }

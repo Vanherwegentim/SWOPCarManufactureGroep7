@@ -1,10 +1,10 @@
-Ejava -cp C:\Users\Gebruiker\Documents\school\hoger\ku_leuven\tweede_semester\software_ontwerp\SWOPCarManufactureGroep7\target\classes be.kuleuven.assemassit.App
+Ejava -cp C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureGroep7\\target\\classes be.kuleuven.assemassit.App
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
 <-1
 X0
-Ejava -cp C:\Users\Gebruiker\Documents\school\hoger\ku_leuven\tweede_semester\software_ontwerp\SWOPCarManufactureGroep7\target\classes be.kuleuven.assemassit.App
+Ejava -cp "C:\\Users\\timva\\Documents\\Master\\2de_semester\\SWOPCarManufactureGroep7\\target\\classes" be.kuleuven.assemassit.App
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
@@ -175,22 +175,22 @@ Ejava -cp C:\Users\Gebruiker\Documents\school\hoger\ku_leuven\tweede_semester\so
 <0
 >Chosen: LEATHER_BLACK
 >
->The estimated completion date for the order is: 17/03/2022 at 9:00
+>The estimated completion date for the order is: 17/03/2022 at 16:07
 >
 >Press ENTER to continue...
 <\n
 >
 >Orders placed by:  Joe Lamb
 >Pending:
-> 1: Order ID: 0    [Estimation time: 17/03/2022 at 9:00]
+> 1: Order ID: 0    [Estimation time: 17/03/2022 at 16:07]
 >    Car model:  Tolkswagen Rolo
->        Wheels: COMFORT
->        Seats: LEATHER_BLACK
->        Gearbox: MANUAL
->        Airco: MANUAL
+>        Body: SEAD
 >        Color: RED
 >        Engine: STANDARD
->        Body: SEAD
+>        Gearbox: MANUAL
+>        Airco: MANUAL
+>        Wheels: COMFORT
+>        Seats: LEATHER_BLACK
 >
 >History:
 >

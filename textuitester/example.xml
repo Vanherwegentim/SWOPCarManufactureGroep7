@@ -1,0 +1,31 @@
+<!-- An Apache Ant script that runs the TextUITester example test suite. -->
+<project default="test">
+  
+  <mkdir dir="examplebin"/>
+  
+  <target name="test">
+    <javac srcdir="example" destdir="examplebin" classpath="textuitester.jar" includeAntRuntime="true" debug="yes"/>
+    <copy todir="examplebin">
+      <fileset dir="example">
+        <include name="**/*.txt"/>
+      </fileset>
+    </copy>
+    <junit fork="yes" haltonfailure="yes">
+      <classpath>
+        <pathelement location="textuitester.jar"/>
+        <pathelement location="examplebin"/>
+      </classpath>
+      <formatter type="plain" usefile="false"/>
+      <batchtest>
+        <fileset dir="example">
+          <include name="textuitesterexample/*Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+  
+  <target name="clean">
+    <delete dir="examplebin"/>
+  </target>
+  
+</project>

@@ -1,0 +1,10 @@
+Ejava -jar textuitester.jar examplebin/textuitesterexample/testScript1.txt
+T10000
+X0
+Ejava -jar textuitester.jar examplebin/textuitesterexample/lineMismatchScript.txt
+>Line 3: Unexpected line: "Hello World!"
+X1
+Ejava -jar textuitester.jar examplebin/textuitesterexample/timeoutScript.txt
+T1000
+>Line 2: Timeout
+X1
