@@ -33,8 +33,9 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT)));
   }
+
   @Test
-  public void checkCorrectAssemblyTasksPerWorkpost(){
+  public void checkCorrectAssemblyTasksPerWorkpost() {
     assertEquals(this.assemblyLine.getCarBodyPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR));
     assertEquals(this.assemblyLine.getDrivetrainPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX));
     assertEquals(this.assemblyLine.getAccessoriesPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS));

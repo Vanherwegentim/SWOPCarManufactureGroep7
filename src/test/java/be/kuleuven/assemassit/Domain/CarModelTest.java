@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CarModelTest {
 
   @Test
-  public void CarModelTest_succeeds(){
+  public void CarModelTest_succeeds() {
     assertAll(() ->
       new CarModel(
         0,
@@ -28,8 +28,8 @@ public class CarModelTest {
   }
 
   @Test
-  public void CarModelTest_throws(){
-    assertThrows(IllegalArgumentException.class, ()->
+  public void CarModelTest_throws() {
+    assertThrows(IllegalArgumentException.class, () ->
       new CarModel(
         0,
         "",
@@ -41,7 +41,7 @@ public class CarModelTest {
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC)
       ));
-    assertThrows(IllegalArgumentException.class, ()->
+    assertThrows(IllegalArgumentException.class, () ->
       new CarModel(
         0,
         "testmodel",
@@ -53,7 +53,7 @@ public class CarModelTest {
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC)
       ));
-    assertThrows(IllegalArgumentException.class, ()->
+    assertThrows(IllegalArgumentException.class, () ->
       new CarModel(
         0,
         "testmodel",
@@ -68,7 +68,7 @@ public class CarModelTest {
 
     List<Wheel> test = new ArrayList<>();
     test.add(null);
-    assertThrows(IllegalArgumentException.class, ()->
+    assertThrows(IllegalArgumentException.class, () ->
       new CarModel(
         0,
         "testmodel",
@@ -83,7 +83,7 @@ public class CarModelTest {
   }
 
   @Test
-  public void carModelToString(){
+  public void carModelToString() {
     String expected = "0: testmodel";
     CarModel carModel = new CarModel(
       0,

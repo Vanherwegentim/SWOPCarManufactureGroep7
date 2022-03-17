@@ -17,10 +17,10 @@ public class Car {
   private Wheel wheels;
 
 
-  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels ) {
-    if(carModel == null)
+  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
+    if (carModel == null)
       throw new IllegalArgumentException("Car Model cannot be null");
-    if(body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null)
+    if (body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null)
       throw new IllegalArgumentException("Assembly tasks cannot be null");
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
       throw new IllegalArgumentException("Invalid car configuration");
@@ -37,35 +37,35 @@ public class Car {
   }
 
   public CarModel getCarModel() {
-      return carModel;
+    return carModel;
   }
 
   public Body getBody() {
-      return body;
+    return body;
   }
 
   public Color getColor() {
-      return color;
+    return color;
   }
 
   public Engine getEngine() {
-      return engine;
+    return engine;
   }
 
   public Gearbox getGearbox() {
-      return gearbox;
+    return gearbox;
   }
 
   public Seat getSeats() {
-      return seats;
+    return seats;
   }
 
   public Airco getAirco() {
-      return airco;
+    return airco;
   }
 
   public Wheel getWheels() {
-      return wheels;
+    return wheels;
   }
 
   public int getId() {
