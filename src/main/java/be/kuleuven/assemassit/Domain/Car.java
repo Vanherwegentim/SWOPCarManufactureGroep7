@@ -3,9 +3,10 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Enums.Color;
 
-import java.awt.*;
-
 public class Car {
+  private static int idRunner = 0;
+
+  private int id;
   private CarModel carModel;
   private Body body;
   private Color color;
@@ -24,7 +25,6 @@ public class Car {
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
       throw new IllegalArgumentException("Invalid car configuration");
 
-
     this.carModel = carModel;
     this.body = body;
     this.color = color;
@@ -33,6 +33,7 @@ public class Car {
     this.seats = seats;
     this.airco = airco;
     this.wheels = wheels;
+    this.id = Car.idRunner++;
   }
 
   public CarModel getCarModel() {
@@ -67,16 +68,7 @@ public class Car {
       return wheels;
   }
 
-  public String toString() {
-    String result = "Car with model: " + carModel.getName() + "\n";
-    result = "Body: " + body.toString() + "\n";
-
-    result += "Color: " + color.toString() + "\n";
-    result += "Engine: " + engine.toString() + "\n";
-    result += "Gearbox: " + gearbox.toString() + "\n";
-    result += "Airco: " + airco.toString() + "\n";
-    result += "Wheels: " + wheels.toString();
-
-    return result;
+  public int getId() {
+    return this.id;
   }
 }

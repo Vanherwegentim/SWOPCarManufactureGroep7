@@ -29,12 +29,14 @@ public class CarAssemblyProcessTest {
         Wheel.SPORT));
 
     this.assemblyTasks = Arrays.asList(
-      new CarBodyAssemblyTask("", carOrder.getCar().getBody()),
-      new InsertGearboxAssemblyTask("", carOrder.getCar().getGearbox()),
-      new InsertEngineAssemblyTask("", carOrder.getCar().getEngine()),
-      new InstallAircoAssemblyTask("", carOrder.getCar().getAirco()),
-      new MountWheelsAssemblyTask("", carOrder.getCar().getWheels()),
-      new PaintCarAssemblyTask("", carOrder.getCar().getColor())
+      new CarBodyAssemblyTask(carOrder.getCar().getBody()),
+      new InsertGearboxAssemblyTask(carOrder.getCar().getGearbox()),
+      new InsertEngineAssemblyTask(carOrder.getCar().getEngine()),
+      new InstallAircoAssemblyTask(carOrder.getCar().getAirco()),
+      new MountWheelsAssemblyTask(carOrder.getCar().getWheels()),
+      new PaintCarAssemblyTask(carOrder.getCar().getColor()),
+      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats())
+
     );
   }
   @Test

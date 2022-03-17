@@ -51,17 +51,4 @@ public class CarTest {
       new Car(carModel, Body.BREAK, Color.BLACK, null, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
     );
   }
-
-  @Test
-  public void carToStringTest(){
-    String expected = "Body: BREAK\n" +
-      "Color: BLACK\n" +
-      "Engine: PERFORMANCE\n" +
-      "Gearbox: MANUAL\n" +
-      "Airco: AUTOMATIC\n" +
-      "Wheels: COMFORT";
-    assertEquals(expected, car.toString());
-  }
-
-
 }

@@ -8,13 +8,11 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class AssemblyLineTest {
 
   private AssemblyLine assemblyLine;
-  private WorkPost carBodyPost;
-  private WorkPost drivetrainPost;
-  private WorkPost accessoriesPost;
   private CarAssemblyProcess carAssemblyProcess;
 
 
@@ -23,9 +21,6 @@ public class AssemblyLineTest {
   @BeforeEach
   public void beforeEach(){
     this.assemblyLine = new AssemblyLine();
-    this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
-    this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE,AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
-    this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS,AssemblyTaskType.MOUNT_WHEELS),WorkPostType.ACCESSORIES_POST,60);
     carAssemblyProcess = new CarAssemblyProcess(
       new CarOrder(
         new Car(
@@ -47,37 +42,51 @@ public class AssemblyLineTest {
   @Test
   public void addCarAssemblyProcessTest(){
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-    assert assemblyLine.getCarAssemblyProcesses().contains(carAssemblyProcess);
+    assert assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
   }
 
+  @Test
   public void givePendingAssemblyTasksFromWorkPostTest(){
-  //TODO
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
+    assemblyLine.move(2);
+
+    List<AssemblyTask> actual = assemblyLine.givePendingAssemblyTasksFromWorkPost(0);
+    assertArrayEquals(new String[]{"Assembly car body", "Paint car"}, actual.stream().map(AssemblyTask::getName).toArray());
   }
 
-  public void completeAssemblyTaskTest(){
-    //TODO
-  }
+
+//  @Test
+//  public void completeAssemblyTaskTest(){
+//    //TODO: fix nullpointerexception bij ActiveAssemblyTask
+//
+//    assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
+//    assemblyLine.move(2);
+//    assemblyLine.completeAssemblyTask(0);
+//
+//    assemblyLine.givePendingAssemblyTasksFromWorkPost(0).stream().forEach(t-> System.out.println(t.getName()));
+//
+//  }
 
   /*
   Voorlopig wordt er nog nooit een assemblytask op active gezet dus vandaar de null.
    */
-//  @Test
-//  public void giveStatusTest_WorkpostsEmpty(){
-//    Map<String, AssemblyTask> workPostStatusses = new HashMap<>();
-//    workPostStatusses.put("Car Body Post",null);
-//    workPostStatusses.put("Drivetrain Post", null);
-//    workPostStatusses.put("Accessories Post", null);
-//
-//    assertEquals(workPostStatusses, assemblyLine.giveStatus());
-//  }
-//
+  @Test
+  public void giveStatusTest_WorkpostsEmpty(){
+    Map<String, AssemblyTask> workPostStatusses = new HashMap<>();
+    workPostStatusses.put("Car Body Post",null);
+    workPostStatusses.put("Drivetrain Post", null);
+    workPostStatusses.put("Accessories Post", null);
+
+    assertEquals(workPostStatusses, assemblyLine.giveStatus());
+  }
+
 //  @Test
 //  public void giveTasksOverviewTest(){
 //    //TODO: ouwe test, moet nog geüpdated worden met de nieuwe code
 //    Map<String, List<AssemblyTask>> expected = new HashMap<>();
-//    expected.put("Car Body Post", carBodyPost.getAllAssemblyTasks());
-//    expected.put("Drivetrain Post", drivetrainPost.getAllAssemblyTasks());
-//    expected.put("Accessories Post", accessoriesPost.getAllAssemblyTasks());
+//    expected.put("Car Body Post", carBodyPost.getWorkPostAssemblyTasks());
+//    expected.put("Drivetrain Post", drivetrainPost.getWorkPostAssemblyTasks());
+//    expected.put("Accessories Post", accessoriesPost.getWorkPostAssemblyTasks());
 //
 //    Map<String, List<AssemblyTask>> actual = assemblyLine.giveTasksOverview();
 //    assertEquals(expected.size(), actual.size());
@@ -88,8 +97,5 @@ public class AssemblyLineTest {
 //        actual.get(key).stream().map(AssemblyTask::getName).toArray()
 //      );
 //    }
-
-
-
- // }
+//  }
 }

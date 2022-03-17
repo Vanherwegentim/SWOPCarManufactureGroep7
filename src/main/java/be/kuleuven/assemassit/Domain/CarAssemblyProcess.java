@@ -22,16 +22,15 @@ public class CarAssemblyProcess {
 
     this.carOrder = carOrder;
     this.assemblyTasks = Arrays.asList(
-      new CarBodyAssemblyTask("", carOrder.getCar().getBody()),
-      new InsertGearboxAssemblyTask("", carOrder.getCar().getGearbox()),
-      new InsertEngineAssemblyTask("", carOrder.getCar().getEngine()),
-      new InstallAircoAssemblyTask("", carOrder.getCar().getAirco()),
-      new MountWheelsAssemblyTask("", carOrder.getCar().getWheels()),
-      new PaintCarAssemblyTask("", carOrder.getCar().getColor())
+      new CarBodyAssemblyTask(carOrder.getCar().getBody()),
+      new InsertGearboxAssemblyTask(carOrder.getCar().getGearbox()),
+      new InsertEngineAssemblyTask(carOrder.getCar().getEngine()),
+      new InstallAircoAssemblyTask(carOrder.getCar().getAirco()),
+      new MountWheelsAssemblyTask(carOrder.getCar().getWheels()),
+      new PaintCarAssemblyTask(carOrder.getCar().getColor()),
+      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats())
     );
   }
-
-
 
   public List<AssemblyTask> getAssemblyTasks(){
     return assemblyTasks;
@@ -46,7 +45,7 @@ public class CarAssemblyProcess {
       .filter(p -> p.getId() == id)
       .findFirst();
 
-    if (carAssemblyProcess.isPresent())
+    if (carAssemblyProcess.isEmpty())
       throw new IllegalArgumentException("Assembly task not found");
 
     return carAssemblyProcess.get();
