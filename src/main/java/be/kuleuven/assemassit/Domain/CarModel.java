@@ -6,19 +6,26 @@ import java.util.List;
 
 /**
  * @mutable
- * @invar | getWheelOptions() != null
- * @invar | getGearboxOptions() != null
- * @invar | getSeatOptions() != null
- * @invar | getBodyOptions() != null
- * @invar | getColorOptions() != null
- * @invar | getEngineOptions() != null
- * @invar | getAircoOptions() != null
+ * @invar | getWheelOptions() != null && !getWheelsOptions().contains(null) && !getWheelOptions().isEmpty()
+ * @invar | getGearboxOptions() != null && !getGearboxOptions().contains(null) && !getGearboxOptions().isEmpty()
+ * @invar | getSeatOptions() != null && !getSeatOptions().contains(null) && !getSeatOptions().isEmpty()
+ * @invar | getBodyOptions() != null && !getBodyOptions().contains(null) && !getBodyOptions().isEmpty()
+ * @invar | getColorOptions() != null && !getColorOptions().contains(null) && !getColorOptions().isEmpty()
+ * @invar | getEngineOptions() != null && !getEngineOptions().contains(null) && !getEngineOptions().isEmpty()
+ * @invar | getAircoOptions() != null && !getAircoOptions().contains(null) && !getAircoOptions().isEmpty()
  */
 public class CarModel {
   private int id;
   private String name;
 
   /**
+   * @invar | wheelOptions != null && !wheelsOptions.contains(null) && !wheelOptions.isEmpty()
+   * @invar | gearboxOptions != null && !gearboxOptions.contains(null) && !gearboxOptions.isEmpty()
+   * @invar | seatOptions != null && !seatOptions.contains(null) && !seatOptions.isEmpty()
+   * @invar | bodyOptions != null && !bodyOptions.contains(null) && !bodyOptions.isEmpty()
+   * @invar | colorOptions != null && !colorOptions.contains(null) && !colorOptions.isEmpty()
+   * @invar | engineOptions != null && !engineOptions.contains(null) && !engineOptions.isEmpty()
+   * @invar | aircoOptions != null && !aircoOptions.contains(null) && !aircoOptions.isEmpty()
    * @representationObject
    */
   private List<Wheel> wheelOptions;
