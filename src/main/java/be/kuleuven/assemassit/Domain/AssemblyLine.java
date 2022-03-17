@@ -16,22 +16,54 @@ import java.util.*;
  */
 public class AssemblyLine {
 
-  private final WorkPost carBodyPost;
-  private final WorkPost drivetrainPost;
-  private final WorkPost accessoriesPost;
-  private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
-  private final List<CarAssemblyProcess> finishedCars;
-  private LocalTime startTime;
-  private LocalTime endTime;
-
   /**
    * @invar | carBodyPost != null
    * @invar | driveTrainPost != null
    * @invar | accessoriesPost != null
+   * @invar | carAssemblyProcessesQueue != null
+   * @invar | finishedCars != null
    * @invar | (startTime == null || endTime == null) || startTime.isBefore(endTime)
+   * @representationObject
+   */
+  private final WorkPost carBodyPost;
+
+  /**
+   * @representationObject
+   */
+  private final WorkPost drivetrainPost;
+
+  /**
+   * @representationObject
+   */
+  private final WorkPost accessoriesPost;
+
+  /**
+   * @representationObject
+   * @representationObjects
+   */
+  private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
+
+  /**
+   * @representationObject
+   * @representationObjects
+   */
+  private final List<CarAssemblyProcess> finishedCars;
+  /**
+   * @representationObject
+   */
+  private LocalTime startTime;
+  /**
+   * representationObject
+   */
+  private LocalTime endTime;
+
+  /**
    * @post | carBodyPost != null
    * @post | driveTrainPost != null
    * @post | accessoriesPost != null
+   * @post | carAssemblyProcessesQueue != null
+   * @post | finishedCars != null
+   * @mutates | this
    */
   public AssemblyLine() {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
@@ -41,6 +73,13 @@ public class AssemblyLine {
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
   }
 
+  /**
+   * Sets the start time of the assembly line.
+   *
+   * @param startTime
+   * @throws IllegalArgumentException startTime can not be null | startTime == null
+   * @post | this.startTime == startTime
+   */
   public void setStartTime(LocalTime startTime) {
     if (startTime == null) {
       throw new IllegalArgumentException("StartTime can not be null");
@@ -48,6 +87,14 @@ public class AssemblyLine {
     this.startTime = startTime;
   }
 
+  /**
+   * Sets the end time of the assembly line.
+   * This is always set by the car manufacturing company and is not outside of the opening hours of the company.
+   *
+   * @param endTime
+   * @throws IllegalArgumentException endTime can not be null | endTime == null
+   * @post | this.endTime == endTime
+   */
   public void setEndTime(LocalTime endTime) {
     if (endTime == null) {
       throw new IllegalArgumentException("EndTime can not be null");
@@ -59,6 +106,7 @@ public class AssemblyLine {
    * Adds a car assembly process to the queue of pending car assembly processes
    *
    * @param carAssemblyProcess
+   * @mutates | this
    */
   public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
     if (carAssemblyProcess == null) {
@@ -88,6 +136,8 @@ public class AssemblyLine {
    *
    * @param workPostId
    * @return The list of pending assembly tasks
+   * @inspects | this
+   * @creates | result
    */
   public List<AssemblyTask> givePendingAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
@@ -105,6 +155,8 @@ public class AssemblyLine {
    * The corresponding active assembly task can be null if no task is active in the work post.
    *
    * @return an overview of the work posts with the corresponding active assembly task
+   * @inspects | this
+   * @creates | result
    */
   public HashMap<String, AssemblyTask> giveStatus() {
     HashMap<String, AssemblyTask> workPostStatuses = new LinkedHashMap<>();
@@ -120,6 +172,8 @@ public class AssemblyLine {
    * Gives an overview of every work post with its corresponding pending and finished tasks.
    *
    * @return an overview of the work posts with all pending and finished assembly tasks
+   * @inspects | this
+   * @creates | result
    */
   public HashMap<String, List<AssemblyTask>> giveTasksOverview() {
     HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
@@ -136,6 +190,8 @@ public class AssemblyLine {
    * as if the assembly line would be moved by a responsible.
    *
    * @return an overview of the work posts with all pending and finished assembly tasks in a future state
+   * @inspects | this
+   * @creates | result
    */
   public HashMap<String, List<AssemblyTask>> giveFutureTasksOverview() {
 
@@ -179,6 +235,8 @@ public class AssemblyLine {
    * @param allAssemblyTasks  the list of assembly tasks where the filter should be applied on
    * @param assemblyTaskTypes the list of assembly task types that has to be filtered on
    * @return
+   * @inspects | this
+   * @creates | result
    */
   private List<AssemblyTask> filterTasksOfSpecificTypeList(List<AssemblyTask> allAssemblyTasks, List<AssemblyTaskType> assemblyTaskTypes) {
     return allAssemblyTasks.stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
@@ -191,6 +249,7 @@ public class AssemblyLine {
    * @return the corresponding work post
    * @throws IllegalArgumentException | workPosts.stream().filter(workPost -> workPost.getId() == workPostId).findFirst().isEmpty
    * @throws IllegalArgumentException | workPostId < 0
+   * @inspects | this
    */
   public WorkPost findWorkPost(int workPostId) {
 
@@ -213,6 +272,7 @@ public class AssemblyLine {
    * with all its current tasks.
    *
    * @return true if the assembly line can be moved
+   * @inspects | this
    */
   public boolean canMove() {
     List<WorkPost> workPosts = this.giveWorkPostsAsList();
@@ -231,6 +291,7 @@ public class AssemblyLine {
    *
    * @param minutes the amount of minutes spent during the current phase
    * @throws IllegalStateException when the assembly line can not be moved | !canMove()
+   * @mutates | this
    */
   public void move(int minutes) {
     if (!canMove()) {
@@ -276,6 +337,8 @@ public class AssemblyLine {
    * Finally it ends with the estimated delivery time of the last assembly process in the queue.
    *
    * @return the estimated delivery time for the latest task in the process queue of this assembly line
+   * @inspects | this
+   * @creates | result
    */
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     // calculate remaining cars for this day (1)
@@ -327,6 +390,7 @@ public class AssemblyLine {
    *
    * @return the duration of the slowest work post on the assembly line in minutes
    * @post | result >= 0
+   * @inspects | this
    */
   private int maxTimeNeededForWorkPostOnLine() {
     return giveWorkPostsAsList()
@@ -341,6 +405,7 @@ public class AssemblyLine {
    *
    * @return total manufacturing duration of a car assembly process in minutes
    * @post | result >= 0
+   * @inspects | this
    */
   private int giveManufacturingDurationInMinutes() {
     return giveWorkPostsAsList()
@@ -354,6 +419,8 @@ public class AssemblyLine {
    *
    * @return the list of work posts on this assembly line
    * @post | result != null
+   * @inspects | this
+   * @creates | result
    */
   public List<WorkPost> giveWorkPostsAsList() {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
@@ -367,6 +434,7 @@ public class AssemblyLine {
    * @return the corresponding assembly task from the work post
    * @throws IllegalArgumentException | workPostId < 0 || assemblyTaskId < 0
    * @post | result != null
+   * @inspects | this
    */
   public AssemblyTask giveCarAssemblyTask(int workPostId, int assemblyTaskId) {
     if (workPostId < 0 || assemblyTaskId < 0)
