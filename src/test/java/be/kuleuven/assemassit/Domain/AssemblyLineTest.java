@@ -64,7 +64,6 @@ public class AssemblyLineTest {
 //    assemblyLine.move(2);
 //    assemblyLine.completeAssemblyTask(0);
 //
-//    assemblyLine.givePendingAssemblyTasksFromWorkPost(0).stream().forEach(t-> System.out.println(t.getName()));
 //
 //  }
 
