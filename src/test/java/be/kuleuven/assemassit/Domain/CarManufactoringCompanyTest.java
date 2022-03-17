@@ -55,8 +55,8 @@ public class CarManufactoringCompanyTest {
   public void constructorTest(){
     assertEquals(carManufactoringCompany.getOpeningTime(), this.openingTime);
     assertEquals(carManufactoringCompany.getClosingTime(), this.closingTime);
-    for (CarAssemblyProcess carAssemblyProcess: carManufactoringCompany.getAssemblyLine().getCarAssemblyProcesses()){
-      assert assemblyLine.getCarAssemblyProcesses().contains(carAssemblyProcess);
+    for (CarAssemblyProcess carAssemblyProcess: carManufactoringCompany.getAssemblyLine().getCarAssemblyProcessesQueue()){
+      assert assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
     }
   }
 
@@ -69,7 +69,7 @@ public class CarManufactoringCompanyTest {
   @Test
   public void addCarAssemblyProcessTest(){
 
-  assert carManufactoringCompany.getAssemblyLine().getCarAssemblyProcesses().contains(carAssemblyProcess);
+  assert carManufactoringCompany.getAssemblyLine().getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
   }
 
 

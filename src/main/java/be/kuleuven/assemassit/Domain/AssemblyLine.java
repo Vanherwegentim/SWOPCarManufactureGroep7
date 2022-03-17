@@ -9,11 +9,11 @@ import java.util.*;
 
 public class AssemblyLine {
 
-  private WorkPost carBodyPost;
-  private WorkPost drivetrainPost;
-  private WorkPost accessoriesPost;
-  private Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
-  private List<CarAssemblyProcess> finishedCars;
+  private final WorkPost carBodyPost;
+  private final WorkPost drivetrainPost;
+  private final WorkPost accessoriesPost;
+  private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
+  private final List<CarAssemblyProcess> finishedCars;
   private LocalTime startTime;
   private LocalTime endTime;
 
@@ -26,37 +26,24 @@ public class AssemblyLine {
   }
 
   public void setStartTime(LocalTime startTime) {
+    if (startTime == null) {
+      throw new IllegalArgumentException("StartTime can not be null");
+    }
     this.startTime = startTime;
   }
 
   public void setEndTime(LocalTime endTime) {
+    if (endTime == null) {
+      throw new IllegalArgumentException("EndTime can not be null");
+    }
     this.endTime = endTime;
-  }
-
-  //TODO remove when clone works
-  public AssemblyLine(WorkPost carBodyPost, WorkPost drivetrainPost, WorkPost accessoriesPost, Queue<CarAssemblyProcess> carAssemblyProcessesQueue, List<CarAssemblyProcess> finishedCars) {
-    this.carBodyPost = carBodyPost;
-    this.drivetrainPost = drivetrainPost;
-    this.accessoriesPost = accessoriesPost;
-    this.carAssemblyProcessesQueue = carAssemblyProcessesQueue;
-    this.finishedCars = finishedCars;
   }
 
   public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
     if (carAssemblyProcess == null) {
       throw new IllegalArgumentException("CarAssemblyProcess not found");
     }
-  }
-
-  public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
-    List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
-    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
-    if (!finishedCars.isEmpty()) {
-      carAssemblyProcessList.addAll(finishedCars);
-    }
-    return carAssemblyProcessList;
+    carAssemblyProcessesQueue.add(carAssemblyProcess);
   }
 
   public WorkPost getCarBodyPost() {
@@ -71,13 +58,11 @@ public class AssemblyLine {
     return this.accessoriesPost;
   }
 
-  // TODO naar controller
   public List<AssemblyTask> givePendingAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.givePendingAssemblyTasks();
   }
 
-  // TODO naar controller
   public void completeAssemblyTask(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     workPost.completeAssemblyTask();
@@ -103,7 +88,6 @@ public class AssemblyLine {
     return workPostPairs;
   }
 
-  //TODO check if this is a correct/good implementation
   public HashMap<String, List<AssemblyTask>> giveFutureTasksOverview() {
 
     List<AssemblyTask> futureCarBodyPostAssemblyProcessAssemblyTasks = new ArrayList<>();
@@ -117,17 +101,14 @@ public class AssemblyLine {
 
     List<AssemblyTask> futureDrivetrainPostAssemblyProcessAssemblyTasks = new ArrayList<>();
     if (this.carBodyPost.getCarAssemblyProcess() != null) {
-      //if (this.carBodyPost.givePendingAssemblyTasks().isEmpty()) {
       futureDrivetrainPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
         new ArrayList<>(this.carBodyPost.getCarAssemblyProcess().getAssemblyTasks()),
         this.drivetrainPost.getAssemblyTaskTypes()
       );
     }
 
-
     List<AssemblyTask> futureAccessoriesPostAssemblyProcessAssemblyTasks = new ArrayList<>();
     if (this.drivetrainPost.getCarAssemblyProcess() != null) {
-      //if (this.drivetrainPost.givePendingAssemblyTasks().isEmpty()) {
       futureAccessoriesPostAssemblyProcessAssemblyTasks = futureTaskListConverter(
         new ArrayList<>(this.drivetrainPost.getCarAssemblyProcess().getAssemblyTasks()),
         this.accessoriesPost.getAssemblyTaskTypes()
@@ -179,6 +160,9 @@ public class AssemblyLine {
       for (AssemblyTask assemblyTask : accessoriesPost.getWorkPostAssemblyTasks()) {
         assemblyTask.setCompletionTime(minutes);
       }
+
+      CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
+      carAssemblyProcess.determineCompletionTime();
       finishedCars.add(accessoriesPost.getCarAssemblyProcess());
     }
     //Give the third post the car of the second post
@@ -205,12 +189,17 @@ public class AssemblyLine {
 
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     // calculate remaining cars for this day (1)
+    double remaningCarsForTodayDouble = ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
+      giveManufacturingDurationInMinutes() - // time needed to manufacture a car
+      (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
+      maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
+      60) / (double) 60);
     int remainingCarsForToday =
-      (int) ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
+      (int) Math.ceil(((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
         giveManufacturingDurationInMinutes() - // time needed to manufacture a car
         (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
         maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / (double) 60);
+        60) / (double) 60));
 
     // calculate cars for a whole day (2)
     int amountOfCarsWholeDay =
@@ -233,12 +222,12 @@ public class AssemblyLine {
 
     // car can not be manufactured today
     // Math.ceil(list - (1) / (2)) = days needed
-    int daysNeeded = (carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay;
+    int daysNeeded = Math.max(0,(carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay - 1);
 
 
     // return date of tomorrow + days needed + minutes needed
     LocalDateTime today = LocalDateTime.now();
-    int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - remainingCarsForToday) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine();
+    int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - Math.abs(remainingCarsForToday)) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine();
     return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), startTime.getHour(), startTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes(remainingMinutesForLastDay);
   }
 
@@ -261,50 +250,9 @@ public class AssemblyLine {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
-  // TODO naar controller
-  public AssemblyTask giveCarAssemblyTask(int assemblyTaskId) {
-    List<CarAssemblyProcess> allCarAssemblyProcesses = this.allCarAssemblyProcesses();
-
-    AssemblyTask assemblyTask = null;
-    for (CarAssemblyProcess assemblyProcess : allCarAssemblyProcesses) {
-      Optional<AssemblyTask> optionalAssemblyTask = assemblyProcess.giveOptionalAssemblyTask(assemblyTaskId);
-      if (optionalAssemblyTask.isPresent()) assemblyTask = optionalAssemblyTask.get();
-    }
-
-    if (assemblyTask == null) {
-      throw new IllegalArgumentException("AssemblyTask cannot be found!");
-    }
-    return assemblyTask;
-  }
-
   public AssemblyTask giveCarAssemblyTask(int workPostId, int assemblyTaskId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.findAssemblyTask(assemblyTaskId);
-  }
-
-  private List<CarAssemblyProcess> allCarAssemblyProcesses() {
-    List<CarAssemblyProcess> carAssemblyProcesses = new ArrayList<>();
-
-    for (WorkPost workPost : this.giveWorkPostsAsList()) {
-      CarAssemblyProcess workPostCarAssemblyProcess = workPost.getCarAssemblyProcess();
-      if (workPostCarAssemblyProcess != null) {
-        carAssemblyProcesses.add(workPostCarAssemblyProcess);
-      }
-    }
-
-    for (CarAssemblyProcess queueCarAssemblyProcess : this.carAssemblyProcessesQueue) {
-      if (queueCarAssemblyProcess != null) {
-        carAssemblyProcesses.add(queueCarAssemblyProcess);
-      }
-    }
-
-    for (CarAssemblyProcess finishedCarsCarAssemblyProcess : this.finishedCars) {
-      if (finishedCarsCarAssemblyProcess != null) {
-        carAssemblyProcesses.add(finishedCarsCarAssemblyProcess);
-      }
-    }
-
-    return carAssemblyProcesses;
   }
 
   public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
