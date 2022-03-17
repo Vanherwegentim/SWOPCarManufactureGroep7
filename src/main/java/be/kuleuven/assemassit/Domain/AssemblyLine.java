@@ -189,6 +189,7 @@ public class AssemblyLine {
       for (AssemblyTask assemblyTask : carBodyPost.getWorkPostAssemblyTasks()) {
         assemblyTask.setCompletionTime(minutes);
       }
+
       drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
     }
     //Give the first post a car from the queue;
