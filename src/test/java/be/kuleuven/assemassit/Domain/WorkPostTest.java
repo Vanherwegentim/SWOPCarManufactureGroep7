@@ -71,10 +71,6 @@ public class WorkPostTest {
     assertThrows(NullPointerException.class, () -> workPost.setActiveAssemblyTask(100000));
     workPost.addProcessToWorkPost(carAssemblyProcess);
 
-    for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
-      System.out.println(assemblyTask.getId());
-    }
-
     workPost.setActiveAssemblyTask(workPost.getWorkPostAssemblyTasks().get(0).getId());
     assertEquals(workPost.getActiveAssemblyTask().getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
   }
@@ -85,7 +81,6 @@ public class WorkPostTest {
     WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
-    System.out.println(workPost.givePendingAssemblyTasks());
 
     assertEquals(workPost.givePendingAssemblyTasks().get(0).getActions(), new CarBodyAssemblyTask(carOrder.getCar().getBody()).getActions());
     assertEquals(workPost.givePendingAssemblyTasks().get(1).getActions(), new PaintCarAssemblyTask(carOrder.getCar().getColor()).getActions());
@@ -97,9 +92,7 @@ public class WorkPostTest {
 
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
-    for (AssemblyTask assemblyTask : carAssemblyProcess.getAssemblyTasks()) {
-      System.out.println(assemblyTask.getId());
-    }
+
     workPost.setActiveAssemblyTask(0);
     assertNotNull(workPost.getActiveAssemblyTask());
     workPost.completeAssemblyTask();
@@ -112,9 +105,6 @@ public class WorkPostTest {
     WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
-    for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
-      System.out.println(assemblyTask.getId());
-    }
 
     assertEquals(workPost.findAssemblyTask(0).getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
   }
