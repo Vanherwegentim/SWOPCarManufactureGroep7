@@ -24,6 +24,10 @@ public class ControllerFactory {
     return new OrderController(carManufactoringCompany, new GarageHolderRepository());
   }
 
+  public OrderController createOrderController(GarageHolderRepository garageHolderRepository) {
+    return new OrderController(carManufactoringCompany, garageHolderRepository);
+  }
+
   /**
    * Generate an instance of the assembly line controller
    *
@@ -32,4 +36,5 @@ public class ControllerFactory {
   public AssemblyLineController createAssemblyLineController() {
     return new AssemblyLineController(assemblyLine);
   }
+  
 }
