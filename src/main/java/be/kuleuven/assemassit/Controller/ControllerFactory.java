@@ -24,6 +24,13 @@ public class ControllerFactory {
     return new OrderController(carManufactoringCompany, new GarageHolderRepository());
   }
 
+  /**
+   * Generate an instance of the order controller
+   *
+   * @param carManufactoringCompany can be used for mocking
+   * @param garageHolderRepository  can be used for mocking
+   * @return a new instance of the order controller
+   */
   public OrderController createOrderController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
     return new OrderController(carManufactoringCompany, garageHolderRepository);
   }
@@ -37,6 +44,12 @@ public class ControllerFactory {
     return new AssemblyLineController(assemblyLine);
   }
 
+  /**
+   * Generate an instance of the assembly line controller
+   *
+   * @param assemblyLine | can be used for mocking
+   * @return a new instance of the assembly controller
+   */
   public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
     return new AssemblyLineController(assemblyLine);
   }
