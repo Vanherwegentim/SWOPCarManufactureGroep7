@@ -99,12 +99,14 @@ public class PerformAssemblyTasksTest {
     assertTrue(pendingAssemblyTasks.values().size() == bodyTasks.size());
 
     // Step 4
-    assemblyLineController.setActiveTask(0, 14);
+
+    int id = assemblyLineController.givePendingAssemblyTasks(0).keySet().stream().findFirst().get();
+    assemblyLineController.setActiveTask(0, id);
 
     // Step 5
     List<String> actions = Arrays.asList("Installing the BREAK body");
-    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, 14).stream().allMatch(e -> actions.contains(e)));
-    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, 14).size() == actions.size());
+    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(e -> actions.contains(e)));
+    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, id).size() == actions.size());
 
     // Step 6
     assemblyLineController.completeAssemblyTask(0);
@@ -122,12 +124,14 @@ public class PerformAssemblyTasksTest {
     assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(-1));
 
     // Step 4
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(-1, 14));
+    int id = assemblyLineController.givePendingAssemblyTasks(0).keySet().stream().findFirst().get();
+
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(-1, id));
     assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(0, -1));
-    assemblyLineController.setActiveTask(0, 14);
+    assemblyLineController.setActiveTask(0, id);
 
     // Step 5
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(-1, 14));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(-1, id));
     assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(0, -1));
 
     // Step 6
