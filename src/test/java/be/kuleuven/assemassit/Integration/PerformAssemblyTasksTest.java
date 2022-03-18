@@ -10,11 +10,12 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,32 +28,34 @@ public class PerformAssemblyTasksTest {
   private CarModelRepository mockedCarModelRepository;
   private CarManufactoringCompany carManufactoringCompany;
   private CarModel carModel;
+  private GarageHolder garageHolder;
 
   @BeforeEach
   public void beforeEach() {
     ControllerFactory controllerFactory = new ControllerFactory();
     AssemblyLine assemblyLine = new AssemblyLine();
+    garageHolder = new GarageHolder(0, "John");
 
     mockedGarageHolderRepository = mock(GarageHolderRepository.class);
     mockedCarModelRepository = mock(CarModelRepository.class);
 
+    mockGarageHolders();
+    mockCarModels();
+
     carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-    assemblyLineController = controllerFactory.createAssemblyLineController();
     orderController = controllerFactory.createOrderController(carManufactoringCompany, mockedGarageHolderRepository);
     assemblyLineController = controllerFactory.createAssemblyLineController();
 
-    fillTheSystemWithGarageHolders();
-    fillTheSystemWithCarModels();
+    orderController.logInGarageHolder(garageHolder.getId());
+
     fillTheSystemWithTasks();
   }
 
-  private void fillTheSystemWithGarageHolders() {
-    GarageHolder garageHolder = new GarageHolder(0, "John");
+  private void mockGarageHolders() {
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(garageHolder));
-    orderController.logInGarageHolder(garageHolder.getId());
   }
 
-  private void fillTheSystemWithCarModels() {
+  private void mockCarModels() {
     carModel = new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()));
     when(mockedCarModelRepository.getCarModels()).thenReturn(Arrays.asList(carModel));
   }
@@ -63,25 +66,26 @@ public class PerformAssemblyTasksTest {
     orderController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT");
   }
 
-  /*private void moveTheAssemblyLine() {
+  private void moveTheAssemblyLine() {
     Map<Integer, String> workPosts = assemblyLineController.giveAllWorkPosts();
 
     assemblyLineController.moveAssemblyLine(0);
 
-    for (int id : workPosts.keySet()) {
-      Map<Integer, String> tasks = assemblyLineController.givePendingAssemblyTasks(id);
+    for (int i = 0; i < workPosts.size() - 1; i++) {
+      for (int id : workPosts.keySet()) {
+        Map<Integer, String> tasks = assemblyLineController.givePendingAssemblyTasks(id);
 
-      for (int taskId : tasks.keySet()) {
-        assemblyLineController.setActiveTask(id, taskId);
-        assemblyLineController.completeAssemblyTask(id);
+        for (int taskId : tasks.keySet()) {
+          assemblyLineController.setActiveTask(id, taskId);
+          assemblyLineController.completeAssemblyTask(id);
+        }
       }
+      assemblyLineController.moveAssemblyLine(60);
     }
-    assemblyLineController.moveAssemblyLine(60);
-  }*/
+  }
 
   @Test
   public void mainSuccessScenarioTest() {
-    // step 1
-    
+    System.out.println(assemblyLineController.giveAssemblyLineStatusOverview());
   }
 }
