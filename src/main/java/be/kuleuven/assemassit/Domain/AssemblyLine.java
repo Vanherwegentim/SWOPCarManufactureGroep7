@@ -162,6 +162,7 @@ public class AssemblyLine {
       }
 
       CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
+      // TODO pending false
       carAssemblyProcess.determineCompletionTime();
       finishedCars.add(accessoriesPost.getCarAssemblyProcess());
     }
@@ -217,12 +218,12 @@ public class AssemblyLine {
       return dateTime.plusMinutes((long) giveManufacturingDurationInMinutes() * carAssemblyProcessesQueue.size());*/
 
       // total duration - max duration of work post + max duration * amount
-      return LocalDateTime.now().plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes(maxTimeNeededForWorkPostOnLine() * carAssemblyProcessesQueue.size());
+      return LocalDateTime.now().plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes((long) maxTimeNeededForWorkPostOnLine() * carAssemblyProcessesQueue.size());
     }
 
     // car can not be manufactured today
     // Math.ceil(list - (1) / (2)) = days needed
-    int daysNeeded = Math.max(0,(carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay - 1);
+    int daysNeeded = Math.max(0, (carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay - 1);
 
 
     // return date of tomorrow + days needed + minutes needed
