@@ -460,11 +460,27 @@ public class AssemblyLine {
     return workPost.findAssemblyTask(assemblyTaskId);
   }
 
-  // TODO: do we use this?
+  /**
+   * Set an assembly task as active in a work post
+   *
+   * @param workPost       the work post
+   * @param assemblyTaskId the id of the assembly task
+   * @throws IllegalArgumentException workPost is null | workPost == null
+   * @throws IllegalArgumentException assemblyTaskId is below 0 | assemblyTaskId < 0
+   */
   public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
+    if (workPost == null)
+      throw new IllegalArgumentException("workPost can not be null");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("assemblyTaskId can not be below 0");
     workPost.setActiveAssemblyTask(assemblyTaskId);
   }
 
+  /**
+   * @return a list of cas assembly processes
+   * @creates | result
+   * @inspects | this
+   */
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
     List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
     carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
