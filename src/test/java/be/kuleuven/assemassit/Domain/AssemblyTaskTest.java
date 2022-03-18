@@ -5,7 +5,6 @@ import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,10 +25,10 @@ public class AssemblyTaskTest {
   @Test
   public void completionTimeTest() {
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
-    assemblyTask.setPending(false);
+    assemblyTask.setPending(true);
     assertThrows(IllegalStateException.class, () -> assemblyTask.completionTime());
     assemblyTask.setCompletionTime(60);
-    assemblyTask.setPending(true);
+    assemblyTask.setPending(false);
 
     assert assemblyTask.completionTime() == 60;
   }

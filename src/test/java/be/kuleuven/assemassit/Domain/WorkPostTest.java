@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static be.kuleuven.assemassit.Domain.AssemblyTask.resetRunningId;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkPostTest {
@@ -21,7 +22,7 @@ public class WorkPostTest {
 
   @BeforeEach
   public void beforeEach() {
-
+    resetRunningId();
     list = Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR);
     type = WorkPostType.CAR_BODY_POST;
     this.carOrder = new CarOrder(
@@ -92,9 +93,12 @@ public class WorkPostTest {
   public void completeAssemblyTaskTest() {
     WorkPost workPost = new WorkPost(0, list, type, 60);
 
-    workPost.addProcessToWorkPost(carAssemblyProcess);
 
-    workPost.setActiveAssemblyTask(9);
+    workPost.addProcessToWorkPost(carAssemblyProcess);
+    for (AssemblyTask assemblyTask : carAssemblyProcess.getAssemblyTasks()) {
+      System.out.println(assemblyTask.getId());
+    }
+    workPost.setActiveAssemblyTask(0);
     assertFalse(workPost.getActiveAssemblyTask() == null);
     workPost.completeAssemblyTask();
     assertTrue(workPost.getActiveAssemblyTask() == null);
@@ -121,6 +125,6 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
 
-    assertTrue(workPost.findAssemblyTask(38).equals(new CarBodyAssemblyTask(Body.SEAD)));
+    assertTrue(workPost.findAssemblyTask(0).equals(new CarBodyAssemblyTask(Body.SEAD)));
   }
 }
