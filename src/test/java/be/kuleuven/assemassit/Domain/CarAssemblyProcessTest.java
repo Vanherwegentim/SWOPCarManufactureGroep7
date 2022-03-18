@@ -5,19 +5,19 @@ import be.kuleuven.assemassit.Domain.TaskTypes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CarAssemblyProcessTest {
   private List<AssemblyTask> assemblyTasks;
   private CarOrder carOrder;
 
   @BeforeEach
-  public void beforeEach(){
-     carOrder = new CarOrder(
+  public void beforeEach() {
+    carOrder = new CarOrder(
       new Car(
         new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
         Body.SEAD,
@@ -39,9 +39,10 @@ public class CarAssemblyProcessTest {
 
     );
   }
+
   @Test
-  public void CarAssemblyProcessTest_throws(){
-    assertThrows(NullPointerException.class,()-> new CarAssemblyProcess(null));
+  public void CarAssemblyProcessTest_throws() {
+    assertThrows(NullPointerException.class, () -> new CarAssemblyProcess(null));
 
   }
 
@@ -52,7 +53,7 @@ public class CarAssemblyProcessTest {
     for (int i = 0; i < assemblyTasks.size(); i++) {
 
       //all id's of assemblytask are 0 now so this is trivial
-      assertEquals(carAssemblyProcess.getAssemblyTasks().get(i), (assemblyTasks.get(i)));
+      assertEquals(carAssemblyProcess.getAssemblyTasks().get(i).getActions(), (assemblyTasks.get(i).getActions()));
 
     }
   }

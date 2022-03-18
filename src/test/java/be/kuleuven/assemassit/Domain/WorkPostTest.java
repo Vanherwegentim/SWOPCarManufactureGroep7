@@ -76,7 +76,7 @@ public class WorkPostTest {
     }
 
     workPost.setActiveAssemblyTask(workPost.getWorkPostAssemblyTasks().get(0).getId());
-    assertEquals(workPost.getActiveAssemblyTask(), new CarBodyAssemblyTask(Body.SEAD));
+    assertEquals(workPost.getActiveAssemblyTask().getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
   }
 
 
@@ -86,7 +86,9 @@ public class WorkPostTest {
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
     System.out.println(workPost.givePendingAssemblyTasks());
-    assertEquals(workPost.givePendingAssemblyTasks(), Arrays.asList(new CarBodyAssemblyTask(carOrder.getCar().getBody()), new PaintCarAssemblyTask(carOrder.getCar().getColor())));
+
+    assertEquals(workPost.givePendingAssemblyTasks().get(0).getActions(), new CarBodyAssemblyTask(carOrder.getCar().getBody()).getActions());
+    assertEquals(workPost.givePendingAssemblyTasks().get(1).getActions(), new PaintCarAssemblyTask(carOrder.getCar().getColor()).getActions());
   }
 
   @Test
@@ -114,6 +116,6 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
 
-    assertTrue(workPost.findAssemblyTask(0).equals(new CarBodyAssemblyTask(Body.SEAD)));
+    assertEquals(workPost.findAssemblyTask(0).getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
   }
 }
