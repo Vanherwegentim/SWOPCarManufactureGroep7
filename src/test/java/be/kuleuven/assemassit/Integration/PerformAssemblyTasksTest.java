@@ -25,8 +25,8 @@ public class PerformAssemblyTasksTest {
   private OrderController orderController;
   private GarageHolderRepository mockedGarageHolderRepository;
   private CarModelRepository mockedCarModelRepository;
-  private CarModelRepository carModelRepository;
   private CarManufactoringCompany carManufactoringCompany;
+  private CarModel carModel;
 
   @BeforeEach
   public void beforeEach() {
@@ -36,12 +36,13 @@ public class PerformAssemblyTasksTest {
     mockedGarageHolderRepository = mock(GarageHolderRepository.class);
     mockedCarModelRepository = mock(CarModelRepository.class);
 
-    CarManufactoringCompany carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
+    carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
     assemblyLineController = controllerFactory.createAssemblyLineController();
     orderController = controllerFactory.createOrderController(carManufactoringCompany, mockedGarageHolderRepository);
     assemblyLineController = controllerFactory.createAssemblyLineController();
 
     fillTheSystemWithGarageHolders();
+    fillTheSystemWithCarModels();
     fillTheSystemWithTasks();
   }
 
@@ -52,17 +53,35 @@ public class PerformAssemblyTasksTest {
   }
 
   private void fillTheSystemWithCarModels() {
-    CarModel carModel = new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()));
+    carModel = new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()));
     when(mockedCarModelRepository.getCarModels()).thenReturn(Arrays.asList(carModel));
   }
 
   private void fillTheSystemWithTasks() {
-
+    orderController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
+    orderController.placeCarOrder(0, "SEAD", "RED", "STANDARD", "AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT");
+    orderController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT");
   }
 
-  @Test
-  public void idealFlow() {
-    // step 1
+  /*private void moveTheAssemblyLine() {
+    Map<Integer, String> workPosts = assemblyLineController.giveAllWorkPosts();
 
+    assemblyLineController.moveAssemblyLine(0);
+
+    for (int id : workPosts.keySet()) {
+      Map<Integer, String> tasks = assemblyLineController.givePendingAssemblyTasks(id);
+
+      for (int taskId : tasks.keySet()) {
+        assemblyLineController.setActiveTask(id, taskId);
+        assemblyLineController.completeAssemblyTask(id);
+      }
+    }
+    assemblyLineController.moveAssemblyLine(60);
+  }*/
+
+  @Test
+  public void mainSuccessScenarioTest() {
+    // step 1
+    
   }
 }
