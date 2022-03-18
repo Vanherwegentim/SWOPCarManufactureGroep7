@@ -21,12 +21,12 @@ public class CarAssemblyProcess {
    * @representationObject
    * @representationObjects
    */
-  private List<AssemblyTask> assemblyTasks;
+  private final List<AssemblyTask> assemblyTasks;
   /**
    * @representationObject
    */
-  private CarOrder carOrder;
-  private int id;
+  private final CarOrder carOrder;
+  private final int id;
 
   /**
    * @param carOrder the order that should be connected to the car assembly process
@@ -85,16 +85,6 @@ public class CarAssemblyProcess {
   }
 
   /**
-   * Sets the completion time of a process.
-   * This method is called when a process is finished on the assembly line.
-   *
-   * @mutates | this
-   */
-  public void determineCompletionTime() {
-    carOrder.setCompletionTime(LocalDateTime.now());
-  }
-
-  /**
    * Searches in the list of assembly tasks to find the corresponding assembly task but returns an optional
    *
    * @param id the id of the assembly task
@@ -105,5 +95,16 @@ public class CarAssemblyProcess {
     return assemblyTasks.stream()
       .filter(p -> p.getId() == id)
       .findFirst();
+  }
+
+  /**
+   * Sets the completion time of a process.
+   * This method is called when a process is finished on the assembly line.
+   *
+   * @mutates | this
+   */
+  public void complete() {
+    carOrder.setCompletionTime(LocalDateTime.now());
+    carOrder.setPending(false);
   }
 }

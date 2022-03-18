@@ -13,7 +13,7 @@ public abstract class AssemblyTask {
   private boolean pending;
   private int id;
   private int completionTime;
-  private String name;
+  private final String name;
 
   /**
    * @param name the name of the assembly task
@@ -78,7 +78,7 @@ public abstract class AssemblyTask {
    * @post | getPending() == false
    */
   public void complete() {
-    if (this.pending)
+    if (!this.pending)
       throw new IllegalStateException("The task is already completed");
 
     this.pending = false;

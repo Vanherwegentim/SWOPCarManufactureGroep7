@@ -72,7 +72,7 @@ public class AssemblyLineTest {
     workPostStatusses.put("Drivetrain Post", null);
     workPostStatusses.put("Accessories Post", null);
 
-    assertEquals(workPostStatusses, assemblyLine.giveStatus());
+    assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
 
 //  @Test

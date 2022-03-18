@@ -14,7 +14,7 @@ import java.util.Optional;
  * @invar | getExpectedWorkPostDurationInMinutes() >= 0
  */
 public class WorkPost {
-  private int id;
+  private final int id;
   /**
    * @invar | assemblyTaskTypes != null
    * @invar | carAssemblyProcess.getAssemblyTasks().contains(getActiveAssemblyTask())
@@ -23,7 +23,7 @@ public class WorkPost {
    * @representationObject
    * @representationObjects
    */
-  private List<AssemblyTaskType> assemblyTaskTypes;
+  private final List<AssemblyTaskType> assemblyTaskTypes;
   /**
    * @representationObject
    */
@@ -32,8 +32,8 @@ public class WorkPost {
    * @representationObject
    */
   private CarAssemblyProcess carAssemblyProcess;
-  private WorkPostType workPostType;
-  private int expectedWorkPostDurationInMinutes;
+  private final WorkPostType workPostType;
+  private final int expectedWorkPostDurationInMinutes;
 
   /**
    * @param id
@@ -70,6 +70,15 @@ public class WorkPost {
    */
   public void addProcessToWorkPost(CarAssemblyProcess carAssemblyProcess) {
     this.carAssemblyProcess = carAssemblyProcess;
+  }
+
+  /**
+   * @mutates | this
+   * @inspects | carAssemblyProcess
+   * @post | getCarAssemblyProcess() == null
+   */
+  public void removeCarAssemblyProcess() {
+    this.carAssemblyProcess = null;
   }
 
   public List<AssemblyTaskType> getAssemblyTaskTypes() {
