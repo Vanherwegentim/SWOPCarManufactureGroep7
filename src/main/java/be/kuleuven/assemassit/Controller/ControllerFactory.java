@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
+import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalTime;
 
@@ -15,7 +16,7 @@ public class ControllerFactory {
   }
 
   public OrderController createOrderController() {
-    return new OrderController(carManufactoringCompany);
+    return new OrderController(carManufactoringCompany, new GarageHolderRepository());
   }
 
   public AssemblyLineController createAssemblyLineController() {

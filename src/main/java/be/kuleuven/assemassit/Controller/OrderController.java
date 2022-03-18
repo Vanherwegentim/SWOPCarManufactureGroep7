@@ -27,8 +27,9 @@ public class OrderController {
     if (carManufactoringCompany == null)
       throw new IllegalArgumentException("CarManufactoring company can not be null");
 
+
     this.carManufactoringCompany = carManufactoringCompany;
-    garageHolderRepository = new GarageHolderRepository();
+    this.garageHolderRepository = garageHolderRepository;
     garageHolders = garageHolderRepository.getGarageHolders();
   }
 
@@ -42,7 +43,11 @@ public class OrderController {
     if (garageHolderId < 0)
       throw new IllegalArgumentException("GarageHolderId cannot be smaller than 0");
 
-    this.loggedInGarageHolder = garageHolders.get(garageHolderId);
+    try {
+      this.loggedInGarageHolder = garageHolders.get(garageHolderId);
+    } catch (ArrayIndexOutOfBoundsException e) {
+      throw new IllegalArgumentException("There is no garage holder with the given id");
+    }
   }
 
   /**
@@ -56,6 +61,8 @@ public class OrderController {
    * @return the name of the logged in garage holder
    */
   public String giveLoggedInGarageHolderName() {
+    if (this.loggedInGarageHolder == null)
+      throw new IllegalStateException();
     return loggedInGarageHolder.getName();
   }
 
@@ -240,17 +247,26 @@ public class OrderController {
       throw new IllegalStateException();
 
     CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
-    Car car = new Car
-      (
-        carModel,
-        Body.valueOf(body),
-        Color.valueOf(color),
-        Engine.valueOf(engine),
-        Gearbox.valueOf(gearbox),
-        Seat.valueOf(seats),
-        Airco.valueOf(airco),
-        Wheel.valueOf(wheels)
-      );
+    Car car;
+
+    try {
+      car = new Car
+        (
+          carModel,
+          Body.valueOf(body),
+          Color.valueOf(color),
+          Engine.valueOf(engine),
+          Gearbox.valueOf(gearbox),
+          Seat.valueOf(seats),
+          Airco.valueOf(airco),
+          Wheel.valueOf(wheels)
+        );
+    } catch (IllegalArgumentException e) {
+      if (e.getLocalizedMessage().startsWith("No enum constant")) {
+        throw new IllegalArgumentException("One or more invalid car options were provided");
+      }
+      throw new IllegalArgumentException(e.getMessage());
+    }
 
     CarOrder carOrder = new CarOrder(car);
     loggedInGarageHolder.addCarOrder(carOrder);
