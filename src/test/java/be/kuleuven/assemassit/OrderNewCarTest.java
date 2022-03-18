@@ -68,7 +68,6 @@ public class OrderNewCarTest {
       AUTOMATIC
       Wheels
       COMFORT
-      SPORT
       Color
       RED
       BLUE
@@ -112,19 +111,18 @@ public class OrderNewCarTest {
     orderController.givePendingCarOrders().get(0);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    String expected = String.format("""
-      Order ID: 0    [Estimation time: %s]
-          Car model: Tolkswagen Rolo
-              Body: SEAD
-              Color: RED
-              Engine: STANDARD
-              Gearbox: MANUAL
-              Airco: MANUAL
-              Wheels: COMFORT
-              Seats: LEATHER_BLACK
-            """, estimatedTime.format(formatter));
+    String expected = String.format("    Car model: Tolkswagen Rolo\n" +
+                                    "        Body: SEAD\n" +
+                                    "        Color: RED\n" +
+                                    "        Engine: STANDARD\n" +
+                                    "        Gearbox: MANUAL\n" +
+                                    "        Airco: MANUAL\n" +
+                                    "        Wheels: COMFORT\n" +
+                                    "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
+    String actual = orderController.givePendingCarOrders().stream().reduce("", String::concat);
+    actual = actual.substring(actual.indexOf('\n') + 1);
 
-    assertEquals(expected, orderController.givePendingCarOrders().stream().reduce("", String::concat));
+    assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
     LocalDateTime localDateTimeNow = LocalDateTime.now();
@@ -269,19 +267,19 @@ public class OrderNewCarTest {
     orderController.givePendingCarOrders().get(0);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    String expected = String.format("""
-      Order ID: 0    [Estimation time: %s]
-          Car model: Tolkswagen Rolo
-              Body: SEAD
-              Color: RED
-              Engine: STANDARD
-              Gearbox: MANUAL
-              Airco: MANUAL
-              Wheels: COMFORT
-              Seats: LEATHER_BLACK
-            """, estimatedTime.format(formatter));
+    String expected = String.format("    Car model: Tolkswagen Rolo\n" +
+                                    "        Body: SEAD\n" +
+                                    "        Color: RED\n" +
+                                    "        Engine: STANDARD\n" +
+                                    "        Gearbox: MANUAL\n" +
+                                    "        Airco: MANUAL\n" +
+                                    "        Wheels: COMFORT\n" +
+                                    "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
 
-    assertEquals(expected, orderController.givePendingCarOrders().stream().reduce("", String::concat));
+    String actual = orderController.givePendingCarOrders().stream().reduce("", String::concat);
+    actual = actual.substring(actual.indexOf('\n') + 1);
+
+    assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
     LocalDateTime localDateTimeNow = LocalDateTime.now();
