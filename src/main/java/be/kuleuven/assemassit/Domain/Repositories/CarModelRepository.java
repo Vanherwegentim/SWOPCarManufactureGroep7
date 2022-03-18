@@ -20,7 +20,6 @@ public class CarModelRepository {
     return List.copyOf(carModels);
   }
 
-  //TODO: if we get more Car Models with other options, we need to refactor this method
   private void readCarModelsFromFile() {
     List<CarModel> carModels = new ArrayList<>();
     try (Scanner input = new Scanner(new FileReader("src/main/resources/car-models.txt"))) {
@@ -30,16 +29,16 @@ public class CarModelRepository {
         String name = input.nextLine();
         carModels.add(
           new CarModel(
-          id,
-          name,
-          Arrays.asList(Wheel.values()),
-          Arrays.asList(Gearbox.values()),
-          Arrays.asList(Seat.values()),
-          Arrays.asList(Body.values()),
-          Arrays.asList(Color.values()),
-          Arrays.asList(Engine.values()),
-          Arrays.asList(Airco.values())
-        ));
+            id,
+            name,
+            Arrays.asList(Wheel.values()),
+            Arrays.asList(Gearbox.values()),
+            Arrays.asList(Seat.values()),
+            Arrays.asList(Body.values()),
+            Arrays.asList(Color.values()),
+            Arrays.asList(Engine.values()),
+            Arrays.asList(Airco.values())
+          ));
       }
 
       this.carModels = carModels;
