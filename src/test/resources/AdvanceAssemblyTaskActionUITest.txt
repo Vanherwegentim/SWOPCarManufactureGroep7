@@ -1,8 +1,49 @@
 Ejava -cp target/classes be.kuleuven.assemassit.App
+>
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
 <1
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Go back
+<2
+>
+>Welcome Manager
+>Please choose an action:
+> 1: Advance assembly line
+>-1: Logout and go back
+<1
+>
+>Current assembly line status:
+>  * Car Body Post
+>      - no pending or active tasks
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>
+>Future assembly line status:
+>  * Car Body Post
+>      - no pending or active tasks
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>
+>Please choose an action:
+> 1: Move assembly line forward
+>-1: Go back
+<-1
+>
+>Welcome Manager
+>Please choose an action:
+> 1: Advance assembly line
+>-1: Logout and go back
+<-1
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -16,12 +57,12 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1:  Louis Brooks
 > 2:  Charlie Hunt
 > 3:  Sebastian Henderson
+>-1: Go back
 <1
 >
 >Welcome  Louis Brooks
 >Please choose an action:
 > 1: Order new car
-> 2: FAST Order car -> logout -> go back
 >-1: Logout and go back
 <1
 >
@@ -37,29 +78,30 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Please choose the model:
 > 0:  Tolkswagen Rolo
 > 1:  Limoën C4
-<0
->Chosen model:  Tolkswagen Rolo
+>-1: Go back
+<1
+>Chosen model:  Limoën C4
 >
 >Choose the option for: GearBox
 > 0: MANUAL
 > 1: AUTOMATIC
 >-1: Cancel placing the order
-<0
->Chosen: MANUAL
+<1
+>Chosen: AUTOMATIC
 >
 >Choose the option for: Airco
 > 0: MANUAL
 > 1: AUTOMATIC
 >-1: Cancel placing the order
-<0
->Chosen: MANUAL
+<1
+>Chosen: AUTOMATIC
 >
 >Choose the option for: Wheels
 > 0: COMFORT
 > 1: SPORT
 >-1: Cancel placing the order
-<0
->Chosen: COMFORT
+<1
+>Chosen: SPORT
 >
 >Choose the option for: Color
 > 0: RED
@@ -67,30 +109,30 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 2: BLACK
 > 3: WHITE
 >-1: Cancel placing the order
-<0
->Chosen: RED
+<1
+>Chosen: BLUE
 >
 >Choose the option for: Body
 > 0: SEAD
 > 1: BREAK
 >-1: Cancel placing the order
-<0
->Chosen: SEAD
+<1
+>Chosen: BREAK
 >
 >Choose the option for: Engine
 > 0: STANDARD
 > 1: PERFORMANCE
 >-1: Cancel placing the order
-<0
->Chosen: STANDARD
+<1
+>Chosen: PERFORMANCE
 >
 >Choose the option for: Seats
 > 0: LEATHER_BLACK
 > 1: LEATHER_WHITE
 > 2: VINYL_GREY
 >-1: Cancel placing the order
-<0
->Chosen: LEATHER_BLACK
+<1
+>Chosen: LEATHER_WHITE
 >
 >The estimated completion date for the order is: %date%
 >
@@ -100,14 +142,14 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Orders placed by:  Louis Brooks
 >Pending:
 > 1: Order ID: 0    [Estimation time: %date%]
->    Car model:  Tolkswagen Rolo
->        Body: SEAD
->        Color: RED
->        Engine: STANDARD
->        Gearbox: MANUAL
->        Airco: MANUAL
->        Wheels: COMFORT
->        Seats: LEATHER_BLACK
+>    Car model:  Limoën C4
+>        Body: BREAK
+>        Color: BLUE
+>        Engine: PERFORMANCE
+>        Gearbox: AUTOMATIC
+>        Airco: AUTOMATIC
+>        Wheels: SPORT
+>        Seats: LEATHER_WHITE
 >
 >History:
 >
@@ -119,13 +161,8 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Welcome  Louis Brooks
 >Please choose an action:
 > 1: Order new car
-> 2: FAST Order car -> logout -> go back
 >-1: Logout and go back
 <-1
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<1
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -134,7 +171,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >-1: Go back
 <2
 >
->Welcome
+>Welcome Manager
 >Please choose an action:
 > 1: Advance assembly line
 >-1: Logout and go back
@@ -158,8 +195,8 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >      - no pending or active tasks
 >
 >Please choose an action:
->1: Move assembly line forward
->0: Go back
+> 1: Move assembly line forward
+>-1: Go back
 <1
 >
 >What was the amount of minutes spent during the current phase:
@@ -177,13 +214,66 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Press ENTER to continue...
 <\n
 >
->Welcome
+>Welcome Manager
+>Please choose an action:
+> 1: Advance assembly line
+>-1: Logout and go back
+<1
+>
+>Current assembly line status:
+>  * Car Body Post
+>      - Assembly car body (pending)
+>      - Paint car (pending)
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>
+>Future assembly line status:
+>  * Car Body Post
+>      - no pending or active tasks
+>  * Drivetrain Post
+>      - Insert gearbox (pending)
+>      - Insert engine (pending)
+>  * Accessories Post
+>      - no pending or active tasks
+>
+>Please choose an action:
+> 1: Move assembly line forward
+>-1: Go back
+<1
+>
+>What was the amount of minutes spent during the current phase:
+<60
+>These work posts are stopping you from moving forward:
+>CAR_BODY_POST
+>
+>Current assembly line status:
+>  * Car Body Post
+>      - Assembly car body (pending)
+>      - Paint car (pending)
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
+>Press ENTER to continue...
+<\n
+>
+>Welcome Manager
 >Please choose an action:
 > 1: Advance assembly line
 >-1: Logout and go back
 <-1
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Go back
+<-1
+>
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
 <-1
-K0
+X0
