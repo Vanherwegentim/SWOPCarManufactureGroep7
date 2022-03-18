@@ -176,8 +176,6 @@ public class AssemblyLineControllerTest {
         actual += String.format(" %s%n", task);
       }
     }
-
-    System.out.println(actual);
   }
 
   @Test
