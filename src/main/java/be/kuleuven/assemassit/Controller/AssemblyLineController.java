@@ -12,15 +12,33 @@ public class AssemblyLineController {
 
   private final AssemblyLine assemblyLine;
 
+  /**
+   * @param assemblyLine
+   * @throws IllegalArgumentException assembly line is null | assemblyLine == null
+   */
   public AssemblyLineController(AssemblyLine assemblyLine) {
+    if (assemblyLine == null)
+      throw new IllegalArgumentException("AssemblyLine can not be null");
     this.assemblyLine = assemblyLine;
   }
 
+  /**
+   * Generate a map of all work posts, the key of the map is the work post id, the value is the work post name
+   *
+   * @return map of work posts
+   */
   public Map<Integer, String> giveAllWorkPosts() {
     return Stream.of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
       .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
   }
 
+  /**
+   * Give the pending assembly tasks in a map, the key is the id of a task, the value is the name of a task
+   *
+   * @param postId the work post id to get the pending assembly tasks from
+   * @return a map of pending assembly tasks
+   * @throws IllegalArgumentException postId is smaller than 0 | postId < 0
+   */
   public Map<Integer, String> givePendingAssemblyTasks(int postId) {
     if (postId < 0)
       throw new IllegalArgumentException("postId cannot be smaller than 0");
@@ -32,18 +50,37 @@ public class AssemblyLineController {
       .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
   }
 
+  /**
+   * Give the status of an assembly line, this is a map, the key of the map is the work post name
+   * the value is a list of tasks from the work post (pending, completed and active)
+   *
+   * @return a map that represents the status of an assembly line
+   */
   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     HashMap<String, AssemblyTask> workPostsWithActiveTasks = assemblyLine.giveActiveTasksOverview();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
     return evaluateAssemblyLineStatusOverview(workPostsWithActiveTasks, workPostPairs);
   }
 
+  /**
+   * Give the future status of an assembly line, this is a map, the key of the map is the work post name
+   * the value is a list of tasks from the work post (pending, completed and active)
+   *
+   * @return a map that represents the future status of an assembly line
+   */
   public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
     HashMap<String, AssemblyTask> workPostsWithActiveTasks = assemblyLine.giveActiveTasksOverview();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
     return evaluateAssemblyLineStatusOverview(workPostsWithActiveTasks, workPostPairs);
   }
 
+  /**
+   * This method makes sure that it is visible which tasks are pending, done and active
+   *
+   * @param workPostsWithActiveTasks
+   * @param workPostPairs
+   * @return a map with ids as key and a list of assemblyTasks as value
+   */
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
     HashMap<String, AssemblyTask> workPostsWithActiveTasks, HashMap<String, List<AssemblyTask>> workPostPairs) {
 
@@ -71,6 +108,14 @@ public class AssemblyLineController {
     return output;
   }
 
+  /**
+   * Move the assembly line forward if possible
+   * Also hand in the minutes spend during that phase
+   *
+   * @param minutes
+   * @return a list of blocking work posts (if there are any)
+   * @throws IllegalArgumentException minutes is smaller than 0 | minutes < 0
+   */
   public List<String> moveAssemblyLine(int minutes) {
     if (minutes < 0)
       throw new IllegalArgumentException("Minutes cannot be smaller than 0");
@@ -90,12 +135,26 @@ public class AssemblyLineController {
     }
   }
 
+  /**
+   * Complete the active assembly task in a specific work post
+   *
+   * @param workPostId the id of the work post
+   * @throws IllegalArgumentException workPostId is lower than 0 | workPostId < °
+   */
   public void completeAssemblyTask(int workPostId) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
     assemblyLine.completeAssemblyTask(workPostId);
   }
 
+  /**
+   * Sets a task active in the work post
+   *
+   * @param workPostId     the id of the work post
+   * @param assemblyTaskId the id of the task in the work post
+   * @throws IllegalArgumentException workPostId is lower than 0 | workPostId < 0
+   * @throws IllegalArgumentException assemblyTaskId is lower than 0 | assemblyTaskId < 0
+   */
   public void setActiveTask(int workPostId, int assemblyTaskId) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
@@ -106,6 +165,15 @@ public class AssemblyLineController {
     assemblyLine.setActiveTask(workPost, assemblyTaskId);
   }
 
+  /**
+   * Give the list of actions of a corresponding work post
+   *
+   * @param workPostId     the id of the work post
+   * @param assemblyTaskId the task id where the actions should be coming from
+   * @return a list of assembly task actions
+   * @throws IllegalArgumentException workPostId is smaller than 0 | workPostId < 0
+   * @throws IllegalArgumentException assemblyTaskId is smaller than 0 | assemblyTaskId < 0
+   */
   public List<String> giveAssemblyTaskActions(int workPostId, int assemblyTaskId) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");

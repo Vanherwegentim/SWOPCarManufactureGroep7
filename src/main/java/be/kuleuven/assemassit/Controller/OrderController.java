@@ -19,12 +19,25 @@ public class OrderController {
   private final CarManufactoringCompany carManufactoringCompany;
   private GarageHolder loggedInGarageHolder;
 
+  /**
+   * @param carManufactoringCompany
+   * @post | this.carManufactoringCompany = carManufactoringCompany
+   */
   public OrderController(CarManufactoringCompany carManufactoringCompany) {
+    if (carManufactoringCompany == null)
+      throw new IllegalArgumentException("CarManufactoring company can not be null");
+
     this.carManufactoringCompany = carManufactoringCompany;
     garageHolderRepository = new GarageHolderRepository();
     garageHolders = garageHolderRepository.getGarageHolders();
   }
 
+  /**
+   * log in a garage holder
+   *
+   * @param garageHolderId
+   * @throws IllegalArgumentException garageHolderId is below 0 | garageHolderId < 0
+   */
   public void logInGarageHolder(int garageHolderId) {
     if (garageHolderId < 0)
       throw new IllegalArgumentException("GarageHolderId cannot be smaller than 0");
@@ -32,20 +45,35 @@ public class OrderController {
     this.loggedInGarageHolder = garageHolders.get(garageHolderId);
   }
 
+  /**
+   * Log off the garage holder
+   */
   public void logOffGarageHolder() {
     this.loggedInGarageHolder = null;
   }
 
+  /**
+   * @return the name of the logged in garage holder
+   */
   public String giveLoggedInGarageHolderName() {
     return loggedInGarageHolder.getName();
   }
 
+  /**
+   * @return a map with garage holders, the key is the id and de value is the name of the garage holder
+   */
   public Map<Integer, String> giveGarageHolders() {
     return this.garageHolders
       .stream()
       .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
   }
 
+  /**
+   * @param orderId to get the completion date from
+   * @return the completion date
+   * @throws IllegalArgumentException OrderId is below 0 | orderId < 0
+   * @throws IllegalStateException    loggedInGarageHolder is null | loggedInGarageHolder == null
+   */
   public LocalDateTime getCompletionDate(int orderId) {
     if (orderId < 0)
       throw new IllegalArgumentException("OrderId cannot be smaller than 0");
@@ -55,6 +83,14 @@ public class OrderController {
     return loggedInGarageHolder.getCompletionTimeFromOrder(orderId);
   }
 
+  /**
+   * get an order from the garage holder
+   *
+   * @param orderId the id of the order
+   * @return the car order
+   * @throws IllegalArgumentException orderId is below 0 | orderId < 0
+   * @throws IllegalStateException    loggedInGarageHolder is null | loggedInGarageHolder == null
+   */
   public CarOrder chooseOrder(int orderId) {
     if (orderId < 0)
       throw new IllegalArgumentException("OrderId cannot be smaller than 0");
@@ -64,6 +100,12 @@ public class OrderController {
     return loggedInGarageHolder.getOrder(orderId);
   }
 
+  /**
+   * Give the pending car orders from the logged in garage holder
+   *
+   * @return a list of pending car orders from the logged in garage holder
+   * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
+   */
   public List<String> givePendingCarOrders() {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
@@ -76,6 +118,12 @@ public class OrderController {
       .collect(Collectors.toList());
   }
 
+  /**
+   * Give the completed car orders from the logged in garage holder
+   *
+   * @return a list of completed car orders from the logged in garage holder
+   * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
+   */
   public List<String> giveCompletedCarOrders() {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
@@ -136,6 +184,11 @@ public class OrderController {
     return result.toString();
   }
 
+  /**
+   * A list of all car models that can be manufactured by the company is returned
+   *
+   * @return the list of all car models
+   */
   public Map<Integer, String> giveListOfCarModels() {
     return this.carManufactoringCompany
       .getCarModels()
@@ -143,7 +196,17 @@ public class OrderController {
       .collect(Collectors.toMap(CarModel::getId, CarModel::getName));
   }
 
+  /**
+   * A list of all possible options from a specific car model is returned
+   *
+   * @param carModelId the id of the car model
+   * @return the list of possible options
+   * @throws IllegalArgumentException carModelId is below 0 | carModelId < 0
+   */
   public Map<String, List<String>> givePossibleOptionsOfCarModel(int carModelId) {
+    if (carModelId < 0)
+      throw new IllegalArgumentException("carModelId can not be lower than 0");
+
     Map<String, List<String>> carModelOptions = new HashMap<>();
     CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
 
@@ -158,6 +221,20 @@ public class OrderController {
     return carModelOptions;
   }
 
+  /**
+   * A new car order is made and the estimated delivery time is calculated
+   *
+   * @param carModelId
+   * @param body
+   * @param color
+   * @param engine
+   * @param gearbox
+   * @param seats
+   * @param airco
+   * @param wheels
+   * @return the estimated delivery time of the new car order
+   * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
+   */
   public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
