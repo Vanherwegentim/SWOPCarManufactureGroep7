@@ -64,16 +64,20 @@ public class CarManufactoringCompany {
     return assemblyLine;
   }
 
+  /**
+   * @return list of car models
+   * @creates | result
+   */
   public List<CarModel> getCarModels() {
     return List.copyOf(carModels);
   }
 
   public LocalTime getOpeningTime() {
-    return LocalTime.of(openingTime.getHour(), openingTime.getMinute());
+    return openingTime;
   }
 
   public LocalTime getClosingTime() {
-    return LocalTime.of(closingTime.getHour(), closingTime.getMinute());
+    return closingTime;
   }
 
   /**
