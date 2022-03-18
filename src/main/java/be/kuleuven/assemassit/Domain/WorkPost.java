@@ -171,10 +171,13 @@ public class WorkPost {
   }
 
   /**
+   * @throws IllegalStateException assembly task is null | getActiveAssemblyTask() == null
    * @mutates | this
    * @post | getActiveAssemblyTask() == null
    */
   public void completeAssemblyTask() {
+    if (activeAssemblyTask == null)
+      throw new IllegalStateException("There is no active assembly task in this work post");
     activeAssemblyTask.complete();
     activeAssemblyTask = null;
   }

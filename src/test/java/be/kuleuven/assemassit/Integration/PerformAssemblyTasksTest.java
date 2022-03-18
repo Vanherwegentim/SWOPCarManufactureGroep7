@@ -15,8 +15,10 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -87,6 +89,56 @@ public class PerformAssemblyTasksTest {
 
   @Test
   public void mainSuccessScenarioTest() {
-    System.out.println(assemblyLineController.giveAssemblyLineStatusOverview());
+    // Step 1
+    assemblyLineController.giveAllWorkPosts();
+
+    // Step 2 and 3
+    List<String> bodyTasks = Arrays.asList("Paint car", "Assembly car body");
+    Map<Integer, String> pendingAssemblyTasks = assemblyLineController.givePendingAssemblyTasks(0);
+    assertTrue(pendingAssemblyTasks.values().stream().allMatch(e -> bodyTasks.contains(e)));
+    assertTrue(pendingAssemblyTasks.values().size() == bodyTasks.size());
+
+    // Step 4
+    assemblyLineController.setActiveTask(0, 14);
+
+    // Step 5
+    List<String> actions = Arrays.asList("Installing the BREAK body");
+    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, 14).stream().allMatch(e -> actions.contains(e)));
+    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, 14).size() == actions.size());
+
+    // Step 6
+    assemblyLineController.completeAssemblyTask(0);
+
+    // Step 7
+    assertFalse(assemblyLineController.givePendingAssemblyTasks(0).values().contains("Installing the BREAK body"));
+  }
+
+  @Test
+  public void mainSuccessScenario_throwsIllegalArgumentException() {
+    // Step 1
+    assemblyLineController.giveAllWorkPosts();
+
+    // Step 2 and 3
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(-1));
+
+    // Step 4
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(-1, 14));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(0, -1));
+    assemblyLineController.setActiveTask(0, 14);
+
+    // Step 5
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(-1, 14));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(0, -1));
+
+    // Step 6
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.completeAssemblyTask(-1));
+
+    // Step 7
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(-1));
+  }
+
+  @Test
+  public void mainSuccessScenario_throwsIllegalStateException() {
+    assertThrows(IllegalStateException.class, () -> assemblyLineController.completeAssemblyTask(0));
   }
 }
