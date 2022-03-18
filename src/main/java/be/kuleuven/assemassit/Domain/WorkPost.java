@@ -7,17 +7,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @invar | getAssemblyTaskTypes() != null
+ * @invar | getCarAssemblyProcess().getAssemblyTasks().contains(getActiveAssemblyTask())
+ * @invar | getWorkPostType() != null
+ * @invar | getExpectedWorkPostDurationInMinutes() >= 0
+ */
 public class WorkPost {
   private int id;
+  /**
+   * @invar | assemblyTaskTypes != null
+   * @invar | carAssemblyProcess.getAssemblyTasks().contains(getActiveAssemblyTask())
+   * @invar | workPostType != null
+   * @invar | expectedWorkPostDurationInMinutes >= 0
+   * @representationObject
+   * @representationObjects
+   */
   private List<AssemblyTaskType> assemblyTaskTypes;
+  /**
+   * @representationObject
+   */
   private AssemblyTask activeAssemblyTask;
+  /**
+   * @representationObject
+   */
   private CarAssemblyProcess carAssemblyProcess;
   private WorkPostType workPostType;
   private int expectedWorkPostDurationInMinutes;
 
+  /**
+   * @param id
+   * @param assemblyTaskTypes                 the list of task types that can be handled by the work post
+   * @param workPostType                      the type of the work post
+   * @param expectedWorkPostDurationInMinutes the total duration of the work post to complete all possible tasks from process in minutes
+   * @post | this.id = id
+   * @post | this.assemblyTaskTypes != null
+   * @post | this.assemblyTaskTypes.size().equals(assemblyTaskTypes.size())
+   * @post | this.workPostType = workPostType
+   * @post | this.expectedWorkPostDurationInMinutes = expectedWorkPostDurationInMinutes
+   * @mutates | this
+   */
   public WorkPost(int id, List<AssemblyTaskType> assemblyTaskTypes, WorkPostType workPostType, int expectedWorkPostDurationInMinutes) {
     this.id = id;
-    this.assemblyTaskTypes = assemblyTaskTypes;
+    this.assemblyTaskTypes = new ArrayList<>(assemblyTaskTypes);
     this.workPostType = workPostType;
     this.expectedWorkPostDurationInMinutes = expectedWorkPostDurationInMinutes;
   }
@@ -30,6 +62,12 @@ public class WorkPost {
     return this.workPostType;
   }
 
+  /**
+   * @param carAssemblyProcess
+   * @mutates | this
+   * @inspects | carAssemblyProcess
+   * @post | getCarAssemblyProcess().contains(carAssemblyProcess)
+   */
   public void addProcessToWorkPost(CarAssemblyProcess carAssemblyProcess) {
     this.carAssemblyProcess = carAssemblyProcess;
   }
@@ -46,6 +84,9 @@ public class WorkPost {
     return this.expectedWorkPostDurationInMinutes;
   }
 
+  /**
+   * @return
+   */
   public CarAssemblyProcess removeProcessFromWorkPost() {
     CarAssemblyProcess temporaryProcess = this.carAssemblyProcess;
     this.carAssemblyProcess = null;
