@@ -10,10 +10,10 @@ public abstract class AssemblyTask {
    * @invar | name != null && !name.equals("")
    */
   private static int runningId = 0;
+  private final String name;
   private boolean pending;
   private int id;
   private int completionTime;
-  private final String name;
 
   /**
    * @param name the name of the assembly task
@@ -32,6 +32,13 @@ public abstract class AssemblyTask {
     this.pending = true;
     this.id = AssemblyTask.runningId++;
     this.name = name;
+  }
+
+  /**
+   * This method should only be used for testing purposes
+   */
+  public static void resetRunningId() {
+    AssemblyTask.runningId = 0;
   }
 
   public boolean getPending() {
