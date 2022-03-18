@@ -7,6 +7,7 @@ import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI
 import be.kuleuven.assemassit.UI.Actions.Overviews.ManagerActionsOverviewUI;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class AuthenticateUI {
@@ -26,8 +27,12 @@ public class AuthenticateUI {
 
       switch (choice) {
         case 1 -> {
-          int selectedGarageHolderId = displayGarageHolderForm(orderController.giveGarageHolders());
-          orderController.logInGarageHolder(selectedGarageHolderId);
+          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(orderController.giveGarageHolders());
+          if (selectedGarageHolderIdOptional.isEmpty()) {
+            AuthenticateUI.run(orderController, assemblyLineController);
+            return;
+          }
+          orderController.logInGarageHolder(selectedGarageHolderIdOptional.get());
           GarageHolderActionsOverviewUI.run(orderController, assemblyLineController);
         }
         case 2 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
@@ -37,7 +42,7 @@ public class AuthenticateUI {
     } while (choice != -1 && (choice < 1 || choice > 3));
   }
 
-  private static int displayGarageHolderForm(Map<Integer, String> garageHolders) {
+  private static Optional<Integer> displayGarageHolderForm(Map<Integer, String> garageHolders) {
     Scanner scanner = new Scanner(System.in);
     int garageHolderId;
 
@@ -45,9 +50,14 @@ public class AuthenticateUI {
       System.out.println();
       System.out.println("Please select your name:");
       garageHolders.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
+      System.out.println("-1: Go back");
+
       garageHolderId = scanner.nextInt();
+
+      if (garageHolderId == -1) return Optional.empty();
+
     } while (!garageHolders.containsKey(garageHolderId));
 
-    return garageHolderId;
+    return Optional.of(garageHolderId);
   }
 }
