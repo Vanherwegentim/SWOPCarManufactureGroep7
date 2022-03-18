@@ -139,8 +139,16 @@ public class AssemblyLine {
     return workPost.givePendingAssemblyTasks();
   }
 
-  // TODO: do we keep this method?
+  /**
+   * Complete the active assembly task of a work post
+   *
+   * @param workPostId the work post id
+   * @throws IllegalArgumentException workPostId is below 0 | workPostId < 0
+   * @mutates | this
+   */
   public void completeAssemblyTask(int workPostId) {
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId can not be below 0");
     WorkPost workPost = findWorkPost(workPostId);
     workPost.completeAssemblyTask();
   }
@@ -230,10 +238,17 @@ public class AssemblyLine {
    * @param allAssemblyTasks  the list of assembly tasks where the filter should be applied on
    * @param assemblyTaskTypes the list of assembly task types that has to be filtered on
    * @return
+   * @throws IllegalArgumentException the list of assembly tasks is null or empty | (allAssemblyTasks == null || allAssemblyTasks.isEmpty())
+   * @throws IllegalArgumentException the list of assembly tasks types is null or empty | (assemblyTaskTypes == null || assemblyTaskTypes.isEmpty())
    * @inspects | this
    * @creates | result
    */
   private List<AssemblyTask> filterTasksOfSpecificTypeList(List<AssemblyTask> allAssemblyTasks, List<AssemblyTaskType> assemblyTaskTypes) {
+    if (allAssemblyTasks == null || allAssemblyTasks.isEmpty())
+      throw new IllegalArgumentException("The list of assembly tasks can not be null or empty");
+    if (assemblyTaskTypes == null || assemblyTaskTypes.isEmpty())
+      throw new IllegalArgumentException("The list of assembly tasks types can not be null or empty");
+
     return allAssemblyTasks.stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
   }
 
@@ -272,7 +287,6 @@ public class AssemblyLine {
   public boolean canMove() {
     List<WorkPost> workPosts = this.giveWorkPostsAsList();
     for (WorkPost workPost : workPosts) {
-      //TODO uitleg verwijderen canMove moet false returnen wanneer de workpost nog niet klaar is, dus wanneer er nog taken niet zijn afgewerkt
       if (!workPost.givePendingAssemblyTasks().isEmpty()) {
         return false;
       }
@@ -285,10 +299,13 @@ public class AssemblyLine {
    * The assembly process is moved from one work post to another on the assembly line.
    *
    * @param minutes the amount of minutes spent during the current phase
-   * @throws IllegalStateException when the assembly line can not be moved | !canMove()
+   * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
+   * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
   public void move(int minutes) {
+    if (minutes < 0)
+      throw new IllegalArgumentException("Minutes can not be below 0");
     if (!canMove()) {
       throw new IllegalStateException("AssemblyLine cannot be moved forward!");
     }
@@ -322,7 +339,7 @@ public class AssemblyLine {
       carBodyPost.removeCarAssemblyProcess();
     }
     //Give the first post a car from the queue;
-    //The queue can not be empty and there still must be enough time to produce the whole car
+    //The queue can not be empty and there must still be enough time to produce the whole car
     if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
       carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
     }
@@ -362,11 +379,6 @@ public class AssemblyLine {
 
     // car can still be manufactured today
     if (carAssemblyProcessesQueue.size() <= remainingCarsForToday) {
-      /*LocalDateTime dateTime = LocalDateTime.now();
-      if (dateTime.getHour() < 6)
-        dateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), dateTime.getDayOfMonth(), 6, 0);
-      return dateTime.plusMinutes((long) giveManufacturingDurationInMinutes() * carAssemblyProcessesQueue.size());*/
-
       // total duration - max duration of work post + max duration * amount
       return LocalDateTime.now().plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes((long) maxTimeNeededForWorkPostOnLine() * carAssemblyProcessesQueue.size());
     }
@@ -442,11 +454,27 @@ public class AssemblyLine {
     return workPost.findAssemblyTask(assemblyTaskId);
   }
 
-  // TODO: do we use this?
+  /**
+   * Set an assembly task as active in a work post
+   *
+   * @param workPost       the work post
+   * @param assemblyTaskId the id of the assembly task
+   * @throws IllegalArgumentException workPost is null | workPost == null
+   * @throws IllegalArgumentException assemblyTaskId is below 0 | assemblyTaskId < 0
+   */
   public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
+    if (workPost == null)
+      throw new IllegalArgumentException("workPost can not be null");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("assemblyTaskId can not be below 0");
     workPost.setActiveAssemblyTask(assemblyTaskId);
   }
 
+  /**
+   * @return a list of cas assembly processes
+   * @creates | result
+   * @inspects | this
+   */
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
     List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
     carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());

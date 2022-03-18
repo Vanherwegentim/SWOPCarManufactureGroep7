@@ -1,25 +1,5 @@
 Ejava -cp target/classes be.kuleuven.assemassit.App
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<-1
-X0
-Ejava -cp target/classes be.kuleuven.assemassit.App
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<8
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<1
 >
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Go back
-<-1
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
@@ -37,57 +17,16 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1:  Louis Brooks
 > 2:  Charlie Hunt
 > 3:  Sebastian Henderson
-<0
->
->Welcome  Joe Lamb
->Please choose an action:
-> 1: Order new car
-> 2: FAST Order car -> logout -> go back
->-1: Logout and go back
-<-1
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
 >-1: Go back
 <1
 >
->Please select your name:
-> 0:  Joe Lamb
-> 1:  Louis Brooks
-> 2:  Charlie Hunt
-> 3:  Sebastian Henderson
-<0
->
->Welcome  Joe Lamb
+>Welcome  Louis Brooks
 >Please choose an action:
 > 1: Order new car
-> 2: FAST Order car -> logout -> go back
 >-1: Logout and go back
 <1
 >
->Orders placed by:  Joe Lamb
->Pending:
->History:
->
->Please choose an action:
-> 1: Place a new order
->-1: Go back
-<-1
->
->Welcome  Joe Lamb
->Please choose an action:
-> 1: Order new car
-> 2: FAST Order car -> logout -> go back
->-1: Logout and go back
-<1
->
->Orders placed by:  Joe Lamb
+>Orders placed by:  Louis Brooks
 >Pending:
 >History:
 >
@@ -99,17 +38,79 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Please choose the model:
 > 0:  Tolkswagen Rolo
 > 1:  Limoën C4
-<0
->Chosen model:  Tolkswagen Rolo
+>-1: Go back
+<1
+>Chosen model:  Limoën C4
 >
 >Choose the option for: GearBox
 > 0: MANUAL
 > 1: AUTOMATIC
 >-1: Cancel placing the order
-<-1
+<1
+>Chosen: AUTOMATIC
 >
->Orders placed by:  Joe Lamb
+>Choose the option for: Airco
+> 0: MANUAL
+> 1: AUTOMATIC
+>-1: Cancel placing the order
+<1
+>Chosen: AUTOMATIC
+>
+>Choose the option for: Wheels
+> 0: COMFORT
+> 1: SPORT
+>-1: Cancel placing the order
+<1
+>Chosen: SPORT
+>
+>Choose the option for: Color
+> 0: RED
+> 1: BLUE
+> 2: BLACK
+> 3: WHITE
+>-1: Cancel placing the order
+<1
+>Chosen: BLUE
+>
+>Choose the option for: Body
+> 0: SEAD
+> 1: BREAK
+>-1: Cancel placing the order
+<1
+>Chosen: BREAK
+>
+>Choose the option for: Engine
+> 0: STANDARD
+> 1: PERFORMANCE
+>-1: Cancel placing the order
+<1
+>Chosen: PERFORMANCE
+>
+>Choose the option for: Seats
+> 0: LEATHER_BLACK
+> 1: LEATHER_WHITE
+> 2: VINYL_GREY
+>-1: Cancel placing the order
+<1
+>Chosen: LEATHER_WHITE
+>
+>The estimated completion date for the order is: %date%
+>
+>Press ENTER to continue...
+<\n
+>
+>Orders placed by:  Louis Brooks
 >Pending:
+> 1: Order ID: 0    [Estimation time: %date%]
+>    Car model:  Limoën C4
+>        Body: BREAK
+>        Color: BLUE
+>        Engine: PERFORMANCE
+>        Gearbox: AUTOMATIC
+>        Airco: AUTOMATIC
+>        Wheels: SPORT
+>        Seats: LEATHER_WHITE
+>
 >History:
 >
 >Please choose an action:
@@ -120,8 +121,9 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Please choose the model:
 > 0:  Tolkswagen Rolo
 > 1:  Limoën C4
-<0
->Chosen model:  Tolkswagen Rolo
+>-1: Go back
+<1
+>Chosen model:  Limoën C4
 >
 >Choose the option for: GearBox
 > 0: MANUAL
@@ -134,63 +136,19 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 0: MANUAL
 > 1: AUTOMATIC
 >-1: Cancel placing the order
-<0
->Chosen: MANUAL
+<-1
 >
->Choose the option for: Wheels
-> 0: COMFORT
-> 1: SPORT
->-1: Cancel placing the order
-<0
->Chosen: COMFORT
->
->Choose the option for: Color
-> 0: RED
-> 1: BLUE
-> 2: BLACK
-> 3: WHITE
->-1: Cancel placing the order
-<0
->Chosen: RED
->
->Choose the option for: Body
-> 0: SEAD
-> 1: BREAK
->-1: Cancel placing the order
-<0
->Chosen: SEAD
->
->Choose the option for: Engine
-> 0: STANDARD
-> 1: PERFORMANCE
->-1: Cancel placing the order
-<0
->Chosen: STANDARD
->
->Choose the option for: Seats
-> 0: LEATHER_BLACK
-> 1: LEATHER_WHITE
-> 2: VINYL_GREY
->-1: Cancel placing the order
-<0
->Chosen: LEATHER_BLACK
->
->The estimated completion date for the order is: %date%
->
->Press ENTER to continue...
-<\n
->
->Orders placed by:  Joe Lamb
+>Orders placed by:  Louis Brooks
 >Pending:
 > 1: Order ID: 0    [Estimation time: %date%]
->    Car model:  Tolkswagen Rolo
->        Body: SEAD
->        Color: RED
->        Engine: STANDARD
->        Gearbox: MANUAL
->        Airco: MANUAL
->        Wheels: COMFORT
->        Seats: LEATHER_BLACK
+>    Car model:  Limoën C4
+>        Body: BREAK
+>        Color: BLUE
+>        Engine: PERFORMANCE
+>        Gearbox: AUTOMATIC
+>        Airco: AUTOMATIC
+>        Wheels: SPORT
+>        Seats: LEATHER_WHITE
 >
 >History:
 >
@@ -199,14 +157,21 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >-1: Go back
 <-1
 >
->Welcome  Joe Lamb
+>Welcome  Louis Brooks
 >Please choose an action:
 > 1: Order new car
-> 2: FAST Order car -> logout -> go back
 >-1: Logout and go back
 <-1
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Go back
+<-1
+>
 >------- ASSEMASSIST ------
 > 1: Authenticate
 >-1: Quit
 <-1
-K0
+X0

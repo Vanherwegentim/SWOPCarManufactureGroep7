@@ -10,7 +10,7 @@ public class MainUI {
     Scanner input = new Scanner(System.in);
     int action;
     do {
-      System.out.println("------- ASSEMASSIST ------");
+      System.out.println("\n------- ASSEMASSIST ------");
       System.out.println(" 1: Authenticate");
       System.out.println("-1: Quit");
 

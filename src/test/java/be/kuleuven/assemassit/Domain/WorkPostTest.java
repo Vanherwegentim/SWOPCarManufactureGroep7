@@ -75,10 +75,10 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
 
-    // TODO nakijken of dit een correcte test is
     workPost.setActiveAssemblyTask(workPost.getWorkPostAssemblyTasks().get(0).getId());
-    assertEquals(workPost.getActiveAssemblyTask(), new CarBodyAssemblyTask(Body.SEAD));
+    assertEquals(workPost.getActiveAssemblyTask().getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
   }
+
 
   @Test
   public void givePendingAssemblyTasks() {
@@ -86,7 +86,9 @@ public class WorkPostTest {
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
     System.out.println(workPost.givePendingAssemblyTasks());
-    assertEquals(workPost.givePendingAssemblyTasks(), Arrays.asList(new CarBodyAssemblyTask(carOrder.getCar().getBody()), new PaintCarAssemblyTask(carOrder.getCar().getColor())));
+
+    assertEquals(workPost.givePendingAssemblyTasks().get(0).getActions(), new CarBodyAssemblyTask(carOrder.getCar().getBody()).getActions());
+    assertEquals(workPost.givePendingAssemblyTasks().get(1).getActions(), new PaintCarAssemblyTask(carOrder.getCar().getColor()).getActions());
   }
 
   @Test
@@ -99,22 +101,11 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
     workPost.setActiveAssemblyTask(0);
-    assertFalse(workPost.getActiveAssemblyTask() == null);
+    assertNotNull(workPost.getActiveAssemblyTask());
     workPost.completeAssemblyTask();
-    assertTrue(workPost.getActiveAssemblyTask() == null);
+    assertNull(workPost.getActiveAssemblyTask());
   }
 
-  //TODO
-//  @Test
-//  public void remainingTimeInMinutesTest(){
-//    workPost.addProcessToWorkPost(carAssemblyProcess);
-//    workPost.setActiveAssemblyTask(0);
-//    workPost.completeAssemblyTask();
-//    workPost.setActiveAssemblyTask(1);
-//    workPost.completeAssemblyTask();
-//    System.out.println(workPost.remainingTimeInMinutes());
-//    assert workPost.remainingTimeInMinutes() == 0;
-//  }
 
   @Test
   public void findAssemblyTaskTest() {
@@ -125,6 +116,6 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
 
-    assertTrue(workPost.findAssemblyTask(0).equals(new CarBodyAssemblyTask(Body.SEAD)));
+    assertEquals(workPost.findAssemblyTask(0).getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
   }
 }

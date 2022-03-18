@@ -24,6 +24,8 @@ public class WorkPost {
    * @representationObjects
    */
   private final List<AssemblyTaskType> assemblyTaskTypes;
+  private final WorkPostType workPostType;
+  private final int expectedWorkPostDurationInMinutes;
   /**
    * @representationObject
    */
@@ -32,8 +34,6 @@ public class WorkPost {
    * @representationObject
    */
   private CarAssemblyProcess carAssemblyProcess;
-  private final WorkPostType workPostType;
-  private final int expectedWorkPostDurationInMinutes;
 
   /**
    * @param id
@@ -189,11 +189,6 @@ public class WorkPost {
     if (assemblyTasksFromWorkPost.size() == 0) return 0;
 
     return (int) Math.floor(expectedWorkPostDurationInMinutes / assemblyTasksFromWorkPost.size() * assemblyTasksFromWorkPost.stream().filter(wp -> wp.getPending()).count());
-  }
-
-  // TODO: do we still need this?
-  public boolean canPerformTasksForProcess(CarAssemblyProcess carAssemblyProcess) {
-    return true;
   }
 
   /**
