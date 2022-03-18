@@ -444,4 +444,15 @@ public class AssemblyLine {
   public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
     workPost.setActiveAssemblyTask(assemblyTaskId);
   }
+
+  public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
+    List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
+    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
+    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
+    if (!finishedCars.isEmpty()) {
+      carAssemblyProcessList.addAll(finishedCars);
+    }
+    return carAssemblyProcessList;
+  }
 }
