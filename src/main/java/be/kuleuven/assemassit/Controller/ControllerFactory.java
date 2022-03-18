@@ -37,4 +37,8 @@ public class ControllerFactory {
     return new AssemblyLineController(assemblyLine);
   }
 
+  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
+    return new AssemblyLineController(assemblyLine);
+  }
+
 }
