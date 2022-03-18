@@ -42,11 +42,11 @@ public class InsertEngineAssemblyTask extends AssemblyTask {
     return this.assemblyTaskType;
   }
 
-  //Pattern matching not working here for some reason
   @Override
   public boolean equals(Object o) {
     if (o instanceof InsertEngineAssemblyTask) {
-      return this.engine == ((InsertEngineAssemblyTask) o).engine;
+      InsertEngineAssemblyTask assemblyTask = (InsertEngineAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
     }
     return false;
   }

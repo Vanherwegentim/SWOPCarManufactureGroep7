@@ -11,7 +11,7 @@ public class App {
     ControllerFactory controllerFactory = new ControllerFactory();
     try {
       MainUI.run(controllerFactory.createOrderController(), controllerFactory.createAssemblyLineController());
-      // better error handling should be implemented in the future iteration
+      // In een volgende iteratie zorgen we voor een betere oplossing, onze excuses.
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
     } catch (IllegalStateException e) {

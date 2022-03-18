@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GarageHolderTest {
   private Car car;
@@ -30,20 +29,14 @@ public class GarageHolderTest {
   }
 
   @Test
-  public void addCarOrderTest(){
+  public void addCarOrderTest() {
     garageHolder.addCarOrder(carOrder);
     assert garageHolder.getCarOrders().contains(carOrder);
   }
 
   @Test
-  public void findCarOrderTest(){
-    //assertThrows(IllegalArgumentException.class, ()-> garageHolder.findCarOrder(0));
+  public void findCarOrderTest() {
     garageHolder.addCarOrder(carOrder);
     assertEquals(garageHolder.findCarOrder(carOrder.getId()), carOrder);
   }
-
-  public void getCompletionTimeTest(){
-    //TODO
-  }
-
 }

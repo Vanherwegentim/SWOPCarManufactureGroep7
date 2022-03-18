@@ -42,11 +42,11 @@ public class InsertGearboxAssemblyTask extends AssemblyTask {
     return this.assemblyTaskType;
   }
 
-  //Pattern matching not working here for some reason
   @Override
   public boolean equals(Object o) {
     if (o instanceof InsertGearboxAssemblyTask) {
-      return this.gearbox == ((InsertGearboxAssemblyTask) o).gearbox;
+      InsertGearboxAssemblyTask assemblyTask = (InsertGearboxAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
     }
     return false;
   }

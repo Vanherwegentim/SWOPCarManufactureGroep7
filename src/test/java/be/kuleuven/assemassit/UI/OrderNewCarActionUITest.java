@@ -15,9 +15,6 @@ import java.util.regex.Pattern;
 
 public class OrderNewCarActionUITest {
 
-  /**
-   * The withHour has to be change every hour to work because of the error in the estimatedTime algorithm
-   */
   @Test
   public void OrderNewCarUseCaseTest() throws IOException {
 
@@ -31,7 +28,6 @@ public class OrderNewCarActionUITest {
       actualDate = actualDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19) {
-      //The withHour has to be change every hour to work because of the error in the estimatedTime algorithm
       actualDate = actualDate.plusDays(1).withHour(14).withMinute(0);
     }
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");

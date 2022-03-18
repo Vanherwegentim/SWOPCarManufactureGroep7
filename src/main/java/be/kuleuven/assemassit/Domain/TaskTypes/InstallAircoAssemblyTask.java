@@ -42,11 +42,11 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
     return this.assemblyTaskType;
   }
 
-  //Pattern matching not working here for some reason
   @Override
   public boolean equals(Object o) {
     if (o instanceof InstallAircoAssemblyTask) {
-      return this.airco == ((InstallAircoAssemblyTask) o).airco;
+      InstallAircoAssemblyTask assemblyTask = (InstallAircoAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
     }
     return false;
   }

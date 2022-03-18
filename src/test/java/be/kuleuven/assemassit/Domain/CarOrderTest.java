@@ -6,14 +6,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CarOrderTest {
 
   private Car car;
 
   @BeforeEach
-  public void beforeEach(){
+  public void beforeEach() {
     CarModel carModel = new CarModel(
       0,
       "testmodel",
@@ -30,16 +31,13 @@ public class CarOrderTest {
   }
 
   @Test
-  public void carOrderTest_succeeds(){
-      CarOrder carOrder = new CarOrder(car);
+  public void carOrderTest_succeeds() {
+    CarOrder carOrder = new CarOrder(car);
     assertTrue(carOrder.isPending());
   }
 
   @Test
-  public void carOrderTest_throws(){
-    assertThrows(IllegalArgumentException.class,()-> new CarOrder(null));
+  public void carOrderTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> new CarOrder(null));
   }
-
-  //TODO: Extra tests voor de estimatedCompletionTime
-
 }
