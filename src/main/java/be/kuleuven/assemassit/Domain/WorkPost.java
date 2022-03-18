@@ -14,7 +14,7 @@ import java.util.Optional;
  * @invar | getExpectedWorkPostDurationInMinutes() >= 0
  */
 public class WorkPost {
-  private int id;
+  private final int id;
   /**
    * @invar | assemblyTaskTypes != null
    * @invar | carAssemblyProcess.getAssemblyTasks().contains(getActiveAssemblyTask())
@@ -23,7 +23,7 @@ public class WorkPost {
    * @representationObject
    * @representationObjects
    */
-  private List<AssemblyTaskType> assemblyTaskTypes;
+  private final List<AssemblyTaskType> assemblyTaskTypes;
   /**
    * @representationObject
    */
@@ -32,8 +32,8 @@ public class WorkPost {
    * @representationObject
    */
   private CarAssemblyProcess carAssemblyProcess;
-  private WorkPostType workPostType;
-  private int expectedWorkPostDurationInMinutes;
+  private final WorkPostType workPostType;
+  private final int expectedWorkPostDurationInMinutes;
 
   /**
    * @param id
@@ -72,8 +72,20 @@ public class WorkPost {
     this.carAssemblyProcess = carAssemblyProcess;
   }
 
+  /**
+   * @mutates | this
+   * @post | getCarAssemblyProcess() == null
+   */
+  public void removeCarAssemblyProcess() {
+    this.carAssemblyProcess = null;
+  }
+
+  /**
+   * @return the list of assembly task types
+   * @creates | result
+   */
   public List<AssemblyTaskType> getAssemblyTaskTypes() {
-    return assemblyTaskTypes;
+    return new ArrayList<>(assemblyTaskTypes);
   }
 
   public CarAssemblyProcess getCarAssemblyProcess() {
@@ -85,7 +97,12 @@ public class WorkPost {
   }
 
   /**
-   * @return
+   * Removes the process from the work post and returns it
+   *
+   * @return the car assembly processed that is removed
+   * @post | getCarAssemblyProcess() == null
+   * @post | result == old(getCarAssemblyProcess())
+   * @mutates | this
    */
   public CarAssemblyProcess removeProcessFromWorkPost() {
     CarAssemblyProcess temporaryProcess = this.carAssemblyProcess;
@@ -97,17 +114,36 @@ public class WorkPost {
     return this.activeAssemblyTask;
   }
 
+  /**
+   * @param assemblyTaskId
+   * @throws IllegalArgumentException assembly task ID lower than 0 | assemblyTaskId < 0
+   * @mutates | this
+   */
   public void setActiveAssemblyTask(int assemblyTaskId) {
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("Assembly task ID can not be lower than 0");
     this.activeAssemblyTask = findAssemblyTask(assemblyTaskId);
-    if (activeAssemblyTask == null) {
+    if (activeAssemblyTask == null) { // this is actually already checked and thrown in findAssemblyTask
       throw new IllegalArgumentException("There is no Assembly Task with that id.");
     }
   }
 
+  /**
+   * @post | getActiveAssemblyTask() == null
+   * @mutates | this
+   */
   public void removeActiveAssemblyTask() {
     this.activeAssemblyTask = null;
   }
 
+  /**
+   * Gives the list of assembly tasks from the work post that can be performed by the work post
+   *
+   * @return list of assembly tasks that can be performed by the work post
+   * @creates | result
+   * @post there should be no tasks in the result that can not be performed by the work post
+   * | result.stream().filter(task -> !getAssemblyTaskTypes().contains(task.getAssemblyTaskType())).size() == 0
+   */
   public List<AssemblyTask> getWorkPostAssemblyTasks() {
     if (carAssemblyProcess == null)
       return new ArrayList<>();
@@ -115,6 +151,15 @@ public class WorkPost {
     return carAssemblyProcess.getAssemblyTasks().stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
   }
 
+  /**
+   * @return the list of pending assembly tasks that can be performed by the work post
+   * @creates | result
+   * @inspects | this
+   * @post there should be no tasks in the result that can not be performed by the work post
+   * | result.stream().filter(task -> !getAssemblyTaskTypes().contains(task.getAssemblyTaskType())).toList().size() == 0
+   * @post all tasks in the result should be pending
+   * | result.stream().filter(task -> !task.getPending()).toList().size() == 0
+   */
   public List<AssemblyTask> givePendingAssemblyTasks() {
 
     if (carAssemblyProcess == null)
@@ -125,6 +170,10 @@ public class WorkPost {
     return filteredTasks.stream().filter(AssemblyTask::getPending).toList();
   }
 
+  /**
+   * @mutates | this
+   * @post | getActiveAssemblyTask() == null
+   */
   public void completeAssemblyTask() {
     activeAssemblyTask.complete();
     activeAssemblyTask = null;
@@ -142,11 +191,25 @@ public class WorkPost {
     return (int) Math.floor(expectedWorkPostDurationInMinutes / assemblyTasksFromWorkPost.size() * assemblyTasksFromWorkPost.stream().filter(wp -> wp.getPending()).count());
   }
 
+  // TODO: do we still need this?
   public boolean canPerformTasksForProcess(CarAssemblyProcess carAssemblyProcess) {
     return true;
   }
 
+  /**
+   * @param id
+   * @return the assembly task
+   * @throws IllegalArgumentException ID is lower than 0 | id < 0
+   * @throws IllegalArgumentException assembly task not found
+   *                                  | Optional<AssemblyTask> assemblyTask = carAssemblyProcess.getAssemblyTasks().stream()
+   *                                  .filter(at -> at.getId() == id)
+   *                                  .findFirst()
+   *                                  .get()
+   * @inspects | this
+   */
   public AssemblyTask findAssemblyTask(int id) {
+    if (id < 0)
+      throw new IllegalArgumentException("ID can not be lower than 0");
     Optional<AssemblyTask> assemblyTask = carAssemblyProcess.getAssemblyTasks().stream()
       .filter(at -> at.getId() == id)
       .findFirst();

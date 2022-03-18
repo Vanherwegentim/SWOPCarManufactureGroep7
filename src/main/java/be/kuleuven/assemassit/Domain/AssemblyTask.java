@@ -10,10 +10,10 @@ public abstract class AssemblyTask {
    * @invar | name != null && !name.equals("")
    */
   private static int runningId = 0;
+  private final String name;
   private boolean pending;
   private int id;
   private int completionTime;
-  private String name;
 
   /**
    * @param name the name of the assembly task
@@ -34,6 +34,13 @@ public abstract class AssemblyTask {
     this.name = name;
   }
 
+  /**
+   * This method should only be used for testing purposes
+   */
+  public static void resetRunningId() {
+    AssemblyTask.runningId = 0;
+  }
+
   public boolean getPending() {
     return this.pending;
   }
@@ -42,6 +49,11 @@ public abstract class AssemblyTask {
     this.pending = pending;
   }
 
+  /**
+   * @return list of actions
+   * @inspects | this
+   * @creates | result
+   */
   public abstract List<String> getActions();
 
   public int getId() {
@@ -78,7 +90,7 @@ public abstract class AssemblyTask {
    * @post | getPending() == false
    */
   public void complete() {
-    if (this.pending)
+    if (!this.pending)
       throw new IllegalStateException("The task is already completed");
 
     this.pending = false;

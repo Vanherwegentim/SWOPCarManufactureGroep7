@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,8 @@ public class AssemblyLineTest {
   @BeforeEach
   public void beforeEach() {
     this.assemblyLine = new AssemblyLine();
+    assemblyLine.setEndTime(LocalTime.of(22, 0));
+    assemblyLine.setStartTime(LocalTime.of(6, 0));
     carAssemblyProcess = new CarAssemblyProcess(
       new CarOrder(
         new Car(
@@ -72,7 +75,7 @@ public class AssemblyLineTest {
     workPostStatusses.put("Drivetrain Post", null);
     workPostStatusses.put("Accessories Post", null);
 
-    assertEquals(workPostStatusses, assemblyLine.giveStatus());
+    assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
 
 //  @Test

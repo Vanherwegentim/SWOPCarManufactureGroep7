@@ -2,9 +2,11 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertEngineAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertGearboxAssemblyTask;
+import be.kuleuven.assemassit.Domain.WorkPost;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +18,69 @@ import static org.mockito.Mockito.when;
 
 public class AssemblyLineControllerTest {
 
-  private AssemblyLine mockedAssemblyLine;
   private AssemblyLineController assemblyLineController;
+
+  private AssemblyLine mockedAssemblyLine;
+  private WorkPost mockedCarBodyPost;
+  private WorkPost mockedDrivetrainPost;
+  private WorkPost mockedAccessoriesPost;
+  private AssemblyTask mockedCarBodyAssemblyTask;
+  private AssemblyTask mockedInsertEngineAssemblyTask;
+  private AssemblyTask mockedDrivetrainAssemblyTask;
+  private AssemblyTask mockedAccessoriesAssemblyTask;
+
 
   @BeforeEach
   public void beforeEach() {
     mockedAssemblyLine = mock(AssemblyLine.class);
+    mockedCarBodyPost = mock(WorkPost.class);
+    mockedDrivetrainPost = mock(WorkPost.class);
+    mockedAccessoriesPost = mock(WorkPost.class);
+    mockedCarBodyAssemblyTask = mock(CarBodyAssemblyTask.class);
+    mockedInsertEngineAssemblyTask = mock(InsertEngineAssemblyTask.class);
+    mockedDrivetrainAssemblyTask = mock(InsertGearboxAssemblyTask.class);
+    mockedAccessoriesAssemblyTask = mock(CarBodyAssemblyTask.class);
+
+
+    when(mockedAssemblyLine.getAccessoriesPost()).thenReturn(mockedAccessoriesPost);
+    when(mockedAssemblyLine.getDrivetrainPost()).thenReturn(mockedDrivetrainPost);
+    when(mockedAssemblyLine.getCarBodyPost()).thenReturn(mockedCarBodyPost);
+
+    when(mockedCarBodyPost.getWorkPostType()).thenReturn(WorkPostType.CAR_BODY_POST);
+    when(mockedCarBodyPost.getId()).thenReturn(0);
+
+    when(mockedDrivetrainPost.getWorkPostType()).thenReturn(WorkPostType.DRIVETRAIN_POST);
+    when(mockedDrivetrainPost.getId()).thenReturn(1);
+
+    when(mockedAccessoriesPost.getWorkPostType()).thenReturn(WorkPostType.ACCESSORIES_POST);
+    when(mockedAccessoriesPost.getId()).thenReturn(2);
+
+    when(mockedCarBodyAssemblyTask.getName()).thenReturn("mockedCarBodyAssemblyTaskName");
+
+    when(mockedInsertEngineAssemblyTask.getName()).thenReturn("mockedEngineAssemblyTaskName");
+    when(mockedInsertEngineAssemblyTask.getPending()).thenReturn(true);
+
+    when(mockedDrivetrainAssemblyTask.getName()).thenReturn("mockedDrivetrainAssemblyTaskName");
+
+    when(mockedAccessoriesAssemblyTask.getName()).thenReturn("mockedAccessoriesAssemblyTaskName");
+
     assemblyLineController = new AssemblyLineController(mockedAssemblyLine);
+  }
+
+  @Test
+  public void giveAllWorkPostsTest() {
+    String expected = """
+      0: CAR_BODY_POST
+      1: DRIVETRAIN_POST
+      2: ACCESSORIES_POST
+      """;
+
+    Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
+    String actual = "";
+    for (int key : allWorkPosts.keySet()) {
+      actual += key + ": " + allWorkPosts.get(key) + "\n";
+    }
+    assertEquals(expected, actual);
   }
 
   @Test
@@ -51,24 +109,11 @@ public class AssemblyLineControllerTest {
   public void giveAssemblyLineStatusAndOverviewTest() {
     HashMap<String, AssemblyTask> mockedWorkPostStatuses = new LinkedHashMap<>();
 
-    AssemblyTask mockedCarBodyAssemblyTask = mock(CarBodyAssemblyTask.class);
-    when(mockedCarBodyAssemblyTask.getName()).thenReturn("mockedCarBodyAssemblyTaskName");
-
-    AssemblyTask mockedInsertEngineAssemblyTask = mock(InsertEngineAssemblyTask.class);
-    when(mockedInsertEngineAssemblyTask.getName()).thenReturn("mockedEngineAssemblyTaskName");
-    when(mockedInsertEngineAssemblyTask.getPending()).thenReturn(true);
-
-    AssemblyTask mockedDrivetrainAssemblyTask = mock(InsertGearboxAssemblyTask.class);
-    when(mockedDrivetrainAssemblyTask.getName()).thenReturn("mockedDrivetrainAssemblyTaskName");
-
-    AssemblyTask mockedAccessoriesAssemblyTask = mock(CarBodyAssemblyTask.class);
-    when(mockedAccessoriesAssemblyTask.getName()).thenReturn("mockedAccessoriesAssemblyTaskName");
-
     mockedWorkPostStatuses.put("Car Body Post", mockedCarBodyAssemblyTask);
     mockedWorkPostStatuses.put("Drivetrain Post", mockedDrivetrainAssemblyTask);
     mockedWorkPostStatuses.put("Accessories Post", mockedAccessoriesAssemblyTask);
 
-    when(mockedAssemblyLine.giveStatus()).thenReturn(mockedWorkPostStatuses);
+    when(mockedAssemblyLine.giveActiveTasksOverview()).thenReturn(mockedWorkPostStatuses);
 
     HashMap<String, List<AssemblyTask>> mockedTasksOverview = new LinkedHashMap<>();
 
@@ -79,27 +124,60 @@ public class AssemblyLineControllerTest {
     when(mockedAssemblyLine.giveTasksOverview()).thenReturn(mockedTasksOverview);
 
     String expected = """
-      Drivetrain Post:\r
-       mockedDrivetrainAssemblyTaskName (active)\r
-       mockedAccessoriesAssemblyTaskName\r
       Car Body Post:\r
        mockedCarBodyAssemblyTaskName (active)\r
        mockedEngineAssemblyTaskName (pending)\r
        mockedDrivetrainAssemblyTaskName\r
+       mockedAccessoriesAssemblyTaskName\r
+      Drivetrain Post:\r
+       mockedDrivetrainAssemblyTaskName (active)\r
        mockedAccessoriesAssemblyTaskName\r
       Accessories Post:\r
        mockedAccessoriesAssemblyTaskName (active)\r
       """;
 
     Map<String, List<String>> assemblyLineStatusAndOverview = assemblyLineController.giveAssemblyLineStatusOverview();
-    StringBuilder actual = new StringBuilder();
+    String actual = "";
     for (String key : assemblyLineStatusAndOverview.keySet()) {
-      actual.append(String.format("%s:%n", key));
+      actual += String.format("%s:%n", key);
       for (String task : assemblyLineStatusAndOverview.get(key)) {
-        actual.append(String.format(" %s%n", task));
+        actual += String.format(" %s%n", task);
       }
     }
 
-    assertEquals(expected, actual.toString());
+    assertEquals(expected, actual);
   }
+
+  @Test
+  public void giveFutureAssemblyLineStatusOverviewTest() {
+    HashMap<String, AssemblyTask> mockedWorkPostStatuses = new LinkedHashMap<>();
+
+    mockedWorkPostStatuses.put("Car Body Post", mockedCarBodyAssemblyTask);
+    mockedWorkPostStatuses.put("Drivetrain Post", mockedDrivetrainAssemblyTask);
+    mockedWorkPostStatuses.put("Accessories Post", mockedAccessoriesAssemblyTask);
+
+    when(mockedAssemblyLine.giveActiveTasksOverview()).thenReturn(mockedWorkPostStatuses);
+
+    HashMap<String, List<AssemblyTask>> mockedTasksOverview = new LinkedHashMap<>();
+
+    mockedTasksOverview.put("Car Body Post", Arrays.asList(mockedCarBodyAssemblyTask, mockedInsertEngineAssemblyTask, mockedDrivetrainAssemblyTask, mockedAccessoriesAssemblyTask));
+    mockedTasksOverview.put("Drivetrain Post", Arrays.asList(mockedDrivetrainAssemblyTask, mockedAccessoriesAssemblyTask));
+    mockedTasksOverview.put("Accessories Post", Arrays.asList(mockedAccessoriesAssemblyTask));
+
+    when(mockedAssemblyLine.giveFutureTasksOverview()).thenReturn(mockedTasksOverview);
+
+    HashMap<String, List<String>> futureAssemblyLineStatusOverview = assemblyLineController.giveFutureAssemblyLineStatusOverview();
+
+    String actual = "";
+    for (String key : futureAssemblyLineStatusOverview.keySet()) {
+      actual += String.format("%s:%n", key);
+      for (String task : futureAssemblyLineStatusOverview.get(key)) {
+        actual += String.format(" %s%n", task);
+      }
+    }
+
+    System.out.println(actual);
+  }
+
+
 }

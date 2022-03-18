@@ -153,7 +153,7 @@ public class AssemblyLine {
    * @inspects | this
    * @creates | result
    */
-  public HashMap<String, AssemblyTask> giveStatus() {
+  public HashMap<String, AssemblyTask> giveActiveTasksOverview() {
     HashMap<String, AssemblyTask> workPostStatuses = new LinkedHashMap<>();
 
     workPostStatuses.put("Car Body Post", carBodyPost.getActiveAssemblyTask());
@@ -300,9 +300,9 @@ public class AssemblyLine {
       }
 
       CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
-      // TODO pending false
-      carAssemblyProcess.determineCompletionTime();
+      carAssemblyProcess.complete();
       finishedCars.add(accessoriesPost.getCarAssemblyProcess());
+      accessoriesPost.removeCarAssemblyProcess();
     }
     //Give the third post the car of the second post
     if (drivetrainPost.getCarAssemblyProcess() != null) {
@@ -310,6 +310,7 @@ public class AssemblyLine {
         assemblyTask.setCompletionTime(minutes);
       }
       accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
+      drivetrainPost.removeCarAssemblyProcess();
     }
     //Give the second post the car of the first post
     if (carBodyPost.getCarAssemblyProcess() != null) {
@@ -318,6 +319,7 @@ public class AssemblyLine {
       }
 
       drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
+      carBodyPost.removeCarAssemblyProcess();
     }
     //Give the first post a car from the queue;
     //The queue can not be empty and there still must be enough time to produce the whole car
@@ -443,5 +445,16 @@ public class AssemblyLine {
   // TODO: do we use this?
   public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
     workPost.setActiveAssemblyTask(assemblyTaskId);
+  }
+
+  public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
+    List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
+    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
+    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
+    if (!finishedCars.isEmpty()) {
+      carAssemblyProcessList.addAll(finishedCars);
+    }
+    return carAssemblyProcessList;
   }
 }

@@ -7,12 +7,26 @@ import be.kuleuven.assemassit.Domain.Enums.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @mutable
+ */
 public class PaintCarAssemblyTask extends AssemblyTask {
-  private Color color;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.PAINT_CAR;
+  /**
+   * @invar | color != null
+   */
+  private final Color color;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.PAINT_CAR;
 
+  /**
+   * @param color
+   * @throws IllegalArgumentException color is null | color == null
+   * @mutates | this
+   * @post | this.color = color
+   */
   public PaintCarAssemblyTask(Color color) {
     super("Paint car");
+    if (color == null)
+      throw new IllegalArgumentException("Color can not be null");
     this.color = color;
   }
 
