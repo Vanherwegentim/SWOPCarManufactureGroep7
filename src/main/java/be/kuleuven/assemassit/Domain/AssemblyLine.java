@@ -287,7 +287,6 @@ public class AssemblyLine {
   public boolean canMove() {
     List<WorkPost> workPosts = this.giveWorkPostsAsList();
     for (WorkPost workPost : workPosts) {
-      //TODO uitleg verwijderen canMove moet false returnen wanneer de workpost nog niet klaar is, dus wanneer er nog taken niet zijn afgewerkt
       if (!workPost.givePendingAssemblyTasks().isEmpty()) {
         return false;
       }
@@ -460,7 +459,6 @@ public class AssemblyLine {
     return workPost.findAssemblyTask(assemblyTaskId);
   }
 
-  // TODO: do we use this?
   public void setActiveTask(WorkPost workPost, int assemblyTaskId) {
     workPost.setActiveAssemblyTask(assemblyTaskId);
   }

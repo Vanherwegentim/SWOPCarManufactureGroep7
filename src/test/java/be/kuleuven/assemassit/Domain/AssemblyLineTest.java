@@ -54,20 +54,6 @@ public class AssemblyLineTest {
   }
 
 
-//  @Test
-//  public void completeAssemblyTaskTest(){
-//    //TODO: fix nullpointerexception bij ActiveAssemblyTask
-//
-//    assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-//    assemblyLine.move(2);
-//    assemblyLine.completeAssemblyTask(0);
-//
-//
-//  }
-
-  /*
-  Voorlopig wordt er nog nooit een assemblytask op active gezet dus vandaar de null.
-   */
   @Test
   public void giveStatusTest_WorkpostsEmpty() {
     Map<String, AssemblyTask> workPostStatusses = new HashMap<>();
@@ -77,23 +63,4 @@ public class AssemblyLineTest {
 
     assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
-
-//  @Test
-//  public void giveTasksOverviewTest(){
-//    //TODO: ouwe test, moet nog geüpdated worden met de nieuwe code
-//    Map<String, List<AssemblyTask>> expected = new HashMap<>();
-//    expected.put("Car Body Post", carBodyPost.getWorkPostAssemblyTasks());
-//    expected.put("Drivetrain Post", drivetrainPost.getWorkPostAssemblyTasks());
-//    expected.put("Accessories Post", accessoriesPost.getWorkPostAssemblyTasks());
-//
-//    Map<String, List<AssemblyTask>> actual = assemblyLine.giveTasksOverview();
-//    assertEquals(expected.size(), actual.size());
-//
-//    for(String key : expected.keySet()){
-//      assertArrayEquals(
-//        expected.get(key).stream().map(AssemblyTask::getName).toArray(),
-//        actual.get(key).stream().map(AssemblyTask::getName).toArray()
-//      );
-//    }
-//  }
 }

@@ -28,14 +28,14 @@ public class CarManufactoringCompany {
    * @representationObject
    * @representationObjects
    */
-  private List<CarModel> carModels;
+  private final List<CarModel> carModels;
   /**
    * @representationObject
    */
-  private AssemblyLine assemblyLine;
-  private CarModelRepository carModelRepository;
-  private LocalTime openingTime;
-  private LocalTime closingTime;
+  private final AssemblyLine assemblyLine;
+  private final CarModelRepository carModelRepository;
+  private final LocalTime openingTime;
+  private final LocalTime closingTime;
 
   /**
    * @param openingTime  the opening time of the factory
@@ -114,7 +114,6 @@ public class CarManufactoringCompany {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
   }
 
-  // TODO: is this still used?
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
   }

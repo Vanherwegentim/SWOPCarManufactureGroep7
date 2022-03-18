@@ -21,11 +21,12 @@ public class CarOrder {
    * @representationObject
    */
   private final Car car;
+  private final LocalDateTime orderTime;
   //private CarAssemblyProcess
   private boolean pending;
   private LocalDateTime completionTime;
   private LocalDateTime estimatedCompletionTime;
-  private final LocalDateTime orderTime;
+
   /**
    * @param car the car model that is ordered
    * @throws IllegalArgumentException car can not be null | car == null
@@ -50,7 +51,6 @@ public class CarOrder {
     this.pending = pending;
   }
 
-  // TODO: this value returns null if the order is not completed, do we keep it this way?
   public LocalDateTime getCompletionTime() {
     return this.completionTime;
   }

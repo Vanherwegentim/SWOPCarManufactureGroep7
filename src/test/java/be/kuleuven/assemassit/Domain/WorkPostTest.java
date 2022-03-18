@@ -75,10 +75,10 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
 
-    // TODO nakijken of dit een correcte test is
     workPost.setActiveAssemblyTask(workPost.getWorkPostAssemblyTasks().get(0).getId());
     assertEquals(workPost.getActiveAssemblyTask(), new CarBodyAssemblyTask(Body.SEAD));
   }
+
 
   @Test
   public void givePendingAssemblyTasks() {
@@ -99,22 +99,11 @@ public class WorkPostTest {
       System.out.println(assemblyTask.getId());
     }
     workPost.setActiveAssemblyTask(0);
-    assertFalse(workPost.getActiveAssemblyTask() == null);
+    assertNotNull(workPost.getActiveAssemblyTask());
     workPost.completeAssemblyTask();
-    assertTrue(workPost.getActiveAssemblyTask() == null);
+    assertNull(workPost.getActiveAssemblyTask());
   }
 
-  //TODO
-//  @Test
-//  public void remainingTimeInMinutesTest(){
-//    workPost.addProcessToWorkPost(carAssemblyProcess);
-//    workPost.setActiveAssemblyTask(0);
-//    workPost.completeAssemblyTask();
-//    workPost.setActiveAssemblyTask(1);
-//    workPost.completeAssemblyTask();
-//    System.out.println(workPost.remainingTimeInMinutes());
-//    assert workPost.remainingTimeInMinutes() == 0;
-//  }
 
   @Test
   public void findAssemblyTaskTest() {
