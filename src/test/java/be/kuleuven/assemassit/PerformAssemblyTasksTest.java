@@ -1,4 +1,4 @@
-package be.kuleuven.assemassit.Integration;
+package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.ControllerFactory;
@@ -112,7 +112,7 @@ public class PerformAssemblyTasksTest {
     assemblyLineController.completeAssemblyTask(0);
 
     // Step 7
-    assertFalse(assemblyLineController.givePendingAssemblyTasks(0).values().contains("Installing the BREAK body"));
+    assertFalse(assemblyLineController.givePendingAssemblyTasks(0).containsValue("Installing the BREAK body"));
   }
 
   @Test
