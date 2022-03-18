@@ -67,7 +67,7 @@ public class CarManufactoringCompany {
       throw new IllegalArgumentException("The parameters can not be null");
 
     this.carModelRepository = carModelRepository;
-    this.carModels = carModelRepository.getCarModels();
+    this.carModels = this.carModelRepository.getCarModels();
     this.assemblyLine = assemblyLine;
     this.assemblyLine.setStartTime(openingTime);
     this.assemblyLine.setEndTime(closingTime);
