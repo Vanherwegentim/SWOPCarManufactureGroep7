@@ -15,10 +15,20 @@ public class ControllerFactory {
     this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
   }
 
+  /**
+   * Generate an instance of the order controller
+   *
+   * @return a new instance of the order controller
+   */
   public OrderController createOrderController() {
     return new OrderController(carManufactoringCompany, new GarageHolderRepository());
   }
 
+  /**
+   * Generate an instance of the assembly line controller
+   *
+   * @return a new instance of the assembly controller
+   */
   public AssemblyLineController createAssemblyLineController() {
     return new AssemblyLineController(assemblyLine);
   }
