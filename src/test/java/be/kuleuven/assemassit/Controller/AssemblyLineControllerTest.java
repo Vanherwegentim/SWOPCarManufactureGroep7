@@ -21,9 +21,7 @@ public class AssemblyLineControllerTest {
   private AssemblyLineController assemblyLineController;
 
   private AssemblyLine mockedAssemblyLine;
-  private WorkPost mockedCarBodyPost;
   private WorkPost mockedDrivetrainPost;
-  private WorkPost mockedAccessoriesPost;
   private AssemblyTask mockedCarBodyAssemblyTask;
   private AssemblyTask mockedInsertEngineAssemblyTask;
   private AssemblyTask mockedDrivetrainAssemblyTask;
@@ -33,9 +31,9 @@ public class AssemblyLineControllerTest {
   @BeforeEach
   public void beforeEach() {
     mockedAssemblyLine = mock(AssemblyLine.class);
-    mockedCarBodyPost = mock(WorkPost.class);
+    WorkPost mockedCarBodyPost = mock(WorkPost.class);
     mockedDrivetrainPost = mock(WorkPost.class);
-    mockedAccessoriesPost = mock(WorkPost.class);
+    WorkPost mockedAccessoriesPost = mock(WorkPost.class);
     mockedCarBodyAssemblyTask = mock(CarBodyAssemblyTask.class);
     mockedInsertEngineAssemblyTask = mock(InsertEngineAssemblyTask.class);
     mockedDrivetrainAssemblyTask = mock(InsertGearboxAssemblyTask.class);
@@ -45,6 +43,8 @@ public class AssemblyLineControllerTest {
     when(mockedAssemblyLine.getAccessoriesPost()).thenReturn(mockedAccessoriesPost);
     when(mockedAssemblyLine.getDrivetrainPost()).thenReturn(mockedDrivetrainPost);
     when(mockedAssemblyLine.getCarBodyPost()).thenReturn(mockedCarBodyPost);
+    when(mockedAssemblyLine.giveWorkPostsAsList()).thenReturn(Arrays.asList(mockedCarBodyPost, mockedDrivetrainPost, mockedAccessoriesPost));
+    when(mockedAssemblyLine.giveCarAssemblyTask(0, 0)).thenReturn(mockedCarBodyAssemblyTask);
 
     when(mockedCarBodyPost.getWorkPostType()).thenReturn(WorkPostType.CAR_BODY_POST);
     when(mockedCarBodyPost.getId()).thenReturn(0);
@@ -56,6 +56,7 @@ public class AssemblyLineControllerTest {
     when(mockedAccessoriesPost.getId()).thenReturn(2);
 
     when(mockedCarBodyAssemblyTask.getName()).thenReturn("mockedCarBodyAssemblyTaskName");
+    when(mockedCarBodyAssemblyTask.getActions()).thenReturn(Arrays.asList("Installing the sead body"));
 
     when(mockedInsertEngineAssemblyTask.getName()).thenReturn("mockedEngineAssemblyTaskName");
     when(mockedInsertEngineAssemblyTask.getPending()).thenReturn(true);
@@ -179,5 +180,45 @@ public class AssemblyLineControllerTest {
     System.out.println(actual);
   }
 
+  @Test
+  public void moveAssemblyLineTest_canMove_succeeds() {
+    when(mockedAssemblyLine.canMove()).thenReturn(true);
+    assertArrayEquals(new String[]{}, assemblyLineController.moveAssemblyLine(1).toArray());
+  }
+
+  @Test
+  public void moveAssemblyLineTest_cannotMove_succeeds() {
+    when(mockedAssemblyLine.canMove()).thenReturn(false);
+    when(mockedDrivetrainPost.givePendingAssemblyTasks()).thenReturn(Arrays.asList(mockedDrivetrainAssemblyTask));
+
+    assertArrayEquals(new String[]{WorkPostType.DRIVETRAIN_POST.toString()}, assemblyLineController.moveAssemblyLine(1).toArray());
+  }
+
+  @Test
+  public void moveAssemblyLineTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.moveAssemblyLine(-1));
+  }
+
+  @Test
+  public void completeAssemblyTaskTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.completeAssemblyTask(-1));
+  }
+
+  @Test
+  public void setActiveTaskTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(-1, 2));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(2, -1));
+  }
+
+  @Test
+  public void giveAssemblyTaskActionsTest_succeeds() {
+    assertArrayEquals(new String[]{"Installing the sead body"}, assemblyLineController.giveAssemblyTaskActions(0, 0).toArray());
+  }
+
+  @Test
+  public void giveAssemblyTaskActionsTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(-1, 2));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(2, -1));
+  }
 
 }
