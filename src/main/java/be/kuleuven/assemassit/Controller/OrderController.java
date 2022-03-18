@@ -23,7 +23,7 @@ public class OrderController {
    * @param carManufactoringCompany
    * @post | this.carManufactoringCompany = carManufactoringCompany
    */
-  public OrderController(CarManufactoringCompany carManufactoringCompany) {
+  public OrderController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
     if (carManufactoringCompany == null)
       throw new IllegalArgumentException("CarManufactoring company can not be null");
 

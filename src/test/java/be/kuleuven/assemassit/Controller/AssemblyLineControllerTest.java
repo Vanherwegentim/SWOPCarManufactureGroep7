@@ -156,7 +156,7 @@ public class AssemblyLineControllerTest {
     mockedWorkPostStatuses.put("Drivetrain Post", mockedDrivetrainAssemblyTask);
     mockedWorkPostStatuses.put("Accessories Post", mockedAccessoriesAssemblyTask);
 
-    when(mockedAssemblyLine.giveStatus()).thenReturn(mockedWorkPostStatuses);
+    when(mockedAssemblyLine.giveActiveTasksOverview()).thenReturn(mockedWorkPostStatuses);
 
     HashMap<String, List<AssemblyTask>> mockedTasksOverview = new LinkedHashMap<>();
 
