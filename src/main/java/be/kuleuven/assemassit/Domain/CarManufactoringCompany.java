@@ -46,7 +46,7 @@ public class CarManufactoringCompany {
       .filter(cm -> cm.getId() == id)
       .findFirst();
 
-    if (!carModel.isPresent())
+    if (carModel.isEmpty())
       throw new IllegalArgumentException("CarModel not found");
 
     return carModel.get();
