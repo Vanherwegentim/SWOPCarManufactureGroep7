@@ -7,12 +7,26 @@ import be.kuleuven.assemassit.Domain.Enums.Engine;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @mutable
+ */
 public class InsertEngineAssemblyTask extends AssemblyTask {
-  private Engine engine;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_ENGINE;
+  /**
+   * @invar | engine != null
+   */
+  private final Engine engine;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_ENGINE;
 
+  /**
+   * @param engine
+   * @throws IllegalArgumentException engine can not be null | engine == null
+   * @mutates | this
+   * @post | this.engine = engine
+   */
   public InsertEngineAssemblyTask(Engine engine) {
     super("Insert engine");
+    if (engine == null)
+      throw new IllegalArgumentException("Engine can not be null");
     this.engine = engine;
   }
 

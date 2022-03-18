@@ -7,12 +7,26 @@ import be.kuleuven.assemassit.Domain.Enums.Body;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @mutable
+ */
 public class CarBodyAssemblyTask extends AssemblyTask {
-  private Body body;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
+  /**
+   * @invar | body != null
+   */
+  private final Body body;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
 
+  /**
+   * @param body
+   * @throws IllegalArgumentException body can not be null | body == null
+   * @mutates | this
+   * @post | this.body = body
+   */
   public CarBodyAssemblyTask(Body body) {
     super("Assembly car body");
+    if (body == null)
+      throw new IllegalArgumentException("Body can not be null");
     this.body = body;
   }
 

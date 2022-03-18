@@ -42,6 +42,11 @@ public abstract class AssemblyTask {
     this.pending = pending;
   }
 
+  /**
+   * @return list of actions
+   * @inspects | this
+   * @creates | result
+   */
   public abstract List<String> getActions();
 
   public int getId() {
