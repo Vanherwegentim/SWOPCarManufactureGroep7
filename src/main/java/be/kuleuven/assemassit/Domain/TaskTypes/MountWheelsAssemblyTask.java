@@ -14,8 +14,8 @@ public class MountWheelsAssemblyTask extends AssemblyTask {
   /**
    * @invar | wheel != null
    */
-  private Wheel wheel;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.MOUNT_WHEELS;
+  private final Wheel wheel;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.MOUNT_WHEELS;
 
   /**
    * @param wheel

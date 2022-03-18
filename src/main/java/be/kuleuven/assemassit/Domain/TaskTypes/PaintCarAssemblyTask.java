@@ -14,8 +14,8 @@ public class PaintCarAssemblyTask extends AssemblyTask {
   /**
    * @invar | color != null
    */
-  private Color color;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.PAINT_CAR;
+  private final Color color;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.PAINT_CAR;
 
   /**
    * @param color

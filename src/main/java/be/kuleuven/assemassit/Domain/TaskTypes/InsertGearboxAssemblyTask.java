@@ -14,8 +14,8 @@ public class InsertGearboxAssemblyTask extends AssemblyTask {
   /**
    * @invaer | gearbox != null
    */
-  private Gearbox gearbox;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_GEARBOX;
+  private final Gearbox gearbox;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_GEARBOX;
 
   /**
    * @param gearbox

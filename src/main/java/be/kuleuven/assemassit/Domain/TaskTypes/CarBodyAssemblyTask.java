@@ -14,8 +14,8 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   /**
    * @invar | body != null
    */
-  private Body body;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
+  private final Body body;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
 
   /**
    * @param body

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CarOrder {
   private static int idRunner = 0;
 
-  private int id;
+  private final int id;
   /**
    * @invar | car != null
    * @invar order time can not be after the completion time
@@ -20,13 +20,12 @@ public class CarOrder {
    * @invar order time can not be null | orderTime != null
    * @representationObject
    */
-  private Car car;
+  private final Car car;
   //private CarAssemblyProcess
   private boolean pending;
   private LocalDateTime completionTime;
   private LocalDateTime estimatedCompletionTime;
-  private LocalDateTime orderTime;
-
+  private final LocalDateTime orderTime;
   /**
    * @param car the car model that is ordered
    * @throws IllegalArgumentException car can not be null | car == null
@@ -45,6 +44,10 @@ public class CarOrder {
 
   public boolean isPending() {
     return pending;
+  }
+
+  public void setPending(boolean pending) {
+    this.pending = pending;
   }
 
   // TODO: this value returns null if the order is not completed, do we keep it this way?

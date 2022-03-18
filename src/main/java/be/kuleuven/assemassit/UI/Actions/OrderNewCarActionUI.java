@@ -6,10 +6,7 @@ import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class OrderNewCarActionUI {
@@ -36,33 +33,24 @@ public class OrderNewCarActionUI {
 
       switch (choice) {
         case 1 -> {
-          int chosenCarModelId = displayChooseCarModel(orderController.giveListOfCarModels());
+          Optional<Integer> chosenCarModelIdOptional = displayChooseCarModel(orderController.giveListOfCarModels());
+
+          if (chosenCarModelIdOptional.isEmpty()) {
+            OrderNewCarActionUI.run(orderController, assemblyLineController);
+            return;
+          }
+
+          int chosenCarModelId = chosenCarModelIdOptional.get();
 
           Map<String, List<String>> parts = orderController.givePossibleOptionsOfCarModel(chosenCarModelId);
 
-          // TODO: replace with private method
-          //Map<String, String> selectedParts = displayOrderingForm(orderController.givePossibleOptionsOfCarModel(chosenCarModelId));
-          Map<String, String> selectedParts = new HashMap<>();
-          for (Map.Entry<String, List<String>> part : parts.entrySet()) {
-            Scanner scanner2 = new Scanner(System.in);
-            int optionIndex;
-            List<String> options = part.getValue();
-            do {
-              System.out.println();
-              System.out.println("Choose the option for: " + part.getKey());
-              for (int i = 0; i < options.size(); i++) {
-                System.out.println(String.format("%2d", i) + ": " + options.get(i));
-              }
-              System.out.println("-1: Cancel placing the order");
-              optionIndex = scanner2.nextInt();
-              if (optionIndex == -1) {
-                OrderNewCarActionUI.run(orderController, assemblyLineController);
-                break;
-              }
-            } while (optionIndex < 0 || optionIndex > options.size() - 1);
-            selectedParts.put(part.getKey(), part.getValue().get(optionIndex));
-            System.out.println("Chosen: " + options.get(optionIndex));
+          Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
+
+          if (selectedPartsOptional.isEmpty()) {
+            OrderNewCarActionUI.run(orderController, assemblyLineController);
+            return;
           }
+          Map<String, String> selectedParts = selectedPartsOptional.get();
 
           LocalDateTime estimatedCompletionDate = orderController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
 
@@ -88,7 +76,7 @@ public class OrderNewCarActionUI {
     }
   }
 
-  private static Integer displayChooseCarModel(Map<Integer, String> carModels) {
+  private static Optional<Integer> displayChooseCarModel(Map<Integer, String> carModels) {
     Scanner scanner = new Scanner(System.in);
     int carModelId;
 
@@ -96,15 +84,20 @@ public class OrderNewCarActionUI {
       System.out.println();
       System.out.println("Please choose the model:");
       carModels.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
+      System.out.println("-1: Go back");
+
       carModelId = scanner.nextInt();
+
+      if (carModelId == -1) return Optional.empty();
+
     } while (!carModels.containsKey(carModelId));
 
     System.out.println("Chosen model: " + carModels.get(carModelId));
-    return carModelId;
+    return Optional.of(carModelId);
   }
 
 
-  private static Map<String, String> displayOrderingForm(Map<String, List<String>> parts) {
+  private static Optional<Map<String, String>> displayOrderingForm(Map<String, List<String>> parts) {
     Map<String, String> selectedParts = new HashMap<>();
 
     for (Map.Entry<String, List<String>> part : parts.entrySet()) {
@@ -112,6 +105,7 @@ public class OrderNewCarActionUI {
       int optionIndex;
       List<String> options = part.getValue();
 
+      System.out.println();
       System.out.println("Choose the option for: " + part.getKey());
 
       do {
@@ -123,13 +117,13 @@ public class OrderNewCarActionUI {
         optionIndex = scanner.nextInt();
 
         if (optionIndex == -1) {
-          // TODO: stop the code and return to menu
+          return Optional.empty();
         }
       } while (optionIndex < 0 || optionIndex > options.size() - 1);
 
       selectedParts.put(part.getKey(), part.getValue().get(optionIndex));
       System.out.println("Chosen: " + options.get(optionIndex));
     }
-    return selectedParts;
+    return Optional.of(selectedParts);
   }
 }
