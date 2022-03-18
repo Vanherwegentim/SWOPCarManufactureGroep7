@@ -14,8 +14,8 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
   /**
    * @invar | airco != null
    */
-  private Airco airco;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_AIRCO;
+  private final Airco airco;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_AIRCO;
 
   /**
    * @param airco

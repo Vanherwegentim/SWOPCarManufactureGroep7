@@ -14,8 +14,8 @@ public class InsertEngineAssemblyTask extends AssemblyTask {
   /**
    * @invar | engine != null
    */
-  private Engine engine;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_ENGINE;
+  private final Engine engine;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_ENGINE;
 
   /**
    * @param engine

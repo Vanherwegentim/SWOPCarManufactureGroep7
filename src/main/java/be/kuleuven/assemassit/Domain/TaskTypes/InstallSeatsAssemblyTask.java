@@ -14,8 +14,8 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   /**
    * @invar | seat != null
    */
-  private Seat seat;
-  private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_SEATS;
+  private final Seat seat;
+  private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_SEATS;
 
   /**
    * @param seat

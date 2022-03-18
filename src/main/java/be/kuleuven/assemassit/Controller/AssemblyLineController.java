@@ -32,20 +32,20 @@ public class AssemblyLineController {
       .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
   }
 
-   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
-    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+  public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
+    HashMap<String, AssemblyTask> workPostsWithActiveTasks = assemblyLine.giveActiveTasksOverview();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
-    return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
+    return evaluateAssemblyLineStatusOverview(workPostsWithActiveTasks, workPostPairs);
   }
 
   public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
-    HashMap<String, AssemblyTask> assemblyLineStatus = assemblyLine.giveStatus();
+    HashMap<String, AssemblyTask> workPostsWithActiveTasks = assemblyLine.giveActiveTasksOverview();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
-    return evaluateAssemblyLineStatusOverview(assemblyLineStatus, workPostPairs);
+    return evaluateAssemblyLineStatusOverview(workPostsWithActiveTasks, workPostPairs);
   }
 
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
-    HashMap<String, AssemblyTask> assemblyLineStatus, HashMap<String, List<AssemblyTask>> workPostPairs) {
+    HashMap<String, AssemblyTask> workPostsWithActiveTasks, HashMap<String, List<AssemblyTask>> workPostPairs) {
 
     HashMap<String, List<String>> output = new LinkedHashMap<>();
 
@@ -54,7 +54,7 @@ public class AssemblyLineController {
       List<String> assemblyTasksNames = new ArrayList<>(assemblyTasks.stream().map(AssemblyTask::getName).toList());
 
       for (int i = 0; i < assemblyTasksNames.size(); i++) {
-        if (assemblyLineStatus.get(key) == assemblyTasks.get(i)) {
+        if (workPostsWithActiveTasks.get(key) == assemblyTasks.get(i)) {
           String assemblyTaskName = assemblyTasksNames.get(i) + " (active)";
           assemblyTasksNames.set(i, assemblyTaskName);
         }
