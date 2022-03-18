@@ -138,7 +138,6 @@ public class AdvanceAssemblyLineTest {
     // Step 4 (a)
 
     List<String> blockingWorkPosts = assemblyLineController.moveAssemblyLine(60);
-    System.out.println(blockingWorkPosts);
     assertEquals(blockingWorkPosts.get(0), "CAR_BODY_POST");
   }
 
