@@ -7,12 +7,26 @@ import be.kuleuven.assemassit.Domain.Enums.Seat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @mutable
+ */
 public class InstallSeatsAssemblyTask extends AssemblyTask {
+  /**
+   * @invar | seat != null
+   */
   private Seat seat;
   private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_SEATS;
 
+  /**
+   * @param seat
+   * @throws IllegalArgumentException seat is null | seat == null
+   * @mutates | this
+   * @post | this.seat = seat
+   */
   public InstallSeatsAssemblyTask(Seat seat) {
     super("Install seats");
+    if (seat == null)
+      throw new IllegalArgumentException("Seat can not be null");
     this.seat = seat;
   }
 

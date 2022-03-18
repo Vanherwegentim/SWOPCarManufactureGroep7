@@ -7,12 +7,26 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @mutable
+ */
 public class InstallAircoAssemblyTask extends AssemblyTask {
+  /**
+   * @invar | airco != null
+   */
   private Airco airco;
   private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_AIRCO;
 
+  /**
+   * @param airco
+   * @throws IllegalArgumentException airco is null | airco == null
+   * @mutates | this
+   * @post | this.airco = airco
+   */
   public InstallAircoAssemblyTask(Airco airco) {
     super("Install airco");
+    if (airco == null)
+      throw new IllegalArgumentException("Airco can not be null");
     this.airco = airco;
   }
 

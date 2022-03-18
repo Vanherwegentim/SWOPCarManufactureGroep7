@@ -16,11 +16,11 @@ public class AdvanceAssemblyLineActionUI {
 
     do {
       System.out.println();
-      System.out.println("Current assembly line status: ");
+      System.out.println("Current assembly line status:");
       displayStatus(assemblyLineController.giveAssemblyLineStatusOverview());
 
       System.out.println();
-      System.out.println("Future assembly line status: ");
+      System.out.println("Future assembly line status:");
       displayStatus(assemblyLineController.giveFutureAssemblyLineStatusOverview());
 
       System.out.println();
@@ -51,7 +51,7 @@ public class AdvanceAssemblyLineActionUI {
           }
 
           System.out.println();
-          System.out.println("Current assembly line status: ");
+          System.out.println("Current assembly line status:");
           displayStatus(assemblyLineController.giveAssemblyLineStatusOverview());
 
           System.out.println("Press ENTER to continue...");
