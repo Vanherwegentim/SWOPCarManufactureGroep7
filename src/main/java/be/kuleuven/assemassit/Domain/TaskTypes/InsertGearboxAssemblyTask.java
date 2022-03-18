@@ -7,12 +7,26 @@ import be.kuleuven.assemassit.Domain.Enums.Gearbox;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @mutable
+ */
 public class InsertGearboxAssemblyTask extends AssemblyTask {
+  /**
+   * @invaer | gearbox != null
+   */
   private Gearbox gearbox;
   private AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_GEARBOX;
 
+  /**
+   * @param gearbox
+   * @throws IllegalArgumentException gearbox can not be null | gearbox == null
+   * @mutates | this
+   * @post | this.gearbox = gearbox
+   */
   public InsertGearboxAssemblyTask(Gearbox gearbox) {
     super("Insert gearbox");
+    if (gearbox == null)
+      throw new IllegalArgumentException("Gearbox can not be null");
     this.gearbox = gearbox;
   }
 
