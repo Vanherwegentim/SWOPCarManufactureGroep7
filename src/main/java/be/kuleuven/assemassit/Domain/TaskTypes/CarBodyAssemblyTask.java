@@ -45,8 +45,8 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   @Override
   public boolean equals(Object o) {
     if (o instanceof CarBodyAssemblyTask) {
-      CarBodyAssemblyTask carBodyAssemblyTask = (CarBodyAssemblyTask) o;
-      return carBodyAssemblyTask.getId() == this.getId();
+      CarBodyAssemblyTask assemblyTask = (CarBodyAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
     }
     return false;
   }

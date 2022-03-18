@@ -287,7 +287,6 @@ public class AssemblyLine {
   public boolean canMove() {
     List<WorkPost> workPosts = this.giveWorkPostsAsList();
     for (WorkPost workPost : workPosts) {
-      //TODO uitleg verwijderen canMove moet false returnen wanneer de workpost nog niet klaar is, dus wanneer er nog taken niet zijn afgewerkt
       if (!workPost.givePendingAssemblyTasks().isEmpty()) {
         return false;
       }
@@ -340,7 +339,7 @@ public class AssemblyLine {
       carBodyPost.removeCarAssemblyProcess();
     }
     //Give the first post a car from the queue;
-    //The queue can not be empty and there still must be enough time to produce the whole car
+    //The queue can not be empty and there must still be enough time to produce the whole car
     if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
       carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
     }
@@ -380,11 +379,6 @@ public class AssemblyLine {
 
     // car can still be manufactured today
     if (carAssemblyProcessesQueue.size() <= remainingCarsForToday) {
-      /*LocalDateTime dateTime = LocalDateTime.now();
-      if (dateTime.getHour() < 6)
-        dateTime = LocalDateTime.of(dateTime.getYear(), dateTime.getMonth(), dateTime.getDayOfMonth(), 6, 0);
-      return dateTime.plusMinutes((long) giveManufacturingDurationInMinutes() * carAssemblyProcessesQueue.size());*/
-
       // total duration - max duration of work post + max duration * amount
       return LocalDateTime.now().plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes((long) maxTimeNeededForWorkPostOnLine() * carAssemblyProcessesQueue.size());
     }

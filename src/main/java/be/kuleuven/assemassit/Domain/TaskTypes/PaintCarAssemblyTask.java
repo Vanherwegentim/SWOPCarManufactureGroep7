@@ -42,11 +42,11 @@ public class PaintCarAssemblyTask extends AssemblyTask {
     return this.assemblyTaskType;
   }
 
-  //Pattern matching not working here for some reason
   @Override
   public boolean equals(Object o) {
     if (o instanceof PaintCarAssemblyTask) {
-      return this.color == ((PaintCarAssemblyTask) o).color;
+      PaintCarAssemblyTask assemblyTask = (PaintCarAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
     }
     return false;
   }

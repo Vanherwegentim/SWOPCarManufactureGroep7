@@ -42,11 +42,11 @@ public class MountWheelsAssemblyTask extends AssemblyTask {
     return this.assemblyTaskType;
   }
 
-  //Pattern matching not working here for some reason
   @Override
   public boolean equals(Object o) {
     if (o instanceof MountWheelsAssemblyTask) {
-      return this.wheel == ((MountWheelsAssemblyTask) o).wheel;
+      MountWheelsAssemblyTask assemblyTask = (MountWheelsAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
     }
     return false;
   }

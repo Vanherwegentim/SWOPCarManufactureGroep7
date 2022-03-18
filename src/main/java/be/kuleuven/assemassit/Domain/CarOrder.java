@@ -22,7 +22,6 @@ public class CarOrder {
    */
   private final Car car;
   private final LocalDateTime orderTime;
-  //private CarAssemblyProcess
   private boolean pending;
   private LocalDateTime completionTime;
   private LocalDateTime estimatedCompletionTime;
