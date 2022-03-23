@@ -105,7 +105,12 @@ public class PerformAssemblyTasksTest {
 
     // Step 5
     List<String> actions = Arrays.asList("Installing the BREAK body");
-    assertTrue(assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(e -> actions.contains(e)));
+    List<String> actionsAlternative = Arrays.asList("Painting the car WHITE");
+
+    assertTrue(
+      assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(e -> actions.contains(e)) ||
+        assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(e -> actionsAlternative.contains(e))
+    );
     assertTrue(assemblyLineController.giveAssemblyTaskActions(0, id).size() == actions.size());
 
     // Step 6
