@@ -39,7 +39,7 @@ public class OrderNewCarTest {
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(new GarageHolder(0, "WolksVagen Garage Lokeren BVBA NV")));
     when(mockedCarModelRepository.getCarModels()).thenReturn(Arrays.asList(carModel));
 
-    orderNewCarController = factory.createOrderController(new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine()), mockedGarageHolderRepository);
+    orderNewCarController = factory.createOrderNewCarController(new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine()), mockedGarageHolderRepository);
   }
 
   @Test

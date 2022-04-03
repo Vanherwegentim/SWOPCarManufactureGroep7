@@ -4,9 +4,12 @@ import be.kuleuven.assemassit.Exceptions.UIException;
 
 import java.util.Scanner;
 
-public class IOCommunication {
+public class IOCall {
 
   private static Scanner input;
+
+  private IOCall() {
+  }
 
   public static void out(String message) {
     System.out.println(message);
