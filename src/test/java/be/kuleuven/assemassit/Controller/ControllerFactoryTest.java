@@ -23,10 +23,10 @@ public class ControllerFactoryTest {
   @Test
   public void controllerTest() {
     ControllerFactory controllerFactory = new ControllerFactory();
-    OrderController orderController = controllerFactory.createOrderController();
+    OrderNewCarController orderNewCarController = controllerFactory.createOrderController();
     AssemblyLineController assemblyLineController = controllerFactory.createAssemblyLineController();
-    assert orderController instanceof OrderController;
-    assertNotNull(orderController);
+    assert orderNewCarController instanceof OrderNewCarController;
+    assertNotNull(orderNewCarController);
 
     assert assemblyLineController instanceof AssemblyLineController;
     assertNotNull(assemblyLineController);

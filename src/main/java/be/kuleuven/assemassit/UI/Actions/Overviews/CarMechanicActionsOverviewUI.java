@@ -1,14 +1,14 @@
 package be.kuleuven.assemassit.UI.Actions.Overviews;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.AuthenticateUI;
 
 import java.util.Scanner;
 
 public class CarMechanicActionsOverviewUI {
-  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
     int action;
 
@@ -22,8 +22,8 @@ public class CarMechanicActionsOverviewUI {
       action = scanner.nextInt();
 
       switch (action) {
-        case 1 -> PerformAssemblyTasksActionUI.run(orderController, assemblyLineController);
-        case -1 -> AuthenticateUI.run(orderController, assemblyLineController);
+        case 1 -> PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController);
+        case -1 -> AuthenticateUI.run(orderNewCarController, assemblyLineController);
       }
     } while (action != -1 && action != 1);
   }

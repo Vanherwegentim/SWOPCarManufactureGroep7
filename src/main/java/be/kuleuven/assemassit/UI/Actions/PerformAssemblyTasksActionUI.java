@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
 
 import java.util.List;
@@ -10,13 +10,13 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class PerformAssemblyTasksActionUI {
-  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
 
     Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
     Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
 
     if (chosenWorkPostIdOptional.isEmpty()) {
-      CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
+      CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
       return;
     }
     int chosenWorkPostId = chosenWorkPostIdOptional.get();
@@ -25,14 +25,14 @@ public class PerformAssemblyTasksActionUI {
 
     if (allAssemblyTasks.isEmpty()) {
       System.out.println("There are currently no pending tasks for this work post");
-      PerformAssemblyTasksActionUI.run(orderController, assemblyLineController);
+      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController);
       return;
     }
 
     Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
 
     if (chosenAssemblyTaskIdOptional.isEmpty()) {
-      PerformAssemblyTasksActionUI.run(orderController, assemblyLineController);
+      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController);
       return;
     }
     int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
@@ -51,7 +51,7 @@ public class PerformAssemblyTasksActionUI {
     scanner.nextLine();
     assemblyLineController.completeAssemblyTask(chosenWorkPostId);
 
-    CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
+    CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {

@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI;
 
 import java.time.LocalDateTime;
@@ -10,19 +10,19 @@ import java.util.*;
 
 
 public class OrderNewCarActionUI {
-  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
     int choice;
 
     do {
       System.out.println();
-      System.out.println("Orders placed by: " + orderController.giveLoggedInGarageHolderName());
+      System.out.println("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
 
       System.out.println("Pending:");
-      displayCarOrders(orderController.givePendingCarOrders());
+      displayCarOrders(orderNewCarController.givePendingCarOrders());
 
       System.out.println("History:");
-      displayCarOrders(orderController.giveCompletedCarOrders());
+      displayCarOrders(orderNewCarController.giveCompletedCarOrders());
 
       System.out.println();
       System.out.println("Please choose an action:");
@@ -33,26 +33,26 @@ public class OrderNewCarActionUI {
 
       switch (choice) {
         case 1 -> {
-          Optional<Integer> chosenCarModelIdOptional = displayChooseCarModel(orderController.giveListOfCarModels());
+          Optional<Integer> chosenCarModelIdOptional = displayChooseCarModel(orderNewCarController.giveListOfCarModels());
 
           if (chosenCarModelIdOptional.isEmpty()) {
-            OrderNewCarActionUI.run(orderController, assemblyLineController);
+            OrderNewCarActionUI.run(orderNewCarController, assemblyLineController);
             return;
           }
 
           int chosenCarModelId = chosenCarModelIdOptional.get();
 
-          Map<String, List<String>> parts = orderController.givePossibleOptionsOfCarModel(chosenCarModelId);
+          Map<String, List<String>> parts = orderNewCarController.givePossibleOptionsOfCarModel(chosenCarModelId);
 
           Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
 
           if (selectedPartsOptional.isEmpty()) {
-            OrderNewCarActionUI.run(orderController, assemblyLineController);
+            OrderNewCarActionUI.run(orderNewCarController, assemblyLineController);
             return;
           }
           Map<String, String> selectedParts = selectedPartsOptional.get();
 
-          LocalDateTime estimatedCompletionDate = orderController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
+          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
           System.out.println();
@@ -63,9 +63,9 @@ public class OrderNewCarActionUI {
           Scanner scanner3 = new Scanner(System.in);
           scanner3.nextLine();
 
-          OrderNewCarActionUI.run(orderController, assemblyLineController);
+          OrderNewCarActionUI.run(orderNewCarController, assemblyLineController);
         }
-        case -1 -> GarageHolderActionsOverviewUI.run(orderController, assemblyLineController);
+        case -1 -> GarageHolderActionsOverviewUI.run(orderNewCarController, assemblyLineController);
       }
     } while (choice != -1 && (choice != 1));
   }
