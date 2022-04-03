@@ -4,6 +4,7 @@ public class CheckProductionStatisticsController {
 
 
   public String checkStatistics() {
-      
+    //TODO
+    return "";
   }
 }

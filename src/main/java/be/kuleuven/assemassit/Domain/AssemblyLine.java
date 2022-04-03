@@ -485,4 +485,9 @@ public class AssemblyLine {
     }
     return carAssemblyProcessList;
   }
+
+  public int averageCarsInADay() {
+    //TODO
+    return 0;
+  }
 }
