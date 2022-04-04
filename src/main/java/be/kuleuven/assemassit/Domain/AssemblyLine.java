@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -51,6 +52,7 @@ public class AssemblyLine {
   private final List<CarAssemblyProcess> finishedCars;
   private LocalTime startTime;
   private LocalTime endTime;
+
 
   /**
    * @post | carBodyPost != null
@@ -486,8 +488,49 @@ public class AssemblyLine {
     return carAssemblyProcessList;
   }
 
+  public Map<LocalDate, Integer> createCarsPerDayMap() {
+    //Create a map that counts how many cars were made every day(LocalDate)
+    //TODO refactor to work with streams;
+    List<LocalDateTime> dateTimeList = new ArrayList<>();
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      dateTimeList.add(carAssemblyProcess.getCarOrder().getCompletionTime());
+    }
+    Map<LocalDate, Integer> carsPerDayMap = new HashMap<>();
+    for (LocalDateTime localDateTime : dateTimeList) {
+      if (carsPerDayMap.containsKey(localDateTime.toLocalDate())) {
+        int i = carsPerDayMap.get(localDateTime);
+        i++;
+        carsPerDayMap.replace(localDateTime.toLocalDate(), i);
+      } else {
+        carsPerDayMap.put(localDateTime.toLocalDate(), 1);
+      }
+    }
+    return carsPerDayMap;
+  }
+
   public int averageCarsInADay() {
-    //TODO
-    return 0;
+    //Calculate the average
+    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    int total = 0;
+    for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
+      total = total + entry.getValue();
+    }
+    return total / carsPerDayMap.size();
+  }
+
+  public int medianCarsInADay() {
+    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    ArrayList<Integer> intList = (ArrayList<Integer>) carsPerDayMap.values();
+    Collections.sort(intList);
+    if (intList.size() % 2 == 0) {
+      int middle = intList.size() / 2;
+      return (intList.get(middle) + intList.get(middle + 1)) / 2;
+    } else {
+      double middle = (double) intList.size() / 2.0;
+      int middleInt = (int) Math.ceil(middle);
+      return intList.get(middleInt);
+
+
+    }
   }
 }

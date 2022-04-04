@@ -63,4 +63,6 @@ public class AssemblyLineTest {
 
     assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
+
+  
 }
