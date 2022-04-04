@@ -529,8 +529,21 @@ public class AssemblyLine {
       double middle = (double) intList.size() / 2.0;
       int middleInt = (int) Math.ceil(middle);
       return intList.get(middleInt);
-
-
     }
   }
+
+  public int exactCarsIn2Days() {
+    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    int total = 0;
+
+    for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
+      if (entry.getKey().equals(LocalDate.now()) ||
+        entry.getKey().equals(LocalDate.now().minusDays(1)) ||
+        entry.getKey().equals(LocalDate.now().minusDays(2))) {
+        total = total + entry.getValue();
+      }
+    }
+    return total;
+  }
 }
+
