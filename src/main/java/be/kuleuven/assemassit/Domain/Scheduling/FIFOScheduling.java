@@ -32,14 +32,14 @@ public class FIFOScheduling implements SchedulingAlgorithm {
     WorkPost workPost = iterator.next();
 
     do {
-      if (workPost != null) {
+      if (workPost != null && workPost.getCarAssemblyProcess() != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
           assemblyTask.setCompletionTime(minutes);
         }
 
         CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
         carAssemblyProcess.complete();
-        
+
         if (!iterator.hasPrevious()) {
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
@@ -49,6 +49,8 @@ public class FIFOScheduling implements SchedulingAlgorithm {
           workPost.removeCarAssemblyProcess();
         }
       }
+
+      workPost = iterator.next();
     } while (iterator.hasNext());
 
     // check if the next process can still be produced today

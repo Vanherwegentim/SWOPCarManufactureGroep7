@@ -2,6 +2,8 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
+import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
+import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -52,6 +54,9 @@ public class AssemblyLine {
   private LocalTime startTime;
   private LocalTime endTime;
 
+  private SchedulingAlgorithm schedulingAlgorithm;
+  private int previousOvertimeInMinutes;
+
   /**
    * @post | carBodyPost != null
    * @post | driveTrainPost != null
@@ -66,6 +71,8 @@ public class AssemblyLine {
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
+    this.previousOvertimeInMinutes = 0;
+    this.schedulingAlgorithm = new FIFOScheduling();
   }
 
   /**
@@ -95,6 +102,19 @@ public class AssemblyLine {
       throw new IllegalArgumentException("EndTime can not be null");
     }
     this.endTime = endTime;
+  }
+
+  /**
+   * Sets the scheduling algorithm of the assembly line.
+   *
+   * @param schedulingAlgorithm
+   * @throws IllegalArgumentException schedulingAlgorithm can not be null | schedulingAlgorithm == null
+   * @post | this.schedulingAlgorithm == schedulingAlgorithm
+   */
+  public void setSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
+    if (schedulingAlgorithm == null)
+      throw new IllegalArgumentException("SchedulingAlgorithm can not be null");
+    this.schedulingAlgorithm = schedulingAlgorithm;
   }
 
   /**
@@ -304,6 +324,10 @@ public class AssemblyLine {
    * @mutates | this
    */
   public void move(int minutes) {
+
+    if (!canMove())
+      throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
+    /*
     if (minutes < 0)
       throw new IllegalArgumentException("Minutes can not be below 0");
     if (!canMove()) {
@@ -343,6 +367,17 @@ public class AssemblyLine {
     if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
       carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
     }
+    */
+
+    schedulingAlgorithm.moveAssemblyLine
+      (
+        minutes,
+        previousOvertimeInMinutes,
+        endTime,
+        carAssemblyProcessesQueue,
+        finishedCars,
+        giveWorkPostsAsList()
+      );
   }
 
   /**
