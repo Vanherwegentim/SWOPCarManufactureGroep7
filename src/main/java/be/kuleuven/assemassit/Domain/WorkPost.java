@@ -175,10 +175,12 @@ public class WorkPost {
    * @mutates | this
    * @post | getActiveAssemblyTask() == null
    */
-  public void completeAssemblyTask() {
+  public void completeAssemblyTask(int duration) {
     if (activeAssemblyTask == null)
       throw new IllegalStateException("There is no active assembly task in this work post");
     activeAssemblyTask.complete();
+    activeAssemblyTask.setDuration(duration);
+    activeAssemblyTask.setCompletionTime(duration);
     activeAssemblyTask = null;
   }
 

@@ -139,12 +139,16 @@ public class AssemblyLineController {
    * Complete the active assembly task in a specific work post
    *
    * @param workPostId the id of the work post
-   * @throws IllegalArgumentException workPostId is lower than 0 | workPostId < °
+   * @param duration   the time it took him to Finish the task
+   * @throws IllegalArgumentException workPostId is lower than 0
+   * @throws IllegalArgumentException duration is lower than 0 | duration > 180
    */
-  public void completeAssemblyTask(int workPostId) {
+  public void completeAssemblyTask(int workPostId, int duration) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
-    assemblyLine.completeAssemblyTask(workPostId);
+    if (!(duration >= 0 && duration < 180))
+      throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
+    assemblyLine.completeAssemblyTask(workPostId, duration);
   }
 
   /**

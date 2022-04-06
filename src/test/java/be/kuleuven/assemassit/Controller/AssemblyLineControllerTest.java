@@ -197,10 +197,10 @@ public class AssemblyLineControllerTest {
     assertThrows(IllegalArgumentException.class, () -> assemblyLineController.moveAssemblyLine(-1));
   }
 
-  @Test
-  public void completeAssemblyTaskTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.completeAssemblyTask(-1));
-  }
+//  @Test
+//  public void completeAssemblyTaskTest_throws() {
+//    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.completeAssemblyTask(-1));
+//  }
 
   @Test
   public void setActiveTaskTest_throws() {

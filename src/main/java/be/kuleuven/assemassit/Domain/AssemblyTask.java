@@ -14,6 +14,7 @@ public abstract class AssemblyTask {
   private boolean pending;
   private int id;
   private int completionTime;
+  private int duration;
 
   /**
    * @param name the name of the assembly task
@@ -48,6 +49,15 @@ public abstract class AssemblyTask {
   public void setPending(boolean pending) {
     this.pending = pending;
   }
+
+  public int getDuration() {
+    return duration;
+  }
+
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
+
 
   /**
    * @return list of actions

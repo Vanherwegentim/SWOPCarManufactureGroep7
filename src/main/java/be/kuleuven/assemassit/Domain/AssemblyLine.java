@@ -143,14 +143,18 @@ public class AssemblyLine {
    * Complete the active assembly task of a work post
    *
    * @param workPostId the work post id
+   * @param duration   the time it took him to Finish the task
    * @throws IllegalArgumentException workPostId is below 0 | workPostId < 0
+   * @throws IllegalArgumentException duration is lower than 0 | duration > 180
    * @mutates | this
    */
-  public void completeAssemblyTask(int workPostId) {
+  public void completeAssemblyTask(int workPostId, int duration) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId can not be below 0");
+    if (!(duration >= 0 && duration < 180))
+      throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask();
+    workPost.completeAssemblyTask(duration);
   }
 
   /**

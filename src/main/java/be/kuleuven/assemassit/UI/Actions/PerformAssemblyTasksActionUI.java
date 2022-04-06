@@ -45,11 +45,8 @@ public class PerformAssemblyTasksActionUI {
     System.out.println("Execute the following actions:");
     displayActions(actions);
 
-    System.out.println();
-    System.out.println("Press ENTER when the task is finished");
-    Scanner scanner = new Scanner(System.in);
-    scanner.nextLine();
-    assemblyLineController.completeAssemblyTask(chosenWorkPostId);
+    int duration = displayInputMinutes();
+    assemblyLineController.completeAssemblyTask(chosenWorkPostId, duration);
 
     CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
   }
@@ -98,5 +95,17 @@ public class PerformAssemblyTasksActionUI {
 
     System.out.println("Chosen assembly task: " + assemblyTasks.get(assemblyTaskId));
     return Optional.of(assemblyTaskId);
+  }
+
+  private static int displayInputMinutes() {
+    Scanner input = new Scanner(System.in);
+    int minutes;
+
+    do {
+      System.out.println();
+      System.out.println("What was the amount of minutes spent on this task?");
+      minutes = input.nextInt();
+    } while (!(minutes >= 0 && minutes < 180));
+    return minutes;
   }
 }
