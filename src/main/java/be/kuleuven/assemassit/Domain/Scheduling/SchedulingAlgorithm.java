@@ -12,7 +12,7 @@ public interface SchedulingAlgorithm {
     int minutes,
     int previousOvertimeInMinutes,
     LocalTime endTime,
-    Queue<CarAssemblyProcess> carAssemblyProcesses,
+    Queue<CarAssemblyProcess> carAssemblyProcessesQueue,
     List<CarAssemblyProcess> finishedCars,
     List<WorkPost> workPostsInOrder
   );
