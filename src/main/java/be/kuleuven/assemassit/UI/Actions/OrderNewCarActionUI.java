@@ -19,10 +19,10 @@ public class OrderNewCarActionUI {
       System.out.println("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
 
       System.out.println("Pending:");
-      displayCarOrders(orderNewCarController.givePendingCarOrders());
+      //displayCarOrders(orderNewCarController.givePendingCarOrders());
 
       System.out.println("History:");
-      displayCarOrders(orderNewCarController.giveCompletedCarOrders());
+      //displayCarOrders(orderNewCarController.giveCompletedCarOrders());
 
       System.out.println();
       System.out.println("Please choose an action:");
