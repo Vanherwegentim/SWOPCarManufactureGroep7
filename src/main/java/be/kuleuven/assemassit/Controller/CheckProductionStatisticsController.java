@@ -10,11 +10,20 @@ public class CheckProductionStatisticsController {
   }
 
 
+  public String averageCarsInADayToString() {
+    return "The average amount cars made in a day are: " + assemblyLine.averageCarsInADay();
+  }
+
+
   public String checkStatistics() {
     //TODO
     return "The average amount cars made in a day are: " + assemblyLine.averageCarsInADay() + "\n" +
       "The median amount of cars produced in a day are: " + assemblyLine.medianCarsInADay() + "\n" +
-      "The exact amount of cars made in the last 2 days are: " + assemblyLine.exactCarsIn2Days() + "\n";
+      "The exact amount of cars made in the last 2 days are: " + assemblyLine.exactCarsIn2Days() + "\n" +
+      "The average delay for orders is";
+
 
   }
+
+
 }

@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -544,6 +545,57 @@ public class AssemblyLine {
       }
     }
     return total;
+  }
+
+  //Can a car be ready before it's estimated completion time? if so, add an if test
+  public int averageDelayPerOrder() {
+    int total = 0;
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
+      long diff = duration.toHours();
+      //This conversion could error
+      total = total + Math.toIntExact(diff);
+
+    }
+    return Math.round(total / finishedCars.size());
+  }
+
+  public int medianDelayPerOrder() {
+    int total = 0;
+    ArrayList<Integer> dates = new ArrayList<>();
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
+      long diff = duration.toHours();
+      int conv = Math.toIntExact(diff);
+      dates.add(conv);
+    }
+    if (dates.size() % 2 == 0) {
+      return (dates.get(dates.size() / 2) + dates.get((dates.size() / 2) + 1)) / 2;
+    } else {
+      return dates.get(dates.size());
+    }
+  }
+
+  public Map<LocalDate, Integer> last2Delays() {
+    Map<LocalDate, Integer> delays = new HashMap<>();
+    CarAssemblyProcess car1 = finishedCars.get(0);
+    CarAssemblyProcess car2 = finishedCars.get(1);
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
+        car1 = carAssemblyProcess;
+      } else if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car2.getCarOrder().getCompletionTime())) {
+        car2 = carAssemblyProcess;
+      }
+    }
+    Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
+    long diff1 = duration1.toHours();
+    int conv1 = Math.toIntExact(diff1);
+    delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
+    Duration duration2 = Duration.between(car2.getCarOrder().getCompletionTime(), car2.getCarOrder().getEstimatedCompletionTime());
+    long diff2 = duration2.toHours();
+    int conv2 = Math.toIntExact(diff2);
+    delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
+    return delays;
   }
 }
 
