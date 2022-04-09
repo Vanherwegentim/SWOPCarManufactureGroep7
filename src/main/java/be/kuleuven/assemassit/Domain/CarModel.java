@@ -57,15 +57,15 @@ public class CarModel {
   private List<Spoiler> spoilerOptions;
 
   /**
-   * @param id
-   * @param name
-   * @param wheelOptions
-   * @param gearboxOptions
-   * @param seatOptions
-   * @param bodyOptions
-   * @param colorOptions
-   * @param engineOptions
-   * @param aircoOptions
+   * @param id             car model ID
+   * @param name           name of the car model
+   * @param wheelOptions   list of acceptable wheel options for the car model
+   * @param gearboxOptions list of acceptable gearbox options for the car model
+   * @param seatOptions    list of acceptable seat options for the car model
+   * @param bodyOptions    list of acceptable body options for the car model
+   * @param colorOptions   list of acceptable color options for the car model
+   * @param engineOptions  list of acceptable engine options for the car model
+   * @param aircoOptions   list of acceptable airco options for the car model
    * @throws IllegalArgumentException name can not be null or empty
    *                                  | name == null || name.equals("")
    * @throws IllegalArgumentException options can not be null or empty
@@ -149,6 +149,10 @@ public class CarModel {
     return aircoOptions;
   }
 
+  public List<Spoiler> getSpoilerOptions() {
+    return spoilerOptions;
+  }
+
   /**
    * Method checks if a give configuration of options is valid for the car model
    *
@@ -187,4 +191,6 @@ public class CarModel {
   public String toString() {
     return id + ": " + name;
   }
+
+
 }

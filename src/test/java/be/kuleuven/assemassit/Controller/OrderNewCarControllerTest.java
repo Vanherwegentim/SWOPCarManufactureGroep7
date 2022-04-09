@@ -66,6 +66,7 @@ public class OrderNewCarControllerTest {
     when(mockedCarModel.getAircoOptions()).thenReturn(Arrays.stream(Airco.values()).toList());
     when(mockedCarModel.getWheelOptions()).thenReturn(Arrays.stream(Wheel.values()).toList());
     when(mockedCarModel.getSeatOptions()).thenReturn(Arrays.stream(Seat.values()).toList());
+    when(mockedCarModel.getSpoilerOptions()).thenReturn(Arrays.stream(Spoiler.values()).toList());
     when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)).thenReturn(true);
 
     orderNewCarController = new OrderNewCarController(mockedCarManufacturingCompany, mockedGarageHolderRepository);
@@ -144,25 +145,32 @@ public class OrderNewCarControllerTest {
   public void givePossibleOptionsOfCarModelTest() {
     String expected = """
       GearBox
-      MANUAL
-      AUTOMATIC
+      SIX_SPEED_MANUAL
+      FIVE_SPEED_MANUAL
+      FIVE_SPEED_AUTOMATIC
       Airco
       MANUAL
       AUTOMATIC
+      NO_AIRCO
       Wheels
       COMFORT
       SPORT
+      WINTER
       Color
       RED
       BLUE
       BLACK
       WHITE
+      GREEN
+      YELLOW
       Body
-      SEAD
+      SEDAN
       BREAK
+      SPORT
       Engine
       STANDARD
       PERFORMANCE
+      ULTRA
       Seats
       LEATHER_BLACK
       LEATHER_WHITE
@@ -183,7 +191,7 @@ public class OrderNewCarControllerTest {
   @Test
   public void placeCarOrderTest_succeeds() {
     orderNewCarController.logInGarageHolder(0);
-    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "LOW");
+    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), estimatedCompletionTime);
   }
 

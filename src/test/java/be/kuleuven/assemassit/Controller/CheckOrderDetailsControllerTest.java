@@ -107,7 +107,7 @@ public class CheckOrderDetailsControllerTest {
               Body: BREAK
               Color: BLACK
               Engine: PERFORMANCE
-              Gearbox: MANUAL
+              Gearbox: FIVE_SPEED_MANUAL
               Airco: AUTOMATIC
               Wheels: COMFORT
               Seats: LEATHER_BLACK
@@ -127,7 +127,7 @@ public class CheckOrderDetailsControllerTest {
               Body: BREAK
               Color: BLACK
               Engine: PERFORMANCE
-              Gearbox: MANUAL
+              Gearbox: FIVE_SPEED_MANUAL
               Airco: AUTOMATIC
               Wheels: COMFORT
               Seats: LEATHER_BLACK
