@@ -53,7 +53,7 @@ public class OrderNewCarControllerTest {
     when(mockedCar.getBody()).thenReturn(Body.BREAK);
     when(mockedCar.getColor()).thenReturn(Color.BLACK);
     when(mockedCar.getEngine()).thenReturn(Engine.PERFORMANCE);
-    when(mockedCar.getGearbox()).thenReturn(Gearbox.MANUAL);
+    when(mockedCar.getGearbox()).thenReturn(Gearbox.FIVE_SPEED_MANUAL);
     when(mockedCar.getAirco()).thenReturn(Airco.AUTOMATIC);
     when(mockedCar.getWheels()).thenReturn(Wheel.COMFORT);
     when(mockedCar.getSeats()).thenReturn(Seat.LEATHER_BLACK);
@@ -66,7 +66,7 @@ public class OrderNewCarControllerTest {
     when(mockedCarModel.getAircoOptions()).thenReturn(Arrays.stream(Airco.values()).toList());
     when(mockedCarModel.getWheelOptions()).thenReturn(Arrays.stream(Wheel.values()).toList());
     when(mockedCarModel.getSeatOptions()).thenReturn(Arrays.stream(Seat.values()).toList());
-    when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)).thenReturn(true);
+    when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)).thenReturn(true);
 
     orderNewCarController = new OrderNewCarController(mockedCarManufacturingCompany, mockedGarageHolderRepository);
   }
@@ -183,15 +183,15 @@ public class OrderNewCarControllerTest {
   @Test
   public void placeCarOrderTest_succeeds() {
     orderNewCarController.logInGarageHolder(0);
-    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
+    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "LOW");
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), estimatedCompletionTime);
   }
 
   @Test
   public void placeCarOrderTest_throws() {
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", ""));
+    assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
     orderNewCarController.logInGarageHolder(0);
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", ""));
+    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
 
   }
 

@@ -52,7 +52,7 @@ public class OrderNewCarActionUI {
           }
           Map<String, String> selectedParts = selectedPartsOptional.get();
 
-          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
+          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
           System.out.println();

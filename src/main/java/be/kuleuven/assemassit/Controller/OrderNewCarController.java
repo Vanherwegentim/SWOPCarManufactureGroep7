@@ -157,7 +157,7 @@ public class OrderNewCarController {
    * @return the estimated delivery time of the new car order
    * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
    */
-  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
+  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -174,7 +174,8 @@ public class OrderNewCarController {
           Gearbox.valueOf(gearbox),
           Seat.valueOf(seats),
           Airco.valueOf(airco),
-          Wheel.valueOf(wheels)
+          Wheel.valueOf(wheels),
+          Spoiler.valueOf(spoiler)
         );
     } catch (IllegalArgumentException e) {
       if (e.getLocalizedMessage().startsWith("No enum constant")) {

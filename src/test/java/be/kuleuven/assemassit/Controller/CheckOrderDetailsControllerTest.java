@@ -47,7 +47,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCar.getBody()).thenReturn(Body.BREAK);
     when(mockedCar.getColor()).thenReturn(Color.BLACK);
     when(mockedCar.getEngine()).thenReturn(Engine.PERFORMANCE);
-    when(mockedCar.getGearbox()).thenReturn(Gearbox.MANUAL);
+    when(mockedCar.getGearbox()).thenReturn(Gearbox.FIVE_SPEED_MANUAL);
     when(mockedCar.getAirco()).thenReturn(Airco.AUTOMATIC);
     when(mockedCar.getWheels()).thenReturn(Wheel.COMFORT);
     when(mockedCar.getSeats()).thenReturn(Seat.LEATHER_BLACK);

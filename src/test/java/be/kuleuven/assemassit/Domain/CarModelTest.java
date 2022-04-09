@@ -18,7 +18,7 @@ public class CarModelTest {
         0,
         "testmodel",
         Arrays.asList(Wheel.COMFORT, Wheel.SPORT),
-        Arrays.asList(Gearbox.AUTOMATIC, Gearbox.MANUAL),
+        Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.SIX_SPEED_MANUAL),
         Arrays.asList(Seat.LEATHER_BLACK),
         Arrays.asList(Body.BREAK),
         Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
