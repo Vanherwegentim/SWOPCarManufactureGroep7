@@ -28,6 +28,7 @@ public class Car {
   private Seat seats;
   private Airco airco;
   private Wheel wheels;
+  private Spoiler spoiler;
 
 
   /**
@@ -50,13 +51,22 @@ public class Car {
    * @post | this.airco = airco
    * @post | this.wheels = wheels
    */
-  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels) {
+  public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels, Spoiler spoiler) {
     if (carModel == null)
       throw new IllegalArgumentException("Car Model cannot be null");
-    if (body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null)
+    if (body == null || color == null || engine == null || gearbox == null || seats == null || wheels == null || airco == null || spoiler == null)
       throw new IllegalArgumentException("Assembly tasks cannot be null");
-    if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels))
+    if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels, spoiler))
       throw new IllegalArgumentException("Invalid car configuration");
+    if (Body.SPORT.equals(body) && Spoiler.NO_SPOILER.equals(spoiler)) {
+      throw new IllegalArgumentException("A car with a sport body must have a spoiler");
+    }
+    if (Body.SPORT.equals(body) && Engine.STANDARD.equals(engine)) {
+      throw new IllegalArgumentException("A car with a sport body must have a performance or ultra engine ");
+    }
+    if (Engine.ULTRA.equals(engine) && Airco.AUTOMATIC.equals(airco)) {
+      throw new IllegalArgumentException("A car with an ultra engine cannot have an automatic airco");
+    }
 
     this.carModel = carModel;
     this.body = body;
@@ -66,6 +76,7 @@ public class Car {
     this.seats = seats;
     this.airco = airco;
     this.wheels = wheels;
+    this.spoiler = spoiler;
     this.id = Car.idRunner++;
   }
 

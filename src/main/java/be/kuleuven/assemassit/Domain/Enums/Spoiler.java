@@ -1,4 +1,5 @@
 package be.kuleuven.assemassit.Domain.Enums;
 
-public class Spoiler {
+public enum Spoiler {
+  LOW, HIGH, NO_SPOILER
 }
