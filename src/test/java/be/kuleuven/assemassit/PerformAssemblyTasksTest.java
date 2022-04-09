@@ -59,14 +59,14 @@ public class PerformAssemblyTasksTest {
   }
 
   private void mockCarModels() {
-    carModel = new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()));
+    carModel = new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values()));
     when(mockedCarModelRepository.getCarModels()).thenReturn(Arrays.asList(carModel));
   }
 
   private void fillTheSystemWithTasks() {
-    orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
-    orderNewCarController.placeCarOrder(0, "SEAD", "RED", "STANDARD", "AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT");
-    orderNewCarController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT");
+    orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
+    orderNewCarController.placeCarOrder(0, "SEAD", "RED", "STANDARD", "AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT", "NO_SPOILER");
+    orderNewCarController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT", "NO_SPOILER");
   }
 
   private void moveTheAssemblyLine() {

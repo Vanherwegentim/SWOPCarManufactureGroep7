@@ -18,14 +18,15 @@ public class GarageHolderTest {
     garageHolder = new GarageHolder(0, "testGarageHolder");
     carOrder = new CarOrder(
       new Car(
-        new CarModel(0, "testCar", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
+        new CarModel(0, "testCar", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
         Body.SEDAN,
         Color.BLACK,
         Engine.PERFORMANCE,
-        Gearbox.MANUAL,
+        Gearbox.FIVE_SPEED_MANUAL,
         Seat.LEATHER_BLACK,
         Airco.MANUAL,
-        Wheel.SPORT));
+        Wheel.SPORT,
+        Spoiler.NO_SPOILER));
   }
 
   @Test
