@@ -122,6 +122,18 @@ public class AssemblyLine {
     return this.accessoriesPost;
   }
 
+  /**
+   * Collects the work posts of the assembly line in a list.
+   *
+   * @return the list of work posts on this assembly line
+   * @post | result != null
+   * @inspects | this
+   * @creates | result
+   */
+  public List<WorkPost> getWorkPosts() {
+    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
+  }
+
   public List<CarAssemblyProcess> getFinishedCars() {
     return this.finishedCars;
   }
@@ -271,7 +283,7 @@ public class AssemblyLine {
       throw new IllegalArgumentException("The ID can not be lower than 0");
 
 
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    List<WorkPost> workPosts = this.getWorkPosts();
 
     Optional<WorkPost> optionalWorkPost = workPosts.stream().filter(workPost -> workPost.getId() == workPostId).findFirst();
 
@@ -289,7 +301,7 @@ public class AssemblyLine {
    * @inspects | this
    */
   public boolean canMove() {
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    List<WorkPost> workPosts = this.getWorkPosts();
     for (WorkPost workPost : workPosts) {
       if (!workPost.givePendingAssemblyTasks().isEmpty()) {
         return false;
@@ -407,7 +419,7 @@ public class AssemblyLine {
    * @inspects | this
    */
   private int maxTimeNeededForWorkPostOnLine() {
-    return giveWorkPostsAsList()
+    return getWorkPosts()
       .stream()
       .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
       .max()
@@ -422,22 +434,10 @@ public class AssemblyLine {
    * @inspects | this
    */
   private int giveManufacturingDurationInMinutes() {
-    return giveWorkPostsAsList()
+    return getWorkPosts()
       .stream()
       .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
       .reduce(0, Integer::sum);
-  }
-
-  /**
-   * Collects the work posts of the assembly line in a list.
-   *
-   * @return the list of work posts on this assembly line
-   * @post | result != null
-   * @inspects | this
-   * @creates | result
-   */
-  public List<WorkPost> giveWorkPostsAsList() {
-    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
   /**

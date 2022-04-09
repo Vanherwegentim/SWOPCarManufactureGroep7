@@ -214,7 +214,7 @@ public class WorkPost {
       .filter(at -> at.getId() == id)
       .findFirst();
 
-    if (!assemblyTask.isPresent())
+    if (assemblyTask.isEmpty())
       throw new IllegalArgumentException("AssemblyTask not found");
 
     return assemblyTask.get();

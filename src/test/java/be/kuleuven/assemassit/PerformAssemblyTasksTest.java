@@ -95,8 +95,8 @@ public class PerformAssemblyTasksTest {
     // Step 2 and 3
     List<String> bodyTasks = Arrays.asList("Paint car", "Assembly car body");
     Map<Integer, String> pendingAssemblyTasks = assemblyLineController.givePendingAssemblyTasks(0);
-    assertTrue(pendingAssemblyTasks.values().stream().allMatch(e -> bodyTasks.contains(e)));
-    assertTrue(pendingAssemblyTasks.values().size() == bodyTasks.size());
+    assertTrue(bodyTasks.containsAll(pendingAssemblyTasks.values()));
+    assertEquals(pendingAssemblyTasks.values().size(), bodyTasks.size());
 
     // Step 4
 
@@ -108,8 +108,8 @@ public class PerformAssemblyTasksTest {
     List<String> actionsAlternative = Arrays.asList("Painting the car WHITE");
 
     assertTrue(
-      assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(e -> actions.contains(e)) ||
-        assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(e -> actionsAlternative.contains(e))
+      assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(actions::contains) ||
+        assemblyLineController.giveAssemblyTaskActions(0, id).stream().allMatch(actionsAlternative::contains)
     );
     assertTrue(assemblyLineController.giveAssemblyTaskActions(0, id).size() == actions.size());
 

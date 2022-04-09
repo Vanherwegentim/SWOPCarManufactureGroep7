@@ -13,7 +13,6 @@ public abstract class AssemblyTask {
   private final String name;
   private boolean pending;
   private int id;
-  private int completionTime;
   private int duration;
 
   /**
@@ -50,14 +49,21 @@ public abstract class AssemblyTask {
     this.pending = pending;
   }
 
+  /**
+   * The duration can not be achieved if the task is still pending
+   *
+   * @return the time it took to finish the task in minutes
+   * @throws IllegalStateException task is still pending | getPending()
+   */
   public int getDuration() {
+    if (pending)
+      throw new IllegalStateException();
     return duration;
   }
 
   public void setDuration(int duration) {
     this.duration = duration;
   }
-
 
   /**
    * @return list of actions
@@ -74,24 +80,7 @@ public abstract class AssemblyTask {
     return this.name;
   }
 
-  public void setCompletionTime(int minutes) {
-    this.completionTime = minutes;
-  }
-
   public abstract AssemblyTaskType getAssemblyTaskType();
-
-  /**
-   * The completion time can not be achieved if the task is still pending
-   *
-   * @return the completion time in minutes
-   * @throws IllegalStateException task is still pending | getPending()
-   */
-  public int completionTime() {
-    if (pending)
-      throw new IllegalStateException();
-
-    return this.completionTime;
-  }
 
   /**
    * Complete the task, this sets the pending attribute to false

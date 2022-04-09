@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
+import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
 
 import java.util.List;
@@ -10,9 +11,9 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class PerformAssemblyTasksActionUI {
-  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController, PerformAssemblyTasksController performAssemblyTasksController) {
 
-    Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
+    Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
     Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
 
     if (chosenWorkPostIdOptional.isEmpty()) {
@@ -21,32 +22,32 @@ public class PerformAssemblyTasksActionUI {
     }
     int chosenWorkPostId = chosenWorkPostIdOptional.get();
 
-    Map<Integer, String> allAssemblyTasks = assemblyLineController.givePendingAssemblyTasks(chosenWorkPostId);
+    Map<Integer, String> allAssemblyTasks = performAssemblyTasksController.givePendingAssemblyTasks(chosenWorkPostId);
 
     if (allAssemblyTasks.isEmpty()) {
       System.out.println("There are currently no pending tasks for this work post");
-      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController);
+      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController, performAssemblyTasksController);
       return;
     }
 
     Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
 
     if (chosenAssemblyTaskIdOptional.isEmpty()) {
-      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController);
+      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController, performAssemblyTasksController);
       return;
     }
     int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
 
-    assemblyLineController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
+    performAssemblyTasksController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
 
-    List<String> actions = assemblyLineController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
+    List<String> actions = performAssemblyTasksController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
 
     System.out.println();
     System.out.println("Execute the following actions:");
     displayActions(actions);
 
     int duration = displayInputMinutes();
-    assemblyLineController.completeAssemblyTask(chosenWorkPostId, duration);
+    performAssemblyTasksController.completeAssemblyTask(chosenWorkPostId, duration);
 
     CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
   }

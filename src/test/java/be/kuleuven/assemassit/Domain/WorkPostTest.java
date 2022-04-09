@@ -95,7 +95,7 @@ public class WorkPostTest {
 
     workPost.setActiveAssemblyTask(0);
     assertNotNull(workPost.getActiveAssemblyTask());
-    workPost.completeAssemblyTask();
+    workPost.completeAssemblyTask(15);
     assertNull(workPost.getActiveAssemblyTask());
   }
 
