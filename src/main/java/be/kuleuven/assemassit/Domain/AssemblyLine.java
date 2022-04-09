@@ -539,8 +539,7 @@ public class AssemblyLine {
 
     for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
       if (entry.getKey().equals(LocalDate.now()) ||
-        entry.getKey().equals(LocalDate.now().minusDays(1)) ||
-        entry.getKey().equals(LocalDate.now().minusDays(2))) {
+        entry.getKey().equals(LocalDate.now().minusDays(1))) {
         total = total + entry.getValue();
       }
     }
@@ -596,6 +595,10 @@ public class AssemblyLine {
     int conv2 = Math.toIntExact(diff2);
     delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
     return delays;
+  }
+
+  public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
+    finishedCars.add(carAssemblyProcess);
   }
 }
 
