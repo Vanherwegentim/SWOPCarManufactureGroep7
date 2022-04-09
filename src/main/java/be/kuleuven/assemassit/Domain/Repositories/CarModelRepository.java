@@ -14,8 +14,24 @@ public class CarModelRepository {
   private List<CarModel> carModels;
 
   public List<CarModel> getCarModels() {
-    if (carModels == null)
-      readCarModelsFromFile();
+    if (carModels == null) {
+      CarModel carModelA = new CarModel(
+        0,
+        "Model A",
+        List.of(Wheel.WINTER, Wheel.COMFORT, Wheel.SPORT),
+        List.of(Gearbox.SIX_SPEED_MANUAL, Gearbox.FIVE_SPEED_MANUAL, Gearbox.FIVE_SPEED_AUTOMATIC),
+        List.of(Seat.LEATHER_WHITE, Seat.LEATHER_BLACK, Seat.VINYL_GREY),
+        List.of(Body.SEDAN, Body.BREAK),
+        List.of(Color.RED, Color.BLUE, Color.BLACK, Color.WHITE),
+        List.of(Engine.STANDARD, Engine.PERFORMANCE),
+        List.of(Airco.MANUAL, Airco.AUTOMATIC));
+      CarModel carModelB = new CarModel();
+      CarModel carModelC = new CarModel();
+      carModels.add(carModelA);
+      carModels.add(carModelB);
+      carModels.add(carModelC);
+    }
+    //readCarModelsFromFile();
 
     return List.copyOf(carModels);
   }

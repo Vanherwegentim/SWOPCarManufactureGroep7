@@ -53,6 +53,7 @@ public class CarModel {
    * @representationObject
    */
   private List<Airco> aircoOptions;
+  private List<Spoiler> spoilerOptions;
 
   /**
    * @param id

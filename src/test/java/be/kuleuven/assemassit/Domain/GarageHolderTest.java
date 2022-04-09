@@ -19,7 +19,7 @@ public class GarageHolderTest {
     carOrder = new CarOrder(
       new Car(
         new CarModel(0, "testCar", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
-        Body.SEAD,
+        Body.SEDAN,
         Color.BLACK,
         Engine.PERFORMANCE,
         Gearbox.MANUAL,

@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CarTest {
 
@@ -15,7 +15,7 @@ public class CarTest {
   private Car car;
 
   @BeforeEach
-  public void BeforeEach(){
+  public void BeforeEach() {
     carModel = new CarModel(
       0,
       "testmodel",
@@ -33,21 +33,21 @@ public class CarTest {
 
 
   @Test
-  public void carTest_succeeds(){
-    assertAll(()->
+  public void carTest_succeeds() {
+    assertAll(() ->
       new Car(carModel, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
     );
   }
 
   @Test
-  public void carTest_throws(){
+  public void carTest_throws() {
     assertThrows(IllegalArgumentException.class, () ->
-      new Car(carModel, Body.SEAD, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
+      new Car(carModel, Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
     );
-    assertThrows(IllegalArgumentException.class, ()->
+    assertThrows(IllegalArgumentException.class, () ->
       new Car(null, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
     );
-    assertThrows(IllegalArgumentException.class, ()->
+    assertThrows(IllegalArgumentException.class, () ->
       new Car(carModel, Body.BREAK, Color.BLACK, null, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)
     );
   }
