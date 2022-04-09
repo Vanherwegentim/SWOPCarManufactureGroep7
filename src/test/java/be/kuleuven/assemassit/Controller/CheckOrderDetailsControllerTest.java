@@ -97,7 +97,7 @@ public class CheckOrderDetailsControllerTest {
   }
 
   @Test
-  public void checkOrderDetailsTest_OrderIsPending() {
+  public void giveOrderDetailsTest_OrderIsPending() {
 
     when(mockedCarOrder.isPending()).thenReturn(true);
 
@@ -113,11 +113,11 @@ public class CheckOrderDetailsControllerTest {
               Seats: LEATHER_BLACK
       """;
 
-    assertEquals(expected, checkOrderDetailsController.checkOrderDetails(0));
+    assertEquals(expected, checkOrderDetailsController.giveOrderDetails(0));
   }
 
   @Test
-  public void checkOrderDetailsTest_OrderIsCompleted() {
+  public void giveOrderDetailsTest_OrderIsCompleted() {
 
     when(mockedCarOrder.isPending()).thenReturn(false);
 
@@ -133,7 +133,7 @@ public class CheckOrderDetailsControllerTest {
               Seats: LEATHER_BLACK
       """;
 
-    assertEquals(expected, checkOrderDetailsController.checkOrderDetails(0));
+    assertEquals(expected, checkOrderDetailsController.giveOrderDetails(0));
   }
 
 }

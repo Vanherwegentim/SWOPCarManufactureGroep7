@@ -13,7 +13,12 @@ public class CheckOrderDetailsController {
 
   private GarageHolder loggedInGarageHolder;
 
+  /**
+   * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
+   */
   public CheckOrderDetailsController(GarageHolder loggedInGarageHolder) {
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
     this.loggedInGarageHolder = loggedInGarageHolder;
   }
 
@@ -52,7 +57,8 @@ public class CheckOrderDetailsController {
       .collect(Collectors.toList());
   }
 
-  public String checkOrderDetails(int orderId) {
+  public String giveOrderDetails(int orderId) {
+
     CarOrder order = loggedInGarageHolder.getOrder(orderId);
     return carOrderDetailedFormattedString(order);
   }
