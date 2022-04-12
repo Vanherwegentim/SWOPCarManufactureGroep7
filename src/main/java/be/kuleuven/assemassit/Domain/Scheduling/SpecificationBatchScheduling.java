@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain.Scheduling;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.Car;
 import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
+import be.kuleuven.assemassit.Domain.Enums.CarOption;
 import be.kuleuven.assemassit.Domain.Helper.EnhancedIterator;
 import be.kuleuven.assemassit.Domain.Helper.MyEnhancedIterator;
 import be.kuleuven.assemassit.Domain.WorkPost;
@@ -14,6 +15,12 @@ import java.util.List;
 import java.util.Queue;
 
 public class SpecificationBatchScheduling implements SchedulingAlgorithm {
+  private List<CarOption> batchCarOptions;
+
+  public SpecificationBatchScheduling(List<CarOption> batchCarOptions) {
+    this.batchCarOptions = batchCarOptions;
+  }
+
   @Override
   public void moveAssemblyLine(
     int minutes,
@@ -54,7 +61,7 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
     } while (iterator.hasNext());
 
     // check if the next process can still be produced today
-    CarAssemblyProcess nextProcess = giveNextCarAssemblyProcess(carAssemblyProcessesQueue, workPostsInOrder.get(0).getCarAssemblyProcess());
+    CarAssemblyProcess nextProcess = giveNextCarAssemblyProcess(carAssemblyProcessesQueue);
     if (
       !carAssemblyProcessesQueue.isEmpty() &&
         LocalTime.now()
@@ -68,7 +75,7 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
     }
   }
 
-  private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, CarAssemblyProcess carAssemblyProcessOnFirstWorkPost) {
+  /*private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, CarAssemblyProcess carAssemblyProcessOnFirstWorkPost) {
     return Collections.max(carAssemblyProcessesQueue.stream().toList(), (p1, p2) -> {
       Integer amount1 = amountOfEqualSpecifications(p1, carAssemblyProcessOnFirstWorkPost);
       Integer amount2 = amountOfEqualSpecifications(p2, carAssemblyProcessOnFirstWorkPost);
@@ -77,6 +84,13 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
       if (difference == 0) difference = p2.getCarOrder().getOrderTime().compareTo(p1.getCarOrder().getOrderTime());
       return difference;
     });
+  }*/
+
+  private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcesses) {
+    return carAssemblyProcesses.stream().filter(p -> {
+      Car car = p.getCarOrder().getCar();
+      return car.giveListOfCarOptions().containsAll(batchCarOptions) && batchCarOptions.containsAll(car.giveListOfCarOptions());
+    }).findFirst().orElse(carAssemblyProcesses.peek()); // if none found, peek the first one from queue
   }
 
   private int amountOfEqualSpecifications(CarAssemblyProcess carAssemblyProcess1, CarAssemblyProcess carAssemblyProcess2) {
