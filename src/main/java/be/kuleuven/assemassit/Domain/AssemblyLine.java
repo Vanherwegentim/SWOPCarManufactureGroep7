@@ -345,47 +345,6 @@ public class AssemblyLine {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
-    /*
-    if (minutes < 0)
-      throw new IllegalArgumentException("Minutes can not be below 0");
-    if (!canMove()) {
-      throw new IllegalStateException("AssemblyLine cannot be moved forward!");
-    }
-
-    //Remove the car from the third post
-    if (accessoriesPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : accessoriesPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
-      CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
-      carAssemblyProcess.complete();
-      finishedCars.add(accessoriesPost.getCarAssemblyProcess());
-      accessoriesPost.removeCarAssemblyProcess();
-    }
-    //Give the third post the car of the second post
-    if (drivetrainPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : drivetrainPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-      accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
-      drivetrainPost.removeCarAssemblyProcess();
-    }
-    //Give the second post the car of the first post
-    if (carBodyPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : carBodyPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
-      drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
-      carBodyPost.removeCarAssemblyProcess();
-    }
-    //Give the first post a car from the queue;
-    //The queue can not be empty and there must still be enough time to produce the whole car
-    if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
-      carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
-    }
-    */
 
     schedulingAlgorithm.moveAssemblyLine
       (
