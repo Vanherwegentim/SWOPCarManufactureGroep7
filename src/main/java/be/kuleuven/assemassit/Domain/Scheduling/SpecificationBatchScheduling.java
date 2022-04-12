@@ -10,7 +10,6 @@ import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.time.LocalTime;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Queue;
 
@@ -93,6 +92,7 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
     }).findFirst().orElse(carAssemblyProcesses.peek()); // if none found, peek the first one from queue
   }
 
+  /*
   private int amountOfEqualSpecifications(CarAssemblyProcess carAssemblyProcess1, CarAssemblyProcess carAssemblyProcess2) {
     Car car1 = carAssemblyProcess1.getCarOrder().getCar();
     Car car2 = carAssemblyProcess2.getCarOrder().getCar();
@@ -104,12 +104,13 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
         .stream()
         .anyMatch(op2 -> op1.equals(op2)))
       .count();
-  }
+  }*/
 
+  /*
   private class SpecificationComparator implements Comparator<CarAssemblyProcess> {
     @Override
     public int compare(CarAssemblyProcess o1, CarAssemblyProcess o2) {
       return 0;
     }
-  }
+  }*/
 }
