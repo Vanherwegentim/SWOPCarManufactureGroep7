@@ -4,10 +4,12 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
+import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @mutable
@@ -16,6 +18,8 @@ import java.util.*;
  * @invar | getAccessoriesPost() != null
  * @invar | getCarAssemblyProcess() != null
  * @invar | getFinishedCars() != null
+ * @invar | getSchedulingAlgorithm() != null
+ * @invar | giveSchedulingAlgorithmNames() != null
  */
 public class AssemblyLine {
 
@@ -26,6 +30,7 @@ public class AssemblyLine {
    * @invar | carAssemblyProcessesQueue != null
    * @invar | finishedCars != null
    * @invar | (startTime == null || endTime == null) || startTime.isBefore(endTime)
+   * @invar | schedulingAlgorithm != null
    * @representationObject
    */
   private final WorkPost carBodyPost;
@@ -54,6 +59,9 @@ public class AssemblyLine {
   private LocalTime startTime;
   private LocalTime endTime;
 
+  /**
+   * @representationObject
+   */
   private SchedulingAlgorithm schedulingAlgorithm;
   private int previousOvertimeInMinutes;
 
@@ -102,6 +110,16 @@ public class AssemblyLine {
       throw new IllegalArgumentException("EndTime can not be null");
     }
     this.endTime = endTime;
+  }
+
+  /**
+   * Returns the current scheduling algorithm
+   *
+   * @return the current scheduling algorithm
+   * @post | result != null
+   */
+  public SchedulingAlgorithm getSchedulingAlgorithm() {
+    return this.schedulingAlgorithm;
   }
 
   /**
@@ -519,5 +537,38 @@ public class AssemblyLine {
       carAssemblyProcessList.addAll(finishedCars);
     }
     return carAssemblyProcessList;
+  }
+
+  /**
+   * Returns a list of strings that represent the possible scheduling algorithms
+   *
+   * @return list of algorithm names
+   * @post | result != null
+   */
+  public List<String> giveSchedulingAlgorithmNames() {
+    return List.of
+      (
+        FIFOScheduling.class.getSimpleName(),
+        SpecificationBatchScheduling.class.getSimpleName()
+      );
+  }
+
+  public List<Car> givePossibleBatchCars() {
+    List<Car> cars = this.carAssemblyProcessesQueue
+      .stream()
+      .map(p -> p.getCarOrder().getCar())
+      .collect(Collectors.toList());
+
+    Map<Car, Integer> frequencyMap = new HashMap<>();
+    for (Car c : cars) {
+      Integer count = frequencyMap.get(c);
+      if (count == null) {
+        count = 0;
+      }
+
+      frequencyMap.put(c, count++);
+    }
+
+    return cars.stream().filter(c -> frequencyMap.get(c) >= 3).collect(Collectors.toList());
   }
 }
