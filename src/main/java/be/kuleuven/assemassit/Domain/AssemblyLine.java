@@ -137,6 +137,21 @@ public class AssemblyLine {
   public List<AssemblyTask> givePendingAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.givePendingAssemblyTasks();
+
+  }
+
+  /**
+   * Return the list of assembly tasks from an associated work post on the assembly line that are finished
+   *
+   * @param workPostId
+   * @return The list of pendfiing assembly tasks
+   * @inspects | this
+   * @creates | result
+   */
+  public List<AssemblyTask> giveFinishedAssemblyTasksFromWorkPost(int workPostId) {
+    WorkPost workPost = findWorkPost(workPostId);
+    return workPost.giveFinishedAssemblyTasks();
+
   }
 
   /**

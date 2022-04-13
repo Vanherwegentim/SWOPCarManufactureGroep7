@@ -41,6 +41,10 @@ public abstract class AssemblyTask {
     AssemblyTask.runningId = 0;
   }
 
+  public boolean getFinished() {
+    return !this.pending;
+  }
+
   public boolean getPending() {
     return this.pending;
   }

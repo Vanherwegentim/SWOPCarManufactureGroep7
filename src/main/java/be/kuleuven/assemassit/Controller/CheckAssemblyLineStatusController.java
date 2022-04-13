@@ -3,10 +3,8 @@ package be.kuleuven.assemassit.Controller;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CheckAssemblyLineStatusController {
   private AssemblyLine assemblyLine;
@@ -18,6 +16,36 @@ public class CheckAssemblyLineStatusController {
   }
 
   /**
+   * Give the pending assembly tasks in a map, the key is the id of a task, the value is the name of a task
+   *
+   * @param postId the work post id to get the pending assembly tasks from
+   * @return a map of pending assembly tasks
+   * @throws IllegalArgumentException postId is smaller than 0 | postId < 0
+   */
+  public Map<Integer, String> givePendingAssemblyTasks(int postId) {
+    if (postId < 0)
+      throw new IllegalArgumentException("postId cannot be smaller than 0");
+
+    List<AssemblyTask> pendingAssemblyTasks = assemblyLine.givePendingAssemblyTasksFromWorkPost(postId);
+
+    return pendingAssemblyTasks
+      .stream()
+      .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
+  }
+
+  public Map<Integer, String> giveFinishedAssemblyTasks(int postId) {
+    if (postId < 0)
+      throw new IllegalArgumentException("postId cannot be smaller than 0");
+
+    List<AssemblyTask> finishedAssemblyTasks = assemblyLine.giveFinishedAssemblyTasksFromWorkPost(postId);
+
+    return finishedAssemblyTasks
+      .stream()
+      .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
+  }
+
+
+  /**
    * Give the status of an assembly line, this is a map, the key of the map is the work post name
    * the value is a list of tasks from the work post (pending, completed and active)
    *
@@ -26,6 +54,18 @@ public class CheckAssemblyLineStatusController {
   public HashMap<String, List<String>> giveAssemblyLineStatusOverview() {
     HashMap<String, AssemblyTask> workPostsWithActiveTasks = assemblyLine.giveActiveTasksOverview();
     HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveTasksOverview();
+    return evaluateAssemblyLineStatusOverview(workPostsWithActiveTasks, workPostPairs);
+  }
+
+  /**
+   * Give the future status of an assembly line, this is a map, the key of the map is the work post name
+   * the value is a list of tasks from the work post (pending, completed and active)
+   *
+   * @return a map that represents the future status of an assembly line
+   */
+  public HashMap<String, List<String>> giveFutureAssemblyLineStatusOverview() {
+    HashMap<String, AssemblyTask> workPostsWithActiveTasks = assemblyLine.giveActiveTasksOverview();
+    HashMap<String, List<AssemblyTask>> workPostPairs = assemblyLine.giveFutureTasksOverview();
     return evaluateAssemblyLineStatusOverview(workPostsWithActiveTasks, workPostPairs);
   }
 
@@ -62,4 +102,6 @@ public class CheckAssemblyLineStatusController {
 
     return output;
   }
+
+
 }
