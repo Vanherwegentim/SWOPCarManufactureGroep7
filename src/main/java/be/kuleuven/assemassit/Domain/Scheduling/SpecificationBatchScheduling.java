@@ -8,6 +8,7 @@ import be.kuleuven.assemassit.Domain.Helper.EnhancedIterator;
 import be.kuleuven.assemassit.Domain.Helper.MyEnhancedIterator;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -81,6 +82,12 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
     }
 
     return overtime;
+  }
+
+  @Override
+  public LocalDateTime giveEstimatedDeliveryTime(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, int manufacturingTimeInMinutes, LocalTime endTime, LocalTime startTime, int maxTimeNeededForWorkPostOnLine) {
+    // TOOD: implement the algorithm
+    return LocalDateTime.now();
   }
 
   /*private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, CarAssemblyProcess carAssemblyProcessOnFirstWorkPost) {

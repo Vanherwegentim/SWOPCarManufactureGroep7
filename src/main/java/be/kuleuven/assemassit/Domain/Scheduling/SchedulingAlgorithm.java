@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain.Scheduling;
 import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Queue;
@@ -16,4 +17,6 @@ public interface SchedulingAlgorithm {
     List<CarAssemblyProcess> finishedCars,
     List<WorkPost> workPostsInOrder
   );
+
+  LocalDateTime giveEstimatedDeliveryTime(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, int manufacturingTimeInMinutes, LocalTime endTime, LocalTime startTime, int maxTimeNeededForWorkPostOnLine);
 }
