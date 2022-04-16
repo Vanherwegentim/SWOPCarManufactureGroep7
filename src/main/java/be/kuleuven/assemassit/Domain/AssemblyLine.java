@@ -2,6 +2,8 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
+import be.kuleuven.assemassit.Domain.Helper.Observer;
+import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
  * @invar | getSchedulingAlgorithm() != null
  * @invar | giveSchedulingAlgorithmNames() != null
  */
-public class AssemblyLine {
+public class AssemblyLine implements Subject {
 
   /**
    * @invar | carBodyPost != null
@@ -65,6 +67,10 @@ public class AssemblyLine {
   private SchedulingAlgorithm schedulingAlgorithm;
   private int previousOvertimeInMinutes;
 
+  private List<Observer> observers;
+
+  private int overtime;
+
   /**
    * @post | carBodyPost != null
    * @post | driveTrainPost != null
@@ -81,6 +87,8 @@ public class AssemblyLine {
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.previousOvertimeInMinutes = 0;
     this.schedulingAlgorithm = new FIFOScheduling();
+    this.observers = new ArrayList<>();
+    this.overtime = 0;
   }
 
   /**
@@ -158,6 +166,15 @@ public class AssemblyLine {
 
   public WorkPost getAccessoriesPost() {
     return this.accessoriesPost;
+  }
+
+  public int getOvertime() {
+    return this.overtime;
+  }
+
+  private void setOvertime(int overtime) {
+    this.overtime = overtime;
+    notifyObservers();
   }
 
   public List<CarAssemblyProcess> getFinishedCars() {
@@ -346,7 +363,7 @@ public class AssemblyLine {
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
-    schedulingAlgorithm.moveAssemblyLine
+    int overtime = schedulingAlgorithm.moveAssemblyLine
       (
         minutes,
         previousOvertimeInMinutes,
@@ -355,6 +372,11 @@ public class AssemblyLine {
         finishedCars,
         giveWorkPostsAsList()
       );
+
+    if (overtime > 0) {
+      // overtime happened so we have to inform the assembly line
+      setOvertime(overtime);
+    }
   }
 
   /**
@@ -529,5 +551,22 @@ public class AssemblyLine {
     }
 
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).collect(Collectors.toList());
+  }
+
+  @Override
+  public void attach(Observer observer) {
+    this.observers.add(observer);
+  }
+
+  @Override
+  public void detach(Observer observer) {
+    this.observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (Observer observer : observers) {
+      observer.update();
+    }
   }
 }

@@ -21,7 +21,7 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
   }
 
   @Override
-  public void moveAssemblyLine(
+  public int moveAssemblyLine(
     int minutes,
     int previousOvertimeInMinutes,
     LocalTime endTime,
@@ -29,6 +29,9 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
     List<CarAssemblyProcess> finishedCars,
     List<WorkPost> workPostsInOrder
   ) {
+
+    int overtime = -1; // return -1 if the end of the day is not reached yet
+
     if (minutes < 0)
       throw new IllegalArgumentException("Minutes can not be below 0");
 
@@ -45,6 +48,10 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
 
         CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
         carAssemblyProcess.complete();
+
+        int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
+        if (overtimeInMinutes >= 0)
+          overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
 
         if (!iterator.hasPrevious()) {
           finishedCars.add(workPost.getCarAssemblyProcess());
@@ -72,6 +79,8 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
       carAssemblyProcessesQueue.remove(nextProcess);
       workPost.addProcessToWorkPost(nextProcess);
     }
+
+    return overtime;
   }
 
   /*private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, CarAssemblyProcess carAssemblyProcessOnFirstWorkPost) {
@@ -90,6 +99,13 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
       Car car = p.getCarOrder().getCar();
       return car.giveListOfCarOptions().containsAll(batchCarOptions) && batchCarOptions.containsAll(car.giveListOfCarOptions());
     }).findFirst().orElse(carAssemblyProcesses.peek()); // if none found, peek the first one from queue
+  }
+
+  private int differenceInMinutes(LocalTime dateTime1, LocalTime dateTime2) {
+    int timeInMinutes1 = dateTime1.getHour() * 60 + dateTime1.getMinute();
+    int timeInMinutes2 = dateTime2.getHour() * 60 + dateTime2.getMinute();
+
+    return timeInMinutes2 - timeInMinutes1;
   }
 
   /*

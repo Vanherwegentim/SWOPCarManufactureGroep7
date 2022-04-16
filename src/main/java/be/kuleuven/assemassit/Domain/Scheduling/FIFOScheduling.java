@@ -14,7 +14,7 @@ import java.util.Queue;
 public class FIFOScheduling implements SchedulingAlgorithm {
 
   @Override
-  public void moveAssemblyLine(
+  public int moveAssemblyLine(
     int minutes,
     int previousOvertimeInMinutes,
     LocalTime endTime,
@@ -22,6 +22,8 @@ public class FIFOScheduling implements SchedulingAlgorithm {
     List<CarAssemblyProcess> finishedCars,
     List<WorkPost> workPostsInOrder
   ) {
+
+    int overtime = -1; // return -1 if the end of the day is not reached yet
 
     if (minutes < 0)
       throw new IllegalArgumentException("Minutes can not be below 0");
@@ -43,6 +45,10 @@ public class FIFOScheduling implements SchedulingAlgorithm {
         if (!iterator.hasPrevious()) {
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
+
+          int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
+          if (overtimeInMinutes >= 0)
+            overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
         } else {
           WorkPost nextWorkPost = iterator.peek();
           nextWorkPost.addProcessToWorkPost(workPost.getCarAssemblyProcess());
@@ -65,5 +71,14 @@ public class FIFOScheduling implements SchedulingAlgorithm {
       // add a new work process to the first work post
       workPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
     }
+
+    return overtime;
+  }
+
+  private int differenceInMinutes(LocalTime dateTime1, LocalTime dateTime2) {
+    int timeInMinutes1 = dateTime1.getHour() * 60 + dateTime1.getMinute();
+    int timeInMinutes2 = dateTime2.getHour() * 60 + dateTime2.getMinute();
+
+    return timeInMinutes2 - timeInMinutes1;
   }
 }

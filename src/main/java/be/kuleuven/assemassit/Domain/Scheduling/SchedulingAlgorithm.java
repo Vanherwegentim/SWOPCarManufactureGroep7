@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Queue;
 
 public interface SchedulingAlgorithm {
-  void moveAssemblyLine(
+  int moveAssemblyLine(
     int minutes,
     int previousOvertimeInMinutes,
     LocalTime endTime,

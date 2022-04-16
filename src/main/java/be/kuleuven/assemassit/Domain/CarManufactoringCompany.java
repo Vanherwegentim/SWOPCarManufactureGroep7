@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import java.util.Optional;
  * @invar Opening time should be before the closing time
  * | (getOpeningTime() != null && getClosingTime() != null) || getOpeningTime().isBefore(getClosingTime())
  */
-public class CarManufactoringCompany {
+public class CarManufactoringCompany implements Observer {
   /**
    * @invar | carModels != null
    * @invar | assemblyLine != null
@@ -73,6 +74,8 @@ public class CarManufactoringCompany {
     this.assemblyLine.setEndTime(closingTime);
     this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
     this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
+
+    this.assemblyLine.attach(this);
   }
 
   public AssemblyLine getAssemblyLine() {
@@ -131,5 +134,10 @@ public class CarManufactoringCompany {
 
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
+  }
+
+  @Override
+  public void update() {
+    // TODO: write the overtime to the database
   }
 }
