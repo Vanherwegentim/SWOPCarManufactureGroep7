@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class OrderController {
+public class OrderNewCarController {
 
   private final List<GarageHolder> garageHolders;
   private final GarageHolderRepository garageHolderRepository;
@@ -23,7 +23,7 @@ public class OrderController {
    * @param carManufactoringCompany
    * @post | this.carManufactoringCompany = carManufactoringCompany
    */
-  public OrderController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
+  public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
     if (carManufactoringCompany == null)
       throw new IllegalArgumentException("CarManufactoring company can not be null");
 

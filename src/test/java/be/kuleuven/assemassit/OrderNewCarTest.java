@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.ControllerFactory;
-import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.CarModel;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class OrderNewCarTest {
-  private OrderController orderController;
+  private OrderNewCarController orderNewCarController;
   private GarageHolderRepository mockedGarageHolderRepository;
   private CarModelRepository mockedCarModelRepository;
 
@@ -39,22 +39,22 @@ public class OrderNewCarTest {
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(new GarageHolder(0, "WolksVagen Garage Lokeren BVBA NV")));
     when(mockedCarModelRepository.getCarModels()).thenReturn(Arrays.asList(carModel));
 
-    orderController = factory.createOrderController(new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine()), mockedGarageHolderRepository);
+    orderNewCarController = factory.createOrderNewCarController(new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine()), mockedGarageHolderRepository);
   }
 
   @Test
   public void orderNewCarTest_MainSuccessScenario_IdealFlow() {
 
     //Precondition: The garage holder is successfully logged into the system
-    orderController.logInGarageHolder(0);
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderController.giveLoggedInGarageHolderName());
+    orderNewCarController.logInGarageHolder(0);
+    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
 
     //Step 1: The garage holder has no pending or completed CarOrders yet
-    assertArrayEquals(new String[]{}, orderController.givePendingCarOrders().toArray());
-    assertArrayEquals(new String[]{}, orderController.giveCompletedCarOrders().toArray());
+    assertArrayEquals(new String[]{}, orderNewCarController.givePendingCarOrders().toArray());
+    assertArrayEquals(new String[]{}, orderNewCarController.giveCompletedCarOrders().toArray());
 
     //Step 3: The system shows a list of available car models.
-    Map<Integer, String> listOfCarModels = orderController.giveListOfCarModels();
+    Map<Integer, String> listOfCarModels = orderNewCarController.giveListOfCarModels();
     assertEquals(1, listOfCarModels.size());
     assertEquals("Tolkswagen Rolo", listOfCarModels.get(0));
 
@@ -86,7 +86,7 @@ public class OrderNewCarTest {
       """;
 
     String actualPossibleOptionsOfCarModel = "";
-    Map<String, List<String>> possibleOptionsOfCarModel = orderController.givePossibleOptionsOfCarModel(0);
+    Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
       actualPossibleOptionsOfCarModel += key + "\n";
@@ -97,7 +97,7 @@ public class OrderNewCarTest {
 
     //Step 6: the user completes the ordering form
 
-    LocalDateTime estimatedTime = orderController.placeCarOrder(
+    LocalDateTime estimatedTime = orderNewCarController.placeCarOrder(
       0,
       possibleOptionsOfCarModel.get("Body").get(0),
       possibleOptionsOfCarModel.get("Color").get(0),
@@ -108,18 +108,18 @@ public class OrderNewCarTest {
       possibleOptionsOfCarModel.get("Wheels").get(0));
 
     //Step 7: The system stores the new order and updates the production schedule.
-    orderController.givePendingCarOrders().get(0);
+    orderNewCarController.givePendingCarOrders().get(0);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
     String expected = String.format("    Car model: Tolkswagen Rolo\n" +
-                                    "        Body: SEAD\n" +
-                                    "        Color: RED\n" +
-                                    "        Engine: STANDARD\n" +
-                                    "        Gearbox: MANUAL\n" +
-                                    "        Airco: MANUAL\n" +
-                                    "        Wheels: COMFORT\n" +
-                                    "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
-    String actual = orderController.givePendingCarOrders().stream().reduce("", String::concat);
+      "        Body: SEAD\n" +
+      "        Color: RED\n" +
+      "        Engine: STANDARD\n" +
+      "        Gearbox: MANUAL\n" +
+      "        Airco: MANUAL\n" +
+      "        Wheels: COMFORT\n" +
+      "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
+    String actual = orderNewCarController.givePendingCarOrders().stream().reduce("", String::concat);
     actual = actual.substring(actual.indexOf('\n') + 1);
 
     assertEquals(expected, actual);
@@ -146,17 +146,17 @@ public class OrderNewCarTest {
 
     //Precondition: The garage holder is successfully logged into the system
     //The garage holder inserts 2 wrong values and uses a valid id on the third try
-    assertThrows(IllegalArgumentException.class, () -> orderController.logInGarageHolder(-1));
-    assertThrows(IllegalArgumentException.class, () -> orderController.logInGarageHolder(2));
-    orderController.logInGarageHolder(0);
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderController.giveLoggedInGarageHolderName());
+    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(-1));
+    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(2));
+    orderNewCarController.logInGarageHolder(0);
+    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
 
     //Step 1: The garage holder has no pending or completed CarOrders yet
-    assertArrayEquals(new String[]{}, orderController.givePendingCarOrders().toArray());
-    assertArrayEquals(new String[]{}, orderController.giveCompletedCarOrders().toArray());
+    assertArrayEquals(new String[]{}, orderNewCarController.givePendingCarOrders().toArray());
+    assertArrayEquals(new String[]{}, orderNewCarController.giveCompletedCarOrders().toArray());
 
     //Step 3: The system shows a list of available car models.
-    Map<Integer, String> listOfCarModels = orderController.giveListOfCarModels();
+    Map<Integer, String> listOfCarModels = orderNewCarController.giveListOfCarModels();
     assertEquals(1, listOfCarModels.size());
     assertEquals("Tolkswagen Rolo", listOfCarModels.get(0));
 
@@ -188,7 +188,7 @@ public class OrderNewCarTest {
       """;
 
     String actualPossibleOptionsOfCarModel = "";
-    Map<String, List<String>> possibleOptionsOfCarModel = orderController.givePossibleOptionsOfCarModel(0);
+    Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
       actualPossibleOptionsOfCarModel += key + "\n";
@@ -201,7 +201,7 @@ public class OrderNewCarTest {
 
     //The user picks a non-existent carModelId
     assertThrows(IllegalArgumentException.class, () ->
-      orderController.placeCarOrder(
+      orderNewCarController.placeCarOrder(
         2,
         possibleOptionsOfCarModel.get("Body").get(0),
         possibleOptionsOfCarModel.get("Color").get(0),
@@ -214,7 +214,7 @@ public class OrderNewCarTest {
 
     //The user picks a negative carModelId
     assertThrows(IllegalArgumentException.class, () ->
-      orderController.placeCarOrder(
+      orderNewCarController.placeCarOrder(
         -1,
         possibleOptionsOfCarModel.get("Body").get(0),
         possibleOptionsOfCarModel.get("Color").get(0),
@@ -227,7 +227,7 @@ public class OrderNewCarTest {
 
     //The user picks a value for wheels which is not included in the carModel
     assertThrows(IllegalArgumentException.class, () ->
-      orderController.placeCarOrder(
+      orderNewCarController.placeCarOrder(
         0,
         possibleOptionsOfCarModel.get("Body").get(0),
         possibleOptionsOfCarModel.get("Color").get(0),
@@ -240,7 +240,7 @@ public class OrderNewCarTest {
 
     //The user picks a value for wheels which does not exist in the system
     assertThrows(IllegalArgumentException.class, () ->
-      orderController.placeCarOrder(
+      orderNewCarController.placeCarOrder(
         0,
         possibleOptionsOfCarModel.get("Body").get(0),
         possibleOptionsOfCarModel.get("Color").get(0),
@@ -252,7 +252,7 @@ public class OrderNewCarTest {
     );
 
     //The user finally chooses valid options to place a carOrder, and proceeds in the use case
-    LocalDateTime estimatedTime = orderController.placeCarOrder(
+    LocalDateTime estimatedTime = orderNewCarController.placeCarOrder(
       0,
       possibleOptionsOfCarModel.get("Body").get(0),
       possibleOptionsOfCarModel.get("Color").get(0),
@@ -264,19 +264,19 @@ public class OrderNewCarTest {
 
 
     //Step 7: The system stores the new order and updates the production schedule.
-    orderController.givePendingCarOrders().get(0);
+    orderNewCarController.givePendingCarOrders().get(0);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
     String expected = String.format("    Car model: Tolkswagen Rolo\n" +
-                                    "        Body: SEAD\n" +
-                                    "        Color: RED\n" +
-                                    "        Engine: STANDARD\n" +
-                                    "        Gearbox: MANUAL\n" +
-                                    "        Airco: MANUAL\n" +
-                                    "        Wheels: COMFORT\n" +
-                                    "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
+      "        Body: SEAD\n" +
+      "        Color: RED\n" +
+      "        Engine: STANDARD\n" +
+      "        Gearbox: MANUAL\n" +
+      "        Airco: MANUAL\n" +
+      "        Wheels: COMFORT\n" +
+      "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
 
-    String actual = orderController.givePendingCarOrders().stream().reduce("", String::concat);
+    String actual = orderNewCarController.givePendingCarOrders().stream().reduce("", String::concat);
     actual = actual.substring(actual.indexOf('\n') + 1);
 
     assertEquals(expected, actual);
@@ -304,7 +304,7 @@ public class OrderNewCarTest {
     //Step 1: The system throws an illegalStateException, indicating that it can not show orders if there is no logged-in user.
     //The user cannot proceed the use case at this point.
 
-    assertThrows(IllegalStateException.class, () -> orderController.givePendingCarOrders());
-    assertThrows(IllegalStateException.class, () -> orderController.giveCompletedCarOrders());
+    assertThrows(IllegalStateException.class, () -> orderNewCarController.givePendingCarOrders());
+    assertThrows(IllegalStateException.class, () -> orderNewCarController.giveCompletedCarOrders());
   }
 }
