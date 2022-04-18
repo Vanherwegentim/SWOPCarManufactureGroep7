@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
+import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.UI.Actions.Overviews.ManagerActionsOverviewUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AdvanceAssemblyLineActionUI {
-  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner scanner = new Scanner(System.in);
     int action;
 
@@ -58,9 +58,9 @@ public class AdvanceAssemblyLineActionUI {
           Scanner inspector = new Scanner(System.in);
           inspector.nextLine();
 
-          ManagerActionsOverviewUI.run(orderNewCarController, assemblyLineController);
+          ManagerActionsOverviewUI.run(orderController, assemblyLineController);
         }
-        case -1 -> ManagerActionsOverviewUI.run(orderNewCarController, assemblyLineController);
+        case -1 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
       }
     } while (action != -1 && action != 1);
   }

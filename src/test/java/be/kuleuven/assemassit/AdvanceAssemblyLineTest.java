@@ -2,7 +2,7 @@ package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.ControllerFactory;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
+import be.kuleuven.assemassit.Controller.OrderController;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.CarModel;
@@ -28,7 +28,7 @@ public class AdvanceAssemblyLineTest {
 
 
   private AssemblyLineController assemblyLineController;
-  private OrderNewCarController orderNewCarController;
+  private OrderController orderController;
   private GarageHolderRepository mockedGarageHolderRepository;
   private CarModelRepository mockedCarModelRepository;
   private CarManufactoringCompany carManufactoringCompany;
@@ -48,10 +48,10 @@ public class AdvanceAssemblyLineTest {
     mockCarModels();
 
     carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-    orderNewCarController = controllerFactory.createOrderNewCarController(carManufactoringCompany, mockedGarageHolderRepository);
+    orderController = controllerFactory.createOrderController(carManufactoringCompany, mockedGarageHolderRepository);
     assemblyLineController = controllerFactory.createAssemblyLineController(assemblyLine);
 
-    orderNewCarController.logInGarageHolder(garageHolder.getId());
+    orderController.logInGarageHolder(garageHolder.getId());
 
     fillTheSystemWithTasks();
   }
@@ -66,9 +66,9 @@ public class AdvanceAssemblyLineTest {
   }
 
   private void fillTheSystemWithTasks() {
-    orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
-    orderNewCarController.placeCarOrder(0, "SEAD", "RED", "STANDARD", "AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT");
-    orderNewCarController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT");
+    orderController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
+    orderController.placeCarOrder(0, "SEAD", "RED", "STANDARD", "AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT");
+    orderController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT");
   }
 
   private void moveTheAssemblyLine() {

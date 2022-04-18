@@ -1,12 +1,12 @@
 package be.kuleuven.assemassit.UI;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
+import be.kuleuven.assemassit.Controller.OrderController;
 
 import java.util.Scanner;
 
 public class MainUI {
-  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner input = new Scanner(System.in);
     int action;
     do {
@@ -17,7 +17,7 @@ public class MainUI {
       action = input.nextInt();
       switch (action) {
         case 1:
-          AuthenticateUI.run(orderNewCarController, assemblyLineController);
+          AuthenticateUI.run(orderController, assemblyLineController);
         case -1:
           break;
       }

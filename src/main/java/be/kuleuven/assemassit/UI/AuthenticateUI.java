@@ -1,17 +1,17 @@
 package be.kuleuven.assemassit.UI;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
+import be.kuleuven.assemassit.Controller.OrderController;
+import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.Overviews.ManagerActionsOverviewUI;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
 public class AuthenticateUI {
-  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
+  public static void run(OrderController orderController, AssemblyLineController assemblyLineController) {
     Scanner input = new Scanner(System.in);
     int choice;
 
@@ -27,17 +27,17 @@ public class AuthenticateUI {
 
       switch (choice) {
         case 1 -> {
-          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(orderNewCarController.giveGarageHolders());
+          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(orderController.giveGarageHolders());
           if (selectedGarageHolderIdOptional.isEmpty()) {
-            AuthenticateUI.run(orderNewCarController, assemblyLineController);
+            AuthenticateUI.run(orderController, assemblyLineController);
             return;
           }
-          orderNewCarController.logInGarageHolder(selectedGarageHolderIdOptional.get());
-          GarageHolderActionsOverviewUI.run(orderNewCarController, assemblyLineController);
+          orderController.logInGarageHolder(selectedGarageHolderIdOptional.get());
+          GarageHolderActionsOverviewUI.run(orderController, assemblyLineController);
         }
-        case 2 -> ManagerActionsOverviewUI.run(orderNewCarController, assemblyLineController);
-        case 3 -> CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
-        case -1 -> MainUI.run(orderNewCarController, assemblyLineController);
+        case 2 -> ManagerActionsOverviewUI.run(orderController, assemblyLineController);
+        case 3 -> CarMechanicActionsOverviewUI.run(orderController, assemblyLineController);
+        case -1 -> MainUI.run(orderController, assemblyLineController);
       }
     } while (choice != -1 && (choice < 1 || choice > 3));
   }

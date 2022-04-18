@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 public class OrderControllerTest {
 
-  private OrderNewCarController orderNewCarController;
+  private OrderController orderController;
   private CarManufactoringCompany mockedCarManufacturingCompany;
   private GarageHolderRepository mockedGarageHolderRepository;
   private GarageHolder mockedGarageHolder;
@@ -68,86 +68,86 @@ public class OrderControllerTest {
     when(mockedCarModel.getSeatOptions()).thenReturn(Arrays.stream(Seat.values()).toList());
     when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)).thenReturn(true);
 
-    orderNewCarController = new OrderNewCarController(mockedCarManufacturingCompany, mockedGarageHolderRepository);
+    orderController = new OrderController(mockedCarManufacturingCompany, mockedGarageHolderRepository);
   }
 
   @Test
   public void logInGarageHolderTest_succeeds() {
-    assertAll(() -> orderNewCarController.logInGarageHolder(0));
+    assertAll(() -> orderController.logInGarageHolder(0));
   }
 
   @Test
   public void logInGarageHolderTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(-2));
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(200));
+    assertThrows(IllegalArgumentException.class, () -> orderController.logInGarageHolder(-2));
+    assertThrows(IllegalArgumentException.class, () -> orderController.logInGarageHolder(200));
   }
 
   @Test
   public void logOffTest() {
-    orderNewCarController.logInGarageHolder(0);
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
-    assertAll(orderNewCarController::logOffGarageHolder);
-    assertThrows(IllegalStateException.class, orderNewCarController::giveLoggedInGarageHolderName);
+    orderController.logInGarageHolder(0);
+    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderController.giveLoggedInGarageHolderName());
+    assertAll(orderController::logOffGarageHolder);
+    assertThrows(IllegalStateException.class, orderController::giveLoggedInGarageHolderName);
   }
 
   @Test
   public void giveLoggedInGarageHolderNameTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
+    orderController.logInGarageHolder(0);
+    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderController.giveLoggedInGarageHolderName());
   }
 
   @Test
   public void giveLoggedInGarageHolderNameTest_throws() {
-    assertThrows(IllegalStateException.class, orderNewCarController::giveLoggedInGarageHolderName);
+    assertThrows(IllegalStateException.class, orderController::giveLoggedInGarageHolderName);
   }
 
   @Test
   public void giveGarageHoldersTest() {
-    Map<Integer, String> garageHolders = orderNewCarController.giveGarageHolders();
+    Map<Integer, String> garageHolders = orderController.giveGarageHolders();
     assertEquals(1, garageHolders.size());
     assertEquals("WolksVagen Garage Lokeren BVBA NV", garageHolders.get(0));
   }
 
   @Test
   public void getCompletionDateTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), orderNewCarController.getCompletionDate(0));
+    orderController.logInGarageHolder(0);
+    assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), orderController.getCompletionDate(0));
   }
 
   @Test
   public void getCompletionDateTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.getCompletionDate(-1));
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.getCompletionDate(0));
+    assertThrows(IllegalArgumentException.class, () -> orderController.getCompletionDate(-1));
+    assertThrows(IllegalStateException.class, () -> orderController.getCompletionDate(0));
   }
 
   @Test
   public void chooseOrderTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertEquals(0, orderNewCarController.chooseOrder(0).getCar().getId());
+    orderController.logInGarageHolder(0);
+    assertEquals(0, orderController.chooseOrder(0).getCar().getId());
   }
 
   @Test
   public void chooseOrderTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.chooseOrder(-1));
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.chooseOrder(0));
+    assertThrows(IllegalArgumentException.class, () -> orderController.chooseOrder(-1));
+    assertThrows(IllegalStateException.class, () -> orderController.chooseOrder(0));
   }
 
   @Test
   public void givePendingCarOrdersTest_throws() {
-    assertThrows(IllegalStateException.class, orderNewCarController::givePendingCarOrders);
+    assertThrows(IllegalStateException.class, orderController::givePendingCarOrders);
   }
 
   @Test
   public void givePendingCarOrdersTest_GarageOwnerHasNoPendingOrders_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertArrayEquals(new String[]{}, orderNewCarController.givePendingCarOrders().toArray());
+    orderController.logInGarageHolder(0);
+    assertArrayEquals(new String[]{}, orderController.givePendingCarOrders().toArray());
   }
 
   @Test
   public void givePendingCarOrdersTest_GarageOwnerHasPendingOrders_succeeds() {
     when(mockedCarOrder.isPending()).thenReturn(true);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder));
-    orderNewCarController.logInGarageHolder(0);
+    orderController.logInGarageHolder(0);
 
     String expected = """
       Order ID: 0    [Estimation time: 15/12/1998 at 12:00]
@@ -161,20 +161,20 @@ public class OrderControllerTest {
               Seats: LEATHER_BLACK
       """;
 
-    assertEquals(expected, orderNewCarController.givePendingCarOrders().stream().reduce("", String::concat));
+    assertEquals(expected, orderController.givePendingCarOrders().stream().reduce("", String::concat));
   }
 
   @Test
   public void giveCompletedCarOrdersTest_GarageOwnerHasNoCompletedOrders_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertArrayEquals(new String[]{}, orderNewCarController.giveCompletedCarOrders().toArray());
+    orderController.logInGarageHolder(0);
+    assertArrayEquals(new String[]{}, orderController.giveCompletedCarOrders().toArray());
   }
 
   @Test
   public void giveCompletedCarOrdersTest_GarageOwnerHasCompletedOrders_succeeds() {
     when(mockedCarOrder.isPending()).thenReturn(false);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder));
-    orderNewCarController.logInGarageHolder(0);
+    orderController.logInGarageHolder(0);
 
     String expected = """
       Order ID: 0    [Completed at: 15/12/1998 at 15:00]
@@ -188,17 +188,17 @@ public class OrderControllerTest {
               Seats: LEATHER_BLACK
       """;
 
-    assertEquals(expected, orderNewCarController.giveCompletedCarOrders().stream().reduce("", String::concat));
+    assertEquals(expected, orderController.giveCompletedCarOrders().stream().reduce("", String::concat));
   }
 
   @Test
   public void giveCompletedCarOrdersTest_throws() {
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.giveCompletedCarOrders());
+    assertThrows(IllegalStateException.class, () -> orderController.giveCompletedCarOrders());
   }
 
   @Test
   public void giveListOfCarModelsTest() {
-    Map<Integer, String> listOfCarModels = orderNewCarController.giveListOfCarModels();
+    Map<Integer, String> listOfCarModels = orderController.giveListOfCarModels();
     assertEquals(1, listOfCarModels.size());
     assertEquals("Tolkswagen Molf", listOfCarModels.get(0));
   }
@@ -233,7 +233,7 @@ public class OrderControllerTest {
       """;
 
     String actual = "";
-    Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
+    Map<String, List<String>> possibleOptionsOfCarModel = orderController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
       actual += key + "\n";
@@ -245,16 +245,16 @@ public class OrderControllerTest {
 
   @Test
   public void placeCarOrderTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
+    orderController.logInGarageHolder(0);
+    LocalDateTime estimatedCompletionTime = orderController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), estimatedCompletionTime);
   }
 
   @Test
   public void placeCarOrderTest_throws() {
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", ""));
-    orderNewCarController.logInGarageHolder(0);
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", ""));
+    assertThrows(IllegalStateException.class, () -> orderController.placeCarOrder(0, "", "", "", "", "", "", ""));
+    orderController.logInGarageHolder(0);
+    assertThrows(IllegalArgumentException.class, () -> orderController.placeCarOrder(0, "", "", "", "", "", "", ""));
 
   }
 
