@@ -17,7 +17,7 @@ public class CheckProductionStatisticsController {
   }
 
   public String medianCarsInADayToString() {
-    return "The median amount of cars produced in a day are: " + assemblyLine.medianCarsInADay();
+    return "The median amount of cars made in a day are: " + assemblyLine.medianCarsInADay();
   }
 
   public String exactCarsIn2DaystoString() {
@@ -25,11 +25,11 @@ public class CheckProductionStatisticsController {
   }
 
   public String averageDelayPerOrderToString() {
-    return "The average delay at the moment is:" + assemblyLine.averageDelayPerOrder();
+    return "The average delay at the moment is: " + assemblyLine.averageDelayPerOrder();
   }
 
   public String medianDelayPerOrderToString() {
-    return "The median delay at the moment is:" + assemblyLine.medianDelayPerOrder();
+    return "The median delay at the moment is: " + assemblyLine.medianDelayPerOrder();
   }
 
   public String last2DelaysToString() {
