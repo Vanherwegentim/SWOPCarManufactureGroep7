@@ -2,9 +2,9 @@ package be.kuleuven.assemassit.UI;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.Overviews.ManagerActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
 
 import java.util.Map;
 import java.util.Optional;

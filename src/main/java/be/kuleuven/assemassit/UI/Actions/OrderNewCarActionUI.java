@@ -2,7 +2,7 @@ package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.UI.Actions.Overviews.GarageHolderActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
