@@ -522,7 +522,7 @@ public class AssemblyLine implements Subject {
       frequencyMap.put(c, count++);
     }
 
-    return cars.stream().filter(c -> frequencyMap.get(c) >= 3).collect(Collectors.toList());
+    return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
   }
 
   @Override
