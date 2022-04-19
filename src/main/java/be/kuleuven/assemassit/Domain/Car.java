@@ -118,7 +118,22 @@ public class Car {
     carOptions.add(this.getSeats());
     carOptions.add(this.getAirco());
     carOptions.add(this.getWheels());
-    
+
     return carOptions;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Car car) {
+      return
+        (car.giveListOfCarOptions().stream().allMatch(co ->
+          this.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+        ))
+          &&
+          (this.giveListOfCarOptions().stream().allMatch(co ->
+            car.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+          ));
+    }
+    return false;
   }
 }

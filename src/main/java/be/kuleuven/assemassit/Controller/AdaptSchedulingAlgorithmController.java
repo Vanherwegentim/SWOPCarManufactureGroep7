@@ -27,7 +27,7 @@ public class AdaptSchedulingAlgorithmController {
       .getClass()
       .getSimpleName();
   }
-
+  
   public List<List<String>> givePossibleBatches() {
     return assemblyLine.givePossibleBatchCars()
       .stream()
