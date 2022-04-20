@@ -67,7 +67,7 @@ public class LoginUI implements UI {
         case 1 -> {
           Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(orderNewCarController.giveGarageHolders());
           if (selectedGarageHolderIdOptional.isEmpty()) {
-            AuthenticateUI.run(orderNewCarController, assemblyLineController);
+            //TODO redirect terug naar deze loginUI methode
             return;
           }
           orderNewCarController.logInGarageHolder(selectedGarageHolderIdOptional.get());
