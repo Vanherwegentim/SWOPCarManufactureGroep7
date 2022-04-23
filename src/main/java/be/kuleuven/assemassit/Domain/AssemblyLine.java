@@ -427,7 +427,7 @@ public class AssemblyLine implements Subject {
         endTime,
         carAssemblyProcessesQueue,
         finishedCars,
-        giveWorkPostsAsList()
+        getWorkPosts()
       );
 
     if (overtime > 0) {
