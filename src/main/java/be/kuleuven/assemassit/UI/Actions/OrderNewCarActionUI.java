@@ -28,10 +28,10 @@ public class OrderNewCarActionUI implements UI {
       System.out.println("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
 
       System.out.println("Pending:");
-      displayCarOrders(orderNewCarController.givePendingCarOrders());
+      //displayCarOrders(orderNewCarController.givePendingCarOrders());
 
       System.out.println("History:");
-      displayCarOrders(orderNewCarController.giveCompletedCarOrders());
+      //displayCarOrders(orderNewCarController.giveCompletedCarOrders());
 
       System.out.println();
       System.out.println("Please choose an action:");
@@ -61,7 +61,7 @@ public class OrderNewCarActionUI implements UI {
           }
           Map<String, String> selectedParts = selectedPartsOptional.get();
 
-          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"));
+          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
           System.out.println();

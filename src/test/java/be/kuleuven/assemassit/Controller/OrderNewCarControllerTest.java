@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class OrderControllerTest {
+public class OrderNewCarControllerTest {
 
   private OrderNewCarController orderNewCarController;
   private CarManufactoringCompany mockedCarManufacturingCompany;
@@ -53,7 +53,7 @@ public class OrderControllerTest {
     when(mockedCar.getBody()).thenReturn(Body.BREAK);
     when(mockedCar.getColor()).thenReturn(Color.BLACK);
     when(mockedCar.getEngine()).thenReturn(Engine.PERFORMANCE);
-    when(mockedCar.getGearbox()).thenReturn(Gearbox.MANUAL);
+    when(mockedCar.getGearbox()).thenReturn(Gearbox.FIVE_SPEED_MANUAL);
     when(mockedCar.getAirco()).thenReturn(Airco.AUTOMATIC);
     when(mockedCar.getWheels()).thenReturn(Wheel.COMFORT);
     when(mockedCar.getSeats()).thenReturn(Seat.LEATHER_BLACK);
@@ -66,7 +66,8 @@ public class OrderControllerTest {
     when(mockedCarModel.getAircoOptions()).thenReturn(Arrays.stream(Airco.values()).toList());
     when(mockedCarModel.getWheelOptions()).thenReturn(Arrays.stream(Wheel.values()).toList());
     when(mockedCarModel.getSeatOptions()).thenReturn(Arrays.stream(Seat.values()).toList());
-    when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT)).thenReturn(true);
+    when(mockedCarModel.getSpoilerOptions()).thenReturn(Arrays.stream(Spoiler.values()).toList());
+    when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)).thenReturn(true);
 
     orderNewCarController = new OrderNewCarController(mockedCarManufacturingCompany, mockedGarageHolderRepository);
   }
@@ -132,69 +133,6 @@ public class OrderControllerTest {
     assertThrows(IllegalStateException.class, () -> orderNewCarController.chooseOrder(0));
   }
 
-  @Test
-  public void givePendingCarOrdersTest_throws() {
-    assertThrows(IllegalStateException.class, orderNewCarController::givePendingCarOrders);
-  }
-
-  @Test
-  public void givePendingCarOrdersTest_GarageOwnerHasNoPendingOrders_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertArrayEquals(new String[]{}, orderNewCarController.givePendingCarOrders().toArray());
-  }
-
-  @Test
-  public void givePendingCarOrdersTest_GarageOwnerHasPendingOrders_succeeds() {
-    when(mockedCarOrder.isPending()).thenReturn(true);
-    when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder));
-    orderNewCarController.logInGarageHolder(0);
-
-    String expected = """
-      Order ID: 0    [Estimation time: 15/12/1998 at 12:00]
-          Car model: Tolkswagen Molf
-              Body: BREAK
-              Color: BLACK
-              Engine: PERFORMANCE
-              Gearbox: MANUAL
-              Airco: AUTOMATIC
-              Wheels: COMFORT
-              Seats: LEATHER_BLACK
-      """;
-
-    assertEquals(expected, orderNewCarController.givePendingCarOrders().stream().reduce("", String::concat));
-  }
-
-  @Test
-  public void giveCompletedCarOrdersTest_GarageOwnerHasNoCompletedOrders_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
-    assertArrayEquals(new String[]{}, orderNewCarController.giveCompletedCarOrders().toArray());
-  }
-
-  @Test
-  public void giveCompletedCarOrdersTest_GarageOwnerHasCompletedOrders_succeeds() {
-    when(mockedCarOrder.isPending()).thenReturn(false);
-    when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder));
-    orderNewCarController.logInGarageHolder(0);
-
-    String expected = """
-      Order ID: 0    [Completed at: 15/12/1998 at 15:00]
-          Car model: Tolkswagen Molf
-              Body: BREAK
-              Color: BLACK
-              Engine: PERFORMANCE
-              Gearbox: MANUAL
-              Airco: AUTOMATIC
-              Wheels: COMFORT
-              Seats: LEATHER_BLACK
-      """;
-
-    assertEquals(expected, orderNewCarController.giveCompletedCarOrders().stream().reduce("", String::concat));
-  }
-
-  @Test
-  public void giveCompletedCarOrdersTest_throws() {
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.giveCompletedCarOrders());
-  }
 
   @Test
   public void giveListOfCarModelsTest() {
@@ -207,25 +145,32 @@ public class OrderControllerTest {
   public void givePossibleOptionsOfCarModelTest() {
     String expected = """
       GearBox
-      MANUAL
-      AUTOMATIC
+      SIX_SPEED_MANUAL
+      FIVE_SPEED_MANUAL
+      FIVE_SPEED_AUTOMATIC
       Airco
       MANUAL
       AUTOMATIC
+      NO_AIRCO
       Wheels
       COMFORT
       SPORT
+      WINTER
       Color
       RED
       BLUE
       BLACK
       WHITE
+      GREEN
+      YELLOW
       Body
-      SEAD
+      SEDAN
       BREAK
+      SPORT
       Engine
       STANDARD
       PERFORMANCE
+      ULTRA
       Seats
       LEATHER_BLACK
       LEATHER_WHITE
@@ -246,15 +191,15 @@ public class OrderControllerTest {
   @Test
   public void placeCarOrderTest_succeeds() {
     orderNewCarController.logInGarageHolder(0);
-    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT");
+    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), estimatedCompletionTime);
   }
 
   @Test
   public void placeCarOrderTest_throws() {
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", ""));
+    assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
     orderNewCarController.logInGarageHolder(0);
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", ""));
+    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
 
   }
 

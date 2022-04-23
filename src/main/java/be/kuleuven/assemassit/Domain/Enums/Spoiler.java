@@ -1,5 +1,5 @@
 package be.kuleuven.assemassit.Domain.Enums;
 
-public enum Body {
-  SEDAN, BREAK, SPORT
+public enum Spoiler {
+  LOW, HIGH, NO_SPOILER
 }

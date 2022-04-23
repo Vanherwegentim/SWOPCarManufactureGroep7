@@ -5,9 +5,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -107,89 +105,6 @@ public class OrderNewCarController {
     return loggedInGarageHolder.getOrder(orderId);
   }
 
-  /**
-   * Give the pending car orders from the logged in garage holder
-   *
-   * @return a list of pending car orders from the logged in garage holder
-   * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
-   */
-  public List<String> givePendingCarOrders() {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
-
-    return loggedInGarageHolder
-      .getCarOrders()
-      .stream()
-      .filter(CarOrder::isPending)
-      .map(this::carOrderFormattedString)
-      .collect(Collectors.toList());
-  }
-
-  /**
-   * Give the completed car orders from the logged in garage holder
-   *
-   * @return a list of completed car orders from the logged in garage holder
-   * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
-   */
-  public List<String> giveCompletedCarOrders() {
-    if (loggedInGarageHolder == null)
-      throw new IllegalStateException();
-
-    return loggedInGarageHolder.getCarOrders()
-      .stream()
-      .filter(co -> !co.isPending())
-      .map(this::carOrderFormattedString)
-      .collect(Collectors.toList());
-  }
-
-  private String carOrderFormattedString(CarOrder carOrder) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
-    String spacer = " ".repeat(4);
-    StringBuilder result = new StringBuilder();
-    result
-      .append("Order ID: ")
-      .append(carOrder.getId())
-      .append(spacer);
-
-    if (carOrder.isPending())
-      result
-        .append("[Estimation time: ")
-        .append(carOrder.getEstimatedCompletionTime().format(formatter))
-        .append("]");
-    else
-      result
-        .append("[Completed at: ")
-        .append(carOrder.getCompletionTime().format(formatter))
-        .append("]");
-    result.append("\n");
-
-    result
-      .append(spacer)
-      .append("Car model: ")
-      .append(carOrder.getCar().getCarModel().getName())
-      .append("\n");
-
-
-    Map<String, String> parts = new LinkedHashMap<>();
-    parts.put("Body", carOrder.getCar().getBody().name());
-    parts.put("Color", carOrder.getCar().getColor().name());
-    parts.put("Engine", carOrder.getCar().getEngine().name());
-    parts.put("Gearbox", carOrder.getCar().getGearbox().name());
-    parts.put("Airco", carOrder.getCar().getAirco().name());
-    parts.put("Wheels", carOrder.getCar().getWheels().name());
-    parts.put("Seats", carOrder.getCar().getSeats().name());
-
-    for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
-      result
-        .append(spacer.repeat(2))
-        .append(partWithOption.getKey())
-        .append(": ")
-        .append(partWithOption.getValue())
-        .append("\n");
-    }
-
-    return result.toString();
-  }
 
   /**
    * A list of all car models that can be manufactured by the company is returned
@@ -242,7 +157,7 @@ public class OrderNewCarController {
    * @return the estimated delivery time of the new car order
    * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
    */
-  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels) {
+  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -259,7 +174,8 @@ public class OrderNewCarController {
           Gearbox.valueOf(gearbox),
           Seat.valueOf(seats),
           Airco.valueOf(airco),
-          Wheel.valueOf(wheels)
+          Wheel.valueOf(wheels),
+          Spoiler.valueOf(spoiler)
         );
     } catch (IllegalArgumentException e) {
       if (e.getLocalizedMessage().startsWith("No enum constant")) {
