@@ -1,19 +1,19 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
-import be.kuleuven.assemassit.Domain.Car;
-import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
 import be.kuleuven.assemassit.Domain.Enums.CarOption;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class AdaptSchedulingAlgorithmController {
 
   private AssemblyLine assemblyLine;
+  private Map<Integer, List<CarOption>> mapOfCarOptions;
 
   public AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
@@ -30,13 +30,20 @@ public class AdaptSchedulingAlgorithmController {
       .getSimpleName();
   }
 
-  public List<List<String>> givePossibleBatches() {
-    return assemblyLine.givePossibleBatchCars()
-      .stream()
-      .map(c -> c.giveListOfCarOptions()
-        .stream()
-        .map(co -> co.getClass().getSimpleName()).collect(Collectors.toList()))
-      .collect(Collectors.toList());
+  public Map<Integer, List<String>> givePossibleBatches() {
+    this.mapOfCarOptions = new HashMap<>();
+    Map<Integer, List<String>> mapOfCarOptionsStrings = new HashMap<>();
+    for (int i = 0; i < assemblyLine.givePossibleBatchCars().size(); i++) {
+      List<CarOption> carOptions = assemblyLine.givePossibleBatchCars().get(i).giveListOfCarOptions();
+      mapOfCarOptions.put(i, carOptions);
+      List<String> carOptionsString = new ArrayList<>();
+      for (CarOption carOption : carOptions) {
+        carOptionsString.add(carOption.toString());
+      }
+      mapOfCarOptions.put(i, carOptions);
+      mapOfCarOptionsStrings.put(i, carOptionsString);
+    }
+    return mapOfCarOptionsStrings;
   }
 
 
@@ -45,26 +52,34 @@ public class AdaptSchedulingAlgorithmController {
     assemblyLine.setSchedulingAlgorithm(new FIFOScheduling());
   }
 
-  public void changeAlgorithmToSpecificationBatch(List<String> specification) {
-    assemblyLine.setSchedulingAlgorithm(new SpecificationBatchScheduling(transferToCarOptionList(specification)));
-  }
+  public void changeAlgorithmToSpecificationBatch(int specificationId) {
 
-  private List<CarOption> transferToCarOptionList(List<String> specification) {
-    ArrayList<CarAssemblyProcess> batchForQueue = new ArrayList<>();
-    for (CarAssemblyProcess carAssemblyProcess : assemblyLine.getCarAssemblyProcessesQueue()) {
-      Car car = carAssemblyProcess.getCarOrder().getCar();
-      ArrayList<String> carOptions = new ArrayList<>();
-
-      for (CarOption carOption : car.giveListOfCarOptions()) {
-        carOptions.add(carOption.toString());
-      }
-      if (carOptions.containsAll(specification)) {
-        batchForQueue.add(carAssemblyProcess);
-      }
+    if (this.mapOfCarOptions == null || this.mapOfCarOptions.isEmpty()) {
+      throw new IllegalStateException("The map of car options can not be null or empty.");
     }
-    //return batchForQueue;
-    return new ArrayList<>();
+
+    List<CarOption> batch = this.mapOfCarOptions.get(specificationId);
+
+    assemblyLine.setSchedulingAlgorithm(new SpecificationBatchScheduling(batch));
   }
+
+
+//  private List<CarOption> transferToCarOptionList(List<String> specification) {
+//    ArrayList<CarAssemblyProcess> batchForQueue = new ArrayList<>();
+//    for (CarAssemblyProcess carAssemblyProcess : assemblyLine.getCarAssemblyProcessesQueue()) {
+//      Car car = carAssemblyProcess.getCarOrder().getCar();
+//      ArrayList<String> carOptions = new ArrayList<>();
+//
+//      for (CarOption carOption : car.giveListOfCarOptions()) {
+//        carOptions.add(carOption.toString());
+//      }
+//      if (carOptions.containsAll(specification)) {
+//        batchForQueue.add(carAssemblyProcess);
+//      }
+//    }
+//    //return batchForQueue;
+//    return new ArrayList<>();
+//  }
 
 
 }
