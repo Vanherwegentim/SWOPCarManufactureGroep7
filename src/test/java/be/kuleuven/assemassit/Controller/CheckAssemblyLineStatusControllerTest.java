@@ -63,7 +63,14 @@ public class CheckAssemblyLineStatusControllerTest {
 
     when(mockedAccessoriesAssemblyTask.getName()).thenReturn("mockedAccessoriesAssemblyTaskName");
 
+
     controller = new CheckAssemblyLineStatusController(mockedAssemblyLine);
+  }
+
+  @Test
+  public void CheckAssemblyLineStatusControllerConstructor_throws() {
+    assertThrows(IllegalArgumentException.class, () -> controller = new CheckAssemblyLineStatusController(null));
+
   }
 
   @Test
@@ -102,6 +109,14 @@ public class CheckAssemblyLineStatusControllerTest {
 
     when(mockedAssemblyLine.givePendingAssemblyTasksFromWorkPost(0)).thenThrow(IllegalArgumentException.class);
     assertThrows(IllegalArgumentException.class, () -> controller.givePendingAssemblyTasks(0));
+  }
+
+  @Test
+  public void giveFinishedAssemblyTaskTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> controller.giveFinishedAssemblyTasks(-1));
+
+    when(mockedAssemblyLine.giveFinishedAssemblyTasksFromWorkPost(0)).thenThrow(IllegalArgumentException.class);
+    assertThrows(IllegalArgumentException.class, () -> controller.giveFinishedAssemblyTasks(0));
   }
 
   @Test
