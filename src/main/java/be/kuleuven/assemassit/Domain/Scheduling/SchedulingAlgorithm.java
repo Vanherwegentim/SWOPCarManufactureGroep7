@@ -18,5 +18,11 @@ public interface SchedulingAlgorithm {
     List<WorkPost> workPostsInOrder
   );
 
-  LocalDateTime giveEstimatedDeliveryTime(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, int manufacturingTimeInMinutes, LocalTime endTime, LocalTime startTime, int maxTimeNeededForWorkPostOnLine);
+  LocalDateTime giveEstimatedDeliveryTime(
+    Queue<CarAssemblyProcess> carAssemblyProcessesQueue,
+    int manufacturingTimeInMinutes,
+    LocalTime endTime,
+    LocalTime startTime,
+    int maxTimeNeededForWorkPostOnLine
+  );
 }

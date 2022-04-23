@@ -10,14 +10,16 @@ import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
-public class SpecificationBatchScheduling implements SchedulingAlgorithm {
+public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
   private List<CarOption> batchCarOptions;
 
   public SpecificationBatchScheduling(List<CarOption> batchCarOptions) {
+    super();
     this.batchCarOptions = batchCarOptions;
   }
 
@@ -86,8 +88,27 @@ public class SpecificationBatchScheduling implements SchedulingAlgorithm {
 
   @Override
   public LocalDateTime giveEstimatedDeliveryTime(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, int manufacturingTimeInMinutes, LocalTime endTime, LocalTime startTime, int maxTimeNeededForWorkPostOnLine) {
-    // TOOD: implement the algorithm
-    return LocalDateTime.now();
+
+    List<CarAssemblyProcess> carAssemblyProcessesList = carAssemblyProcessesQueue.stream().toList();
+
+    // this is not the most optimal way of doing this, but it is an option and it works
+    Collections.sort(carAssemblyProcessesList, (p1, p2) -> {
+      Car car1 = p1.getCarOrder().getCar();
+      Car car2 = p2.getCarOrder().getCar();
+
+      boolean car1Batch = car1.giveListOfCarOptions().containsAll(batchCarOptions) && batchCarOptions.containsAll(car1.giveListOfCarOptions());
+      boolean car2Batch = car2.giveListOfCarOptions().containsAll(batchCarOptions) && batchCarOptions.containsAll(car1.giveListOfCarOptions());
+
+      if (car1Batch == true && car2Batch == true) return 0;
+      if (car1Batch == true) return 1;
+      if (car2Batch == true) return -1;
+
+      return 0;
+    });
+
+    carAssemblyProcessesQueue = new ArrayDeque<>(carAssemblyProcessesList);
+
+    return super.giveEstimatedDeliveryTime(carAssemblyProcessesQueue, manufacturingTimeInMinutes, endTime, startTime, maxTimeNeededForWorkPostOnLine);
   }
 
   /*private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, CarAssemblyProcess carAssemblyProcessOnFirstWorkPost) {
