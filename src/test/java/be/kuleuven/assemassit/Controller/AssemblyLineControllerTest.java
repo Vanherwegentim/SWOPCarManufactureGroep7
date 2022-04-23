@@ -178,24 +178,6 @@ public class AssemblyLineControllerTest {
     }
   }
 
-  @Test
-  public void moveAssemblyLineTest_canMove_succeeds() {
-    when(mockedAssemblyLine.canMove()).thenReturn(true);
-    assertArrayEquals(new String[]{}, assemblyLineController.moveAssemblyLine(1).toArray());
-  }
-
-  @Test
-  public void moveAssemblyLineTest_cannotMove_succeeds() {
-    when(mockedAssemblyLine.canMove()).thenReturn(false);
-    when(mockedDrivetrainPost.givePendingAssemblyTasks()).thenReturn(Arrays.asList(mockedDrivetrainAssemblyTask));
-
-    assertArrayEquals(new String[]{WorkPostType.DRIVETRAIN_POST.toString()}, assemblyLineController.moveAssemblyLine(1).toArray());
-  }
-
-  @Test
-  public void moveAssemblyLineTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.moveAssemblyLine(-1));
-  }
 
 //  @Test
 //  public void completeAssemblyTaskTest_throws() {

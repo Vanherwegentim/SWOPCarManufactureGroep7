@@ -23,14 +23,14 @@ public class AssemblyTaskTest {
   }
 
   @Test
-  public void completionTimeTest() {
+  public void completionDuration() {
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assemblyTask.setPending(true);
-    assertThrows(IllegalStateException.class, () -> assemblyTask.completionTime());
-    assemblyTask.setCompletionTime(60);
+    assertThrows(IllegalStateException.class, assemblyTask::getDuration);
+    assemblyTask.setDuration(60);
     assemblyTask.setPending(false);
 
-    assert assemblyTask.completionTime() == 60;
+    assert assemblyTask.getDuration() == 60;
   }
 
   @Test

@@ -311,27 +311,19 @@ public class AssemblyLine {
   }
 
   /**
-   * Moves the assembly and gives the duration of the current phase.
+   * Moves the Assembly line
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes the amount of minutes spent during the current phase
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
-   * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(int minutes) {
-    if (minutes < 0)
-      throw new IllegalArgumentException("Minutes can not be below 0");
+  public void move() {
     if (!canMove()) {
       throw new IllegalStateException("AssemblyLine cannot be moved forward!");
     }
 
     //Remove the car from the third post
     if (accessoriesPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : accessoriesPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
       CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
       carAssemblyProcess.complete();
       finishedCars.add(accessoriesPost.getCarAssemblyProcess());
@@ -339,18 +331,11 @@ public class AssemblyLine {
     }
     //Give the third post the car of the second post
     if (drivetrainPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : drivetrainPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
       accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
       drivetrainPost.removeCarAssemblyProcess();
     }
     //Give the second post the car of the first post
     if (carBodyPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : carBodyPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-
       drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
       carBodyPost.removeCarAssemblyProcess();
     }
@@ -359,6 +344,7 @@ public class AssemblyLine {
     if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
       carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
     }
+    System.out.println("[DEBUG: assembly line moved]");
   }
 
   /**
