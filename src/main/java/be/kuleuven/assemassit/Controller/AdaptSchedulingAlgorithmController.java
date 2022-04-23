@@ -1,6 +1,8 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.Car;
+import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
 import be.kuleuven.assemassit.Domain.Enums.CarOption;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -27,7 +29,7 @@ public class AdaptSchedulingAlgorithmController {
       .getClass()
       .getSimpleName();
   }
-  
+
   public List<List<String>> givePossibleBatches() {
     return assemblyLine.givePossibleBatchCars()
       .stream()
@@ -48,7 +50,20 @@ public class AdaptSchedulingAlgorithmController {
   }
 
   private List<CarOption> transferToCarOptionList(List<String> specification) {
-    // TODO: implement this logic
-    return new ArrayList<CarOption>();
+    ArrayList<CarAssemblyProcess> batchForQueue = new ArrayList<>();
+    for (CarAssemblyProcess carAssemblyProcess : assemblyLine.getCarAssemblyProcessesQueue()) {
+      Car car = carAssemblyProcess.getCarOrder().getCar();
+      ArrayList<String> carOptions = new ArrayList<>();
+
+      for (CarOption carOption : car.giveListOfCarOptions()) {
+        carOptions.add(carOption.toString());
+      }
+      if (carOptions.containsAll(specification)) {
+        batchForQueue.add(carAssemblyProcess);
+      }
+    }
+    return batchForQueue;
   }
+
+
 }
