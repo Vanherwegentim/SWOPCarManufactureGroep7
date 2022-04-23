@@ -9,6 +9,8 @@ import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -62,6 +64,7 @@ public class AssemblyLine implements Subject {
   private LocalTime startTime;
   private LocalTime endTime;
   private int overTime;
+
 
   /**
    * @representationObject
@@ -208,6 +211,21 @@ public class AssemblyLine implements Subject {
   public List<AssemblyTask> givePendingAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.givePendingAssemblyTasks();
+
+  }
+
+  /**
+   * Return the list of assembly tasks from an associated work post on the assembly line that are finished
+   *
+   * @param workPostId
+   * @return The list of pendfiing assembly tasks
+   * @inspects | this
+   * @creates | result
+   */
+  public List<AssemblyTask> giveFinishedAssemblyTasksFromWorkPost(int workPostId) {
+    WorkPost workPost = findWorkPost(workPostId);
+    return workPost.giveFinishedAssemblyTasks();
+
   }
 
   /**
@@ -515,6 +533,148 @@ public class AssemblyLine implements Subject {
     return carAssemblyProcessList;
   }
 
+  public Map<LocalDate, Integer> createCarsPerDayMap() {
+    //Create a map that counts how many cars were made every day(LocalDate)
+    //TODO refactor to work with streams;
+    List<LocalDateTime> dateTimeList = new ArrayList<>();
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      dateTimeList.add(carAssemblyProcess.getCarOrder().getCompletionTime());
+    }
+    Map<LocalDate, Integer> carsPerDayMap = new HashMap<>();
+    for (LocalDateTime localDateTime : dateTimeList) {
+      if (carsPerDayMap.containsKey(localDateTime.toLocalDate())) {
+        int i = carsPerDayMap.get(localDateTime);
+        i++;
+        carsPerDayMap.replace(localDateTime.toLocalDate(), i);
+      } else {
+        carsPerDayMap.put(localDateTime.toLocalDate(), 1);
+      }
+    }
+    return carsPerDayMap;
+  }
+
+  public int averageCarsInADay() {
+    //Calculate the average
+    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    int total = 0;
+    for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
+      total = total + entry.getValue();
+    }
+    return total / carsPerDayMap.size();
+  }
+
+  public int medianCarsInADay() {
+    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    ArrayList<Integer> intList = new ArrayList<>();
+    intList.addAll(carsPerDayMap.values());
+    Collections.sort(intList);
+    if (intList.size() == 0) {
+      return 0;
+    }
+    if (intList.size() == 1) {
+      return intList.get(0);
+    } else {
+      if (intList.size() % 2 == 0) {
+        int middle = intList.size() / 2;
+        return (intList.get(middle) + intList.get(middle + 1)) / 2;
+      } else {
+        double middle = (double) intList.size() / 2.0;
+        int middleInt = (int) Math.ceil(middle);
+        return intList.get(middleInt);
+      }
+    }
+  }
+
+  public int exactCarsIn2Days() {
+    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    int total = 0;
+
+    for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
+      if (entry.getKey().equals(LocalDate.now()) ||
+        entry.getKey().equals(LocalDate.now().minusDays(1))) {
+        total = total + entry.getValue();
+      }
+    }
+    return total;
+  }
+
+  //Can a car be ready before it's estimated completion time? if so, add an if test
+  public int averageDelayPerOrder() {
+    int total = 0;
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
+      long diff = duration.toHours();
+      //This conversion could error
+      total = total + Math.toIntExact(diff);
+
+    }
+    return Math.round(total / finishedCars.size());
+  }
+
+  public int medianDelayPerOrder() {
+    int total = 0;
+    ArrayList<Integer> dates = new ArrayList<>();
+    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
+      long diff = duration.toHours();
+      int conv = Math.toIntExact(diff);
+      dates.add(conv);
+    }
+    if (dates.size() == 0) {
+      return 0;
+    }
+    if (dates.size() == 1) {
+      return dates.get(0);
+    } else {
+      if (dates.size() % 2 == 0) {
+        int middle = dates.size() / 2;
+        return (dates.get(middle) + dates.get(middle + 1)) / 2;
+      } else {
+        double middle = (double) dates.size() / 2.0;
+        int middleInt = (int) Math.ceil(middle);
+        return dates.get(middleInt);
+      }
+    }
+  }
+
+  public Map<LocalDate, Integer> last2Delays() {
+    Map<LocalDate, Integer> delays = new HashMap<>();
+    if (finishedCars.size() == 0) {
+      return delays;
+    }
+    if (finishedCars.size() == 1) {
+      CarAssemblyProcess car1 = finishedCars.get(0);
+      Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
+      long diff1 = duration1.toHours();
+      int conv1 = Math.toIntExact(diff1);
+      delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
+      return delays;
+    } else {
+      CarAssemblyProcess car1 = finishedCars.get(0);
+      CarAssemblyProcess car2 = finishedCars.get(1);
+      for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+        if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
+          car1 = carAssemblyProcess;
+        } else if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car2.getCarOrder().getCompletionTime())) {
+          car2 = carAssemblyProcess;
+        }
+      }
+      Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
+      long diff1 = duration1.toHours();
+      int conv1 = Math.toIntExact(diff1);
+      delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
+      Duration duration2 = Duration.between(car2.getCarOrder().getCompletionTime(), car2.getCarOrder().getEstimatedCompletionTime());
+      long diff2 = duration2.toHours();
+      int conv2 = Math.toIntExact(diff2);
+      delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
+      return delays;
+    }
+  }
+
+  public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
+    finishedCars.add(carAssemblyProcess);
+  }
+
   /**
    * Returns a list of strings that represent the possible scheduling algorithms
    *
@@ -565,3 +725,4 @@ public class AssemblyLine implements Subject {
     }
   }
 }
+

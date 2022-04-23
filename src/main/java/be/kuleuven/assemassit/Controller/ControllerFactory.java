@@ -20,7 +20,7 @@ public class ControllerFactory {
    *
    * @return a new instance of the order controller
    */
-  public OrderNewCarController createOrderController() {
+  public OrderNewCarController createOrderNewCarController() {
     return new OrderNewCarController(carManufactoringCompany, new GarageHolderRepository());
   }
 
@@ -31,7 +31,7 @@ public class ControllerFactory {
    * @param garageHolderRepository  can be used for mocking
    * @return a new instance of the order controller
    */
-  public OrderNewCarController createOrderController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
+  public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
     return new OrderNewCarController(carManufactoringCompany, garageHolderRepository);
   }
 
