@@ -2,12 +2,19 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
+import be.kuleuven.assemassit.Domain.Helper.Observer;
+import be.kuleuven.assemassit.Domain.Helper.Subject;
+import be.kuleuven.assemassit.Domain.Repositories.OverTimeRepository;
+import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
+import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
+import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @mutable
@@ -16,8 +23,10 @@ import java.util.*;
  * @invar | getAccessoriesPost() != null
  * @invar | getCarAssemblyProcess() != null
  * @invar | getFinishedCars() != null
+ * @invar | getSchedulingAlgorithm() != null
+ * @invar | giveSchedulingAlgorithmNames() != null
  */
-public class AssemblyLine {
+public class AssemblyLine implements Subject {
 
   /**
    * @invar | carBodyPost != null
@@ -26,6 +35,7 @@ public class AssemblyLine {
    * @invar | carAssemblyProcessesQueue != null
    * @invar | finishedCars != null
    * @invar | (startTime == null || endTime == null) || startTime.isBefore(endTime)
+   * @invar | schedulingAlgorithm != null
    * @representationObject
    */
   private final WorkPost carBodyPost;
@@ -53,7 +63,17 @@ public class AssemblyLine {
   private final List<CarAssemblyProcess> finishedCars;
   private LocalTime startTime;
   private LocalTime endTime;
+  private int overTime;
 
+
+  /**
+   * @representationObject
+   */
+  private SchedulingAlgorithm schedulingAlgorithm;
+
+  private OverTimeRepository overTimeRepository;
+
+  private List<Observer> observers;
 
   /**
    * @post | carBodyPost != null
@@ -61,14 +81,33 @@ public class AssemblyLine {
    * @post | accessoriesPost != null
    * @post | carAssemblyProcessesQueue != null
    * @post | finishedCars != null
+   * @post | overTimeRepository != null
+   * @post | overTime >= 0
    * @mutates | this
    */
-  public AssemblyLine() {
+  public AssemblyLine(OverTimeRepository overTimeRepository) {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
+    this.schedulingAlgorithm = new FIFOScheduling();
+    this.observers = new ArrayList<>();
+    this.overTimeRepository = overTimeRepository;
+    this.overTime = overTimeRepository.getOverTime();
+  }
+
+  /**
+   * @post | carBodyPost != null
+   * @post | driveTrainPost != null
+   * @post | accessoriesPost != null
+   * @post | carAssemblyProcessesQueue != null
+   * @post | finishedCars != null
+   * @post | overTimeRepository != null
+   * @mutates | this
+   */
+  public AssemblyLine() {
+    this(new OverTimeRepository());
   }
 
   /**
@@ -101,6 +140,29 @@ public class AssemblyLine {
   }
 
   /**
+   * Returns the current scheduling algorithm
+   *
+   * @return the current scheduling algorithm
+   * @post | result != null
+   */
+  public SchedulingAlgorithm getSchedulingAlgorithm() {
+    return this.schedulingAlgorithm;
+  }
+
+  /**
+   * Sets the scheduling algorithm of the assembly line.
+   *
+   * @param schedulingAlgorithm
+   * @throws IllegalArgumentException schedulingAlgorithm can not be null | schedulingAlgorithm == null
+   * @post | this.schedulingAlgorithm == schedulingAlgorithm
+   */
+  public void setSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
+    if (schedulingAlgorithm == null)
+      throw new IllegalArgumentException("SchedulingAlgorithm can not be null");
+    this.schedulingAlgorithm = schedulingAlgorithm;
+  }
+
+  /**
    * Adds a car assembly process to the queue of pending car assembly processes
    *
    * @param carAssemblyProcess
@@ -123,6 +185,27 @@ public class AssemblyLine {
 
   public WorkPost getAccessoriesPost() {
     return this.accessoriesPost;
+  }
+
+  /**
+   * Collects the work posts of the assembly line in a list.
+   *
+   * @return the list of work posts on this assembly line
+   * @post | result != null
+   * @inspects | this
+   * @creates | result
+   */
+  public List<WorkPost> getWorkPosts() {
+    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
+  }
+
+  public int getOverTime() {
+    return this.overTime;
+  }
+
+  private void setOverTime(int overTime) {
+    this.overTime = overTime;
+    notifyObservers(); // TODO: maybe the UI? this is an event that does not always occur
   }
 
   public List<CarAssemblyProcess> getFinishedCars() {
@@ -161,14 +244,18 @@ public class AssemblyLine {
    * Complete the active assembly task of a work post
    *
    * @param workPostId the work post id
+   * @param duration   the time it took him to Finish the task
    * @throws IllegalArgumentException workPostId is below 0 | workPostId < 0
+   * @throws IllegalArgumentException duration is lower than 0 | duration > 180
    * @mutates | this
    */
-  public void completeAssemblyTask(int workPostId) {
+  public void completeAssemblyTask(int workPostId, int duration) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId can not be below 0");
+    if (!(duration >= 0 && duration < 180))
+      throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask();
+    workPost.completeAssemblyTask(duration, LocalDateTime.now());
   }
 
   /**
@@ -285,7 +372,7 @@ public class AssemblyLine {
       throw new IllegalArgumentException("The ID can not be lower than 0");
 
 
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    List<WorkPost> workPosts = this.getWorkPosts();
 
     Optional<WorkPost> optionalWorkPost = workPosts.stream().filter(workPost -> workPost.getId() == workPostId).findFirst();
 
@@ -303,13 +390,17 @@ public class AssemblyLine {
    * @inspects | this
    */
   public boolean canMove() {
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    List<WorkPost> workPosts = this.getWorkPosts();
     for (WorkPost workPost : workPosts) {
       if (!workPost.givePendingAssemblyTasks().isEmpty()) {
         return false;
       }
     }
     return true;
+  }
+
+  private boolean canWorkDayStart() {
+    return (LocalTime.now().isAfter(this.startTime.plusMinutes(this.overTime)));
   }
 
   /**
@@ -322,44 +413,26 @@ public class AssemblyLine {
    * @mutates | this
    */
   public void move(int minutes) {
-    if (minutes < 0)
-      throw new IllegalArgumentException("Minutes can not be below 0");
-    if (!canMove()) {
-      throw new IllegalStateException("AssemblyLine cannot be moved forward!");
-    }
 
-    //Remove the car from the third post
-    if (accessoriesPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : accessoriesPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
+    if (!canWorkDayStart())
+      throw new IllegalArgumentException("The work day can not be started yet because of previous overtime");
 
-      CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
-      carAssemblyProcess.complete();
-      finishedCars.add(accessoriesPost.getCarAssemblyProcess());
-      accessoriesPost.removeCarAssemblyProcess();
-    }
-    //Give the third post the car of the second post
-    if (drivetrainPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : drivetrainPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
-      accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
-      drivetrainPost.removeCarAssemblyProcess();
-    }
-    //Give the second post the car of the first post
-    if (carBodyPost.getCarAssemblyProcess() != null) {
-      for (AssemblyTask assemblyTask : carBodyPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
-      }
+    if (!canMove())
+      throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
-      drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());
-      carBodyPost.removeCarAssemblyProcess();
-    }
-    //Give the first post a car from the queue;
-    //The queue can not be empty and there must still be enough time to produce the whole car
-    if (!carAssemblyProcessesQueue.isEmpty() && LocalTime.now().plusMinutes(giveManufacturingDurationInMinutes()).isBefore(this.endTime)) {
-      carBodyPost.addProcessToWorkPost(carAssemblyProcessesQueue.poll());
+    int overtime = schedulingAlgorithm.moveAssemblyLine
+      (
+        minutes,
+        this.overTime,
+        endTime,
+        carAssemblyProcessesQueue,
+        finishedCars,
+        getWorkPosts()
+      );
+
+    if (overtime > 0) {
+      // overtime happened so we have to inform the assembly line
+      setOverTime(overtime);
     }
   }
 
@@ -374,42 +447,14 @@ public class AssemblyLine {
    * @creates | result
    */
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
-    // calculate remaining cars for this day (1)
-    double remaningCarsForTodayDouble = ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
-      giveManufacturingDurationInMinutes() - // time needed to manufacture a car
-      (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
-      maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-      60) / (double) 60);
-    int remainingCarsForToday =
-      (int) Math.ceil(((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
-        giveManufacturingDurationInMinutes() - // time needed to manufacture a car
-        (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
-        maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / (double) 60));
-
-    // calculate cars for a whole day (2)
-    int amountOfCarsWholeDay =
-      (int) ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
-        giveManufacturingDurationInMinutes() - // time needed to manufacture a car
-        (startTime.getHour() * 60 + startTime.getMinute()) - // opening time
-        maxTimeNeededForWorkPostOnLine() + // time needed for the slowest work post
-        60) / (double) 60);
-
-    // car can still be manufactured today
-    if (carAssemblyProcessesQueue.size() <= remainingCarsForToday) {
-      // total duration - max duration of work post + max duration * amount
-      return LocalDateTime.now().plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes((long) maxTimeNeededForWorkPostOnLine() * carAssemblyProcessesQueue.size());
-    }
-
-    // car can not be manufactured today
-    // Math.ceil(list - (1) / (2)) = days needed
-    int daysNeeded = Math.max(0, (carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay - 1);
-
-
-    // return date of tomorrow + days needed + minutes needed
-    LocalDateTime today = LocalDateTime.now();
-    int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - Math.abs(remainingCarsForToday)) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine();
-    return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), startTime.getHour(), startTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(giveManufacturingDurationInMinutes() - maxTimeNeededForWorkPostOnLine()).plusMinutes(remainingMinutesForLastDay);
+    return this.schedulingAlgorithm
+      .giveEstimatedDeliveryTime(
+        this.carAssemblyProcessesQueue,
+        giveManufacturingDurationInMinutes(),
+        this.endTime,
+        this.startTime,
+        maxTimeNeededForWorkPostOnLine()
+      );
   }
 
   /**
@@ -421,7 +466,7 @@ public class AssemblyLine {
    * @inspects | this
    */
   private int maxTimeNeededForWorkPostOnLine() {
-    return giveWorkPostsAsList()
+    return getWorkPosts()
       .stream()
       .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
       .max()
@@ -436,22 +481,10 @@ public class AssemblyLine {
    * @inspects | this
    */
   private int giveManufacturingDurationInMinutes() {
-    return giveWorkPostsAsList()
+    return getWorkPosts()
       .stream()
       .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
       .reduce(0, Integer::sum);
-  }
-
-  /**
-   * Collects the work posts of the assembly line in a list.
-   *
-   * @return the list of work posts on this assembly line
-   * @post | result != null
-   * @inspects | this
-   * @creates | result
-   */
-  public List<WorkPost> giveWorkPostsAsList() {
-    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
   /**
@@ -644,6 +677,56 @@ public class AssemblyLine {
 
   public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
     finishedCars.add(carAssemblyProcess);
+  }
+
+  /**
+   * Returns a list of strings that represent the possible scheduling algorithms
+   *
+   * @return list of algorithm names
+   * @post | result != null
+   */
+  public List<String> giveSchedulingAlgorithmNames() {
+    return List.of
+      (
+        FIFOScheduling.class.getSimpleName(),
+        SpecificationBatchScheduling.class.getSimpleName()
+      );
+  }
+
+  public List<Car> givePossibleBatchCars() {
+    List<Car> cars = this.carAssemblyProcessesQueue
+      .stream()
+      .map(p -> p.getCarOrder().getCar())
+      .collect(Collectors.toList());
+
+    Map<Car, Integer> frequencyMap = new HashMap<>();
+    for (Car c : cars) {
+      Integer count = frequencyMap.get(c);
+      if (count == null) {
+        count = 0;
+      }
+
+      frequencyMap.put(c, count++);
+    }
+
+    return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
+  }
+
+  @Override
+  public void attach(Observer observer) {
+    this.observers.add(observer);
+  }
+
+  @Override
+  public void detach(Observer observer) {
+    this.observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (Observer observer : observers) {
+      observer.update();
+    }
   }
 }
 

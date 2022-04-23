@@ -107,4 +107,9 @@ public class CarAssemblyProcess {
     carOrder.setCompletionTime(LocalDateTime.now());
     carOrder.setPending(false);
   }
+
+  public int giveManufacturingDurationInMinutes() {
+    // TODO: this is very temporary
+    return 70 * 3;
+  }
 }
