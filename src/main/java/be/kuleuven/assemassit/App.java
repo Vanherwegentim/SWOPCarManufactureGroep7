@@ -1,17 +1,15 @@
 package be.kuleuven.assemassit;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
-import be.kuleuven.assemassit.UI.MainUI;
+import be.kuleuven.assemassit.UI.LoginUI;
 
 import java.util.InputMismatchException;
 
 public class App {
 
   public static void main(String[] args) {
-    ControllerFactory controllerFactory = new ControllerFactory();
+    LoginUI loginUI = new LoginUI();
     try {
-      MainUI.run(controllerFactory.createOrderController(), controllerFactory.createAssemblyLineController());
-      // In een volgende iteratie zorgen we voor een betere oplossing, onze excuses.
+      loginUI.run();
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
     } catch (IllegalStateException e) {

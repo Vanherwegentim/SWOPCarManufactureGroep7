@@ -39,7 +39,7 @@ public class WorkPostTest {
   }
 
   @Test
-  public void contructorTest() {
+  public void constructorTest() {
     WorkPost workPost = new WorkPost(0, list, type, 60);
 
     assert workPost.getId() == 0;

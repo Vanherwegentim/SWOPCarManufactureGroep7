@@ -170,6 +170,16 @@ public class WorkPost {
     return filteredTasks.stream().filter(AssemblyTask::getPending).toList();
   }
 
+  public List<AssemblyTask> giveFinishedAssemblyTasks() {
+
+    if (carAssemblyProcess == null)
+      return new ArrayList<>();
+
+    List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
+    List<AssemblyTask> filteredTasks = tasks.stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
+    return filteredTasks.stream().filter(AssemblyTask::getFinished).toList();
+  }
+
   /**
    * @throws IllegalStateException assembly task is null | getActiveAssemblyTask() == null
    * @mutates | this

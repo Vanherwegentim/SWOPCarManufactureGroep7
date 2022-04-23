@@ -4,20 +4,31 @@ import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
+import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
+import be.kuleuven.assemassit.UI.UI;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class PerformAssemblyTasksActionUI {
-  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController, PerformAssemblyTasksController performAssemblyTasksController) {
+public class PerformAssemblyTasksActionUI implements UI {
+  private AssemblyLineController assemblyLineController;
+  private CarMechanicActionsOverviewUI carMechanicActionsOverviewUI;
+
+  public PerformAssemblyTasksActionUI(AssemblyLineController assemblyLineController) {
+    this.assemblyLineController = assemblyLineController;
+    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(this.assemblyLineController);
+  }
+
+  public void run() {
 
     Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
     Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
 
     if (chosenWorkPostIdOptional.isEmpty()) {
-      CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
+      this.carMechanicActionsOverviewUI.run();
       return;
     }
     int chosenWorkPostId = chosenWorkPostIdOptional.get();
@@ -26,14 +37,14 @@ public class PerformAssemblyTasksActionUI {
 
     if (allAssemblyTasks.isEmpty()) {
       System.out.println("There are currently no pending tasks for this work post");
-      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController, performAssemblyTasksController);
+      run(); //TODO check if dit is de manier juiste redirect naar zichzelf
       return;
     }
 
     Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
 
     if (chosenAssemblyTaskIdOptional.isEmpty()) {
-      PerformAssemblyTasksActionUI.run(orderNewCarController, assemblyLineController, performAssemblyTasksController);
+      run(); //TODO check if dit is de manier juiste redirect naar zichzelf
       return;
     }
     int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
@@ -49,7 +60,7 @@ public class PerformAssemblyTasksActionUI {
     int duration = displayInputMinutes();
     performAssemblyTasksController.completeAssemblyTask(chosenWorkPostId, duration);
 
-    CarMechanicActionsOverviewUI.run(orderNewCarController, assemblyLineController);
+    this.carMechanicActionsOverviewUI.run();
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {
