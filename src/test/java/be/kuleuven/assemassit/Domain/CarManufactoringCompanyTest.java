@@ -50,6 +50,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
+    // TODO: this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
     assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
   }
 

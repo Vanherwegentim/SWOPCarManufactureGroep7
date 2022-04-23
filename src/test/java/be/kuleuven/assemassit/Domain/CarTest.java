@@ -52,4 +52,20 @@ public class CarTest {
       new Car(carModel, Body.BREAK, Color.BLACK, null, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)
     );
   }
+
+  @Test
+  public void carEqualsTest_True() {
+    Car car = new Car(carModel, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT);
+    Car car2 = new Car(carModel, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT);
+    assertTrue(car.equals(car2));
+    assertTrue(car2.equals(car));
+  }
+
+  @Test
+  public void carEqualsTest_False() {
+    Car car = new Car(carModel, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.COMFORT);
+    Car car2 = new Car(carModel, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT);
+    assertFalse(car.equals(car2));
+    assertFalse(car2.equals(car));
+  }
 }

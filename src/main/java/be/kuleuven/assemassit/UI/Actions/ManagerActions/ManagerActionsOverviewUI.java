@@ -7,11 +7,9 @@ import be.kuleuven.assemassit.UI.UI;
 
 public class ManagerActionsOverviewUI implements UI {
 
-  private AssemblyLineController assemblyLineController;
   private LoginUI loginUI;
 
-  public ManagerActionsOverviewUI(AssemblyLineController assemblyLineController) {
-    this.assemblyLineController = assemblyLineController;
+  public ManagerActionsOverviewUI() {
     this.loginUI = new LoginUI();
   }
 

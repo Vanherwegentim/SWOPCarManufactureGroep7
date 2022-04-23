@@ -2,6 +2,9 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @mutable
  * @invar | getCarModel() != null
@@ -114,5 +117,34 @@ public class Car {
 
   public int getId() {
     return this.id;
+  }
+
+  public List<CarOption> giveListOfCarOptions() {
+    List<CarOption> carOptions = new ArrayList<>();
+
+    carOptions.add(this.getBody());
+    carOptions.add(this.getColor());
+    carOptions.add(this.getEngine());
+    carOptions.add(this.getGearbox());
+    carOptions.add(this.getSeats());
+    carOptions.add(this.getAirco());
+    carOptions.add(this.getWheels());
+
+    return carOptions;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof Car car) {
+      return
+        (car.giveListOfCarOptions().stream().allMatch(co ->
+          this.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+        ))
+          &&
+          (this.giveListOfCarOptions().stream().allMatch(co ->
+            car.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+          ));
+    }
+    return false;
   }
 }
