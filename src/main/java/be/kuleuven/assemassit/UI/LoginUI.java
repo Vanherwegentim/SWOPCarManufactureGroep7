@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.UI;
 
-import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
+import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
@@ -13,8 +13,8 @@ import java.util.Scanner;
 
 public class LoginUI implements UI {
   private ControllerFactory controllerFactory;
-  private AssemblyLineController assemblyLineController;
   private OrderNewCarController orderNewCarController;
+  private PerformAssemblyTasksController performAssemblyTasksController;
 
   private ManagerActionsOverviewUI managerActionsOverviewUI;
   private CarMechanicActionsOverviewUI carMechanicActionsOverviewUI;
@@ -22,11 +22,11 @@ public class LoginUI implements UI {
 
   public LoginUI() {
     this.controllerFactory = new ControllerFactory();
-    this.assemblyLineController = controllerFactory.createAssemblyLineController();
     this.orderNewCarController = controllerFactory.createOrderNewCarController();
+    this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
 
-    this.managerActionsOverviewUI = new ManagerActionsOverviewUI(this.assemblyLineController);
-    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(this.assemblyLineController);
+    this.managerActionsOverviewUI = new ManagerActionsOverviewUI();
+    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController);
     this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.orderNewCarController);
   }
 

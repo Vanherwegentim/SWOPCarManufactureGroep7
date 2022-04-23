@@ -54,4 +54,7 @@ public class ControllerFactory {
     return new AssemblyLineController(assemblyLine);
   }
 
+  public PerformAssemblyTasksController createPerformAssemblyTasksController() {
+    return new PerformAssemblyTasksController(assemblyLine);
+  }
 }

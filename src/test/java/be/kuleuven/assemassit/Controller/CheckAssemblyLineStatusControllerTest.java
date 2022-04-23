@@ -16,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AssemblyLineControllerTest {
-
-  private AssemblyLineController assemblyLineController;
-
+public class CheckAssemblyLineStatusControllerTest {
+  private CheckAssemblyLineStatusController controller;
   private AssemblyLine mockedAssemblyLine;
   private WorkPost mockedDrivetrainPost;
   private AssemblyTask mockedCarBodyAssemblyTask;
@@ -65,7 +63,14 @@ public class AssemblyLineControllerTest {
 
     when(mockedAccessoriesAssemblyTask.getName()).thenReturn("mockedAccessoriesAssemblyTaskName");
 
-    assemblyLineController = new AssemblyLineController(mockedAssemblyLine);
+
+    controller = new CheckAssemblyLineStatusController(mockedAssemblyLine);
+  }
+
+  @Test
+  public void CheckAssemblyLineStatusControllerConstructor_throws() {
+    assertThrows(IllegalArgumentException.class, () -> controller = new CheckAssemblyLineStatusController(null));
+
   }
 
   @Test
@@ -76,7 +81,7 @@ public class AssemblyLineControllerTest {
       2: ACCESSORIES_POST
       """;
 
-    Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
+    Map<Integer, String> allWorkPosts = controller.giveAllWorkPosts();
     String actual = "";
     for (int key : allWorkPosts.keySet()) {
       actual += key + ": " + allWorkPosts.get(key) + "\n";
@@ -93,17 +98,25 @@ public class AssemblyLineControllerTest {
 
     when(mockedAssemblyLine.givePendingAssemblyTasksFromWorkPost(0)).thenReturn(Arrays.asList(mockedAssemblyTask));
 
-    Map<Integer, String> actual = assemblyLineController.givePendingAssemblyTasks(0);
+    Map<Integer, String> actual = controller.givePendingAssemblyTasks(0);
     assertTrue(actual.size() == 1 && actual.containsKey(0));
     assertEquals("mockedAssemblyTaskName", actual.get(0));
   }
 
   @Test
   public void givePendingAssemblyTaskTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(-1));
+    assertThrows(IllegalArgumentException.class, () -> controller.givePendingAssemblyTasks(-1));
 
     when(mockedAssemblyLine.givePendingAssemblyTasksFromWorkPost(0)).thenThrow(IllegalArgumentException.class);
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.givePendingAssemblyTasks(0));
+    assertThrows(IllegalArgumentException.class, () -> controller.givePendingAssemblyTasks(0));
+  }
+
+  @Test
+  public void giveFinishedAssemblyTaskTest_throws() {
+    assertThrows(IllegalArgumentException.class, () -> controller.giveFinishedAssemblyTasks(-1));
+
+    when(mockedAssemblyLine.giveFinishedAssemblyTasksFromWorkPost(0)).thenThrow(IllegalArgumentException.class);
+    assertThrows(IllegalArgumentException.class, () -> controller.giveFinishedAssemblyTasks(0));
   }
 
   @Test
@@ -137,7 +150,7 @@ public class AssemblyLineControllerTest {
        mockedAccessoriesAssemblyTaskName (active)\r
       """;
 
-    Map<String, List<String>> assemblyLineStatusAndOverview = assemblyLineController.giveAssemblyLineStatusOverview();
+    Map<String, List<String>> assemblyLineStatusAndOverview = controller.giveAssemblyLineStatusOverview();
     String actual = "";
     for (String key : assemblyLineStatusAndOverview.keySet()) {
       actual += String.format("%s:%n", key);
@@ -167,7 +180,7 @@ public class AssemblyLineControllerTest {
 
     when(mockedAssemblyLine.giveFutureTasksOverview()).thenReturn(mockedTasksOverview);
 
-    HashMap<String, List<String>> futureAssemblyLineStatusOverview = assemblyLineController.giveFutureAssemblyLineStatusOverview();
+    HashMap<String, List<String>> futureAssemblyLineStatusOverview = controller.giveFutureAssemblyLineStatusOverview();
 
     String actual = "";
     for (String key : futureAssemblyLineStatusOverview.keySet()) {
@@ -177,46 +190,4 @@ public class AssemblyLineControllerTest {
       }
     }
   }
-
-  @Test
-  public void moveAssemblyLineTest_canMove_succeeds() {
-    when(mockedAssemblyLine.canMove()).thenReturn(true);
-    assertArrayEquals(new String[]{}, assemblyLineController.moveAssemblyLine(1).toArray());
-  }
-
-  @Test
-  public void moveAssemblyLineTest_cannotMove_succeeds() {
-    when(mockedAssemblyLine.canMove()).thenReturn(false);
-    when(mockedDrivetrainPost.givePendingAssemblyTasks()).thenReturn(Arrays.asList(mockedDrivetrainAssemblyTask));
-
-    assertArrayEquals(new String[]{WorkPostType.DRIVETRAIN_POST.toString()}, assemblyLineController.moveAssemblyLine(1).toArray());
-  }
-
-  @Test
-  public void moveAssemblyLineTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.moveAssemblyLine(-1));
-  }
-
-//  @Test
-//  public void completeAssemblyTaskTest_throws() {
-//    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.completeAssemblyTask(-1));
-//  }
-
-  @Test
-  public void setActiveTaskTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(-1, 2));
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.setActiveTask(2, -1));
-  }
-
-  @Test
-  public void giveAssemblyTaskActionsTest_succeeds() {
-    assertArrayEquals(new String[]{"Installing the sead body"}, assemblyLineController.giveAssemblyTaskActions(0, 0).toArray());
-  }
-
-  @Test
-  public void giveAssemblyTaskActionsTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(-1, 2));
-    assertThrows(IllegalArgumentException.class, () -> assemblyLineController.giveAssemblyTaskActions(2, -1));
-  }
-
 }

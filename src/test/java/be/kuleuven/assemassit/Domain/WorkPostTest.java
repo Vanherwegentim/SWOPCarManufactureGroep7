@@ -6,6 +6,7 @@ import be.kuleuven.assemassit.Domain.TaskTypes.PaintCarAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class WorkPostTest {
 
     workPost.setActiveAssemblyTask(0);
     assertNotNull(workPost.getActiveAssemblyTask());
-    workPost.completeAssemblyTask();
+    workPost.completeAssemblyTask(15, LocalDateTime.now());
     assertNull(workPost.getActiveAssemblyTask());
   }
 
