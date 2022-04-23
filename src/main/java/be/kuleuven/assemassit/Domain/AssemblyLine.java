@@ -536,15 +536,23 @@ public class AssemblyLine {
 
   public int medianCarsInADay() {
     Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
-    ArrayList<Integer> intList = (ArrayList<Integer>) carsPerDayMap.values();
+    ArrayList<Integer> intList = new ArrayList<>();
+    intList.addAll(carsPerDayMap.values());
     Collections.sort(intList);
-    if (intList.size() % 2 == 0) {
-      int middle = intList.size() / 2;
-      return (intList.get(middle) + intList.get(middle + 1)) / 2;
+    if (intList.size() == 0) {
+      return 0;
+    }
+    if (intList.size() == 1) {
+      return intList.get(0);
     } else {
-      double middle = (double) intList.size() / 2.0;
-      int middleInt = (int) Math.ceil(middle);
-      return intList.get(middleInt);
+      if (intList.size() % 2 == 0) {
+        int middle = intList.size() / 2;
+        return (intList.get(middle) + intList.get(middle + 1)) / 2;
+      } else {
+        double middle = (double) intList.size() / 2.0;
+        int middleInt = (int) Math.ceil(middle);
+        return intList.get(middleInt);
+      }
     }
   }
 
@@ -583,33 +591,55 @@ public class AssemblyLine {
       int conv = Math.toIntExact(diff);
       dates.add(conv);
     }
-    if (dates.size() % 2 == 0) {
-      return (dates.get(dates.size() / 2) + dates.get((dates.size() / 2) + 1)) / 2;
+    if (dates.size() == 0) {
+      return 0;
+    }
+    if (dates.size() == 1) {
+      return dates.get(0);
     } else {
-      return dates.get(dates.size());
+      if (dates.size() % 2 == 0) {
+        int middle = dates.size() / 2;
+        return (dates.get(middle) + dates.get(middle + 1)) / 2;
+      } else {
+        double middle = (double) dates.size() / 2.0;
+        int middleInt = (int) Math.ceil(middle);
+        return dates.get(middleInt);
+      }
     }
   }
 
   public Map<LocalDate, Integer> last2Delays() {
     Map<LocalDate, Integer> delays = new HashMap<>();
-    CarAssemblyProcess car1 = finishedCars.get(0);
-    CarAssemblyProcess car2 = finishedCars.get(1);
-    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-      if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
-        car1 = carAssemblyProcess;
-      } else if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car2.getCarOrder().getCompletionTime())) {
-        car2 = carAssemblyProcess;
-      }
+    if (finishedCars.size() == 0) {
+      return delays;
     }
-    Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
-    long diff1 = duration1.toHours();
-    int conv1 = Math.toIntExact(diff1);
-    delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
-    Duration duration2 = Duration.between(car2.getCarOrder().getCompletionTime(), car2.getCarOrder().getEstimatedCompletionTime());
-    long diff2 = duration2.toHours();
-    int conv2 = Math.toIntExact(diff2);
-    delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
-    return delays;
+    if (finishedCars.size() == 1) {
+      CarAssemblyProcess car1 = finishedCars.get(0);
+      Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
+      long diff1 = duration1.toHours();
+      int conv1 = Math.toIntExact(diff1);
+      delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
+      return delays;
+    } else {
+      CarAssemblyProcess car1 = finishedCars.get(0);
+      CarAssemblyProcess car2 = finishedCars.get(1);
+      for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+        if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
+          car1 = carAssemblyProcess;
+        } else if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car2.getCarOrder().getCompletionTime())) {
+          car2 = carAssemblyProcess;
+        }
+      }
+      Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
+      long diff1 = duration1.toHours();
+      int conv1 = Math.toIntExact(diff1);
+      delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
+      Duration duration2 = Duration.between(car2.getCarOrder().getCompletionTime(), car2.getCarOrder().getEstimatedCompletionTime());
+      long diff2 = duration2.toHours();
+      int conv2 = Math.toIntExact(diff2);
+      delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
+      return delays;
+    }
   }
 
   public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
