@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class AssemblyLineTest {
 
   private AssemblyLine assemblyLine;
   private CarAssemblyProcess carAssemblyProcess;
+  private CarAssemblyProcess carAssemblyProcessTest;
 
 
   @BeforeEach
@@ -35,6 +37,25 @@ public class AssemblyLineTest {
           Seat.LEATHER_BLACK,
           Airco.MANUAL,
           Wheel.SPORT)));
+    carAssemblyProcessTest = new CarAssemblyProcess(
+      new CarOrder(
+        new Car(
+          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
+          Body.SEAD,
+          Color.BLACK,
+          Engine.PERFORMANCE,
+          Gearbox.MANUAL,
+          Seat.LEATHER_BLACK,
+          Airco.MANUAL,
+          Wheel.SPORT)));
+    //Probably not correct
+    carAssemblyProcessTest.complete();
+    assemblyLine.addCarToFinishedCars(carAssemblyProcessTest);
+    carAssemblyProcessTest.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcessTest.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+
   }
 
   @Test
@@ -63,4 +84,47 @@ public class AssemblyLineTest {
 
     assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
+
+  @Test
+  public void createCarsPerDayMapTest() {
+    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 1), assemblyLine.createCarsPerDayMap());
+
+  }
+
+  //Needs more verbose testing
+  @Test
+  public void averageCarsInADayTest() {
+    assertEquals(assemblyLine.averageCarsInADay(), 1);
+  }
+
+  @Test
+  public void medianCarsInADayTest() {
+    assertEquals(assemblyLine.medianCarsInADay(), 1);
+  }
+
+  @Test
+  public void exactCarsIn2DaysTest() {
+    assertEquals(assemblyLine.exactCarsIn2Days(), 1);
+  }
+
+  //This is probably going to error because of the problem with the estimatedCompletionTime algorithm
+  //TODO fix this
+  @Test
+  public void averageDelayPerOrderTest() {
+    assertEquals(assemblyLine.averageDelayPerOrder(), 0);
+  }
+
+  @Test
+  public void medianDelayPerOrderTest() {
+    System.out.println();
+    assertEquals(assemblyLine.medianDelayPerOrder(), 0);
+  }
+
+  //probably going to error because we are only adding one CarAssemblyProcess to the finishedcars list at the moment.
+  //which will try to set an element but the list will be smaller then 2 elements -> OutOfBoundsException
+  @Test
+  public void last2DelaysTest() {
+    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
+  }
+
 }
