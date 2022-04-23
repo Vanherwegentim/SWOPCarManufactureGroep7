@@ -1,24 +1,26 @@
 package be.kuleuven.assemassit.UI.Actions.CarMechanicActions;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
+import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
+import be.kuleuven.assemassit.UI.LoginUI;
 import be.kuleuven.assemassit.UI.UI;
 
 public class CarMechanicActionsOverviewUI implements UI {
 
-  private AssemblyLineController assemblyLineController;
+  private PerformAssemblyTasksController performAssemblyTasksController;
 
-  private ManagerActionsOverviewUI managerActionsOverviewUI;
   private PerformAssemblyTasksActionUI performAssemblyTasksActionUI;
+  private LoginUI loginUI;
 
 
-  public CarMechanicActionsOverviewUI(AssemblyLineController assemblyLineController) {
-    this.assemblyLineController = assemblyLineController;
-    this.managerActionsOverviewUI = new ManagerActionsOverviewUI(this.assemblyLineController);
-    this.performAssemblyTasksActionUI = new PerformAssemblyTasksActionUI(this.assemblyLineController);
+  public CarMechanicActionsOverviewUI(PerformAssemblyTasksController performAssemblyTasksController) {
+    this.performAssemblyTasksController = performAssemblyTasksController;
+    this.performAssemblyTasksActionUI = new PerformAssemblyTasksActionUI(this.performAssemblyTasksController);
+    this.loginUI = new LoginUI();
   }
 
   // TODO: change to correct controllers
@@ -40,7 +42,7 @@ public class CarMechanicActionsOverviewUI implements UI {
           this.performAssemblyTasksActionUI.run();
         }
         case -1 -> {
-          this.managerActionsOverviewUI.run();
+          this.loginUI.run();
         }
       }
     } while (action != -1 && action != 1);

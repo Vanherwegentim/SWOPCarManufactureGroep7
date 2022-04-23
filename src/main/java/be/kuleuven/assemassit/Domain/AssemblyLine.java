@@ -187,6 +187,18 @@ public class AssemblyLine implements Subject {
     return this.accessoriesPost;
   }
 
+  /**
+   * Collects the work posts of the assembly line in a list.
+   *
+   * @return the list of work posts on this assembly line
+   * @post | result != null
+   * @inspects | this
+   * @creates | result
+   */
+  public List<WorkPost> getWorkPosts() {
+    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
+  }
+
   public int getOverTime() {
     return this.overTime;
   }
@@ -232,14 +244,18 @@ public class AssemblyLine implements Subject {
    * Complete the active assembly task of a work post
    *
    * @param workPostId the work post id
+   * @param duration   the time it took him to Finish the task
    * @throws IllegalArgumentException workPostId is below 0 | workPostId < 0
+   * @throws IllegalArgumentException duration is lower than 0 | duration > 180
    * @mutates | this
    */
-  public void completeAssemblyTask(int workPostId) {
+  public void completeAssemblyTask(int workPostId, int duration) {
     if (workPostId < 0)
       throw new IllegalArgumentException("WorkPostId can not be below 0");
+    if (!(duration >= 0 && duration < 180))
+      throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask();
+    workPost.completeAssemblyTask(duration, LocalDateTime.now());
   }
 
   /**
@@ -356,7 +372,7 @@ public class AssemblyLine implements Subject {
       throw new IllegalArgumentException("The ID can not be lower than 0");
 
 
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    List<WorkPost> workPosts = this.getWorkPosts();
 
     Optional<WorkPost> optionalWorkPost = workPosts.stream().filter(workPost -> workPost.getId() == workPostId).findFirst();
 
@@ -374,7 +390,7 @@ public class AssemblyLine implements Subject {
    * @inspects | this
    */
   public boolean canMove() {
-    List<WorkPost> workPosts = this.giveWorkPostsAsList();
+    List<WorkPost> workPosts = this.getWorkPosts();
     for (WorkPost workPost : workPosts) {
       if (!workPost.givePendingAssemblyTasks().isEmpty()) {
         return false;
@@ -450,7 +466,7 @@ public class AssemblyLine implements Subject {
    * @inspects | this
    */
   private int maxTimeNeededForWorkPostOnLine() {
-    return giveWorkPostsAsList()
+    return getWorkPosts()
       .stream()
       .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
       .max()
@@ -465,22 +481,10 @@ public class AssemblyLine implements Subject {
    * @inspects | this
    */
   private int giveManufacturingDurationInMinutes() {
-    return giveWorkPostsAsList()
+    return getWorkPosts()
       .stream()
       .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
       .reduce(0, Integer::sum);
-  }
-
-  /**
-   * Collects the work posts of the assembly line in a list.
-   *
-   * @return the list of work posts on this assembly line
-   * @post | result != null
-   * @inspects | this
-   * @creates | result
-   */
-  public List<WorkPost> giveWorkPostsAsList() {
-    return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
   /**

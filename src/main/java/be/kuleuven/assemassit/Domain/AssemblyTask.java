@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class AssemblyTask {
@@ -13,7 +14,8 @@ public abstract class AssemblyTask {
   private final String name;
   private boolean pending;
   private int id;
-  private int completionTime;
+  private int duration;
+  private LocalDateTime completionTime;
 
   /**
    * @param name the name of the assembly task
@@ -54,6 +56,22 @@ public abstract class AssemblyTask {
   }
 
   /**
+   * The duration can not be achieved if the task is still pending
+   *
+   * @return the time it took to finish the task in minutes
+   * @throws IllegalStateException task is still pending | getPending()
+   */
+  public int getDuration() {
+    if (pending)
+      throw new IllegalStateException();
+    return duration;
+  }
+
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
+
+  /**
    * @return list of actions
    * @inspects | this
    * @creates | result
@@ -68,24 +86,7 @@ public abstract class AssemblyTask {
     return this.name;
   }
 
-  public void setCompletionTime(int minutes) {
-    this.completionTime = minutes;
-  }
-
   public abstract AssemblyTaskType getAssemblyTaskType();
-
-  /**
-   * The completion time can not be achieved if the task is still pending
-   *
-   * @return the completion time in minutes
-   * @throws IllegalStateException task is still pending | getPending()
-   */
-  public int completionTime() {
-    if (pending)
-      throw new IllegalStateException();
-
-    return this.completionTime;
-  }
 
   /**
    * Complete the task, this sets the pending attribute to false
@@ -104,5 +105,13 @@ public abstract class AssemblyTask {
   public boolean equals(Object object) {
     if (object instanceof AssemblyTask task) task.id = this.id;
     return false;
+  }
+
+  public LocalDateTime getCompletionTime() {
+    return completionTime;
+  }
+
+  public void setCompletionTime(LocalDateTime completionTime) {
+    this.completionTime = completionTime;
   }
 }

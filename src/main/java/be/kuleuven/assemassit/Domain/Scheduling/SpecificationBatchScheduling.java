@@ -46,7 +46,7 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     do {
       if (workPost != null && workPost.getCarAssemblyProcess() != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
-          assemblyTask.setCompletionTime(minutes);
+          //assemblyTask.setCompletionTime(minutes);
         }
 
         CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
