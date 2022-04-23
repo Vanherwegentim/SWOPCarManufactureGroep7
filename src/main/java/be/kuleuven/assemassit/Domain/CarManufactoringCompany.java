@@ -5,6 +5,7 @@ import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,17 +27,23 @@ public class CarManufactoringCompany implements Observer {
    * @invar | closingTime != null
    * @invar Opening time should be before the closing time
    * | (openingTime != null && closingTime != null) || openingTime.isBefore(closingTime)
+   * @invar | overtimes != null
    * @representationObject
    * @representationObjects
    */
-  private final List<CarModel> carModels;
+  private List<CarModel> carModels;
   /**
    * @representationObject
    */
-  private final AssemblyLine assemblyLine;
-  private final CarModelRepository carModelRepository;
-  private final LocalTime openingTime;
-  private final LocalTime closingTime;
+  private AssemblyLine assemblyLine;
+  private CarModelRepository carModelRepository;
+  private LocalTime openingTime;
+  private LocalTime closingTime;
+
+  /**
+   * @representationObject
+   */
+  private List<Integer> overtimes;
 
   /**
    * @param openingTime  the opening time of the factory
@@ -62,6 +69,7 @@ public class CarManufactoringCompany implements Observer {
    * @post | openingTime.getHour() == this.openingTime.getHour()
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.assemblyLine.equals(assemblyLine)
+   * @post | this.overtimes != null
    */
   public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     if (openingTime == null || closingTime == null || assemblyLine == null || carModelRepository == null)
@@ -74,6 +82,7 @@ public class CarManufactoringCompany implements Observer {
     this.assemblyLine.setEndTime(closingTime);
     this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
     this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
+    this.overtimes = new ArrayList<>();
 
     this.assemblyLine.attach(this);
   }
@@ -136,8 +145,12 @@ public class CarManufactoringCompany implements Observer {
     return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
   }
 
+  public void moveAssemblyLine(int minutes) {
+    this.assemblyLine.move(minutes, this.openingTime, this.closingTime, this.overtimes);
+  }
+
   @Override
   public void update() {
-    // TODO: this can probably be removed
+
   }
 }

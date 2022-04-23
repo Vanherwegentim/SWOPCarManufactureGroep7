@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.util.List;
@@ -11,14 +12,19 @@ import java.util.stream.Collectors;
 public class PerformAssemblyTasksController {
 
   private final AssemblyLine assemblyLine;
+  private final CarManufactoringCompany carManufactoringCompany;
 
   /**
    * @param assemblyLine
+   * @param carManufactoringCompany
    * @throws IllegalArgumentException assembly line is null | assemblyLine == null
+   * @throws IllegalArgumentException carManufactoringCompany is null | carManufactoringCompany == null
    */
-  public PerformAssemblyTasksController(AssemblyLine assemblyLine) {
+  public PerformAssemblyTasksController(AssemblyLine assemblyLine, CarManufactoringCompany carManufactoringCompany) {
     if (assemblyLine == null) throw new IllegalArgumentException("AssemblyLine can not be null");
+    if (carManufactoringCompany == null) throw new IllegalArgumentException("CarManufactoringCompany can not be null");
     this.assemblyLine = assemblyLine;
+    this.carManufactoringCompany = carManufactoringCompany;
   }
 
   /**

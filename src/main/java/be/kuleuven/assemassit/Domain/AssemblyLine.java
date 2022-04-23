@@ -205,7 +205,7 @@ public class AssemblyLine implements Subject {
 
   private void setOverTime(int overTime) {
     this.overTime = overTime;
-    notifyObservers(); // TODO: maybe the UI? this is an event that does not always occur
+    notifyObservers();
   }
 
   public List<CarAssemblyProcess> getFinishedCars() {
@@ -414,9 +414,6 @@ public class AssemblyLine implements Subject {
    */
   public void move(int minutes) {
 
-    if (!canWorkDayStart())
-      throw new IllegalArgumentException("The work day can not be started yet because of previous overtime");
-
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
@@ -431,8 +428,43 @@ public class AssemblyLine implements Subject {
       );
 
     if (overtime > 0) {
-      // overtime happened so we have to inform the assembly line
+      // overtime happened so we have to inform the car manufacturing company
       setOverTime(overtime);
+    }
+  }
+
+  /**
+   * Moves the assembly and gives the duration of the current phase.
+   * The assembly process is moved from one work post to another on the assembly line.
+   *
+   * @param minutes   the amount of minutes spent during the current phase
+   * @param startTime the start time of the company
+   * @param endTime   the end time of the company
+   * @param overtimes the list of over time in minutes for every shift
+   * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
+   * @throws IllegalArgumentException minutes is below 0 | minutes < 0
+   * @mutates | this
+   */
+  public void move(int minutes, LocalTime startTime, LocalTime endTime, List<Integer> overtimes) {
+    if (LocalTime.now().isAfter(startTime.plusMinutes(overtimes.get(0))))
+      throw new IllegalArgumentException("The work day can not be started yet because of previous overtime");
+
+    if (!canMove())
+      throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
+
+    int newOvertime = schedulingAlgorithm.moveAssemblyLine
+      (
+        minutes,
+        overtimes.get(overtimes.size() - 1),
+        endTime,
+        carAssemblyProcessesQueue,
+        finishedCars,
+        getWorkPosts()
+      );
+
+    if (newOvertime > 0) {
+      // overtime happened so we have to inform the car manufacturing company
+      setOverTime(newOvertime);
     }
   }
 
