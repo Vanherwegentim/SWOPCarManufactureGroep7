@@ -2,9 +2,11 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CheckAssemblyLineStatusController {
   private AssemblyLine assemblyLine;
@@ -101,6 +103,16 @@ public class CheckAssemblyLineStatusController {
     }
 
     return output;
+  }
+
+  /**
+   * Generate a map of all work posts, the key of the map is the work post id, the value is the work post name
+   *
+   * @return map of work posts
+   */
+  public Map<Integer, String> giveAllWorkPosts() {
+    return Stream.of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
+      .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
   }
 
 
