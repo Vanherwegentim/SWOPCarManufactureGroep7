@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,6 +51,11 @@ public class AssemblyLineTest {
     //Probably not correct
     carAssemblyProcessTest.complete();
     assemblyLine.addCarToFinishedCars(carAssemblyProcessTest);
+    carAssemblyProcessTest.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcessTest.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+
   }
 
   @Test
@@ -81,7 +87,7 @@ public class AssemblyLineTest {
 
   @Test
   public void createCarsPerDayMapTest() {
-    assertEquals(assemblyLine.createCarsPerDayMap(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime(), 1));
+    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 1), assemblyLine.createCarsPerDayMap());
 
   }
 
@@ -110,6 +116,7 @@ public class AssemblyLineTest {
 
   @Test
   public void medianDelayPerOrderTest() {
+    System.out.println();
     assertEquals(assemblyLine.medianDelayPerOrder(), 0);
   }
 
