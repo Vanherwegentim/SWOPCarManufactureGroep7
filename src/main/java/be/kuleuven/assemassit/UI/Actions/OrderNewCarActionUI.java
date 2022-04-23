@@ -3,14 +3,23 @@ package be.kuleuven.assemassit.UI.Actions;
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
+import be.kuleuven.assemassit.UI.UI;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
-public class OrderNewCarActionUI {
-  public static void run(OrderNewCarController orderNewCarController, AssemblyLineController assemblyLineController) {
+public class OrderNewCarActionUI implements UI {
+  private OrderNewCarController orderNewCarController;
+  private GarageHolderActionsOverviewUI garageHolderActionsOverviewUI;
+
+  public OrderNewCarActionUI(OrderNewCarController orderNewCarController) {
+    this.orderNewCarController = orderNewCarController;
+    this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.orderNewCarController);
+  }
+
+  public void run() {
     Scanner scanner = new Scanner(System.in);
     int choice;
 
@@ -36,7 +45,7 @@ public class OrderNewCarActionUI {
           Optional<Integer> chosenCarModelIdOptional = displayChooseCarModel(orderNewCarController.giveListOfCarModels());
 
           if (chosenCarModelIdOptional.isEmpty()) {
-            OrderNewCarActionUI.run(orderNewCarController, assemblyLineController);
+            run(); //TODO check if dit is de manier juiste redirect naar zichzelf
             return;
           }
 
@@ -47,7 +56,7 @@ public class OrderNewCarActionUI {
           Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
 
           if (selectedPartsOptional.isEmpty()) {
-            OrderNewCarActionUI.run(orderNewCarController, assemblyLineController);
+            run(); //TODO check if dit is de manier juiste redirect naar zichzelf
             return;
           }
           Map<String, String> selectedParts = selectedPartsOptional.get();
@@ -63,9 +72,9 @@ public class OrderNewCarActionUI {
           Scanner scanner3 = new Scanner(System.in);
           scanner3.nextLine();
 
-          OrderNewCarActionUI.run(orderNewCarController, assemblyLineController);
+          run(); //TODO check if dit is de manier juiste redirect naar zichzelf
         }
-        case -1 -> GarageHolderActionsOverviewUI.run(orderNewCarController, assemblyLineController);
+        case -1 -> this.garageHolderActionsOverviewUI.run();
       }
     } while (choice != -1 && (choice != 1));
   }

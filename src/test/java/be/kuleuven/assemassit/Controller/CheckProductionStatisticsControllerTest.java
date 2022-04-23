@@ -1,12 +1,12 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.WorkPost;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import java.util.Arrays;
 import java.time.LocalDate;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 public class CheckProductionStatisticsControllerTest {
   private CheckProductionStatisticsController controller;
   private AssemblyLine mockedAssemblyLine;
+
 
 
   @BeforeEach
@@ -70,5 +71,6 @@ public class CheckProductionStatisticsControllerTest {
     String expected = "The last 2 delays were at:\n" + LocalDate.now() + "\nand were this long:\n" + mockedAssemblyLine.last2Delays().get(LocalDate.now());
     String actual = controller.last2DelaysToString();
     assertEquals(expected, actual);
+
   }
 }
