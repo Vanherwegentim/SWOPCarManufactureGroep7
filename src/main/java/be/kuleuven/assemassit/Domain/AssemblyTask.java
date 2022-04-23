@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public abstract class AssemblyTask {
@@ -14,6 +15,7 @@ public abstract class AssemblyTask {
   private boolean pending;
   private int id;
   private int duration;
+  private LocalDateTime completionTime;
 
   /**
    * @param name the name of the assembly task
@@ -103,5 +105,13 @@ public abstract class AssemblyTask {
   public boolean equals(Object object) {
     if (object instanceof AssemblyTask task) task.id = this.id;
     return false;
+  }
+
+  public LocalDateTime getCompletionTime() {
+    return completionTime;
+  }
+
+  public void setCompletionTime(LocalDateTime completionTime) {
+    this.completionTime = completionTime;
   }
 }

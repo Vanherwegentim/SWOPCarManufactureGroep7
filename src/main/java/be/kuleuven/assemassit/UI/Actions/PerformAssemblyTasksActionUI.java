@@ -3,7 +3,6 @@ package be.kuleuven.assemassit.UI.Actions;
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
-import be.kuleuven.assemassit.UI.Actions.Overviews.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
 import be.kuleuven.assemassit.UI.UI;
@@ -14,12 +13,12 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class PerformAssemblyTasksActionUI implements UI {
-  private AssemblyLineController assemblyLineController;
   private CarMechanicActionsOverviewUI carMechanicActionsOverviewUI;
+  private PerformAssemblyTasksController performAssemblyTasksController;
 
-  public PerformAssemblyTasksActionUI(AssemblyLineController assemblyLineController) {
-    this.assemblyLineController = assemblyLineController;
-    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(this.assemblyLineController);
+  public PerformAssemblyTasksActionUI(PerformAssemblyTasksController performAssemblyTasksController) {
+    this.performAssemblyTasksController = performAssemblyTasksController;
+    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController);
   }
 
   public void run() {
@@ -37,14 +36,14 @@ public class PerformAssemblyTasksActionUI implements UI {
 
     if (allAssemblyTasks.isEmpty()) {
       System.out.println("There are currently no pending tasks for this work post");
-      run(); //TODO check if dit is de manier juiste redirect naar zichzelf
+      run();
       return;
     }
 
     Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
 
     if (chosenAssemblyTaskIdOptional.isEmpty()) {
-      run(); //TODO check if dit is de manier juiste redirect naar zichzelf
+      run();
       return;
     }
     int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();

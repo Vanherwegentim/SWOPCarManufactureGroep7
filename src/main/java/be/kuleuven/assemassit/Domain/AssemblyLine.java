@@ -184,7 +184,7 @@ public class AssemblyLine {
     if (!(duration >= 0 && duration < 180))
       throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask(duration);
+    workPost.completeAssemblyTask(duration, LocalDateTime.now());
   }
 
   /**
@@ -347,7 +347,7 @@ public class AssemblyLine {
     //Remove the car from the third post
     if (accessoriesPost.getCarAssemblyProcess() != null) {
       for (AssemblyTask assemblyTask : accessoriesPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
+//        assemblyTask.setCompletionTime(minutes, LocalDateTime.now());
       }
 
       CarAssemblyProcess carAssemblyProcess = accessoriesPost.getCarAssemblyProcess();
@@ -358,7 +358,7 @@ public class AssemblyLine {
     //Give the third post the car of the second post
     if (drivetrainPost.getCarAssemblyProcess() != null) {
       for (AssemblyTask assemblyTask : drivetrainPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
+//        assemblyTask.setCompletionTime(minutes, LocalDateTime.now());
       }
       accessoriesPost.addProcessToWorkPost(drivetrainPost.getCarAssemblyProcess());
       drivetrainPost.removeCarAssemblyProcess();
@@ -366,7 +366,7 @@ public class AssemblyLine {
     //Give the second post the car of the first post
     if (carBodyPost.getCarAssemblyProcess() != null) {
       for (AssemblyTask assemblyTask : carBodyPost.getWorkPostAssemblyTasks()) {
-        assemblyTask.setCompletionTime(minutes);
+//        assemblyTask.setCompletionTime(minutes, LocalDateTime.now());
       }
 
       drivetrainPost.addProcessToWorkPost(carBodyPost.getCarAssemblyProcess());

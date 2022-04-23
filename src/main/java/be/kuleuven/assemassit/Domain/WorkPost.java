@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -185,12 +186,12 @@ public class WorkPost {
    * @mutates | this
    * @post | getActiveAssemblyTask() == null
    */
-  public void completeAssemblyTask(int duration) {
+  public void completeAssemblyTask(int duration, LocalDateTime completionTime) {
     if (activeAssemblyTask == null)
       throw new IllegalStateException("There is no active assembly task in this work post");
     activeAssemblyTask.complete();
     activeAssemblyTask.setDuration(duration);
-    activeAssemblyTask.setCompletionTime(duration);
+    activeAssemblyTask.setCompletionTime(completionTime);
     activeAssemblyTask = null;
   }
 
