@@ -8,6 +8,7 @@ import java.util.Queue;
 
 public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm {
 
+  // The constructor is package protected
   DefaultSchedulingAlgorithm() {
   }
 

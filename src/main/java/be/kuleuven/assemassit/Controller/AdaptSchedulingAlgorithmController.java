@@ -62,7 +62,8 @@ public class AdaptSchedulingAlgorithmController {
         batchForQueue.add(carAssemblyProcess);
       }
     }
-    return batchForQueue;
+    //return batchForQueue;
+    return new ArrayList<>();
   }
 
 
