@@ -138,6 +138,6 @@ public class CarManufactoringCompany implements Observer {
 
   @Override
   public void update() {
-    // TODO: write the overtime to the database
+    // TODO: this can probably be removed
   }
 }

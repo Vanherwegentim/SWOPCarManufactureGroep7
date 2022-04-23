@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
+import be.kuleuven.assemassit.Domain.Repositories.OverTimeRepository;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -60,16 +61,16 @@ public class AssemblyLine implements Subject {
   private final List<CarAssemblyProcess> finishedCars;
   private LocalTime startTime;
   private LocalTime endTime;
+  private int overTime;
 
   /**
    * @representationObject
    */
   private SchedulingAlgorithm schedulingAlgorithm;
-  private int previousOvertimeInMinutes;
+
+  private OverTimeRepository overTimeRepository;
 
   private List<Observer> observers;
-
-  private int overtime;
 
   /**
    * @post | carBodyPost != null
@@ -77,18 +78,33 @@ public class AssemblyLine implements Subject {
    * @post | accessoriesPost != null
    * @post | carAssemblyProcessesQueue != null
    * @post | finishedCars != null
+   * @post | overTimeRepository != null
+   * @post | overTime >= 0
    * @mutates | this
    */
-  public AssemblyLine() {
+  public AssemblyLine(OverTimeRepository overTimeRepository) {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
-    this.previousOvertimeInMinutes = 0;
     this.schedulingAlgorithm = new FIFOScheduling();
     this.observers = new ArrayList<>();
-    this.overtime = 0;
+    this.overTimeRepository = overTimeRepository;
+    this.overTime = overTimeRepository.getOverTime();
+  }
+
+  /**
+   * @post | carBodyPost != null
+   * @post | driveTrainPost != null
+   * @post | accessoriesPost != null
+   * @post | carAssemblyProcessesQueue != null
+   * @post | finishedCars != null
+   * @post | overTimeRepository != null
+   * @mutates | this
+   */
+  public AssemblyLine() {
+    this(new OverTimeRepository());
   }
 
   /**
@@ -168,13 +184,13 @@ public class AssemblyLine implements Subject {
     return this.accessoriesPost;
   }
 
-  public int getOvertime() {
-    return this.overtime;
+  public int getOverTime() {
+    return this.overTime;
   }
 
-  private void setOvertime(int overtime) {
-    this.overtime = overtime;
-    notifyObservers();
+  private void setOverTime(int overTime) {
+    this.overTime = overTime;
+    notifyObservers(); // TODO: maybe the UI? this is an event that does not always occur
   }
 
   public List<CarAssemblyProcess> getFinishedCars() {
@@ -349,6 +365,10 @@ public class AssemblyLine implements Subject {
     return true;
   }
 
+  private boolean canWorkDayStart() {
+    return (LocalTime.now().isAfter(this.startTime.plusMinutes(this.overTime)));
+  }
+
   /**
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
@@ -360,13 +380,16 @@ public class AssemblyLine implements Subject {
    */
   public void move(int minutes) {
 
+    if (!canWorkDayStart())
+      throw new IllegalArgumentException("The work day can not be started yet because of previous overtime");
+
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
     int overtime = schedulingAlgorithm.moveAssemblyLine
       (
         minutes,
-        previousOvertimeInMinutes,
+        this.overTime,
         endTime,
         carAssemblyProcessesQueue,
         finishedCars,
@@ -375,7 +398,7 @@ public class AssemblyLine implements Subject {
 
     if (overtime > 0) {
       // overtime happened so we have to inform the assembly line
-      setOvertime(overtime);
+      setOverTime(overtime);
     }
   }
 
