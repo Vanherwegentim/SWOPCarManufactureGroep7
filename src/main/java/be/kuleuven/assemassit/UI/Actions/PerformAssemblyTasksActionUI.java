@@ -1,10 +1,7 @@
 package be.kuleuven.assemassit.UI.Actions;
 
-import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
-import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
 import be.kuleuven.assemassit.UI.UI;
 
 import java.util.List;
@@ -19,47 +16,6 @@ public class PerformAssemblyTasksActionUI implements UI {
   public PerformAssemblyTasksActionUI(PerformAssemblyTasksController performAssemblyTasksController) {
     this.performAssemblyTasksController = performAssemblyTasksController;
     this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController);
-  }
-
-  public void run() {
-
-    Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
-    Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
-
-    if (chosenWorkPostIdOptional.isEmpty()) {
-      this.carMechanicActionsOverviewUI.run();
-      return;
-    }
-    int chosenWorkPostId = chosenWorkPostIdOptional.get();
-
-    Map<Integer, String> allAssemblyTasks = performAssemblyTasksController.givePendingAssemblyTasks(chosenWorkPostId);
-
-    if (allAssemblyTasks.isEmpty()) {
-      System.out.println("There are currently no pending tasks for this work post");
-      run();
-      return;
-    }
-
-    Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
-
-    if (chosenAssemblyTaskIdOptional.isEmpty()) {
-      run();
-      return;
-    }
-    int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
-
-    performAssemblyTasksController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
-
-    List<String> actions = performAssemblyTasksController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
-
-    System.out.println();
-    System.out.println("Execute the following actions:");
-    displayActions(actions);
-
-    int duration = displayInputMinutes();
-    performAssemblyTasksController.completeAssemblyTask(chosenWorkPostId, duration);
-
-    this.carMechanicActionsOverviewUI.run();
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {
@@ -118,5 +74,45 @@ public class PerformAssemblyTasksActionUI implements UI {
       minutes = input.nextInt();
     } while (!(minutes >= 0 && minutes < 180));
     return minutes;
+  }
+
+  public void run() {
+    while (true) {
+
+      Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
+      Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
+
+      if (chosenWorkPostIdOptional.isEmpty()) continue; // TODO: show feedback
+
+      int chosenWorkPostId = chosenWorkPostIdOptional.get();
+
+      Map<Integer, String> allAssemblyTasks = performAssemblyTasksController.givePendingAssemblyTasks(chosenWorkPostId);
+
+      if (allAssemblyTasks.isEmpty()) {
+        System.out.println("There are currently no pending tasks for this work post");
+        continue;
+      }
+
+      Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
+
+      if (chosenAssemblyTaskIdOptional.isEmpty()) continue; // TODO: show feedback
+
+      int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
+
+      performAssemblyTasksController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
+
+      List<String> actions = performAssemblyTasksController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
+
+      System.out.println();
+      System.out.println("Execute the following actions:");
+      displayActions(actions);
+
+      int duration = displayInputMinutes();
+      performAssemblyTasksController.completeAssemblyTask(chosenWorkPostId, duration);
+
+      this.carMechanicActionsOverviewUI.run();
+
+      break; // if we reach this point, the use case is done, java call stack will now return to the previous UI
+    }
   }
 }
