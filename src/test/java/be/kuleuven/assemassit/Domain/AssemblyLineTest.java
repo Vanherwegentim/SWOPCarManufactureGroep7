@@ -68,7 +68,7 @@ public class AssemblyLineTest {
   @Test
   public void givePendingAssemblyTasksFromWorkPostTest() {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-    assemblyLine.move(2);
+    assemblyLine.move();
 
     List<AssemblyTask> actual = assemblyLine.givePendingAssemblyTasksFromWorkPost(0);
     assertArrayEquals(new String[]{"Assembly car body", "Paint car"}, actual.stream().map(AssemblyTask::getName).toArray());

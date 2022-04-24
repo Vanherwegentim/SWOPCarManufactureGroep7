@@ -15,7 +15,6 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
 
   @Override
   public int moveAssemblyLine(
-    int minutes,
     int previousOvertimeInMinutes,
     LocalTime endTime,
     Queue<CarAssemblyProcess> carAssemblyProcessesQueue,
@@ -25,8 +24,6 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
 
     int overtime = -1; // return -1 if the end of the day is not reached yet
 
-    if (minutes < 0)
-      throw new IllegalArgumentException("Minutes can not be below 0");
 
     Collections.reverse(workPostsInOrder);
     EnhancedIterator<WorkPost> iterator = new MyEnhancedIterator<>(workPostsInOrder);

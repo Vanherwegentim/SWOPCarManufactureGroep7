@@ -130,7 +130,7 @@ public class AssemblyLineController {
       }
       return blockingWorkPosts;
     } else {
-      assemblyLine.move(minutes);
+      assemblyLine.move();
       return new ArrayList<>();
     }
   }

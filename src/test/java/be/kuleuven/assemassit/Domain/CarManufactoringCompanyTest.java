@@ -7,16 +7,16 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class CarManufactoringCompanyTest {
   private List<CarModel> carModels;
   private AssemblyLine assemblyLine;
-  private CarModelRepository carModelRepository;
   private LocalTime openingTime;
   private LocalTime closingTime;
   private CarManufactoringCompany carManufactoringCompany;
@@ -25,7 +25,7 @@ public class CarManufactoringCompanyTest {
 
   @BeforeEach
   public void beforeEach() {
-    this.carModelRepository = new CarModelRepository();
+    CarModelRepository carModelRepository = new CarModelRepository();
     this.carModels = carModelRepository.getCarModels();
     this.assemblyLine = new AssemblyLine();
     this.openingTime = LocalTime.of(LocalTime.of(6, 0).getHour(), LocalTime.of(6, 0).getMinute());
@@ -48,8 +48,10 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
-    // TODO: this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
-    assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
+    // TODO: DONE this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
+//    assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
+    assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+
   }
 
   @Test
