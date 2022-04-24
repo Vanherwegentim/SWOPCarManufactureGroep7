@@ -2,7 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+import be.kuleuven.assemassit.Domain.GarageHolder;
 
 public abstract class ControllerFactoryState {
   public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
@@ -21,7 +21,7 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
-  public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
+  public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     throw new IllegalStateException();
   }
 

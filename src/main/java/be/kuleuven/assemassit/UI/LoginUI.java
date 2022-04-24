@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class LoginUI implements UI {
   private ControllerFactory controllerFactory;
   private OrderNewCarController orderNewCarController;
+  private LoginController loginController;
   private PerformAssemblyTasksController performAssemblyTasksController;
   private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
   private CheckProductionStatisticsController checkProductionStatisticsController;
@@ -23,6 +24,7 @@ public class LoginUI implements UI {
 
   public LoginUI() {
     this.controllerFactory = new ControllerFactory();
+    this.loginController = controllerFactory.createLoginController();
     this.orderNewCarController = controllerFactory.createOrderNewCarController();
     this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
     this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
@@ -54,6 +56,7 @@ public class LoginUI implements UI {
 
   @Override
   public void run() {
+    loginController.logOffGarageHolder();
     int choice;
 
     do {
@@ -68,12 +71,12 @@ public class LoginUI implements UI {
 
       switch (choice) {
         case 1 -> {
-          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(orderNewCarController.giveGarageHolders());
+          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(loginController.giveGarageHolders());
           if (selectedGarageHolderIdOptional.isEmpty()) {
             //TODO redirect terug naar deze loginUI methode
             return;
           }
-          orderNewCarController.logInGarageHolder(selectedGarageHolderIdOptional.get());
+          loginController.logInGarageHolder(selectedGarageHolderIdOptional.get());
           this.garageHolderActionsOverviewUI.run();
         }
         case 2 -> this.managerActionsOverviewUI.run();

@@ -1,5 +1,5 @@
 package be.kuleuven.assemassit.Domain.Enums;
 
 public enum Gearbox implements CarOption {
-  MANUAL, AUTOMATIC
+  SIX_SPEED_MANUAL, FIVE_SPEED_MANUAL, FIVE_SPEED_AUTOMATIC
 }

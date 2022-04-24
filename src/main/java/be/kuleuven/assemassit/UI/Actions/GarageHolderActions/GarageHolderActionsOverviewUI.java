@@ -1,7 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions.GarageHolderActions;
 
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.OrderNewCarActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.LoginUI;
@@ -37,7 +36,7 @@ public class GarageHolderActionsOverviewUI implements UI {
       switch (action) {
         case 1 -> this.orderNewCarActionUI.run();
         case -1 -> {
-          orderNewCarController.logOffGarageHolder();
+          //orderNewCarController.logOffGarageHolder();
           this.loginUI.run();
         }
       }

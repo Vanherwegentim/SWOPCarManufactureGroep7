@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
+import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalTime;
@@ -9,6 +10,7 @@ import java.time.LocalTime;
 public class ControllerFactory {
   private final AssemblyLine assemblyLine;
   private final CarManufactoringCompany carManufactoringCompany;
+  private GarageHolder loggedInGarageHolder;
 
   /**
    * @peerObject
@@ -21,24 +23,35 @@ public class ControllerFactory {
     this.controllerFactoryState = new ControllerFactoryLoginState(this);
   }
 
+  public LoginController createLoginController() {
+    return new LoginController(new GarageHolderRepository(), this);
+  }
+
+  protected void setLoggedInGarageHolder(GarageHolder loggedInGarageHolder) {
+    this.loggedInGarageHolder = loggedInGarageHolder;
+  }
+
   /**
    * Generate an instance of the order controller
    *
    * @return a new instance of the order controller
    */
   public OrderNewCarController createOrderNewCarController() {
-    return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, new GarageHolderRepository());
+    return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
+  }
+
+  public CheckOrderDetailsController createCheckOrderDetailsController() {
+    return new CheckOrderDetailsController(loggedInGarageHolder);
   }
 
   /**
    * Generate an instance of the order controller
    *
    * @param carManufactoringCompany can be used for mocking
-   * @param garageHolderRepository  can be used for mocking
    * @return a new instance of the order controller
    */
-  public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
-    return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, garageHolderRepository);
+  public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
+    return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
   /**
@@ -71,6 +84,5 @@ public class ControllerFactory {
   public CheckProductionStatisticsController createCheckProductionStatisticsController() {
     return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
-
 
 }

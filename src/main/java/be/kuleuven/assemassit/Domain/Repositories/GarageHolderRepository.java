@@ -24,7 +24,7 @@ public class GarageHolderRepository {
 
       while (input.hasNext()) {
         int id = input.nextInt();
-        String name = input.nextLine();
+        String name = input.nextLine().substring(1);
         garageHolders.add(new GarageHolder(id, name));
       }
 
