@@ -77,11 +77,11 @@ public class AssemblyLineControllerTest {
       """;
 
     Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
-    String actual = "";
+    StringBuilder actual = new StringBuilder();
     for (int key : allWorkPosts.keySet()) {
-      actual += key + ": " + allWorkPosts.get(key) + "\n";
+      actual.append(key).append(": ").append(allWorkPosts.get(key)).append("\n");
     }
-    assertEquals(expected, actual);
+    assertEquals(expected, actual.toString());
   }
 
   @Test
@@ -124,29 +124,27 @@ public class AssemblyLineControllerTest {
 
     when(mockedAssemblyLine.giveTasksOverview()).thenReturn(mockedTasksOverview);
 
-    String expected = """
-      Car Body Post:\r
-       mockedCarBodyAssemblyTaskName (active)\r
-       mockedEngineAssemblyTaskName (pending)\r
-       mockedDrivetrainAssemblyTaskName\r
-       mockedAccessoriesAssemblyTaskName\r
-      Drivetrain Post:\r
-       mockedDrivetrainAssemblyTaskName (active)\r
-       mockedAccessoriesAssemblyTaskName\r
-      Accessories Post:\r
-       mockedAccessoriesAssemblyTaskName (active)\r
-      """;
+    String expected = "Car Body Post:\r\n" +
+      " mockedCarBodyAssemblyTaskName (active)\r\n" +
+      " mockedEngineAssemblyTaskName (pending)\r\n" +
+      " mockedDrivetrainAssemblyTaskName\r\n" +
+      " mockedAccessoriesAssemblyTaskName\r\n" +
+      "Drivetrain Post:\r\n" +
+      " mockedDrivetrainAssemblyTaskName (active)\r\n" +
+      " mockedAccessoriesAssemblyTaskName\r\n" +
+      "Accessories Post:\r\n" +
+      " mockedAccessoriesAssemblyTaskName (active)\r\n";
 
     Map<String, List<String>> assemblyLineStatusAndOverview = assemblyLineController.giveAssemblyLineStatusOverview();
-    String actual = "";
+    StringBuilder actual = new StringBuilder();
     for (String key : assemblyLineStatusAndOverview.keySet()) {
-      actual += String.format("%s:%n", key);
+      actual.append(String.format("%s:%n", key));
       for (String task : assemblyLineStatusAndOverview.get(key)) {
-        actual += String.format(" %s%n", task);
+        actual.append(String.format(" %s%n", task));
       }
     }
 
-    assertEquals(expected, actual);
+    assertEquals(expected, actual.toString());
   }
 
   @Test
@@ -169,11 +167,11 @@ public class AssemblyLineControllerTest {
 
     HashMap<String, List<String>> futureAssemblyLineStatusOverview = assemblyLineController.giveFutureAssemblyLineStatusOverview();
 
-    String actual = "";
+    StringBuilder actual = new StringBuilder();
     for (String key : futureAssemblyLineStatusOverview.keySet()) {
-      actual += String.format("%s:%n", key);
+      actual.append(String.format("%s:%n", key));
       for (String task : futureAssemblyLineStatusOverview.get(key)) {
-        actual += String.format(" %s%n", task);
+        actual.append(String.format(" %s%n", task));
       }
     }
   }
