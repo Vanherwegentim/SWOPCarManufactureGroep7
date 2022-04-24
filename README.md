@@ -6,4 +6,3 @@ mvn package
 cd ./target
 java -jar system.jar
 ```
-
