@@ -61,6 +61,14 @@ public class ControllerFactory {
   }
 
   public PerformAssemblyTasksController createPerformAssemblyTasksController() {
-    return new PerformAssemblyTasksController(assemblyLine);
+    return new PerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
+  }
+
+  public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
+    return new CheckAssemblyLineStatusController(assemblyLine);
+  }
+
+  public CheckProductionStatisticsController createCheckProductionStatisticsController() {
+    return new CheckProductionStatisticsController(assemblyLine);
   }
 }

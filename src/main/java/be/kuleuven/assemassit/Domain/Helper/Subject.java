@@ -5,5 +5,5 @@ public interface Subject {
 
   void detach(Observer observer);
 
-  void notifyObservers();
+  void notifyObservers(Object value);
 }
