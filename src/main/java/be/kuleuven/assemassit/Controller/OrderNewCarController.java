@@ -104,7 +104,7 @@ public class OrderNewCarController {
     carModelOptions.put("Seats", carModel.getSeatOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
     carModelOptions.put("Airco", carModel.getAircoOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
     carModelOptions.put("Wheels", carModel.getWheelOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-
+    carModelOptions.put("Spoiler", carModel.getSpoilerOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
     return carModelOptions;
   }
 
