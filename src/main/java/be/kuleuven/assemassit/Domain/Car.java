@@ -64,12 +64,6 @@ public class Car {
       throw new IllegalArgumentException("Assembly tasks cannot be null");
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels, spoiler))
       throw new IllegalArgumentException("Invalid car configuration");
-
-
-    for (CarOptionRestriction restriction : getCarOptionsRestrictions()) {
-      if (restriction.getRestrictedCarOptions().stream().allMatch(co -> this.giveListOfCarOptions().contains(co)))
-        throw new IllegalArgumentException("Invalid car configuration");
-    }
     
     this.carModel = carModel;
     this.body = body;
@@ -80,6 +74,18 @@ public class Car {
     this.airco = airco;
     this.wheels = wheels;
     this.spoiler = spoiler;
+
+    for (CarOptionRestriction restriction : getCarOptionsRestrictions()) {
+      List<CarOption> test = restriction.getRestrictedCarOptions();
+      List<CarOption> test2 = this.giveListOfCarOptions();
+
+      System.out.println(test);
+      System.out.println(test2);
+
+      if (restriction.getRestrictedCarOptions().stream().allMatch(co -> this.giveListOfCarOptions().contains(co)))
+        throw new IllegalArgumentException("Invalid car configuration");
+    }
+
     this.id = Car.idRunner++;
   }
 
