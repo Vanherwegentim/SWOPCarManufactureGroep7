@@ -46,16 +46,16 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
           //assemblyTask.setCompletionTime(minutes);
         }
 
-        CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
-        carAssemblyProcess.complete();
-
-        int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
-        if (overtimeInMinutes >= 0)
-          overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
-
         if (!iterator.hasPrevious()) {
+          CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
+          carAssemblyProcess.complete();
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
+
+          int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
+          if (overtimeInMinutes >= 0)
+            overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
+
         } else {
           WorkPost nextWorkPost = iterator.peek();
           nextWorkPost.addProcessToWorkPost(workPost.getCarAssemblyProcess());

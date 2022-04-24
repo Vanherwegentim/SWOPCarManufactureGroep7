@@ -406,7 +406,6 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes   the amount of minutes spent during the current phase
    * @param startTime the start time of the company
    * @param endTime   the end time of the company
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
@@ -528,14 +527,30 @@ public class AssemblyLine implements Subject {
    */
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
     List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
-    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
-    if (!finishedCars.isEmpty()) {
-      carAssemblyProcessList.addAll(finishedCars);
+    if (!(drivetrainPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
+    }
+    if (!(carBodyPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
+    }
+    if (!(accessoriesPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
     }
     return carAssemblyProcessList;
   }
+
+  /**
+   * @return a queue of cas assembly processes
+   * @creates | result
+   * @inspects | this
+   */
+  public Queue<CarAssemblyProcess> getCarAssemblyProcessesQueueAsQueue() {
+    return carAssemblyProcessesQueue;
+  }
+
 
   public Map<LocalDate, Integer> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
