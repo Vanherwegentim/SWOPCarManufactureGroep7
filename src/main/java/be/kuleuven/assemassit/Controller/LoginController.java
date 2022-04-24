@@ -31,7 +31,7 @@ public class LoginController {
 
     try {
       this.loggedInGarageHolder = garageHolderRepository.getGarageHolders().get(garageHolderId);
-      controllerFactory.setLoggedInGarageHolder(loggedInGarageHolder);
+      controllerFactory.loginGarageHolder(loggedInGarageHolder);
     } catch (ArrayIndexOutOfBoundsException e) {
       throw new IllegalArgumentException("There is no garage holder with the given id");
     }
@@ -42,7 +42,7 @@ public class LoginController {
    */
   public void logOffGarageHolder() {
     this.loggedInGarageHolder = null;
-    controllerFactory.setLoggedInGarageHolder(null);
+    controllerFactory.logoutCarMechanic();
   }
 
   /**

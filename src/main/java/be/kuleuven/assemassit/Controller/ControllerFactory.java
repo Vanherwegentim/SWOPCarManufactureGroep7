@@ -20,15 +20,40 @@ public class ControllerFactory {
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
     this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-    this.controllerFactoryState = new ControllerFactoryLoginState(this);
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   public LoginController createLoginController() {
     return new LoginController(new GarageHolderRepository(), this);
   }
 
-  protected void setLoggedInGarageHolder(GarageHolder loggedInGarageHolder) {
+  public void loginGarageHolder(GarageHolder loggedInGarageHolder) {
+    if (loggedInGarageHolder == null)
+      throw new IllegalArgumentException("The garage holder can not be null");
+    
     this.loggedInGarageHolder = loggedInGarageHolder;
+    this.controllerFactoryState = new ControllerFactoryGarageHolderState();
+  }
+
+  public void logoutGarageHolder() {
+    this.loggedInGarageHolder = null;
+    this.controllerFactoryState = new ControllerFactoryLoginState();
+  }
+
+  public void loginManager() {
+    this.controllerFactoryState = new ControllerFactoryManagerState();
+  }
+
+  public void logoutManager() {
+    this.controllerFactoryState = new ControllerFactoryManagerState();
+  }
+
+  public void loginCarMechanic() {
+    this.controllerFactoryState = new ControllerFactoryCarMechanicState();
+  }
+
+  protected void logoutCarMechanic() {
+    this.controllerFactoryState = new ControllerFactoryCarMechanicState();
   }
 
   /**

@@ -1,14 +1,13 @@
 package be.kuleuven.assemassit.Controller;
 
+import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+
 public class ControllerFactoryLoginState extends ControllerFactoryState {
 
-  private ControllerFactory controllerFactory;
-
-  protected ControllerFactoryLoginState(ControllerFactory controllerFactory) {
-    if (controllerFactory == null)
-      throw new IllegalArgumentException();
-    this.controllerFactory = controllerFactory;
+  protected ControllerFactoryLoginState() {
   }
 
-  // TODO: create the logincontroller here
+  public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
+    return new LoginController(garageHolderRepository, controllerFactory);
+  }
 }

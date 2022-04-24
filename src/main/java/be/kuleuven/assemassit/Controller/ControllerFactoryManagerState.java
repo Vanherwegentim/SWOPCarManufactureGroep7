@@ -2,7 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 
-public class ControllerFactoryManagerState {
+public class ControllerFactoryManagerState extends ControllerFactoryState {
 
   protected ControllerFactoryManagerState() {
   }
