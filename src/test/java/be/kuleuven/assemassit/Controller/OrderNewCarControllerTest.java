@@ -124,6 +124,10 @@ public class OrderNewCarControllerTest {
       MANUAL
       AUTOMATIC
       NO_AIRCO
+      Spoiler
+      LOW
+      HIGH
+      NO_SPOILER
       Wheels
       COMFORT
       SPORT

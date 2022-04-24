@@ -50,8 +50,23 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
-    // TODO: this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
-    assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
+    LocalDateTime localDateTimeNow = LocalDateTime.now();
+    LocalDateTime expectedDate = LocalDateTime.now();
+    LocalDateTime actual = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
+
+    if (localDateTimeNow.getHour() < 6) {
+      expectedDate = expectedDate.withHour(8).withMinute(0);
+    }
+    if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
+      expectedDate = expectedDate.plusHours(3);
+    }
+    if (localDateTimeNow.getHour() > 19) {
+      expectedDate = expectedDate.plusDays(1).withHour(8).withMinute(0);
+    }
+
+    assertEquals(expectedDate.getMinute(), actual.getMinute());
+    assertEquals(expectedDate.getHour(), actual.getHour());
+    assertEquals(expectedDate.toLocalDate(), actual.toLocalDate());
   }
 
   @Test
