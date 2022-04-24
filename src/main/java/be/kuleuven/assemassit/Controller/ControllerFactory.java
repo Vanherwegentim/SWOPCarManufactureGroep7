@@ -34,6 +34,10 @@ public class ControllerFactory {
     return new OrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
+  public CheckOrderDetailsController createCheckOrderDetailsController() {
+    return new CheckOrderDetailsController(loggedInGarageHolder);
+  }
+
   /**
    * Generate an instance of the order controller
    *

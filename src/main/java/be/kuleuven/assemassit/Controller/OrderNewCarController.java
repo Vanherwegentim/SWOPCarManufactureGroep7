@@ -21,6 +21,8 @@ public class OrderNewCarController {
   public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     if (carManufactoringCompany == null)
       throw new IllegalArgumentException("CarManufactoring company can not be null");
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException("Cannot order a new car without a logged in garage holder");
 
 
     this.carManufactoringCompany = carManufactoringCompany;
@@ -102,7 +104,7 @@ public class OrderNewCarController {
     carModelOptions.put("Seats", carModel.getSeatOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
     carModelOptions.put("Airco", carModel.getAircoOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
     carModelOptions.put("Wheels", carModel.getWheelOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
-
+    carModelOptions.put("Spoiler", carModel.getSpoilerOptions().stream().map(v -> v.name()).collect(Collectors.toList()));
     return carModelOptions;
   }
 
