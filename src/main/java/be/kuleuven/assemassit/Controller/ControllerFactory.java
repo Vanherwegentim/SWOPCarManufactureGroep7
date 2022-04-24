@@ -10,9 +10,15 @@ public class ControllerFactory {
   private final AssemblyLine assemblyLine;
   private final CarManufactoringCompany carManufactoringCompany;
 
+  /**
+   * @peerObject
+   */
+  private ControllerFactoryState controllerFactoryState;
+
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
     this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
+    this.controllerFactoryState = new ControllerFactoryLoginState(this);
   }
 
   /**
@@ -21,7 +27,7 @@ public class ControllerFactory {
    * @return a new instance of the order controller
    */
   public OrderNewCarController createOrderNewCarController() {
-    return new OrderNewCarController(carManufactoringCompany, new GarageHolderRepository());
+    return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, new GarageHolderRepository());
   }
 
   /**
@@ -32,7 +38,7 @@ public class ControllerFactory {
    * @return a new instance of the order controller
    */
   public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
-    return new OrderNewCarController(carManufactoringCompany, garageHolderRepository);
+    return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, garageHolderRepository);
   }
 
   /**
@@ -41,7 +47,7 @@ public class ControllerFactory {
    * @return a new instance of the assembly controller
    */
   public AssemblyLineController createAssemblyLineController() {
-    return new AssemblyLineController(assemblyLine);
+    return controllerFactoryState.createAssemblyLineController(assemblyLine);
   }
 
   /**
@@ -51,18 +57,20 @@ public class ControllerFactory {
    * @return a new instance of the assembly controller
    */
   public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-    return new AssemblyLineController(assemblyLine);
+    return controllerFactoryState.createAssemblyLineController(assemblyLine);
   }
 
   public PerformAssemblyTasksController createPerformAssemblyTasksController() {
-    return new PerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
+    return controllerFactoryState.createPerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
   }
 
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
-    return new CheckAssemblyLineStatusController(assemblyLine);
+    return controllerFactoryState.createCheckAssemblyLineStatusController(assemblyLine);
   }
 
   public CheckProductionStatisticsController createCheckProductionStatisticsController() {
-    return new CheckProductionStatisticsController(assemblyLine);
+    return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
+
+
 }
