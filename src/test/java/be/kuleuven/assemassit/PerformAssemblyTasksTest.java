@@ -45,7 +45,7 @@ public class PerformAssemblyTasksTest {
     mockCarModels();
 
     carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-    orderNewCarController = controllerFactory.createOrderNewCarController(carManufactoringCompany, mockedGarageHolderRepository);
+    orderNewCarController = controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder);
     assemblyLineController = controllerFactory.createAssemblyLineController(assemblyLine);
 
 

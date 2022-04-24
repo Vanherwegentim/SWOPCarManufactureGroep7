@@ -38,41 +38,37 @@ public class AssemblyLine implements Subject {
    * @invar | schedulingAlgorithm != null
    * @representationObject
    */
-  private WorkPost carBodyPost;
+  private final WorkPost carBodyPost;
 
   /**
    * @representationObject
    */
-  private WorkPost drivetrainPost;
+  private final WorkPost drivetrainPost;
 
   /**
    * @representationObject
    */
-  private WorkPost accessoriesPost;
-
-  /**
-   * @representationObject
-   * @representationObjects
-   */
-  private Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
+  private final WorkPost accessoriesPost;
 
   /**
    * @representationObject
    * @representationObjects
    */
-  private List<CarAssemblyProcess> finishedCars;
+  private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
+
+  /**
+   * @representationObject
+   * @representationObjects
+   */
+  private final List<CarAssemblyProcess> finishedCars;
+  private final List<Observer> observers;
   private LocalTime startTime;
   private LocalTime endTime;
-
-
   /**
    * @representationObject
    */
   private SchedulingAlgorithm schedulingAlgorithm;
-
   private OvertimeRepository overTimeRepository;
-
-  private List<Observer> observers;
 
   /**
    * @post | carBodyPost != null
@@ -382,19 +378,17 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes the amount of minutes spent during the current phase
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(int minutes) {
+  public void move() {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
     int newOvertime = schedulingAlgorithm.moveAssemblyLine
       (
-        minutes,
         0, // TODO: we just have to remove this "move" method
         endTime,
         carAssemblyProcessesQueue,
@@ -419,14 +413,13 @@ public class AssemblyLine implements Subject {
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(int minutes, LocalTime startTime, LocalTime endTime, int overtime) {
+  public void move(LocalTime startTime, LocalTime endTime, int overtime) {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
     int newOvertime = schedulingAlgorithm.moveAssemblyLine
       (
-        minutes,
         overtime,
         endTime,
         carAssemblyProcessesQueue,
@@ -497,13 +490,16 @@ public class AssemblyLine implements Subject {
    * @param workPostId     the id of the work post
    * @param assemblyTaskId the id of the assembly task
    * @return the corresponding assembly task from the work post
-   * @throws IllegalArgumentException | workPostId < 0 || assemblyTaskId < 0
+   * @throws IllegalArgumentException workPostId is smaller than 0 | workPostId < 0
+   * @throws IllegalArgumentException assemblyTaskId is smaller than 0 | assemblyTaskId < 0
    * @post | result != null
    * @inspects | this
    */
   public AssemblyTask giveCarAssemblyTask(int workPostId, int assemblyTaskId) {
-    if (workPostId < 0 || assemblyTaskId < 0)
-      throw new IllegalArgumentException("The IDs must be greater than or equal to zero");
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
 
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.findAssemblyTask(assemblyTaskId);
