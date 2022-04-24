@@ -4,7 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
-import be.kuleuven.assemassit.Domain.Repositories.OverTimeRepository;
+import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -70,7 +70,7 @@ public class AssemblyLine implements Subject {
    */
   private SchedulingAlgorithm schedulingAlgorithm;
 
-  private OverTimeRepository overTimeRepository;
+  private OvertimeRepository overTimeRepository;
 
   private List<Observer> observers;
 

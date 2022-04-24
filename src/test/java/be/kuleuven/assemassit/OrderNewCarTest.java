@@ -36,6 +36,7 @@ public class OrderNewCarTest {
     mockedGarageHolderRepository = mock(GarageHolderRepository.class);
     mockedCarModelRepository = mock(CarModelRepository.class);
 
+
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(new GarageHolder(0, "WolksVagen Garage Lokeren BVBA NV")));
     when(mockedCarModelRepository.getCarModels()).thenReturn(Arrays.asList(carModel));
 

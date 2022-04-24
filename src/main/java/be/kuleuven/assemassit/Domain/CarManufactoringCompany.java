@@ -2,7 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Domain.Repositories.OverTimeRepository;
+import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,7 +42,7 @@ public class CarManufactoringCompany implements Observer {
 
   private int overtime;
 
-  private OverTimeRepository overTimeRepository;
+  private OvertimeRepository overTimeRepository;
 
   /**
    * @param openingTime  the opening time of the factory
@@ -55,7 +55,21 @@ public class CarManufactoringCompany implements Observer {
    * @post | this.assemblyLine.equals(assemblyLine)
    */
   public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    this(new CarModelRepository(), new OverTimeRepository(), openingTime, closingTime, assemblyLine);
+    this(new CarModelRepository(), new OvertimeRepository(), openingTime, closingTime, assemblyLine);
+  }
+
+  /**
+   * @param openingTime  the opening time of the factory
+   * @param closingTime  the closing time of the factory
+   * @param assemblyLine the assembly line that the factory will be using
+   * @throws IllegalArgumentException some parameters are null | (openingTime == null || closingTime == null || assemblyLine == null)
+   * @mutates | this
+   * @post | openingTime.getHour() == this.openingTime.getHour()
+   * @post | closingTime.getHour() == this.closingTime.getHour()
+   * @post | this.assemblyLine.equals(assemblyLine)
+   */
+  public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
+    this(carModelRepository, new OvertimeRepository(), openingTime, closingTime, assemblyLine);
   }
 
   /**
@@ -69,7 +83,7 @@ public class CarManufactoringCompany implements Observer {
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.assemblyLine.equals(assemblyLine)
    */
-  public CarManufactoringCompany(CarModelRepository carModelRepository, OverTimeRepository overTimeRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
+  public CarManufactoringCompany(CarModelRepository carModelRepository, OvertimeRepository overTimeRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     if (openingTime == null || closingTime == null || assemblyLine == null || carModelRepository == null)
       throw new IllegalArgumentException("The parameters can not be null");
 
