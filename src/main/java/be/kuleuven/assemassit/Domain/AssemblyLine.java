@@ -38,29 +38,29 @@ public class AssemblyLine implements Subject {
    * @invar | schedulingAlgorithm != null
    * @representationObject
    */
-  private WorkPost carBodyPost;
+  private final WorkPost carBodyPost;
 
   /**
    * @representationObject
    */
-  private WorkPost drivetrainPost;
+  private final WorkPost drivetrainPost;
 
   /**
    * @representationObject
    */
-  private WorkPost accessoriesPost;
-
-  /**
-   * @representationObject
-   * @representationObjects
-   */
-  private Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
+  private final WorkPost accessoriesPost;
 
   /**
    * @representationObject
    * @representationObjects
    */
-  private List<CarAssemblyProcess> finishedCars;
+  private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
+
+  /**
+   * @representationObject
+   * @representationObjects
+   */
+  private final List<CarAssemblyProcess> finishedCars;
   private LocalTime startTime;
   private LocalTime endTime;
 
@@ -72,7 +72,7 @@ public class AssemblyLine implements Subject {
 
   private OvertimeRepository overTimeRepository;
 
-  private List<Observer> observers;
+  private final List<Observer> observers;
 
   /**
    * @post | carBodyPost != null
@@ -497,13 +497,16 @@ public class AssemblyLine implements Subject {
    * @param workPostId     the id of the work post
    * @param assemblyTaskId the id of the assembly task
    * @return the corresponding assembly task from the work post
-   * @throws IllegalArgumentException | workPostId < 0 || assemblyTaskId < 0
+   * @throws IllegalArgumentException workPostId is smaller than 0 | workPostId < 0
+   * @throws IllegalArgumentException assemblyTaskId is smaller than 0 | assemblyTaskId < 0
    * @post | result != null
    * @inspects | this
    */
   public AssemblyTask giveCarAssemblyTask(int workPostId, int assemblyTaskId) {
-    if (workPostId < 0 || assemblyTaskId < 0)
-      throw new IllegalArgumentException("The IDs must be greater than or equal to zero");
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
 
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.findAssemblyTask(assemblyTaskId);
