@@ -113,19 +113,19 @@ public class OrderNewCarTest {
 
     //step 8: The system presents an estimated completion date for the new order.
     LocalDateTime localDateTimeNow = LocalDateTime.now();
-    LocalDateTime actualDate = LocalDateTime.now();
+    LocalDateTime expectedDate = LocalDateTime.now();
 
     if (localDateTimeNow.getHour() < 6) {
-      actualDate = actualDate.withHour(9);
+      expectedDate = expectedDate.withHour(8).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
-      actualDate = actualDate.plusHours(3);
+      expectedDate = expectedDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19) {
-      actualDate = actualDate.plusDays(1).withHour(14).withMinute(0);
+      expectedDate = expectedDate.plusDays(1).withHour(8).withMinute(0);
     }
 
-    assertEquals(actualDate.format(formatter), estimatedTime.format(formatter));
+    assertEquals(expectedDate.format(formatter), estimatedTime.format(formatter));
   }
 
   @Test
@@ -133,44 +133,49 @@ public class OrderNewCarTest {
 
     //Precondition: The garage holder is successfully logged into the system
     //The garage holder inserts 2 wrong values and uses a valid id on the third try
-    //assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(-1));
-    //assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(2));
-    //orderNewCarController.logInGarageHolder(0);
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
+    assertEquals("Joe Lamb", orderNewCarController.giveLoggedInGarageHolderName());
 
     //Step 1: The garage holder has no pending or completed CarOrders yet
-    //assertArrayEquals(new String[]{}, orderNewCarController.givePendingCarOrders().toArray());
-    //assertArrayEquals(new String[]{}, orderNewCarController.giveCompletedCarOrders().toArray());
+    assertArrayEquals(new String[]{}, checkOrderDetailsController.givePendingCarOrders().toArray());
+    assertArrayEquals(new String[]{}, checkOrderDetailsController.giveCompletedCarOrders().toArray());
 
     //Step 3: The system shows a list of available car models.
     Map<Integer, String> listOfCarModels = orderNewCarController.giveListOfCarModels();
-    assertEquals(1, listOfCarModels.size());
-    assertEquals("Tolkswagen Rolo", listOfCarModels.get(0));
+    assertEquals(3, listOfCarModels.size());
+    assertEquals("Model A", listOfCarModels.get(0));
+    assertEquals("Model B", listOfCarModels.get(1));
+    assertEquals("Model C", listOfCarModels.get(2));
 
     //Step 5: The system displays an overview of all possible options, after which the user can assemble the desired car order
     String expectedPossibleOptionsOfCarModel = """
       GearBox
-      MANUAL
-      AUTOMATIC
+      SIX_SPEED_MANUAL
+      FIVE_SPEED_MANUAL
+      FIVE_SPEED_AUTOMATIC
       Airco
       MANUAL
       AUTOMATIC
+      NO_AIRCO
+      Spoiler
+      NO_SPOILER
       Wheels
+      WINTER
       COMFORT
+      SPORT
       Color
       RED
       BLUE
       BLACK
       WHITE
       Body
-      SEAD
+      SEDAN
       BREAK
       Engine
       STANDARD
       PERFORMANCE
       Seats
-      LEATHER_BLACK
       LEATHER_WHITE
+      LEATHER_BLACK
       VINYL_GREY
       """;
 
@@ -224,8 +229,8 @@ public class OrderNewCarTest {
         possibleOptionsOfCarModel.get("GearBox").get(0),
         possibleOptionsOfCarModel.get("Seats").get(0),
         possibleOptionsOfCarModel.get("Airco").get(0),
-        "SPORT",
-        possibleOptionsOfCarModel.get("Spoiler").get(0))
+        possibleOptionsOfCarModel.get("Wheels").get(0),
+        "LOW")
     );
 
     //The user picks a value for wheels which does not exist in the system
@@ -278,13 +283,13 @@ public class OrderNewCarTest {
     LocalDateTime actualDate = LocalDateTime.now();
 
     if (localDateTimeNow.getHour() < 6) {
-      actualDate = actualDate.withHour(9);
+      actualDate = actualDate.withHour(8).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
       actualDate = actualDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19) {
-      actualDate = actualDate.plusDays(1).withHour(14).withMinute(0);
+      actualDate = actualDate.plusDays(1).withHour(8).withMinute(0);
     }
 
     assertEquals(actualDate.format(formatter), estimatedTime.format(formatter));
@@ -295,8 +300,8 @@ public class OrderNewCarTest {
 
     //Step 1: The system throws an illegalStateException, indicating that it can not show orders if there is no logged-in user.
     //The user cannot proceed the use case at this point.
+    factory.createLoginController().logOffGarageHolder();
 
-    //assertThrows(IllegalStateException.class, () -> orderNewCarController.givePendingCarOrders());
-    //assertThrows(IllegalStateException.class, () -> orderNewCarController.giveCompletedCarOrders());
+    assertThrows(IllegalStateException.class, () -> factory.createOrderNewCarController());
   }
 }
