@@ -283,13 +283,13 @@ public class OrderNewCarTest {
     LocalDateTime actualDate = LocalDateTime.now();
 
     if (localDateTimeNow.getHour() < 6) {
-      actualDate = actualDate.withHour(8).withMinute(0);
+      actualDate = actualDate.withHour(9).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
       actualDate = actualDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19) {
-      actualDate = actualDate.plusDays(1).withHour(8).withMinute(0);
+      actualDate = actualDate.plusDays(1).withHour(9).withMinute(0);
     }
 
     assertEquals(actualDate.format(formatter), estimatedTime.format(formatter));

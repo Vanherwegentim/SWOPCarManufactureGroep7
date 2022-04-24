@@ -48,7 +48,10 @@ public class AdvanceAssemblyLineTest {
     mockCarModels();
 
     carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
+
+    controllerFactory.loginGarageHolder(garageHolder);
     orderNewCarController = controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder);
+    controllerFactory.loginCarMechanic();
     assemblyLineController = controllerFactory.createAssemblyLineController(assemblyLine);
 
     //orderNewCarController.logInGarageHolder(garageHolder.getId());
@@ -66,9 +69,9 @@ public class AdvanceAssemblyLineTest {
   }
 
   private void fillTheSystemWithTasks() {
-    orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "LOW");
-    orderNewCarController.placeCarOrder(0, "SEAD", "RED", "STANDARD", "AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT", "NO_SPOILER");
-    orderNewCarController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT", "NO_SPOILER");
+    orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "LOW");
+    orderNewCarController.placeCarOrder(0, "SEDAN", "RED", "STANDARD", "FIVE_SPEED_AUTOMATIC", "LEATHER_WHITE", "MANUAL", "SPORT", "NO_SPOILER");
+    orderNewCarController.placeCarOrder(0, "BREAK", "WHITE", "STANDARD", "FIVE_SPEED_MANUAL", "VINYL_GREY", "AUTOMATIC", "COMFORT", "NO_SPOILER");
   }
 
   private void moveTheAssemblyLine() {
