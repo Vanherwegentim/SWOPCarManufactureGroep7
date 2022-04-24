@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,6 +34,8 @@ public class Car {
   private Wheel wheels;
   private Spoiler spoiler;
 
+  private List<CarOptionRestriction> carOptionRestrictions;
+
 
   /**
    * @param carModel the corresponding car model that the car is based on
@@ -61,16 +64,13 @@ public class Car {
       throw new IllegalArgumentException("Assembly tasks cannot be null");
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels, spoiler))
       throw new IllegalArgumentException("Invalid car configuration");
-    if (Body.SPORT.equals(body) && Spoiler.NO_SPOILER.equals(spoiler)) {
-      throw new IllegalArgumentException("A car with a sport body must have a spoiler");
-    }
-    if (Body.SPORT.equals(body) && Engine.STANDARD.equals(engine)) {
-      throw new IllegalArgumentException("A car with a sport body must have a performance or ultra engine ");
-    }
-    if (Engine.ULTRA.equals(engine) && Airco.AUTOMATIC.equals(airco)) {
-      throw new IllegalArgumentException("A car with an ultra engine cannot have an automatic airco");
-    }
 
+
+    for (CarOptionRestriction restriction : getCarOptionsRestrictions()) {
+      if (restriction.getRestrictedCarOptions().stream().allMatch(co -> this.giveListOfCarOptions().contains(co)))
+        throw new IllegalArgumentException("Invalid car configuration");
+    }
+    
     this.carModel = carModel;
     this.body = body;
     this.color = color;
@@ -115,6 +115,10 @@ public class Car {
     return wheels;
   }
 
+  public Spoiler getSpoiler() {
+    return spoiler;
+  }
+
   public int getId() {
     return this.id;
   }
@@ -129,8 +133,21 @@ public class Car {
     carOptions.add(this.getSeats());
     carOptions.add(this.getAirco());
     carOptions.add(this.getWheels());
+    carOptions.add(this.getSpoiler());
 
     return carOptions;
+  }
+
+  private List<CarOptionRestriction> getCarOptionsRestrictions() {
+    if (carOptionRestrictions == null) {
+      carOptionRestrictions = new ArrayList<>();
+
+      carOptionRestrictions.add(new CarOptionRestriction(Arrays.asList(Body.SPORT, Spoiler.NO_SPOILER)));
+      carOptionRestrictions.add(new CarOptionRestriction(Arrays.asList(Body.SPORT, Engine.STANDARD)));
+      carOptionRestrictions.add(new CarOptionRestriction(Arrays.asList(Engine.ULTRA, Airco.AUTOMATIC)));
+    }
+
+    return carOptionRestrictions;
   }
 
   @Override
