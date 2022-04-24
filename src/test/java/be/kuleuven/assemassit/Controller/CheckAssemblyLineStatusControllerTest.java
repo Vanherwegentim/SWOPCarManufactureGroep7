@@ -137,18 +137,16 @@ public class CheckAssemblyLineStatusControllerTest {
 
     when(mockedAssemblyLine.giveTasksOverview()).thenReturn(mockedTasksOverview);
 
-    String expected = """
-      Car Body Post:\r
-       mockedCarBodyAssemblyTaskName (active)\r
-       mockedEngineAssemblyTaskName (pending)\r
-       mockedDrivetrainAssemblyTaskName\r
-       mockedAccessoriesAssemblyTaskName\r
-      Drivetrain Post:\r
-       mockedDrivetrainAssemblyTaskName (active)\r
-       mockedAccessoriesAssemblyTaskName\r
-      Accessories Post:\r
-       mockedAccessoriesAssemblyTaskName (active)\r
-      """;
+    String expected = "Car Body Post:" + System.getProperty("line.separator") +
+      " mockedCarBodyAssemblyTaskName (active)" + System.getProperty("line.separator") +
+      " mockedEngineAssemblyTaskName (pending)" + System.getProperty("line.separator") +
+      " mockedDrivetrainAssemblyTaskName" + System.getProperty("line.separator") +
+      " mockedAccessoriesAssemblyTaskName" + System.getProperty("line.separator") +
+      "Drivetrain Post:" + System.getProperty("line.separator") +
+      " mockedDrivetrainAssemblyTaskName (active)" + System.getProperty("line.separator") +
+      " mockedAccessoriesAssemblyTaskName" + System.getProperty("line.separator") +
+      "Accessories Post:" + System.getProperty("line.separator") +
+      " mockedAccessoriesAssemblyTaskName (active)" + System.getProperty("line.separator");
 
     Map<String, List<String>> assemblyLineStatusAndOverview = controller.giveAssemblyLineStatusOverview();
     String actual = "";
