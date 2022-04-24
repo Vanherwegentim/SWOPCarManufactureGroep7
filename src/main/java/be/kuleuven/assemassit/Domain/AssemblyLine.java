@@ -61,18 +61,14 @@ public class AssemblyLine implements Subject {
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
+  private final List<Observer> observers;
   private LocalTime startTime;
   private LocalTime endTime;
-
-
   /**
    * @representationObject
    */
   private SchedulingAlgorithm schedulingAlgorithm;
-
   private OvertimeRepository overTimeRepository;
-
-  private final List<Observer> observers;
 
   /**
    * @post | carBodyPost != null
@@ -382,19 +378,17 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes the amount of minutes spent during the current phase
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(int minutes) {
+  public void move() {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
     int newOvertime = schedulingAlgorithm.moveAssemblyLine
       (
-        minutes,
         0, // TODO: we just have to remove this "move" method
         endTime,
         carAssemblyProcessesQueue,
@@ -419,14 +413,13 @@ public class AssemblyLine implements Subject {
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(int minutes, LocalTime startTime, LocalTime endTime, int overtime) {
+  public void move(LocalTime startTime, LocalTime endTime, int overtime) {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
     int newOvertime = schedulingAlgorithm.moveAssemblyLine
       (
-        minutes,
         overtime,
         endTime,
         carAssemblyProcessesQueue,

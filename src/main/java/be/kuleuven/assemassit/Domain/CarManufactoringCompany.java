@@ -31,18 +31,16 @@ public class CarManufactoringCompany implements Observer {
    * @representationObject
    * @representationObjects
    */
-  private List<CarModel> carModels;
+  private final List<CarModel> carModels;
   /**
    * @representationObject
    */
-  private AssemblyLine assemblyLine;
-  private CarModelRepository carModelRepository;
-  private LocalTime openingTime;
-  private LocalTime closingTime;
-
+  private final AssemblyLine assemblyLine;
+  private final CarModelRepository carModelRepository;
+  private final LocalTime openingTime;
+  private final LocalTime closingTime;
+  private final OvertimeRepository overTimeRepository;
   private int overtime;
-
-  private OvertimeRepository overTimeRepository;
 
   /**
    * @param openingTime  the opening time of the factory
@@ -158,8 +156,8 @@ public class CarManufactoringCompany implements Observer {
     return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
   }
 
-  public void moveAssemblyLine(int minutes) {
-    this.assemblyLine.move(minutes, this.openingTime, this.closingTime, this.overtime);
+  public void moveAssemblyLine() {
+    this.assemblyLine.move(this.openingTime, this.closingTime, this.overtime);
   }
 
   @Override
