@@ -1,6 +1,5 @@
 package be.kuleuven.assemassit.UI.Actions;
 
-import be.kuleuven.assemassit.Controller.AssemblyLineController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
 import be.kuleuven.assemassit.UI.UI;
@@ -17,6 +16,62 @@ public class OrderNewCarActionUI implements UI {
   public OrderNewCarActionUI(OrderNewCarController orderNewCarController) {
     this.orderNewCarController = orderNewCarController;
     this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.orderNewCarController);
+  }
+
+  private static void displayCarOrders(List<String> carOrders) {
+    for (int i = 0; i < carOrders.size(); i++) {
+      System.out.println(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
+    }
+  }
+
+  private static Optional<Integer> displayChooseCarModel(Map<Integer, String> carModels) {
+    Scanner scanner = new Scanner(System.in);
+    int carModelId;
+
+    do {
+      System.out.println();
+      System.out.println("Please choose the model:");
+      carModels.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
+      System.out.println("-1: Go back");
+
+      carModelId = scanner.nextInt();
+
+      if (carModelId == -1) return Optional.empty();
+
+    } while (!carModels.containsKey(carModelId));
+
+    System.out.println("Chosen model: " + carModels.get(carModelId));
+    return Optional.of(carModelId);
+  }
+
+  private static Optional<Map<String, String>> displayOrderingForm(Map<String, List<String>> parts) {
+    Map<String, String> selectedParts = new HashMap<>();
+
+    for (Map.Entry<String, List<String>> part : parts.entrySet()) {
+      Scanner scanner = new Scanner(System.in);
+      int optionIndex;
+      List<String> options = part.getValue();
+
+      System.out.println();
+      System.out.println("Choose the option for: " + part.getKey());
+
+      do {
+        for (int i = 0; i < options.size(); i++) {
+          System.out.println(String.format("%2d", i) + ": " + options.get(i));
+        }
+        System.out.println("-1: Cancel placing the order");
+
+        optionIndex = scanner.nextInt();
+
+        if (optionIndex == -1) {
+          return Optional.empty();
+        }
+      } while (optionIndex < 0 || optionIndex > options.size() - 1);
+
+      selectedParts.put(part.getKey(), part.getValue().get(optionIndex));
+      System.out.println("Chosen: " + options.get(optionIndex));
+    }
+    return Optional.of(selectedParts);
   }
 
   public void run() {
@@ -77,62 +132,5 @@ public class OrderNewCarActionUI implements UI {
         case -1 -> this.garageHolderActionsOverviewUI.run();
       }
     } while (choice != -1 && (choice != 1));
-  }
-
-  private static void displayCarOrders(List<String> carOrders) {
-    for (int i = 0; i < carOrders.size(); i++) {
-      System.out.println(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
-    }
-  }
-
-  private static Optional<Integer> displayChooseCarModel(Map<Integer, String> carModels) {
-    Scanner scanner = new Scanner(System.in);
-    int carModelId;
-
-    do {
-      System.out.println();
-      System.out.println("Please choose the model:");
-      carModels.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
-      System.out.println("-1: Go back");
-
-      carModelId = scanner.nextInt();
-
-      if (carModelId == -1) return Optional.empty();
-
-    } while (!carModels.containsKey(carModelId));
-
-    System.out.println("Chosen model: " + carModels.get(carModelId));
-    return Optional.of(carModelId);
-  }
-
-
-  private static Optional<Map<String, String>> displayOrderingForm(Map<String, List<String>> parts) {
-    Map<String, String> selectedParts = new HashMap<>();
-
-    for (Map.Entry<String, List<String>> part : parts.entrySet()) {
-      Scanner scanner = new Scanner(System.in);
-      int optionIndex;
-      List<String> options = part.getValue();
-
-      System.out.println();
-      System.out.println("Choose the option for: " + part.getKey());
-
-      do {
-        for (int i = 0; i < options.size(); i++) {
-          System.out.println(String.format("%2d", i) + ": " + options.get(i));
-        }
-        System.out.println("-1: Cancel placing the order");
-
-        optionIndex = scanner.nextInt();
-
-        if (optionIndex == -1) {
-          return Optional.empty();
-        }
-      } while (optionIndex < 0 || optionIndex > options.size() - 1);
-
-      selectedParts.put(part.getKey(), part.getValue().get(optionIndex));
-      System.out.println("Chosen: " + options.get(optionIndex));
-    }
-    return Optional.of(selectedParts);
   }
 }
