@@ -8,7 +8,6 @@ import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class LoginUI implements UI {
   private ControllerFactory controllerFactory;
@@ -29,16 +28,15 @@ public class LoginUI implements UI {
   }
 
   private Optional<Integer> displayGarageHolderForm(Map<Integer, String> garageHolders) {
-    Scanner scanner = new Scanner(System.in);
     int garageHolderId;
 
     do {
-      System.out.println();
-      System.out.println("Please select your name:");
-      garageHolders.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
-      System.out.println("-1: Go back");
+      IOCall.out();
+      IOCall.out("Please select your name:");
+      garageHolders.forEach((id, name) -> IOCall.out(String.format("%2d", id) + ": " + name));
+      IOCall.out("-1: Go back");
 
-      garageHolderId = scanner.nextInt();
+      garageHolderId = IOCall.in();
 
       if (garageHolderId == -1) return Optional.empty();
 
