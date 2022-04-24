@@ -38,9 +38,11 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     Collections.reverse(workPostsInOrder);
     EnhancedIterator<WorkPost> iterator = new MyEnhancedIterator<>(workPostsInOrder);
 
-    WorkPost workPost = iterator.next();
+    WorkPost workPost;
 
     do {
+      workPost = iterator.next();
+
       if (workPost != null && workPost.getCarAssemblyProcess() != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
           //assemblyTask.setCompletionTime(minutes);
@@ -49,21 +51,21 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
         CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
         carAssemblyProcess.complete();
 
-        int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
-        if (overtimeInMinutes >= 0)
-          overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
-
         if (!iterator.hasPrevious()) {
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
-        } else {
+
+          int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
+          if (overtimeInMinutes >= 0)
+            overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
+        }
+
+        if (iterator.hasNext()) {
           WorkPost nextWorkPost = iterator.peek();
           nextWorkPost.addProcessToWorkPost(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
         }
       }
-
-      workPost = iterator.next();
     } while (iterator.hasNext());
 
     // check if the next process can still be produced today
