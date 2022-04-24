@@ -11,6 +11,10 @@ public class IOCall {
   private IOCall() {
   }
 
+  public static void out() {
+    System.out.println();
+  }
+
   public static void out(String message) {
     System.out.println(message);
   }
