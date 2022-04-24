@@ -79,8 +79,9 @@ public class OrderNewCarControllerTest {
   }
 
   @Test
-  public void giveLoggedInGarageHolderNameTest_throws() {
-    assertThrows(IllegalStateException.class, orderNewCarController::giveLoggedInGarageHolderName);
+  public void createOrderController_throws() {
+    assertThrows(IllegalArgumentException.class, () -> new OrderNewCarController(null, mockedGarageHolder));
+    assertThrows(IllegalStateException.class, () -> new OrderNewCarController(mockedCarManufacturingCompany, null));
   }
 
 
@@ -92,7 +93,6 @@ public class OrderNewCarControllerTest {
   @Test
   public void getCompletionDateTest_throws() {
     assertThrows(IllegalArgumentException.class, () -> orderNewCarController.getCompletionDate(-1));
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.getCompletionDate(0));
   }
 
   @Test
@@ -103,7 +103,6 @@ public class OrderNewCarControllerTest {
   @Test
   public void chooseOrderTest_throws() {
     assertThrows(IllegalArgumentException.class, () -> orderNewCarController.chooseOrder(-1));
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.chooseOrder(0));
   }
 
 
@@ -169,9 +168,7 @@ public class OrderNewCarControllerTest {
 
   @Test
   public void placeCarOrderTest_throws() {
-    assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
     assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
-
   }
 
 }

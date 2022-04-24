@@ -21,6 +21,8 @@ public class OrderNewCarController {
   public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     if (carManufactoringCompany == null)
       throw new IllegalArgumentException("CarManufactoring company can not be null");
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException("Cannot order a new car without a logged in garage holder");
 
 
     this.carManufactoringCompany = carManufactoringCompany;
