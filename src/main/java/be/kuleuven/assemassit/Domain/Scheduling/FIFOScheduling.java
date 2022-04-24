@@ -28,8 +28,10 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
     Collections.reverse(workPostsInOrder);
     EnhancedIterator<WorkPost> iterator = new MyEnhancedIterator<>(workPostsInOrder);
 
+    WorkPost workPost;
+
     do {
-      WorkPost workPost = iterator.next();
+      workPost = iterator.next();
 
       if (workPost != null && workPost.getCarAssemblyProcess() != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
