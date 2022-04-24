@@ -23,6 +23,10 @@ public class ControllerFactory {
     this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
+  public String giveLoggedInGarageHolderName() {
+    return loggedInGarageHolder.getName();
+  }
+
   public LoginController createLoginController() {
     return new LoginController(new GarageHolderRepository(), this);
   }
@@ -30,7 +34,7 @@ public class ControllerFactory {
   public void loginGarageHolder(GarageHolder loggedInGarageHolder) {
     if (loggedInGarageHolder == null)
       throw new IllegalArgumentException("The garage holder can not be null");
-    
+
     this.loggedInGarageHolder = loggedInGarageHolder;
     this.controllerFactoryState = new ControllerFactoryGarageHolderState();
   }
@@ -52,7 +56,7 @@ public class ControllerFactory {
     this.controllerFactoryState = new ControllerFactoryCarMechanicState();
   }
 
-  protected void logoutCarMechanic() {
+  public void logoutCarMechanic() {
     this.controllerFactoryState = new ControllerFactoryCarMechanicState();
   }
 

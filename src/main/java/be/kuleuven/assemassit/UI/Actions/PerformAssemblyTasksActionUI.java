@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions;
 
-import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
@@ -10,12 +10,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class PerformAssemblyTasksActionUI implements UI {
-  private final PerformAssemblyTasksController performAssemblyTasksController;
-  private final CheckAssemblyLineStatusController checkAssemblyLineStatusController;
+  private PerformAssemblyTasksController performAssemblyTasksController;
 
-  public PerformAssemblyTasksActionUI(PerformAssemblyTasksController performAssemblyTasksController, CheckAssemblyLineStatusController checkAssemblyLineStatusController) {
-    this.performAssemblyTasksController = performAssemblyTasksController;
-    this.checkAssemblyLineStatusController = checkAssemblyLineStatusController;
+  public PerformAssemblyTasksActionUI(ControllerFactory controllerFactory) {
+    this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {

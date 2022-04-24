@@ -1,24 +1,22 @@
 package be.kuleuven.assemassit.UI.Actions.ManagerActions;
 
-import be.kuleuven.assemassit.Controller.CheckProductionStatisticsController;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.UI.Actions.CheckProductionStatisticsActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
-import be.kuleuven.assemassit.UI.LoginUI;
 import be.kuleuven.assemassit.UI.UI;
 
 public class ManagerActionsOverviewUI implements UI {
-
-  private LoginUI loginUI;
   private CheckProductionStatisticsActionUI checkProductionStatisticsActionUI;
+  private ControllerFactory controllerFactory;
 
-  public ManagerActionsOverviewUI(CheckProductionStatisticsController checkProductionStatisticsController) {
-    this.loginUI = new LoginUI();
-    this.checkProductionStatisticsActionUI = new CheckProductionStatisticsActionUI(checkProductionStatisticsController);
+  public ManagerActionsOverviewUI(ControllerFactory controllerFactory) {
+    this.controllerFactory = controllerFactory;
   }
 
-  // TODO: change to correct controllers
   @Override
   public void run() {
+    this.checkProductionStatisticsActionUI = new CheckProductionStatisticsActionUI(controllerFactory);
+
     int action;
 
     do {
@@ -31,9 +29,10 @@ public class ManagerActionsOverviewUI implements UI {
       action = IOCall.in();
 
       switch (action) {
-        case -1 -> this.loginUI.run();
         case 1 -> this.checkProductionStatisticsActionUI.run();
       }
     } while (action != -1 && action != 1);
+
+    controllerFactory.logoutManager();
   }
 }

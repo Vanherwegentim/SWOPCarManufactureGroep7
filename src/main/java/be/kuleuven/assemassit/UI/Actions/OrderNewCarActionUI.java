@@ -1,7 +1,8 @@
 package be.kuleuven.assemassit.UI.Actions;
 
+import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
+import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
 import java.time.LocalDateTime;
@@ -11,16 +12,15 @@ import java.util.*;
 
 public class OrderNewCarActionUI implements UI {
   private OrderNewCarController orderNewCarController;
-  private GarageHolderActionsOverviewUI garageHolderActionsOverviewUI;
+  private ControllerFactory controllerFactory;
 
-  public OrderNewCarActionUI(OrderNewCarController orderNewCarController) {
-    this.orderNewCarController = orderNewCarController;
-    this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.orderNewCarController);
+  public OrderNewCarActionUI(ControllerFactory controllerFactory) {
+    this.controllerFactory = controllerFactory;
   }
 
   private static void displayCarOrders(List<String> carOrders) {
     for (int i = 0; i < carOrders.size(); i++) {
-      System.out.println(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
+      IOCall.out(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
     }
   }
 
@@ -29,10 +29,10 @@ public class OrderNewCarActionUI implements UI {
     int carModelId;
 
     do {
-      System.out.println();
-      System.out.println("Please choose the model:");
-      carModels.forEach((id, name) -> System.out.println(String.format("%2d", id) + ": " + name));
-      System.out.println("-1: Go back");
+      IOCall.out();
+      IOCall.out("Please choose the model:");
+      carModels.forEach((id, name) -> IOCall.out(String.format("%2d", id) + ": " + name));
+      IOCall.out("-1: Go back");
 
       carModelId = scanner.nextInt();
 
@@ -40,7 +40,7 @@ public class OrderNewCarActionUI implements UI {
 
     } while (!carModels.containsKey(carModelId));
 
-    System.out.println("Chosen model: " + carModels.get(carModelId));
+    IOCall.out("Chosen model: " + carModels.get(carModelId));
     return Optional.of(carModelId);
   }
 
@@ -52,14 +52,14 @@ public class OrderNewCarActionUI implements UI {
       int optionIndex;
       List<String> options = part.getValue();
 
-      System.out.println();
-      System.out.println("Choose the option for: " + part.getKey());
+      IOCall.out();
+      IOCall.out("Choose the option for: " + part.getKey());
 
       do {
         for (int i = 0; i < options.size(); i++) {
-          System.out.println(String.format("%2d", i) + ": " + options.get(i));
+          IOCall.out(String.format("%2d", i) + ": " + options.get(i));
         }
-        System.out.println("-1: Cancel placing the order");
+        IOCall.out("-1: Cancel placing the order");
 
         optionIndex = scanner.nextInt();
 
@@ -69,40 +69,39 @@ public class OrderNewCarActionUI implements UI {
       } while (optionIndex < 0 || optionIndex > options.size() - 1);
 
       selectedParts.put(part.getKey(), part.getValue().get(optionIndex));
-      System.out.println("Chosen: " + options.get(optionIndex));
+      IOCall.out("Chosen: " + options.get(optionIndex));
     }
     return Optional.of(selectedParts);
   }
 
   public void run() {
-    Scanner scanner = new Scanner(System.in);
+    this.orderNewCarController = controllerFactory.createOrderNewCarController();
+
     int choice;
 
     do {
-      System.out.println();
-      System.out.println("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
+      IOCall.out();
+      IOCall.out("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
 
-      System.out.println("Pending:");
+      IOCall.out("Pending:");
       //displayCarOrders(orderNewCarController.givePendingCarOrders());
 
-      System.out.println("History:");
+      IOCall.out("History:");
       //displayCarOrders(orderNewCarController.giveCompletedCarOrders());
 
-      System.out.println();
-      System.out.println("Please choose an action:");
-      System.out.println(" 1: Place a new order");
-      System.out.println("-1: Go back");
+      IOCall.out();
+      IOCall.out("Please choose an action:");
+      IOCall.out(" 1: Place a new order");
+      IOCall.out("-1: Go back");
 
-      choice = scanner.nextInt();
+      choice = IOCall.in();
 
       switch (choice) {
         case 1 -> {
           Optional<Integer> chosenCarModelIdOptional = displayChooseCarModel(orderNewCarController.giveListOfCarModels());
 
-          if (chosenCarModelIdOptional.isEmpty()) {
-            run(); //TODO check if dit is de manier juiste redirect naar zichzelf
-            return;
-          }
+          if (chosenCarModelIdOptional.isEmpty())
+            continue;
 
           int chosenCarModelId = chosenCarModelIdOptional.get();
 
@@ -110,26 +109,22 @@ public class OrderNewCarActionUI implements UI {
 
           Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
 
-          if (selectedPartsOptional.isEmpty()) {
-            run(); //TODO check if dit is de manier juiste redirect naar zichzelf
-            return;
-          }
+          if (selectedPartsOptional.isEmpty())
+            continue;
+
+
           Map<String, String> selectedParts = selectedPartsOptional.get();
 
           LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
-          System.out.println();
-          System.out.println("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
+          IOCall.out();
+          IOCall.out("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
 
-          System.out.println();
-          System.out.println("Press ENTER to continue...");
-          Scanner scanner3 = new Scanner(System.in);
-          scanner3.nextLine();
-
-          run(); //TODO check if dit is de manier juiste redirect naar zichzelf
+          IOCall.out();
+          IOCall.out("Press ENTER to continue...");
+          IOCall.waitForConfirmation();
         }
-        case -1 -> this.garageHolderActionsOverviewUI.run();
       }
     } while (choice != -1 && (choice != 1));
   }
