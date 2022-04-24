@@ -53,4 +53,10 @@ public class LoginController {
       .stream()
       .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
   }
+
+  public String giveLoggedInGarageHolderName() {
+    if (this.loggedInGarageHolder == null)
+      throw new IllegalStateException();
+    return this.loggedInGarageHolder.getName();
+  }
 }
