@@ -2,10 +2,10 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
+import be.kuleuven.assemassit.Domain.Repositories.OverTimeRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class CarManufactoringCompany implements Observer {
    * @invar | closingTime != null
    * @invar Opening time should be before the closing time
    * | (openingTime != null && closingTime != null) || openingTime.isBefore(closingTime)
-   * @invar | overtimes != null
+   * @invar | overtime != null
    * @representationObject
    * @representationObjects
    */
@@ -40,18 +40,9 @@ public class CarManufactoringCompany implements Observer {
   private LocalTime openingTime;
   private LocalTime closingTime;
 
-  /**
-   * @representationObject
-   */
-  private List<Integer> overtimes;
+  private int overtime;
 
-  /**
-   * @representationObject
-   * @representationObjects
-   */
-  private List<Shift> shifts;
-
-  private Shift currentShift;
+  private OverTimeRepository overTimeRepository;
 
   /**
    * @param openingTime  the opening time of the factory
@@ -62,11 +53,9 @@ public class CarManufactoringCompany implements Observer {
    * @post | openingTime.getHour() == this.openingTime.getHour()
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.assemblyLine.equals(assemblyLine)
-   * @post | this.getOvertimes() != null
-   * @post | this.getShifts() != null
    */
   public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    this(new CarModelRepository(), openingTime, closingTime, assemblyLine);
+    this(new CarModelRepository(), new OverTimeRepository(), openingTime, closingTime, assemblyLine);
   }
 
   /**
@@ -79,10 +68,8 @@ public class CarManufactoringCompany implements Observer {
    * @post | openingTime.getHour() == this.openingTime.getHour()
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.assemblyLine.equals(assemblyLine)
-   * @post | this.getOvertimes() != null
-   * @post | this.getShifts() != null
    */
-  public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
+  public CarManufactoringCompany(CarModelRepository carModelRepository, OverTimeRepository overTimeRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     if (openingTime == null || closingTime == null || assemblyLine == null || carModelRepository == null)
       throw new IllegalArgumentException("The parameters can not be null");
 
@@ -93,22 +80,14 @@ public class CarManufactoringCompany implements Observer {
     this.assemblyLine.setEndTime(closingTime);
     this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
     this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
-    this.overtimes = new ArrayList<>();
-    this.shifts = new ArrayList<>();
+    this.overTimeRepository = overTimeRepository;
+    this.overtime = overTimeRepository.getOverTime();
 
     this.assemblyLine.attach(this);
   }
 
   public AssemblyLine getAssemblyLine() {
     return assemblyLine;
-  }
-
-  public List<Integer> getOvertimes() {
-    return overtimes;
-  }
-
-  public List<Shift> getShifts() {
-    return shifts;
   }
 
   /**
@@ -166,11 +145,14 @@ public class CarManufactoringCompany implements Observer {
   }
 
   public void moveAssemblyLine(int minutes) {
-    this.assemblyLine.move(minutes, this.openingTime, this.closingTime, this.overtimes);
+    this.assemblyLine.move(minutes, this.openingTime, this.closingTime, this.overtime);
   }
 
   @Override
-  public void update() {
-
+  public void update(Object observable, Object value) {
+    if (observable instanceof AssemblyLine && value instanceof Integer overtime) {
+      this.overtime = overtime;
+      this.overTimeRepository.setOverTime(this.overtime);
+    }
   }
 }
