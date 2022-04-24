@@ -20,7 +20,7 @@ public class CarMechanicActionsOverviewUI implements UI {
   public CarMechanicActionsOverviewUI(PerformAssemblyTasksController performAssemblyTasksController, CheckAssemblyLineStatusController checkAssemblyLineStatusController) {
     this.performAssemblyTasksController = performAssemblyTasksController;
     this.checkAssemblyLineStatusController = checkAssemblyLineStatusController;
-    this.performAssemblyTasksActionUI = new PerformAssemblyTasksActionUI(this.performAssemblyTasksController);
+    this.performAssemblyTasksActionUI = new PerformAssemblyTasksActionUI(this.performAssemblyTasksController, this.checkAssemblyLineStatusController);
     this.checkAssemblyLineStatusActionUI = new CheckAssemblyLineStatusActionUI(this.checkAssemblyLineStatusController);
     this.loginUI = new LoginUI();
   }

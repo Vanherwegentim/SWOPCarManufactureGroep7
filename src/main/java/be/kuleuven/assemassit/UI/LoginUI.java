@@ -1,8 +1,6 @@
 package be.kuleuven.assemassit.UI;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
+import be.kuleuven.assemassit.Controller.*;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;
@@ -15,6 +13,8 @@ public class LoginUI implements UI {
   private ControllerFactory controllerFactory;
   private OrderNewCarController orderNewCarController;
   private PerformAssemblyTasksController performAssemblyTasksController;
+  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
+  private CheckProductionStatisticsController checkProductionStatisticsController;
 
 
   private ManagerActionsOverviewUI managerActionsOverviewUI;
@@ -25,9 +25,11 @@ public class LoginUI implements UI {
     this.controllerFactory = new ControllerFactory();
     this.orderNewCarController = controllerFactory.createOrderNewCarController();
     this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
+    this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
+    this.checkProductionStatisticsController = controllerFactory.createCheckProductionStatisticsController();
 
-    this.managerActionsOverviewUI = new ManagerActionsOverviewUI();
-    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController);
+    this.managerActionsOverviewUI = new ManagerActionsOverviewUI(this.checkProductionStatisticsController);
+    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController, checkAssemblyLineStatusController);
     this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.orderNewCarController);
   }
 

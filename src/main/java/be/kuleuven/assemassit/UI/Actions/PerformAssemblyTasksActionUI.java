@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions;
 
+import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.UI;
@@ -12,10 +13,12 @@ import java.util.Scanner;
 public class PerformAssemblyTasksActionUI implements UI {
   private CarMechanicActionsOverviewUI carMechanicActionsOverviewUI;
   private PerformAssemblyTasksController performAssemblyTasksController;
+  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
 
-  public PerformAssemblyTasksActionUI(PerformAssemblyTasksController performAssemblyTasksController) {
+  public PerformAssemblyTasksActionUI(PerformAssemblyTasksController performAssemblyTasksController, CheckAssemblyLineStatusController checkAssemblyLineStatusController) {
     this.performAssemblyTasksController = performAssemblyTasksController;
-    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController);
+    this.checkAssemblyLineStatusController = checkAssemblyLineStatusController;
+    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(performAssemblyTasksController, checkAssemblyLineStatusController);
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {
