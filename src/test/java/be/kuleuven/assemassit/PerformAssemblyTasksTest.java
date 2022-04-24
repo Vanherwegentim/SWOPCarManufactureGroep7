@@ -48,7 +48,6 @@ public class PerformAssemblyTasksTest {
     orderNewCarController = controllerFactory.createOrderNewCarController(carManufactoringCompany, mockedGarageHolderRepository);
     assemblyLineController = controllerFactory.createAssemblyLineController(assemblyLine);
 
-    orderNewCarController.logInGarageHolder(garageHolder.getId());
 
     fillTheSystemWithTasks();
     moveTheAssemblyLine();

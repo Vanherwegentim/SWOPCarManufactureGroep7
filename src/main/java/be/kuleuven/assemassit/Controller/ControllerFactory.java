@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
+import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalTime;
@@ -9,10 +10,15 @@ import java.time.LocalTime;
 public class ControllerFactory {
   private final AssemblyLine assemblyLine;
   private final CarManufactoringCompany carManufactoringCompany;
+  private GarageHolder loggedInGarageHolder;
 
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
     this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
+  }
+
+  public LoginController createLoginController() {
+    return new LoginController(new GarageHolderRepository());
   }
 
   /**
@@ -21,7 +27,7 @@ public class ControllerFactory {
    * @return a new instance of the order controller
    */
   public OrderNewCarController createOrderNewCarController() {
-    return new OrderNewCarController(carManufactoringCompany, new GarageHolderRepository());
+    return new OrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
   /**
@@ -32,7 +38,7 @@ public class ControllerFactory {
    * @return a new instance of the order controller
    */
   public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
-    return new OrderNewCarController(carManufactoringCompany, garageHolderRepository);
+    return new OrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
   /**

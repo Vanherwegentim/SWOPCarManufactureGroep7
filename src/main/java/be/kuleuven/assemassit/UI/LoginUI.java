@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.UI;
 
 import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.LoginController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
@@ -14,6 +15,7 @@ import java.util.Scanner;
 public class LoginUI implements UI {
   private ControllerFactory controllerFactory;
   private OrderNewCarController orderNewCarController;
+  private LoginController loginController;
   private PerformAssemblyTasksController performAssemblyTasksController;
 
   private ManagerActionsOverviewUI managerActionsOverviewUI;
@@ -22,6 +24,7 @@ public class LoginUI implements UI {
 
   public LoginUI() {
     this.controllerFactory = new ControllerFactory();
+    this.loginController = controllerFactory.createLoginController();
     this.orderNewCarController = controllerFactory.createOrderNewCarController();
     this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
 
@@ -51,6 +54,7 @@ public class LoginUI implements UI {
 
   @Override
   public void run() {
+    loginController.logOffGarageHolder();
     int choice;
 
     do {
@@ -65,12 +69,12 @@ public class LoginUI implements UI {
 
       switch (choice) {
         case 1 -> {
-          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(orderNewCarController.giveGarageHolders());
+          Optional<Integer> selectedGarageHolderIdOptional = displayGarageHolderForm(loginController.giveGarageHolders());
           if (selectedGarageHolderIdOptional.isEmpty()) {
             //TODO redirect terug naar deze loginUI methode
             return;
           }
-          orderNewCarController.logInGarageHolder(selectedGarageHolderIdOptional.get());
+          loginController.logInGarageHolder(selectedGarageHolderIdOptional.get());
           this.garageHolderActionsOverviewUI.run();
         }
         case 2 -> this.managerActionsOverviewUI.run();

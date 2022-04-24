@@ -11,7 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -69,31 +70,11 @@ public class OrderNewCarControllerTest {
     when(mockedCarModel.getSpoilerOptions()).thenReturn(Arrays.stream(Spoiler.values()).toList());
     when(mockedCarModel.isValidConfiguration(Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)).thenReturn(true);
 
-    orderNewCarController = new OrderNewCarController(mockedCarManufacturingCompany, mockedGarageHolderRepository);
-  }
-
-  @Test
-  public void logInGarageHolderTest_succeeds() {
-    assertAll(() -> orderNewCarController.logInGarageHolder(0));
-  }
-
-  @Test
-  public void logInGarageHolderTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(-2));
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.logInGarageHolder(200));
-  }
-
-  @Test
-  public void logOffTest() {
-    orderNewCarController.logInGarageHolder(0);
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
-    assertAll(orderNewCarController::logOffGarageHolder);
-    assertThrows(IllegalStateException.class, orderNewCarController::giveLoggedInGarageHolderName);
+    orderNewCarController = new OrderNewCarController(mockedCarManufacturingCompany, mockedGarageHolder);
   }
 
   @Test
   public void giveLoggedInGarageHolderNameTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
     assertEquals("WolksVagen Garage Lokeren BVBA NV", orderNewCarController.giveLoggedInGarageHolderName());
   }
 
@@ -102,16 +83,9 @@ public class OrderNewCarControllerTest {
     assertThrows(IllegalStateException.class, orderNewCarController::giveLoggedInGarageHolderName);
   }
 
-  @Test
-  public void giveGarageHoldersTest() {
-    Map<Integer, String> garageHolders = orderNewCarController.giveGarageHolders();
-    assertEquals(1, garageHolders.size());
-    assertEquals("WolksVagen Garage Lokeren BVBA NV", garageHolders.get(0));
-  }
 
   @Test
   public void getCompletionDateTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), orderNewCarController.getCompletionDate(0));
   }
 
@@ -123,7 +97,6 @@ public class OrderNewCarControllerTest {
 
   @Test
   public void chooseOrderTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
     assertEquals(0, orderNewCarController.chooseOrder(0).getCar().getId());
   }
 
@@ -190,7 +163,6 @@ public class OrderNewCarControllerTest {
 
   @Test
   public void placeCarOrderTest_succeeds() {
-    orderNewCarController.logInGarageHolder(0);
     LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), estimatedCompletionTime);
   }
@@ -198,7 +170,6 @@ public class OrderNewCarControllerTest {
   @Test
   public void placeCarOrderTest_throws() {
     assertThrows(IllegalStateException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
-    orderNewCarController.logInGarageHolder(0);
     assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
 
   }

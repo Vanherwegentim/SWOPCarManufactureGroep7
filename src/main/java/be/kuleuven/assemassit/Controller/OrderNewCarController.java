@@ -2,7 +2,6 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -12,8 +11,6 @@ import java.util.stream.Collectors;
 
 public class OrderNewCarController {
 
-  private final List<GarageHolder> garageHolders;
-  private final GarageHolderRepository garageHolderRepository;
   private final CarManufactoringCompany carManufactoringCompany;
   private GarageHolder loggedInGarageHolder;
 
@@ -21,38 +18,13 @@ public class OrderNewCarController {
    * @param carManufactoringCompany
    * @post | this.carManufactoringCompany = carManufactoringCompany
    */
-  public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolderRepository garageHolderRepository) {
+  public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     if (carManufactoringCompany == null)
       throw new IllegalArgumentException("CarManufactoring company can not be null");
 
 
     this.carManufactoringCompany = carManufactoringCompany;
-    this.garageHolderRepository = garageHolderRepository;
-    garageHolders = garageHolderRepository.getGarageHolders();
-  }
-
-  /**
-   * log in a garage holder
-   *
-   * @param garageHolderId
-   * @throws IllegalArgumentException garageHolderId is below 0 | garageHolderId < 0
-   */
-  public void logInGarageHolder(int garageHolderId) {
-    if (garageHolderId < 0)
-      throw new IllegalArgumentException("GarageHolderId cannot be smaller than 0");
-
-    try {
-      this.loggedInGarageHolder = garageHolders.get(garageHolderId);
-    } catch (ArrayIndexOutOfBoundsException e) {
-      throw new IllegalArgumentException("There is no garage holder with the given id");
-    }
-  }
-
-  /**
-   * Log off the garage holder
-   */
-  public void logOffGarageHolder() {
-    this.loggedInGarageHolder = null;
+    this.loggedInGarageHolder = loggedInGarageHolder;
   }
 
   /**
@@ -62,15 +34,6 @@ public class OrderNewCarController {
     if (this.loggedInGarageHolder == null)
       throw new IllegalStateException();
     return loggedInGarageHolder.getName();
-  }
-
-  /**
-   * @return a map with garage holders, the key is the id and de value is the name of the garage holder
-   */
-  public Map<Integer, String> giveGarageHolders() {
-    return this.garageHolders
-      .stream()
-      .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
   }
 
   /**
