@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.ControllerFactory.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;

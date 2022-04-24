@@ -1,7 +1,5 @@
-package be.kuleuven.assemassit.Controller.ControllerFactory;
+package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 

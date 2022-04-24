@@ -1,8 +1,5 @@
-package be.kuleuven.assemassit.Controller.ControllerFactory;
+package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Controller.AssemblyLineController;
-import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
-import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 

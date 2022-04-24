@@ -1,10 +1,6 @@
 package be.kuleuven.assemassit.UI;
 
-import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
-import be.kuleuven.assemassit.Controller.CheckProductionStatisticsController;
-import be.kuleuven.assemassit.Controller.ControllerFactory.ControllerFactory;
-import be.kuleuven.assemassit.Controller.OrderNewCarController;
-import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
+import be.kuleuven.assemassit.Controller.*;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.ManagerActions.ManagerActionsOverviewUI;

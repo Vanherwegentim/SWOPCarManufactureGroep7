@@ -1,7 +1,5 @@
-package be.kuleuven.assemassit.Controller.ControllerFactory;
+package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Controller.AdaptSchedulingAlgorithmController;
-import be.kuleuven.assemassit.Controller.CheckProductionStatisticsController;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 
 public class ControllerFactoryManagerState {
