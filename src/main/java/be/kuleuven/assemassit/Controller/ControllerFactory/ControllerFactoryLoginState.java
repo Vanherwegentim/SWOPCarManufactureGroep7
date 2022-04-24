@@ -1,4 +1,4 @@
-package be.kuleuven.assemassit.Controller;
+package be.kuleuven.assemassit.Controller.ControllerFactory;
 
 public class ControllerFactoryLoginState extends ControllerFactoryState {
 

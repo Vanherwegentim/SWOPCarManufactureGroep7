@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.Controller;
 
+import be.kuleuven.assemassit.Controller.ControllerFactory.ControllerFactory;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import org.junit.jupiter.api.BeforeEach;
