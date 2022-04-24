@@ -18,7 +18,11 @@ public class ControllerFactory {
   }
 
   public LoginController createLoginController() {
-    return new LoginController(new GarageHolderRepository());
+    return new LoginController(new GarageHolderRepository(), this);
+  }
+
+  protected void setLoggedInGarageHolder(GarageHolder loggedInGarageHolder) {
+    this.loggedInGarageHolder = loggedInGarageHolder;
   }
 
   /**
@@ -71,4 +75,5 @@ public class ControllerFactory {
   public CheckProductionStatisticsController createCheckProductionStatisticsController() {
     return new CheckProductionStatisticsController(assemblyLine);
   }
+
 }

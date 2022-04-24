@@ -9,9 +9,14 @@ import java.util.stream.Collectors;
 public class LoginController {
   GarageHolderRepository garageHolderRepository;
   GarageHolder loggedInGarageHolder;
+  /**
+   * @PeerObject
+   */
+  ControllerFactory controllerFactory;
 
-  public LoginController(GarageHolderRepository garageHolderRepository) {
+  public LoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
     this.garageHolderRepository = garageHolderRepository;
+    this.controllerFactory = controllerFactory;
   }
 
   /**
@@ -20,13 +25,13 @@ public class LoginController {
    * @param garageHolderId
    * @throws IllegalArgumentException garageHolderId is below 0 | garageHolderId < 0
    */
-  public GarageHolder logInGarageHolder(int garageHolderId) {
+  public void logInGarageHolder(int garageHolderId) {
     if (garageHolderId < 0)
       throw new IllegalArgumentException("GarageHolderId cannot be smaller than 0");
 
     try {
       this.loggedInGarageHolder = garageHolderRepository.getGarageHolders().get(garageHolderId);
-      return loggedInGarageHolder;
+      controllerFactory.setLoggedInGarageHolder(loggedInGarageHolder);
     } catch (ArrayIndexOutOfBoundsException e) {
       throw new IllegalArgumentException("There is no garage holder with the given id");
     }
@@ -37,6 +42,7 @@ public class LoginController {
    */
   public void logOffGarageHolder() {
     this.loggedInGarageHolder = null;
+    controllerFactory.setLoggedInGarageHolder(null);
   }
 
   /**
