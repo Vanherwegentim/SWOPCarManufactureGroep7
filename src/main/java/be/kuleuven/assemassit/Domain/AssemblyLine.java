@@ -4,7 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
-import be.kuleuven.assemassit.Domain.Repositories.OverTimeRepository;
+import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -61,19 +61,14 @@ public class AssemblyLine implements Subject {
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
+  private final List<Observer> observers;
   private LocalTime startTime;
   private LocalTime endTime;
-  private int overTime;
-
-
   /**
    * @representationObject
    */
   private SchedulingAlgorithm schedulingAlgorithm;
-
-  private OverTimeRepository overTimeRepository;
-
-  private List<Observer> observers;
+  private OvertimeRepository overTimeRepository;
 
   /**
    * @post | carBodyPost != null
@@ -85,7 +80,7 @@ public class AssemblyLine implements Subject {
    * @post | overTime >= 0
    * @mutates | this
    */
-  public AssemblyLine(OverTimeRepository overTimeRepository) {
+  public AssemblyLine() {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
@@ -93,21 +88,6 @@ public class AssemblyLine implements Subject {
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
     this.observers = new ArrayList<>();
-    this.overTimeRepository = overTimeRepository;
-    this.overTime = overTimeRepository.getOverTime();
-  }
-
-  /**
-   * @post | carBodyPost != null
-   * @post | driveTrainPost != null
-   * @post | accessoriesPost != null
-   * @post | carAssemblyProcessesQueue != null
-   * @post | finishedCars != null
-   * @post | overTimeRepository != null
-   * @mutates | this
-   */
-  public AssemblyLine() {
-    this(new OverTimeRepository());
   }
 
   /**
@@ -199,13 +179,8 @@ public class AssemblyLine implements Subject {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
-  public int getOverTime() {
-    return this.overTime;
-  }
-
-  private void setOverTime(int overTime) {
-    this.overTime = overTime;
-    notifyObservers(); // TODO: maybe the UI? this is an event that does not always occur
+  private void updateOvertime(int overtime) {
+    notifyObservers(overtime);
   }
 
   public List<CarAssemblyProcess> getFinishedCars() {
@@ -399,40 +374,62 @@ public class AssemblyLine implements Subject {
     return true;
   }
 
-  private boolean canWorkDayStart() {
-    return (LocalTime.now().isAfter(this.startTime.plusMinutes(this.overTime)));
-  }
-
   /**
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes the amount of minutes spent during the current phase
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(int minutes) {
-
-    if (!canWorkDayStart())
-      throw new IllegalArgumentException("The work day can not be started yet because of previous overtime");
+  public void move() {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
 
-    int overtime = schedulingAlgorithm.moveAssemblyLine
+    int newOvertime = schedulingAlgorithm.moveAssemblyLine
       (
-        minutes,
-        this.overTime,
+        0, // TODO: we just have to remove this "move" method
         endTime,
         carAssemblyProcessesQueue,
         finishedCars,
         getWorkPosts()
       );
 
-    if (overtime > 0) {
-      // overtime happened so we have to inform the assembly line
-      setOverTime(overtime);
+    if (newOvertime > 0) {
+      // overtime happened so we have to inform the car manufacturing company
+      updateOvertime(newOvertime);
+    }
+  }
+
+  /**
+   * Moves the assembly and gives the duration of the current phase.
+   * The assembly process is moved from one work post to another on the assembly line.
+   *
+   * @param minutes   the amount of minutes spent during the current phase
+   * @param startTime the start time of the company
+   * @param endTime   the end time of the company
+   * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
+   * @throws IllegalArgumentException minutes is below 0 | minutes < 0
+   * @mutates | this
+   */
+  public void move(LocalTime startTime, LocalTime endTime, int overtime) {
+
+    if (!canMove())
+      throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
+
+    int newOvertime = schedulingAlgorithm.moveAssemblyLine
+      (
+        overtime,
+        endTime,
+        carAssemblyProcessesQueue,
+        finishedCars,
+        getWorkPosts()
+      );
+
+    if (newOvertime > 0) {
+      // overtime happened so we have to inform the car manufacturing company
+      updateOvertime(newOvertime);
     }
   }
 
@@ -493,13 +490,16 @@ public class AssemblyLine implements Subject {
    * @param workPostId     the id of the work post
    * @param assemblyTaskId the id of the assembly task
    * @return the corresponding assembly task from the work post
-   * @throws IllegalArgumentException | workPostId < 0 || assemblyTaskId < 0
+   * @throws IllegalArgumentException workPostId is smaller than 0 | workPostId < 0
+   * @throws IllegalArgumentException assemblyTaskId is smaller than 0 | assemblyTaskId < 0
    * @post | result != null
    * @inspects | this
    */
   public AssemblyTask giveCarAssemblyTask(int workPostId, int assemblyTaskId) {
-    if (workPostId < 0 || assemblyTaskId < 0)
-      throw new IllegalArgumentException("The IDs must be greater than or equal to zero");
+    if (workPostId < 0)
+      throw new IllegalArgumentException("WorkPostId cannot be smaller than 0");
+    if (assemblyTaskId < 0)
+      throw new IllegalArgumentException("AssemblyTaskId cannot be smaller than 0");
 
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.findAssemblyTask(assemblyTaskId);
@@ -723,9 +723,9 @@ public class AssemblyLine implements Subject {
   }
 
   @Override
-  public void notifyObservers() {
+  public void notifyObservers(Object value) {
     for (Observer observer : observers) {
-      observer.update();
+      observer.update(this, value);
     }
   }
 }

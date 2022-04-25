@@ -108,6 +108,8 @@ public abstract class AssemblyTask {
   }
 
   public LocalDateTime getCompletionTime() {
+    if (pending)
+      throw new IllegalStateException();
     return completionTime;
   }
 

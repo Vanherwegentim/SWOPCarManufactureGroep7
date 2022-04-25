@@ -29,25 +29,27 @@ public class AssemblyLineTest {
     carAssemblyProcess = new CarAssemblyProcess(
       new CarOrder(
         new Car(
-          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
-          Body.SEAD,
+          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+          Body.SEDAN,
           Color.BLACK,
           Engine.PERFORMANCE,
-          Gearbox.MANUAL,
+          Gearbox.FIVE_SPEED_MANUAL,
           Seat.LEATHER_BLACK,
           Airco.MANUAL,
-          Wheel.SPORT)));
+          Wheel.SPORT,
+          Spoiler.NO_SPOILER)));
     carAssemblyProcessTest = new CarAssemblyProcess(
       new CarOrder(
         new Car(
-          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
-          Body.SEAD,
+          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+          Body.SEDAN,
           Color.BLACK,
           Engine.PERFORMANCE,
-          Gearbox.MANUAL,
+          Gearbox.FIVE_SPEED_MANUAL,
           Seat.LEATHER_BLACK,
           Airco.MANUAL,
-          Wheel.SPORT)));
+          Wheel.SPORT,
+          Spoiler.LOW)));
     //Probably not correct
     carAssemblyProcessTest.complete();
     assemblyLine.addCarToFinishedCars(carAssemblyProcessTest);
@@ -55,6 +57,7 @@ public class AssemblyLineTest {
     carAssemblyProcessTest.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
     carAssemblyProcess.getCarOrder().setCompletionTime(LocalDateTime.now());
     carAssemblyProcess.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+
 
   }
 
@@ -68,7 +71,7 @@ public class AssemblyLineTest {
   @Test
   public void givePendingAssemblyTasksFromWorkPostTest() {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-    assemblyLine.move(2);
+    assemblyLine.move();
 
     List<AssemblyTask> actual = assemblyLine.givePendingAssemblyTasksFromWorkPost(0);
     assertArrayEquals(new String[]{"Assembly car body", "Paint car"}, actual.stream().map(AssemblyTask::getName).toArray());

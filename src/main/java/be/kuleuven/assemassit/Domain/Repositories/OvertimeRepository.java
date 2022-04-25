@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class OverTimeRepository {
+public class OvertimeRepository {
   private final String FILE_PATH = "src/main/resources/over-time.txt";
   private int overTime = -1;
 
