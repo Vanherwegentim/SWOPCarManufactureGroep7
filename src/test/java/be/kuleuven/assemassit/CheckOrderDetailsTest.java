@@ -70,16 +70,17 @@ public class CheckOrderDetailsTest {
     // 2. The user indicates the order he wants to check the details for.
     // 3. The system shows the details of the order.
 
+    assertEquals(formatExpectedOrderDetails(carOrderID1, calculateExpectedDate(0), 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID2, calculateExpectedDate(1), 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID3, calculateExpectedDate(2), 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
 
-    assertEquals("", checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
-    assertEquals("", checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
-    assertEquals("", checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+    // 4. The user indicates he is finished viewing the details.
   }
 
   private int placeCarOrder(int modelID) {
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(modelID);
     return orderNewCarController.placeCarOrder(
-      2,
+      modelID,
       possibleOptionsOfCarModel.get("Body").get(0),
       possibleOptionsOfCarModel.get("Color").get(0),
       possibleOptionsOfCarModel.get("Engine").get(0),
@@ -90,11 +91,50 @@ public class CheckOrderDetailsTest {
       possibleOptionsOfCarModel.get("Spoiler").get(0));
   }
 
-  private String calculateExpectedDate(int count) {
+  private String formatExpectedOrderDetails(int orderID, String estimatedTime, int modelID) {
+    Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(modelID);
+    return String.format(
+      "Order ID: %d    [Estimated time: %s]" + System.lineSeparator() +
+        "    Car model: Model %s" + System.lineSeparator() +
+        "        Body: %s" + System.lineSeparator() +
+        "        Color: %s" + System.lineSeparator() +
+        "        Engine: %s" + System.lineSeparator() +
+        "        Gearbox: %s" + System.lineSeparator() +
+        "        Airco: %s" + System.lineSeparator() +
+        "        Wheels: %s" + System.lineSeparator() +
+        "        Seats: %s" + System.lineSeparator() +
+        "        Spoiler: %s" + System.lineSeparator(),
+      orderID, estimatedTime,
+      (char) (modelID + 65),
+      possibleOptionsOfCarModel.get("Body").get(0),
+      possibleOptionsOfCarModel.get("Color").get(0),
+      possibleOptionsOfCarModel.get("Engine").get(0),
+      possibleOptionsOfCarModel.get("GearBox").get(0),
+      possibleOptionsOfCarModel.get("Airco").get(0),
+      possibleOptionsOfCarModel.get("Wheels").get(0),
+      possibleOptionsOfCarModel.get("Seats").get(0),
+      possibleOptionsOfCarModel.get("Spoiler").get(0)
+    );
+
+    // Example of possible output:
+
+    // Order ID: 0    [Estimated time: 25/04/2022 at 20:23]
+    //     Car model: Model A
+    //         Body: SEDAN
+    //         Color: RED
+    //         Engine: STANDARD
+    //         Gearbox: SIX_SPEED_MANUAL
+    //         Airco: MANUAL
+    //         Wheels: WINTER
+    //         Seats: LEATHER_WHITE
+    //         Spoiler: NO_SPOILER
+  }
+
+  private String calculateExpectedDate(int orderCount) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    LocalDateTime localDateTimeNow = LocalDateTime.now().plusHours(count);
-    LocalDateTime expectedDate = LocalDateTime.now().plusHours(count);
+    LocalDateTime localDateTimeNow = LocalDateTime.now().plusHours(orderCount);
+    LocalDateTime expectedDate = LocalDateTime.now().plusHours(orderCount);
 
     if (localDateTimeNow.getHour() < 6) {
       expectedDate = expectedDate.withHour(9).withMinute(0);
@@ -102,8 +142,8 @@ public class CheckOrderDetailsTest {
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
       expectedDate = expectedDate.plusHours(3);
     }
-    if (localDateTimeNow.getHour() > 19) {
-      expectedDate = expectedDate.plusDays(1).withHour(9).withMinute(0);
+    if (localDateTimeNow.getHour() > 19 || (localDateTimeNow.getHour() == 19 && localDateTimeNow.getMinute() > 0)) {
+      expectedDate = expectedDate.plusDays(1).withHour(10).withMinute(0);
     }
     return expectedDate.format(formatter);
   }
