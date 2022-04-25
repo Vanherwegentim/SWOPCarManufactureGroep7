@@ -69,10 +69,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder2.isPending()).thenReturn(true);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder, mockedCarOrder2));
 
-    String expected = """
-      Order ID: 0    [Estimation time: 15/12/1998 at 12:00]    [Car model: Tolkswagen Molf]
-      Order ID: 1    [Estimation time: 16/12/1998 at 12:00]    [Car model: Tolkswagen Molf]
-      """;
+    String expected = "Order ID: 0    [Estimation time: 15/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Estimation time: 16/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat));
   }
@@ -88,10 +85,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder2.isPending()).thenReturn(false);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder, mockedCarOrder2));
 
-    String expected = """
-      Order ID: 0    [Completed at: 15/12/1998 at 15:00]    [Car model: Tolkswagen Molf]
-      Order ID: 1    [Completed at: 16/12/1998 at 15:00]    [Car model: Tolkswagen Molf]
-      """;
+    String expected = "Order ID: 0    [Completed at: 15/12/1998 at 15:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Completed at: 16/12/1998 at 15:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.giveCompletedCarOrders().stream().reduce("", String::concat));
   }
@@ -101,17 +95,7 @@ public class CheckOrderDetailsControllerTest {
 
     when(mockedCarOrder.isPending()).thenReturn(true);
 
-    String expected = """
-      Order ID: 0    [Estimation time: 15/12/1998 at 12:00]
-          Car model: Tolkswagen Molf
-              Body: BREAK
-              Color: BLACK
-              Engine: PERFORMANCE
-              Gearbox: FIVE_SPEED_MANUAL
-              Airco: AUTOMATIC
-              Wheels: COMFORT
-              Seats: LEATHER_BLACK
-      """;
+    String expected = "Order ID: 0    [Estimation time: 15/12/1998 at 12:00]" + System.lineSeparator() + "    Car model: Tolkswagen Molf" + System.lineSeparator() + "        Body: BREAK" + System.lineSeparator() + "        Color: BLACK" + System.lineSeparator() + "        Engine: PERFORMANCE" + System.lineSeparator() + "        Gearbox: FIVE_SPEED_MANUAL" + System.lineSeparator() + "        Airco: AUTOMATIC" + System.lineSeparator() + "        Wheels: COMFORT" + System.lineSeparator() + "        Seats: LEATHER_BLACK" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.giveOrderDetails(0));
   }
@@ -121,17 +105,7 @@ public class CheckOrderDetailsControllerTest {
 
     when(mockedCarOrder.isPending()).thenReturn(false);
 
-    String expected = """
-      Order ID: 0    [Completed at: 15/12/1998 at 15:00]
-          Car model: Tolkswagen Molf
-              Body: BREAK
-              Color: BLACK
-              Engine: PERFORMANCE
-              Gearbox: FIVE_SPEED_MANUAL
-              Airco: AUTOMATIC
-              Wheels: COMFORT
-              Seats: LEATHER_BLACK
-      """;
+    String expected = "Order ID: 0    [Completed at: 15/12/1998 at 15:00]" + System.lineSeparator() + "    Car model: Tolkswagen Molf" + System.lineSeparator() + "        Body: BREAK" + System.lineSeparator() + "        Color: BLACK" + System.lineSeparator() + "        Engine: PERFORMANCE" + System.lineSeparator() + "        Gearbox: FIVE_SPEED_MANUAL" + System.lineSeparator() + "        Airco: AUTOMATIC" + System.lineSeparator() + "        Wheels: COMFORT" + System.lineSeparator() + "        Seats: LEATHER_BLACK" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.giveOrderDetails(0));
   }

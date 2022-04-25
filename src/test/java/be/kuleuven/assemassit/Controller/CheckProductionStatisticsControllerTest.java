@@ -67,7 +67,7 @@ public class CheckProductionStatisticsControllerTest {
 
   @Test
   public void last2DelaysToStringTest() {
-    String expected = "The last 2 delays were at:\n" + LocalDate.now() + "\nand were this long:\n" + mockedAssemblyLine.last2Delays().get(LocalDate.now()) + System.lineSeparator();
+    String expected = "The last 2 delays were at:" + System.lineSeparator() + LocalDate.now() + System.lineSeparator() + "and were this long:" + System.lineSeparator() + mockedAssemblyLine.last2Delays().get(LocalDate.now()) + System.lineSeparator();
     String actual = controller.last2DelaysToString();
     assertEquals(expected, actual);
 

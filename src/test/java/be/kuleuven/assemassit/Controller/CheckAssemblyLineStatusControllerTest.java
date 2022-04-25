@@ -75,18 +75,14 @@ public class CheckAssemblyLineStatusControllerTest {
 
   @Test
   public void giveAllWorkPostsTest() {
-    String expected = """
-      0: CAR_BODY_POST
-      1: DRIVETRAIN_POST
-      2: ACCESSORIES_POST
-      """;
+    String expected = "0: Car Body Post" + System.lineSeparator() + "1: Drivetrain Post" + System.lineSeparator() + "2: Accessories Post" + System.lineSeparator();
 
     Map<Integer, String> allWorkPosts = controller.giveAllWorkPosts();
-    String actual = "";
+    StringBuilder actual = new StringBuilder();
     for (int key : allWorkPosts.keySet()) {
-      actual += key + ": " + allWorkPosts.get(key) + System.lineSeparator();
+      actual.append(key).append(": ").append(allWorkPosts.get(key)).append(System.lineSeparator());
     }
-    assertEquals(expected, actual);
+    assertEquals(expected, actual.toString());
   }
 
   @Test

@@ -115,43 +115,41 @@ public class OrderNewCarControllerTest {
 
   @Test
   public void givePossibleOptionsOfCarModelTest() {
-    String expected = """
-      GearBox
-      SIX_SPEED_MANUAL
-      FIVE_SPEED_MANUAL
-      FIVE_SPEED_AUTOMATIC
-      Airco
-      MANUAL
-      AUTOMATIC
-      NO_AIRCO
-      Spoiler
-      LOW
-      HIGH
-      NO_SPOILER
-      Wheels
-      COMFORT
-      SPORT
-      WINTER
-      Color
-      RED
-      BLUE
-      BLACK
-      WHITE
-      GREEN
-      YELLOW
-      Body
-      SEDAN
-      BREAK
-      SPORT
-      Engine
-      STANDARD
-      PERFORMANCE
-      ULTRA
-      Seats
-      LEATHER_BLACK
-      LEATHER_WHITE
-      VINYL_GREY
-      """;
+    String expected = "GearBox" + System.lineSeparator() +
+      "SIX_SPEED_MANUAL" + System.lineSeparator() +
+      "FIVE_SPEED_MANUAL" + System.lineSeparator() +
+      "FIVE_SPEED_AUTOMATIC" + System.lineSeparator() +
+      "Airco" + System.lineSeparator() +
+      "MANUAL" + System.lineSeparator() +
+      "AUTOMATIC" + System.lineSeparator() +
+      "NO_AIRCO" + System.lineSeparator() +
+      "Spoiler" + System.lineSeparator() +
+      "LOW" + System.lineSeparator() +
+      "HIGH" + System.lineSeparator() +
+      "NO_SPOILER" + System.lineSeparator() +
+      "Wheels" + System.lineSeparator() +
+      "COMFORT" + System.lineSeparator() +
+      "SPORT" + System.lineSeparator() +
+      "WINTER" + System.lineSeparator() +
+      "Color" + System.lineSeparator() +
+      "RED" + System.lineSeparator() +
+      "BLUE" + System.lineSeparator() +
+      "BLACK" + System.lineSeparator() +
+      "WHITE" + System.lineSeparator() +
+      "GREEN" + System.lineSeparator() +
+      "YELLOW" + System.lineSeparator() +
+      "Body" + System.lineSeparator() +
+      "SEDAN" + System.lineSeparator() +
+      "BREAK" + System.lineSeparator() +
+      "SPORT" + System.lineSeparator() +
+      "Engine" + System.lineSeparator() +
+      "STANDARD" + System.lineSeparator() +
+      "PERFORMANCE" + System.lineSeparator() +
+      "ULTRA" + System.lineSeparator() +
+      "Seats" + System.lineSeparator() +
+      "LEATHER_BLACK" + System.lineSeparator() +
+      "LEATHER_WHITE" + System.lineSeparator() +
+      "VINYL_GREY" + System.lineSeparator();
 
     String actual = "";
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
@@ -164,10 +162,11 @@ public class OrderNewCarControllerTest {
     assertEquals(expected, actual);
   }
 
+  // TODO Ruben gaat dit fixen
   @Test
   public void placeCarOrderTest_succeeds() {
-    LocalDateTime estimatedCompletionTime = orderNewCarController.placeCarOrder(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
-    assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), estimatedCompletionTime);
+    LocalDateTime time = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
+    assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), time);
   }
 
   @Test

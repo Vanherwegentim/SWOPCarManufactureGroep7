@@ -33,11 +33,11 @@ public class CheckProductionStatisticsController {
   }
 
   public String last2DelaysToString() {
-    String string = "The last 2 delays were at:\n";
+    String string = "The last 2 delays were at:" + System.lineSeparator();
     for (LocalDate localDate : assemblyLine.last2Delays().keySet()) {
       string = string + localDate.toString() + System.lineSeparator();
     }
-    string += "and were this long:\n";
+    string += "and were this long:" + System.lineSeparator();
     for (LocalDate localDate : assemblyLine.last2Delays().keySet()) {
       string = string + assemblyLine.last2Delays().get(localDate) + System.lineSeparator();
     }
