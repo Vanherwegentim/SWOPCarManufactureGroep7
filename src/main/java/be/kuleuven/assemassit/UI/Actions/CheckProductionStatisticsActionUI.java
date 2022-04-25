@@ -6,8 +6,8 @@ import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
 public class CheckProductionStatisticsActionUI implements UI {
+  private final ControllerFactory controllerFactory;
   private CheckProductionStatisticsController checkProductionStatisticsController;
-  private ControllerFactory controllerFactory;
 
   public CheckProductionStatisticsActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -19,14 +19,16 @@ public class CheckProductionStatisticsActionUI implements UI {
 
     while (true) {
 
-      IOCall.out("CAR STATISTICS: \n");
+      IOCall.out("CAR STATISTICS: ");
+      IOCall.out();
       IOCall.out(checkProductionStatisticsController.averageCarsInADayToString());
       IOCall.out();
       IOCall.out(checkProductionStatisticsController.medianCarsInADayToString());
       IOCall.out();
       IOCall.out(checkProductionStatisticsController.exactCarsIn2DaystoString());
       IOCall.out();
-      IOCall.out("DELAY STATISTICS: \n");
+      IOCall.out("DELAY STATISTICS: ");
+      IOCall.out();
       IOCall.out(checkProductionStatisticsController.averageDelayPerOrderToString());
       IOCall.out();
       IOCall.out(checkProductionStatisticsController.medianDelayPerOrderToString());

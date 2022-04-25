@@ -38,10 +38,10 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
           //assemblyTask.setCompletionTime(minutes);
         }
 
-        CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
-        carAssemblyProcess.complete();
 
         if (!iterator.hasPrevious()) {
+          CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
+          carAssemblyProcess.complete();
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
 

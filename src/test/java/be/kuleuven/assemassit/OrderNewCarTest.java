@@ -48,51 +48,50 @@ public class OrderNewCarTest {
     assertEquals("Model C", listOfCarModels.get(2));
 
     //Step 5: The system displays an overview of all possible options, after which the user can assemble the desired car order
-    String expectedPossibleOptionsOfCarModel = """
-      GearBox
-      SIX_SPEED_MANUAL
-      FIVE_SPEED_MANUAL
-      FIVE_SPEED_AUTOMATIC
-      Airco
-      MANUAL
-      AUTOMATIC
-      NO_AIRCO
-      Spoiler
-      NO_SPOILER
-      Wheels
-      WINTER
-      COMFORT
-      SPORT
-      Color
-      RED
-      BLUE
-      BLACK
-      WHITE
-      Body
-      SEDAN
-      BREAK
-      Engine
-      STANDARD
-      PERFORMANCE
-      Seats
-      LEATHER_WHITE
-      LEATHER_BLACK
-      VINYL_GREY
-      """;
+    String expectedPossibleOptionsOfCarModel =
+      "GearBox" + System.lineSeparator() +
+        "SIX_SPEED_MANUAL" + System.lineSeparator() +
+        "FIVE_SPEED_MANUAL" + System.lineSeparator() +
+        "FIVE_SPEED_AUTOMATIC" + System.lineSeparator() +
+        "Airco" + System.lineSeparator() +
+        "MANUAL" + System.lineSeparator() +
+        "AUTOMATIC" + System.lineSeparator() +
+        "NO_AIRCO" + System.lineSeparator() +
+        "Spoiler" + System.lineSeparator() +
+        "NO_SPOILER" + System.lineSeparator() +
+        "Wheels" + System.lineSeparator() +
+        "WINTER" + System.lineSeparator() +
+        "COMFORT" + System.lineSeparator() +
+        "SPORT" + System.lineSeparator() +
+        "Color" + System.lineSeparator() +
+        "RED" + System.lineSeparator() +
+        "BLUE" + System.lineSeparator() +
+        "BLACK" + System.lineSeparator() +
+        "WHITE" + System.lineSeparator() +
+        "Body" + System.lineSeparator() +
+        "SEDAN" + System.lineSeparator() +
+        "BREAK" + System.lineSeparator() +
+        "Engine" + System.lineSeparator() +
+        "STANDARD" + System.lineSeparator() +
+        "PERFORMANCE" + System.lineSeparator() +
+        "Seats" + System.lineSeparator() +
+        "LEATHER_WHITE" + System.lineSeparator() +
+        "LEATHER_BLACK" + System.lineSeparator() +
+        "VINYL_GREY" + System.lineSeparator();
 
     String actualPossibleOptionsOfCarModel = "";
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
-      actualPossibleOptionsOfCarModel += key + "\n";
-      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + "\n");
+      actualPossibleOptionsOfCarModel += key + System.lineSeparator();
+      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + System.lineSeparator());
     }
 
     assertEquals(expectedPossibleOptionsOfCarModel, actualPossibleOptionsOfCarModel);
 
     //Step 6: the user completes the ordering form
 
-    LocalDateTime estimatedTime = orderNewCarController.placeCarOrder(
+    int carOrderId = orderNewCarController.placeCarOrder(
       0,
       possibleOptionsOfCarModel.get("Body").get(0),
       possibleOptionsOfCarModel.get("Color").get(0),
@@ -103,10 +102,13 @@ public class OrderNewCarTest {
       possibleOptionsOfCarModel.get("Wheels").get(0),
       possibleOptionsOfCarModel.get("Spoiler").get(0));
 
+    LocalDateTime estimatedTime = orderNewCarController.getCarOrderEstimatedCompletionTime(carOrderId);
+
     //Step 7: The system stores the new order and updates the production schedule.
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    String expected = String.format("Order ID: 0    [Estimation time: %s]    [Car model: Model A]\n", estimatedTime.format(formatter));
+
+    String expected = String.format("Order ID: %d    [Estimation time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
     String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 
     assertEquals(expected, actual);
@@ -147,44 +149,43 @@ public class OrderNewCarTest {
     assertEquals("Model C", listOfCarModels.get(2));
 
     //Step 5: The system displays an overview of all possible options, after which the user can assemble the desired car order
-    String expectedPossibleOptionsOfCarModel = """
-      GearBox
-      SIX_SPEED_MANUAL
-      FIVE_SPEED_MANUAL
-      FIVE_SPEED_AUTOMATIC
-      Airco
-      MANUAL
-      AUTOMATIC
-      NO_AIRCO
-      Spoiler
-      NO_SPOILER
-      Wheels
-      WINTER
-      COMFORT
-      SPORT
-      Color
-      RED
-      BLUE
-      BLACK
-      WHITE
-      Body
-      SEDAN
-      BREAK
-      Engine
-      STANDARD
-      PERFORMANCE
-      Seats
-      LEATHER_WHITE
-      LEATHER_BLACK
-      VINYL_GREY
-      """;
+    String expectedPossibleOptionsOfCarModel =
+      "GearBox" + System.lineSeparator() +
+        "SIX_SPEED_MANUAL" + System.lineSeparator() +
+        "FIVE_SPEED_MANUAL" + System.lineSeparator() +
+        "FIVE_SPEED_AUTOMATIC" + System.lineSeparator() +
+        "Airco" + System.lineSeparator() +
+        "MANUAL" + System.lineSeparator() +
+        "AUTOMATIC" + System.lineSeparator() +
+        "NO_AIRCO" + System.lineSeparator() +
+        "Spoiler" + System.lineSeparator() +
+        "NO_SPOILER" + System.lineSeparator() +
+        "Wheels" + System.lineSeparator() +
+        "WINTER" + System.lineSeparator() +
+        "COMFORT" + System.lineSeparator() +
+        "SPORT" + System.lineSeparator() +
+        "Color" + System.lineSeparator() +
+        "RED" + System.lineSeparator() +
+        "BLUE" + System.lineSeparator() +
+        "BLACK" + System.lineSeparator() +
+        "WHITE" + System.lineSeparator() +
+        "Body" + System.lineSeparator() +
+        "SEDAN" + System.lineSeparator() +
+        "BREAK" + System.lineSeparator() +
+        "Engine" + System.lineSeparator() +
+        "STANDARD" + System.lineSeparator() +
+        "PERFORMANCE" + System.lineSeparator() +
+        "Seats" + System.lineSeparator() +
+        "LEATHER_WHITE" + System.lineSeparator() +
+        "LEATHER_BLACK" + System.lineSeparator() +
+        "VINYL_GREY" + System.lineSeparator();
 
     String actualPossibleOptionsOfCarModel = "";
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
-      actualPossibleOptionsOfCarModel += key + "\n";
-      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + "\n");
+      actualPossibleOptionsOfCarModel += key + System.lineSeparator();
+      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + System.lineSeparator());
     }
 
     assertEquals(expectedPossibleOptionsOfCarModel, actualPossibleOptionsOfCarModel);
@@ -248,7 +249,7 @@ public class OrderNewCarTest {
     );
 
     //The user finally chooses valid options to place a carOrder, and proceeds in the use case
-    LocalDateTime estimatedTime = orderNewCarController.placeCarOrder(
+    int carOrderId = orderNewCarController.placeCarOrder(
       0,
       possibleOptionsOfCarModel.get("Body").get(0),
       possibleOptionsOfCarModel.get("Color").get(0),
@@ -259,22 +260,27 @@ public class OrderNewCarTest {
       possibleOptionsOfCarModel.get("Wheels").get(0),
       possibleOptionsOfCarModel.get("Spoiler").get(0));
 
+    LocalDateTime estimatedTime = orderNewCarController.getCarOrderEstimatedCompletionTime(carOrderId);
+
 
     //Step 7: The system stores the new order and updates the production schedule.
-    //orderNewCarController.givePendingCarOrders().get(0);
+
+    //TODO Ruben gaat dit nakijken
+
+    //checkOrderDetailsController.givePendingCarOrders().get(0);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    String expected = String.format("    Car model: Tolkswagen Rolo\n" +
-      "        Body: SEAD\n" +
-      "        Color: RED\n" +
-      "        Engine: STANDARD\n" +
-      "        Gearbox: MANUAL\n" +
-      "        Airco: MANUAL\n" +
-      "        Wheels: COMFORT\n" +
-      "        Seats: LEATHER_BLACK\n", estimatedTime.format(formatter));
+    String expected = String.format("    Car model: Tolkswagen Rolo" + System.lineSeparator() +
+      "        Body: SEAD" + System.lineSeparator() +
+      "        Color: RED" + System.lineSeparator() +
+      "        Engine: STANDARD" + System.lineSeparator() +
+      "        Gearbox: MANUAL" + System.lineSeparator() +
+      "        Airco: MANUAL" + System.lineSeparator() +
+      "        Wheels: COMFORT" + System.lineSeparator() +
+      "        Seats: LEATHER_BLACK" + System.lineSeparator(), estimatedTime.format(formatter));
 
-    //String actual = orderNewCarController.givePendingCarOrders().stream().reduce("", String::concat);
-    //actual = actual.substring(actual.indexOf('\n') + 1);
+    //String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
+    //actual = actual.substring(actual.indexOf(System.lineSeparator()) + 1);
 
     //assertEquals(expected, actual);
 
