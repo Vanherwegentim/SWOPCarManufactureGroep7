@@ -70,7 +70,7 @@ public class ControllerFactory {
   }
 
   public CheckOrderDetailsController createCheckOrderDetailsController() {
-    return new CheckOrderDetailsController(loggedInGarageHolder);
+    return controllerFactoryState.createCheckOrderDetailsController(loggedInGarageHolder);
   }
 
   /**

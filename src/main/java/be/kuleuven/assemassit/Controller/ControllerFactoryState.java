@@ -18,7 +18,7 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
-  public CheckOrderDetailsController createCheckOrderDetailsController() {
+  public CheckOrderDetailsController createCheckOrderDetailsController(GarageHolder loggedInGarageHolder) {
     throw new IllegalStateException();
   }
 

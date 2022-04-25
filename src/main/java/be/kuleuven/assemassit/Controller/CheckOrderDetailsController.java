@@ -143,4 +143,7 @@ public class CheckOrderDetailsController {
   }
 
 
+  public String giveLoggedInGarageHolderName() {
+    return loggedInGarageHolder.getName();
+  }
 }

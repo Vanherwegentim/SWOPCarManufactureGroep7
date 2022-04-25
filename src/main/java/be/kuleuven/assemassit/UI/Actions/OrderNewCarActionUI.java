@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions;
 
+import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
 import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.UI.IOCall;
@@ -12,6 +13,7 @@ import java.util.*;
 
 public class OrderNewCarActionUI implements UI {
   private OrderNewCarController orderNewCarController;
+  private CheckOrderDetailsController checkOrderDetailsController;
   private ControllerFactory controllerFactory;
 
   public OrderNewCarActionUI(ControllerFactory controllerFactory) {
@@ -76,6 +78,7 @@ public class OrderNewCarActionUI implements UI {
 
   public void run() {
     this.orderNewCarController = controllerFactory.createOrderNewCarController();
+    this.checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
 
     int choice;
 
@@ -84,10 +87,10 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
 
       IOCall.out("Pending:");
-      //displayCarOrders(orderNewCarController.givePendingCarOrders());
+      displayCarOrders(checkOrderDetailsController.givePendingCarOrders());
 
       IOCall.out("History:");
-      //displayCarOrders(orderNewCarController.giveCompletedCarOrders());
+      displayCarOrders(checkOrderDetailsController.giveCompletedCarOrders());
 
       IOCall.out();
       IOCall.out("Please choose an action:");

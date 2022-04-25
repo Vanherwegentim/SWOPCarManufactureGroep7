@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.UI.Actions.GarageHolderActions;
 
 import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.UI.Actions.CheckOrderDetailsActionUI;
 import be.kuleuven.assemassit.UI.Actions.OrderNewCarActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
@@ -8,12 +9,14 @@ import be.kuleuven.assemassit.UI.UI;
 public class GarageHolderActionsOverviewUI implements UI {
 
   private OrderNewCarActionUI orderNewCarActionUI;
+  private CheckOrderDetailsActionUI checkOrderDetailsActionUI;
   private ControllerFactory controllerFactory;
 
 
   public GarageHolderActionsOverviewUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
     this.orderNewCarActionUI = new OrderNewCarActionUI(controllerFactory);
+    this.checkOrderDetailsActionUI = new CheckOrderDetailsActionUI(controllerFactory);
   }
 
   // TODO: change to correct controllers
@@ -27,11 +30,13 @@ public class GarageHolderActionsOverviewUI implements UI {
       IOCall.out("Welcome " + loggedInGarageHolderName);
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Order new car");
+      IOCall.out(" 2: Check order details");
       IOCall.out("-1: Logout and go back");
 
       action = IOCall.in();
       switch (action) {
         case 1 -> this.orderNewCarActionUI.run();
+        case 2 -> this.checkOrderDetailsActionUI.run();
       }
     } while (action != -1 && action != 1);
 
