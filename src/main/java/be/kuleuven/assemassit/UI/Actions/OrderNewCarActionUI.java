@@ -88,6 +88,9 @@ public class OrderNewCarActionUI implements UI {
     int choice;
 
     do {
+
+      // 1. The system presents an overview of the orders placed by the user
+
       IOCall.out();
       IOCall.out("Orders placed by: " + orderNewCarController.giveLoggedInGarageHolderName());
 
@@ -97,6 +100,8 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out("History:");
       displayCarOrders(checkOrderDetailsController.giveCompletedCarOrders());
 
+
+      // 2. The user indicates he wants to place a new car order
       IOCall.out();
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Place a new order");
@@ -106,6 +111,9 @@ public class OrderNewCarActionUI implements UI {
 
       switch (choice) {
         case 1 -> {
+
+          // 3. The system shows a list of available car models
+          // 4. The user indicates the car model he wishes to order.
           Optional<Integer> chosenCarModelIdOptional = displayChooseCarModel(orderNewCarController.giveListOfCarModels());
 
           if (chosenCarModelIdOptional.isEmpty())
@@ -113,6 +121,8 @@ public class OrderNewCarActionUI implements UI {
 
           int chosenCarModelId = chosenCarModelIdOptional.get();
 
+          // 5. The system displays the ordering form.
+          // 6. The user completes the ordering form.
           Map<String, List<String>> parts = orderNewCarController.givePossibleOptionsOfCarModel(chosenCarModelId);
 
           Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
@@ -123,6 +133,8 @@ public class OrderNewCarActionUI implements UI {
 
           Map<String, String> selectedParts = selectedPartsOptional.get();
 
+          // 7. The system stores the new order and updates the production schedule.
+          // 8. The system presents an estimated completion date for the new order
           LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
@@ -133,6 +145,8 @@ public class OrderNewCarActionUI implements UI {
           IOCall.out("Press ENTER to continue...");
           IOCall.waitForConfirmation();
         }
+
+        // Alternate flow: The user indicates he wants to leave the overview.
       }
     } while (choice != -1 && (choice != 1));
   }

@@ -21,6 +21,7 @@ public class CheckOrderDetailsActionUI {
     int choice;
 
     do {
+      // 1. The system presents an overview of the orders placed by the user
       IOCall.out();
       IOCall.out("Orders placed by: " + checkOrderDetailsController.giveLoggedInGarageHolderName());
 
@@ -30,6 +31,8 @@ public class CheckOrderDetailsActionUI {
       IOCall.out("History:");
       displayCarOrders(checkOrderDetailsController.giveCompletedCarOrders());
 
+      // 2. The user indicates the order he wants to check the details for.
+      // Alternate flow: The user indicates he wants to leave the overview.
       IOCall.out();
       IOCall.out("Please insert the ID of the order you want to view or insert -1 to go back:");
 
@@ -39,12 +42,16 @@ public class CheckOrderDetailsActionUI {
         if (carOrder.isEmpty()) {
           IOCall.out("Please enter a valid ID");
         } else {
+
+          // 3. The system shows the details of the order
           IOCall.out(carOrder.get());
 
+          // 4. The user indicates he is finished viewing the details.
           IOCall.out("Press ENTER to continue...");
           IOCall.waitForConfirmation();
         }
       }
+      // Alternate flow: The user indicates he wants to view another order.
     } while (choice >= 0);
   }
 
