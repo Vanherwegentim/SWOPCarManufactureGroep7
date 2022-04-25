@@ -60,7 +60,7 @@ public class CheckOrderDetailsController {
 
   public Optional<String> giveOrderDetails(int orderId) {
 
-    Optional<CarOrder> order = loggedInGarageHolder.getOrder(orderId);
+    Optional<CarOrder> order = loggedInGarageHolder.findCarOrder(orderId);
     if (order.isPresent()) {
       return Optional.of(carOrderDetailedFormattedString(order.get()));
     }

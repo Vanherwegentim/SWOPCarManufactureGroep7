@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,13 +44,14 @@ public class OrderNewCarControllerTest {
     when(mockedGarageHolder.getId()).thenReturn(0);
     when(mockedGarageHolder.getName()).thenReturn("WolksVagen Garage Lokeren BVBA NV");
     when(mockedGarageHolder.getCompletionTimeFromOrder(0)).thenReturn(LocalDateTime.of(1998, 12, 15, 12, 0));
-    when(mockedGarageHolder.getOrder(0)).thenReturn(Optional.of(mockedCarOrder));
+    when(mockedGarageHolder.findCarOrder(anyInt())).thenReturn(Optional.of(mockedCarOrder));
 
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(mockedGarageHolder));
 
     when(mockedCarOrder.getEstimatedCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 12, 0));
     when(mockedCarOrder.getCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 15, 0));
     when(mockedCarOrder.getCar()).thenReturn(mockedCar);
+    when(mockedCarOrder.getId()).thenReturn(0);
 
     when(mockedCar.getCarModel()).thenReturn(mockedCarModel);
     when(mockedCar.getBody()).thenReturn(Body.BREAK);
@@ -163,7 +165,6 @@ public class OrderNewCarControllerTest {
     assertEquals(expected, actual);
   }
 
-  // TODO Ruben gaat dit fixen
   @Test
   public void placeCarOrderTest_succeeds() {
     LocalDateTime time = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");

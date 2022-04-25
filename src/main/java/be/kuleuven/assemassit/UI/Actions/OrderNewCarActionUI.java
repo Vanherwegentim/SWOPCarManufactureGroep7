@@ -15,7 +15,6 @@ public class OrderNewCarActionUI implements UI {
   private final ControllerFactory controllerFactory;
   private OrderNewCarController orderNewCarController;
   private CheckOrderDetailsController checkOrderDetailsController;
-  private ControllerFactory controllerFactory;
 
   public OrderNewCarActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -134,10 +133,9 @@ public class OrderNewCarActionUI implements UI {
 
           Map<String, String> selectedParts = selectedPartsOptional.get();
 
-          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
           // 7. The system stores the new order and updates the production schedule.
           // 8. The system presents an estimated completion date for the new order
-          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrder(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
+          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
           IOCall.out();

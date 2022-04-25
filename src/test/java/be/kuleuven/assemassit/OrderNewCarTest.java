@@ -108,7 +108,7 @@ public class OrderNewCarTest {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
 
-    String expected = String.format("Order ID: %d    [Estimation time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
+    String expected = String.format("Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
     String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 
     assertEquals(expected, actual);
@@ -265,24 +265,14 @@ public class OrderNewCarTest {
 
     //Step 7: The system stores the new order and updates the production schedule.
 
-    //TODO Ruben gaat dit nakijken
-
-    //checkOrderDetailsController.givePendingCarOrders().get(0);
+    checkOrderDetailsController.givePendingCarOrders().get(0);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    String expected = String.format("    Car model: Tolkswagen Rolo" + System.lineSeparator() +
-      "        Body: SEAD" + System.lineSeparator() +
-      "        Color: RED" + System.lineSeparator() +
-      "        Engine: STANDARD" + System.lineSeparator() +
-      "        Gearbox: MANUAL" + System.lineSeparator() +
-      "        Airco: MANUAL" + System.lineSeparator() +
-      "        Wheels: COMFORT" + System.lineSeparator() +
-      "        Seats: LEATHER_BLACK" + System.lineSeparator(), estimatedTime.format(formatter));
+    String expected = String.format("Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
 
-    //String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
-    //actual = actual.substring(actual.indexOf(System.lineSeparator()) + 1);
+    String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 
-    //assertEquals(expected, actual);
+    assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
     LocalDateTime localDateTimeNow = LocalDateTime.now();

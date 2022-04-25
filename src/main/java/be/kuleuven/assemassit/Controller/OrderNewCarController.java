@@ -68,7 +68,7 @@ public class OrderNewCarController {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
-    return loggedInGarageHolder.getOrder(orderId);
+    return loggedInGarageHolder.findCarOrder(orderId);
   }
 
   /**
@@ -171,10 +171,11 @@ public class OrderNewCarController {
   public LocalDateTime getCarOrderEstimatedCompletionTime(int carOrderId) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
-    CarOrder carOrder = loggedInGarageHolder.findCarOrder(carOrderId);
-
-
-    return carOrder.getEstimatedCompletionTime();
+    Optional<CarOrder> carOrder = loggedInGarageHolder.findCarOrder(carOrderId);
+    if (carOrder.isPresent()) {
+      return carOrder.get().getEstimatedCompletionTime();
+    }
+    throw new IllegalArgumentException("CarOrder with given ID not found");
   }
 
   public LocalDateTime placeCarOrderAndReturnEstimatedCompletionTime(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
