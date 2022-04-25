@@ -157,8 +157,8 @@ public class OrderNewCarControllerTest {
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
-      actual += key + "\n";
-      actual += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + "\n");
+      actual += key + System.lineSeparator();
+      actual += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + System.lineSeparator());
     }
 
     assertEquals(expected, actual);

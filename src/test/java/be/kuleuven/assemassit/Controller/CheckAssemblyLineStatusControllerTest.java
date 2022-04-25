@@ -84,7 +84,7 @@ public class CheckAssemblyLineStatusControllerTest {
     Map<Integer, String> allWorkPosts = controller.giveAllWorkPosts();
     String actual = "";
     for (int key : allWorkPosts.keySet()) {
-      actual += key + ": " + allWorkPosts.get(key) + "\n";
+      actual += key + ": " + allWorkPosts.get(key) + System.lineSeparator();
     }
     assertEquals(expected, actual);
   }

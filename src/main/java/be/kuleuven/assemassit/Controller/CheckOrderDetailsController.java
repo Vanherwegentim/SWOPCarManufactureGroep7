@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class CheckOrderDetailsController {
 
-  private GarageHolder loggedInGarageHolder;
+  private final GarageHolder loggedInGarageHolder;
 
   /**
    * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
@@ -87,7 +87,7 @@ public class CheckOrderDetailsController {
       .append("[Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
       .append("]");
-    result.append("\n");
+    result.append(System.lineSeparator());
 
 
     return result.toString();
@@ -112,13 +112,13 @@ public class CheckOrderDetailsController {
         .append("[Completed at: ")
         .append(carOrder.getCompletionTime().format(formatter))
         .append("]");
-    result.append("\n");
+    result.append(System.lineSeparator());
 
     result
       .append(spacer)
       .append("Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
-      .append("\n");
+      .append(System.lineSeparator());
 
 
     Map<String, String> parts = new LinkedHashMap<>();
@@ -136,7 +136,7 @@ public class CheckOrderDetailsController {
         .append(partWithOption.getKey())
         .append(": ")
         .append(partWithOption.getValue())
-        .append("\n");
+        .append(System.lineSeparator());
     }
 
     return result.toString();

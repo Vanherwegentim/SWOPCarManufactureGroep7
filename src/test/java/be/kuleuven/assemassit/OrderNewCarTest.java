@@ -84,8 +84,8 @@ public class OrderNewCarTest {
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
-      actualPossibleOptionsOfCarModel += key + "\n";
-      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + "\n");
+      actualPossibleOptionsOfCarModel += key + System.lineSeparator();
+      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + System.lineSeparator());
     }
 
     assertEquals(expectedPossibleOptionsOfCarModel, actualPossibleOptionsOfCarModel);
@@ -183,8 +183,8 @@ public class OrderNewCarTest {
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(0);
 
     for (String key : possibleOptionsOfCarModel.keySet()) {
-      actualPossibleOptionsOfCarModel += key + "\n";
-      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + "\n");
+      actualPossibleOptionsOfCarModel += key + System.lineSeparator();
+      actualPossibleOptionsOfCarModel += possibleOptionsOfCarModel.get(key).stream().reduce("", (s, s2) -> s + s2 + System.lineSeparator());
     }
 
     assertEquals(expectedPossibleOptionsOfCarModel, actualPossibleOptionsOfCarModel);

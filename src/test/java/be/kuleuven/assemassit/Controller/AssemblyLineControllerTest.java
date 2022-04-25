@@ -71,15 +71,15 @@ public class AssemblyLineControllerTest {
   @Test
   public void giveAllWorkPostsTest() {
     String expected = """
-      0: CAR_BODY_POST
-      1: DRIVETRAIN_POST
-      2: ACCESSORIES_POST
+      0: Car Body Post
+      1: Drivetrain Post
+      2: Accessories Post
       """;
 
     Map<Integer, String> allWorkPosts = assemblyLineController.giveAllWorkPosts();
     StringBuilder actual = new StringBuilder();
     for (int key : allWorkPosts.keySet()) {
-      actual.append(key).append(": ").append(allWorkPosts.get(key)).append("\n");
+      actual.append(key).append(": ").append(allWorkPosts.get(key)).append(System.lineSeparator());
     }
     assertEquals(expected, actual.toString());
   }

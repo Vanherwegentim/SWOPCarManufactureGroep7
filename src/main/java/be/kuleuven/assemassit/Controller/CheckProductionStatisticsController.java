@@ -5,7 +5,7 @@ import be.kuleuven.assemassit.Domain.AssemblyLine;
 import java.time.LocalDate;
 
 public class CheckProductionStatisticsController {
-  private AssemblyLine assemblyLine;
+  private final AssemblyLine assemblyLine;
 
   protected CheckProductionStatisticsController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
@@ -35,20 +35,20 @@ public class CheckProductionStatisticsController {
   public String last2DelaysToString() {
     String string = "The last 2 delays were at:\n";
     for (LocalDate localDate : assemblyLine.last2Delays().keySet()) {
-      string = string + localDate.toString() + "\n";
+      string = string + localDate.toString() + System.lineSeparator();
     }
     string += "and were this long:\n";
     for (LocalDate localDate : assemblyLine.last2Delays().keySet()) {
-      string = string + assemblyLine.last2Delays().get(localDate) + "\n";
+      string = string + assemblyLine.last2Delays().get(localDate) + System.lineSeparator();
     }
     return string;
   }
 
 //  public String checkStatistics() {
 //    //TODO
-//    return "The average amount cars made in a day are: " + assemblyLine.averageCarsInADay() + "\n" +
-//      "The median amount of cars produced in a day are: " + assemblyLine.medianCarsInADay() + "\n" +
-//      "The exact amount of cars made in the last 2 days are: " + assemblyLine.exactCarsIn2Days() + "\n" +
+//    return "The average amount cars made in a day are: " + assemblyLine.averageCarsInADay() + System.lineSeparator() +
+//      "The median amount of cars produced in a day are: " + assemblyLine.medianCarsInADay() + System.lineSeparator() +
+//      "The exact amount of cars made in the last 2 days are: " + assemblyLine.exactCarsIn2Days() + System.lineSeparator() +
 //      "The average delay for orders is";
 //
 //
