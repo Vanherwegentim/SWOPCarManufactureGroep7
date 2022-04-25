@@ -28,14 +28,15 @@ public class WorkPostTest {
     type = WorkPostType.CAR_BODY_POST;
     this.carOrder = new CarOrder(
       new Car(
-        new CarModel(0, "Test", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
-        Body.SEAD,
+        new CarModel(0, "Test", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+        Body.SEDAN,
         Color.BLACK,
         Engine.PERFORMANCE,
-        Gearbox.MANUAL,
+        Gearbox.FIVE_SPEED_MANUAL,
         Seat.LEATHER_BLACK,
         Airco.MANUAL,
-        Wheel.SPORT));
+        Wheel.SPORT,
+        Spoiler.NO_SPOILER));
     carAssemblyProcess = new CarAssemblyProcess(carOrder);
   }
 
@@ -73,7 +74,7 @@ public class WorkPostTest {
     workPost.addProcessToWorkPost(carAssemblyProcess);
 
     workPost.setActiveAssemblyTask(workPost.getWorkPostAssemblyTasks().get(0).getId());
-    assertEquals(workPost.getActiveAssemblyTask().getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
+    assertEquals(workPost.getActiveAssemblyTask().getActions(), new CarBodyAssemblyTask(Body.SEDAN).getActions());
   }
 
 
@@ -107,6 +108,6 @@ public class WorkPostTest {
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
 
-    assertEquals(workPost.findAssemblyTask(0).getActions(), new CarBodyAssemblyTask(Body.SEAD).getActions());
+    assertEquals(workPost.findAssemblyTask(0).getActions(), new CarBodyAssemblyTask(Body.SEDAN).getActions());
   }
 }

@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CarManufactoringCompanyTest {
   private List<CarModel> carModels;
   private AssemblyLine assemblyLine;
+  private CarModelRepository carModelRepository;
   private LocalTime openingTime;
   private LocalTime closingTime;
   private CarManufactoringCompany carManufactoringCompany;
@@ -34,14 +35,16 @@ public class CarManufactoringCompanyTest {
     carAssemblyProcess = new CarAssemblyProcess(
       new CarOrder(
         new Car(
-          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
-          Body.SEAD,
+          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+          Body.SEDAN,
           Color.BLACK,
           Engine.PERFORMANCE,
-          Gearbox.MANUAL,
+          Gearbox.FIVE_SPEED_MANUAL,
           Seat.LEATHER_BLACK,
           Airco.MANUAL,
-          Wheel.SPORT)));
+          Wheel.SPORT,
+          Spoiler.LOW)));
+
     carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
   }
 
@@ -49,9 +52,27 @@ public class CarManufactoringCompanyTest {
   @Test
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
     // TODO: DONE this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
-//    assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
+    // assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
     assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+    /*
+    LocalDateTime localDateTimeNow = LocalDateTime.now();
+    LocalDateTime expectedDate = LocalDateTime.now();
+    LocalDateTime actual = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
 
+    if (localDateTimeNow.getHour() < 6) {
+      expectedDate = expectedDate.withHour(8).withMinute(0);
+    }
+    if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
+      expectedDate = expectedDate.plusHours(3);
+    }
+    if (localDateTimeNow.getHour() > 19) {
+      expectedDate = expectedDate.plusDays(1).withHour(8).withMinute(0);
+    }
+
+    assertEquals(expectedDate.getMinute(), actual.getMinute());
+    assertEquals(expectedDate.getHour(), actual.getHour());
+    assertEquals(expectedDate.toLocalDate(), actual.toLocalDate());
+    */
   }
 
   @Test

@@ -19,14 +19,15 @@ public class CarAssemblyProcessTest {
   public void beforeEach() {
     carOrder = new CarOrder(
       new Car(
-        new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values())),
-        Body.SEAD,
+        new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+        Body.SEDAN,
         Color.BLACK,
         Engine.PERFORMANCE,
-        Gearbox.MANUAL,
+        Gearbox.FIVE_SPEED_MANUAL,
         Seat.LEATHER_BLACK,
         Airco.MANUAL,
-        Wheel.SPORT));
+        Wheel.SPORT,
+        Spoiler.LOW));
 
     this.assemblyTasks = Arrays.asList(
       new CarBodyAssemblyTask(carOrder.getCar().getBody()),

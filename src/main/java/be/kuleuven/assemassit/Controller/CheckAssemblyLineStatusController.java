@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class CheckAssemblyLineStatusController {
   private AssemblyLine assemblyLine;
 
-  public CheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
+  protected CheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     if (assemblyLine == null)
       throw new IllegalArgumentException("AssemblyLine can not be null");
     this.assemblyLine = assemblyLine;
