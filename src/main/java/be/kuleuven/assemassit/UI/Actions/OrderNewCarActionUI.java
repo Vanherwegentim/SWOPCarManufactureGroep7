@@ -21,9 +21,14 @@ public class OrderNewCarActionUI implements UI {
   }
 
   private static void displayCarOrders(List<String> carOrders) {
+    String output = "";
     for (int i = 0; i < carOrders.size(); i++) {
-      IOCall.out(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
+      output += carOrders.get(i);
     }
+    if (output == "") {
+      output = "   --no orders found--";
+    }
+    IOCall.out(output);
   }
 
   private static Optional<Integer> displayChooseCarModel(Map<Integer, String> carModels) {

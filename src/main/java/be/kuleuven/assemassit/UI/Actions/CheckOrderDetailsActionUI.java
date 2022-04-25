@@ -35,7 +35,7 @@ public class CheckOrderDetailsActionUI {
 
       choice = IOCall.in();
       if (choice >= 0) {
-        Optional<String> carOrder = Optional.of(checkOrderDetailsController.giveOrderDetails(choice));
+        Optional<String> carOrder = checkOrderDetailsController.giveOrderDetails(choice);
         if (carOrder.isEmpty()) {
           IOCall.out("Please enter a valid ID");
         } else {

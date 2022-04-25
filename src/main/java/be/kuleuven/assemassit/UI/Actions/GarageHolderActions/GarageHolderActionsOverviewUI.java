@@ -31,11 +31,12 @@ public class GarageHolderActionsOverviewUI implements UI {
       action = IOCall.in();
       switch (action) {
         case 1 -> new OrderNewCarActionUI(controllerFactory).run();
+        case 2 -> new CheckOrderDetailsActionUI(controllerFactory).run();
         case -1 -> {
           controllerFactory.logoutGarageHolder();
           return;
         }
-        case 2 -> new CheckOrderDetailsActionUI(controllerFactory).run();
+
       }
     }
   }

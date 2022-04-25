@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CheckOrderDetailsController {
@@ -57,10 +58,13 @@ public class CheckOrderDetailsController {
       .collect(Collectors.toList());
   }
 
-  public String giveOrderDetails(int orderId) {
+  public Optional<String> giveOrderDetails(int orderId) {
 
-    CarOrder order = loggedInGarageHolder.getOrder(orderId);
-    return carOrderDetailedFormattedString(order);
+    Optional<CarOrder> order = loggedInGarageHolder.getOrder(orderId);
+    if (order.isPresent()) {
+      return Optional.of(carOrderDetailedFormattedString(order.get()));
+    }
+    return Optional.empty();
   }
 
   private String carOrderFormattedString(CarOrder carOrder) {
