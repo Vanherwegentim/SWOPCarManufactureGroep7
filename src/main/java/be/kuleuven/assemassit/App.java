@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit;
 
+import be.kuleuven.assemassit.Exceptions.UIException;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.LoginUI;
 
@@ -15,7 +16,7 @@ public class App {
       IOCall.out(e.getMessage());
     } catch (IllegalStateException e) {
       IOCall.out(e.getMessage());
-    } catch (InputMismatchException e) {
+    } catch (InputMismatchException | UIException ex) {
       IOCall.out("Be aware, only integers are allowed to choose options in the UI");
     } catch (Exception e) {
       IOCall.out("The application experienced unexpected behaviour, please contact the system administrator");

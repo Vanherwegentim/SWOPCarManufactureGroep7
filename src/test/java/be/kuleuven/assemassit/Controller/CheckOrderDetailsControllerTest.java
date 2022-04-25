@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +32,7 @@ public class CheckOrderDetailsControllerTest {
     Car mockedCar = mock(Car.class);
     CarModel mockedCarModel = mock(CarModel.class);
 
-    when(mockedGarageHolder.getOrder(0)).thenReturn(mockedCarOrder);
+    when(mockedGarageHolder.getOrder(0)).thenReturn(Optional.of(mockedCarOrder));
 
     when(mockedCarOrder.getEstimatedCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 12, 0));
     when(mockedCarOrder.getCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 15, 0));

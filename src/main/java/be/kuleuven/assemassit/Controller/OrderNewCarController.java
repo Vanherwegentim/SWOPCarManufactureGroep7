@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderNewCarController {
@@ -61,7 +62,7 @@ public class OrderNewCarController {
    * @throws IllegalArgumentException orderId is below 0 | orderId < 0
    * @throws IllegalStateException    loggedInGarageHolder is null | loggedInGarageHolder == null
    */
-  public CarOrder chooseOrder(int orderId) {
+  public Optional<CarOrder> chooseOrder(int orderId) {
     if (orderId < 0)
       throw new IllegalArgumentException("OrderId cannot be smaller than 0");
     if (loggedInGarageHolder == null)

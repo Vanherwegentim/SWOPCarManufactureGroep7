@@ -49,8 +49,13 @@ public class CheckOrderDetailsActionUI {
   }
 
   private void displayCarOrders(List<String> carOrders) {
+    String output = "";
     for (int i = 0; i < carOrders.size(); i++) {
-      IOCall.out(carOrders.get(i));
+      output += carOrders.get(i);
     }
+    if (output == "") {
+      output = "   --no orders found--";
+    }
+    IOCall.out(output);
   }
 }

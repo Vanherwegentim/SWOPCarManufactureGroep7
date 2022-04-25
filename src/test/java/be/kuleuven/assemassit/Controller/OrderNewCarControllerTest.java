@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,7 +43,7 @@ public class OrderNewCarControllerTest {
     when(mockedGarageHolder.getId()).thenReturn(0);
     when(mockedGarageHolder.getName()).thenReturn("WolksVagen Garage Lokeren BVBA NV");
     when(mockedGarageHolder.getCompletionTimeFromOrder(0)).thenReturn(LocalDateTime.of(1998, 12, 15, 12, 0));
-    when(mockedGarageHolder.getOrder(0)).thenReturn(mockedCarOrder);
+    when(mockedGarageHolder.getOrder(0)).thenReturn(Optional.of(mockedCarOrder));
 
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(mockedGarageHolder));
 
@@ -97,7 +98,7 @@ public class OrderNewCarControllerTest {
 
   @Test
   public void chooseOrderTest_succeeds() {
-    assertEquals(0, orderNewCarController.chooseOrder(0).getCar().getId());
+    assertEquals(0, orderNewCarController.chooseOrder(0).get().getCar().getId());
   }
 
   @Test
