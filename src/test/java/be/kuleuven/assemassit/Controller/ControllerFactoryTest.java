@@ -107,5 +107,13 @@ public class ControllerFactoryTest {
     controllerFactory.logoutManager();
   }
 
+  @Test
+  public void createPerformyAssemblyTasksController() {
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createPerformAssemblyTasksController());
+    controllerFactory.loginCarMechanic();
+    assertEquals("PerformAssemblyTasksController", controllerFactory.createCheckProductionStatisticsController().getClass().getSimpleName());
+    controllerFactory.logoutCarMechanic();
+  }
+
 
 }
