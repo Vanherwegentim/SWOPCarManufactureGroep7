@@ -49,7 +49,7 @@ public class ControllerFactory {
   }
 
   public void logoutManager() {
-    this.controllerFactoryState = new ControllerFactoryManagerState();
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   public void loginCarMechanic() {
@@ -57,7 +57,7 @@ public class ControllerFactory {
   }
 
   public void logoutCarMechanic() {
-    this.controllerFactoryState = new ControllerFactoryCarMechanicState();
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   /**
@@ -114,4 +114,15 @@ public class ControllerFactory {
     return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
 
+  public CarManufactoringCompany getCarManufactoringCompany() {
+    return carManufactoringCompany;
+  }
+
+  public ControllerFactoryState getControllerFactoryState() {
+    return controllerFactoryState;
+  }
+
+  public GarageHolder getLoggedInGarageHolder() {
+    return loggedInGarageHolder;
+  }
 }

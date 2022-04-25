@@ -1,36 +1,111 @@
 package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Domain.AssemblyLine;
-import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
+import be.kuleuven.assemassit.Domain.GarageHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ControllerFactoryTest {
-  private AssemblyLine assemblyLine;
-  private CarManufactoringCompany carManufactoringCompany;
+  private ControllerFactory controllerFactory;
+  private GarageHolder garageHolder;
 
 
   @BeforeEach
   public void beforeEach() {
-    this.assemblyLine = new AssemblyLine();
-    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
+    this.controllerFactory = new ControllerFactory();
+    this.garageHolder = new GarageHolder(0, "Joe Lamb");
+
   }
 
   @Test
   public void controllerTest() {
-    // TODO: rewrite this, written on 25/04
-    /*
-    ControllerFactory controllerFactory = new ControllerFactory();
-    OrderNewCarController orderNewCarController = controllerFactory.createOrderNewCarController();
-    AssemblyLineController assemblyLineController = controllerFactory.createAssemblyLineController();
-    assert orderNewCarController instanceof OrderNewCarController;
-    assertNotNull(orderNewCarController);
+    assertEquals(LocalTime.of(6, 0), controllerFactory.getCarManufactoringCompany().getOpeningTime());
+    assertEquals(LocalTime.of(22, 0), controllerFactory.getCarManufactoringCompany().getClosingTime());
 
-    assert assemblyLineController instanceof AssemblyLineController;
-    assertNotNull(assemblyLineController);
-    */
+    assertEquals(controllerFactory.getControllerFactoryState(), new ControllerFactoryLoginState());
+  }
+
+  @Test
+  public void loginGarageHolderTest() {
+    assertThrows(IllegalArgumentException.class, () -> controllerFactory.loginGarageHolder(null));
+    controllerFactory.loginGarageHolder(garageHolder);
+    assertEquals(controllerFactory.getLoggedInGarageHolder(), garageHolder);
+    assertEquals(controllerFactory.getControllerFactoryState(), new ControllerFactoryGarageHolderState());
+  }
+
+  @Test
+  public void logOutGarageHolderTest() {
+    controllerFactory.logoutGarageHolder();
+    assertTrue(controllerFactory.getLoggedInGarageHolder() == null);
+    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryLoginState()));
+  }
+
+  @Test
+  public void loginManager() {
+    controllerFactory.loginManager();
+    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryManagerState()));
+  }
+
+  @Test
+  public void logOutManagerTest() {
+    controllerFactory.logoutManager();
+    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryLoginState()));
+  }
+
+  @Test
+  public void loginCarMechanic() {
+    controllerFactory.loginCarMechanic();
+    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryCarMechanicState()));
+  }
+
+  @Test
+  public void logOutCarMechanicTest() {
+    controllerFactory.logoutCarMechanic();
+    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryLoginState()));
+  }
+
+  @Test
+  public void createOrderNewCarControllerTest() {
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createOrderNewCarController());
+
+    controllerFactory.loginGarageHolder(garageHolder);
+
+    assertEquals("OrderNewCarController", controllerFactory.createOrderNewCarController().getClass().getSimpleName());
+    controllerFactory.logoutGarageHolder();
+  }
+
+  @Test
+  public void createCheckOrderDetailsControllerTest() {
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckOrderDetailsController());
+
+    controllerFactory.loginGarageHolder(garageHolder);
+
+
+    assertEquals("CheckOrderDetailsController", controllerFactory.createCheckOrderDetailsController().getClass().getSimpleName());
+    controllerFactory.logoutGarageHolder();
 
   }
+
+  @Test
+  public void createCheckAssemblyLineStatusControllerTest() {
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckAssemblyLineStatusController());
+    controllerFactory.loginCarMechanic();
+    assertEquals("CheckAssemblyLineStatusController", controllerFactory.createCheckAssemblyLineStatusController().getClass().getSimpleName());
+    controllerFactory.logoutCarMechanic();
+
+
+  }
+
+  @Test
+  public void createCheckProductionStatisticsControllerTest() {
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckProductionStatisticsController());
+    controllerFactory.loginManager();
+    assertEquals("CheckProductionStatisticsController", controllerFactory.createCheckProductionStatisticsController().getClass().getSimpleName());
+    controllerFactory.logoutManager();
+  }
+
+
 }
