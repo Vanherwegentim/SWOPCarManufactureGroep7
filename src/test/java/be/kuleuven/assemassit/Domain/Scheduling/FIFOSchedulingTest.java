@@ -62,10 +62,9 @@ public class FIFOSchedulingTest {
     assertEquals(assemblyLine.getFinishedCars(), List.of(carAssemblyProcess2));
     fifoScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
     fifoScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
+    fifoScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
     //TODO If we have time, create test to check the overtime
     //https://dzone.com/articles/mock-java-datetime-for-testing
     assertEquals(2, assemblyLine.getFinishedCars().size());
   }
-
-
 }
