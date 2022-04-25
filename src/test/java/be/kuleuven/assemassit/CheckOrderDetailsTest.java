@@ -178,7 +178,7 @@ public class CheckOrderDetailsTest {
       expectedDate = expectedDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19 || (localDateTimeNow.getHour() == 19 && localDateTimeNow.getMinute() > 0)) {
-      expectedDate = expectedDate.plusDays(1).withHour(10).withMinute(0);
+      expectedDate = expectedDate.plusDays(1).withHour(11).withMinute(0);
     }
     return expectedDate.format(formatter);
   }

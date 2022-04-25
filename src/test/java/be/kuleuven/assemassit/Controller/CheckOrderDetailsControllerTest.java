@@ -39,8 +39,8 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder.getId()).thenReturn(0);
     when(mockedCarOrder.getCar()).thenReturn(mockedCar);
 
-    when(mockedCarOrder2.getEstimatedCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 16, 12, 0));
-    when(mockedCarOrder2.getCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 16, 15, 0));
+    when(mockedCarOrder2.getEstimatedCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 14, 12, 0));
+    when(mockedCarOrder2.getCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 14, 15, 0));
     when(mockedCarOrder2.getId()).thenReturn(1);
     when(mockedCarOrder2.getCar()).thenReturn(mockedCar);
 
@@ -71,7 +71,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder2.isPending()).thenReturn(true);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder, mockedCarOrder2));
 
-    String expected = "Order ID: 0    [Estimated time: 15/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Estimated time: 16/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
+    String expected = "Order ID: 0    [Estimated time: 15/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Estimated time: 14/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat));
   }
@@ -87,7 +87,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder2.isPending()).thenReturn(false);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder, mockedCarOrder2));
 
-    String expected = "Order ID: 0    [Completed at: 15/12/1998 at 15:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Completed at: 16/12/1998 at 15:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
+    String expected = "Order ID: 1    [Completed at: 14/12/1998 at 15:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 0    [Completed at: 15/12/1998 at 15:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.giveCompletedCarOrders().stream().reduce("", String::concat));
   }
