@@ -4,10 +4,7 @@ import be.kuleuven.assemassit.Domain.CarOrder;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CheckOrderDetailsController {
@@ -54,6 +51,7 @@ public class CheckOrderDetailsController {
     return loggedInGarageHolder.getCarOrders()
       .stream()
       .filter(co -> !co.isPending())
+      .sorted(Comparator.comparing(CarOrder::getCompletionTime))
       .map(this::carOrderFormattedString)
       .collect(Collectors.toList());
   }

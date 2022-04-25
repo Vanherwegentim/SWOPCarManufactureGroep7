@@ -36,7 +36,7 @@ public class CheckProductionStatisticsTest {
     assertEquals("The exact amount of cars made in the last 2 days are: 0", controller.exactCarsIn2DaystoString());
     assertEquals("The average delay at the moment is: 0", controller.averageDelayPerOrderToString());
     assertEquals("The median delay at the moment is: 0", controller.medianDelayPerOrderToString());
-    assertEquals("The last 2 delays were at:\n" + "and were this long:\n", controller.last2DelaysToString());
+    assertEquals("The last 2 delays were at:" + System.lineSeparator() + "and were this long:" + System.lineSeparator(), controller.last2DelaysToString());
 
     // Step 3
     //Done
