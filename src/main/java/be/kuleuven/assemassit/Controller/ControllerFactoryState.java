@@ -10,15 +10,16 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
-  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-    throw new IllegalStateException();
-  }
+  //todo remove
+//  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
+//    throw new IllegalStateException();
+//  }
 
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     throw new IllegalStateException();
   }
 
-  public CheckOrderDetailsController createCheckOrderDetailsController() {
+  public CheckOrderDetailsController createCheckOrderDetailsController(GarageHolder loggedInGarageHolder) {
     throw new IllegalStateException();
   }
 

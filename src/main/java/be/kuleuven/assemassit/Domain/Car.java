@@ -115,6 +115,10 @@ public class Car {
     return wheels;
   }
 
+  public Spoiler getSpoiler() {
+    return spoiler;
+  }
+
   public int getId() {
     return this.id;
   }

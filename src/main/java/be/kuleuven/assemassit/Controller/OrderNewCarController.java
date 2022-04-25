@@ -7,12 +7,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderNewCarController {
 
   private final CarManufactoringCompany carManufactoringCompany;
-  private GarageHolder loggedInGarageHolder;
+  private final GarageHolder loggedInGarageHolder;
 
   /**
    * @param carManufactoringCompany
@@ -61,15 +62,14 @@ public class OrderNewCarController {
    * @throws IllegalArgumentException orderId is below 0 | orderId < 0
    * @throws IllegalStateException    loggedInGarageHolder is null | loggedInGarageHolder == null
    */
-  public CarOrder chooseOrder(int orderId) {
+  public Optional<CarOrder> chooseOrder(int orderId) {
     if (orderId < 0)
       throw new IllegalArgumentException("OrderId cannot be smaller than 0");
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
-    return loggedInGarageHolder.getOrder(orderId);
+    return loggedInGarageHolder.findCarOrder(orderId);
   }
-
 
   /**
    * A list of all car models that can be manufactured by the company is returned
@@ -119,10 +119,10 @@ public class OrderNewCarController {
    * @param seats
    * @param airco
    * @param wheels
-   * @return the estimated delivery time of the new car order
+   * @return the id of the new car order
    * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
    */
-  public LocalDateTime placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
+  public int placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
@@ -158,6 +158,29 @@ public class OrderNewCarController {
     LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
 
-    return estimatedCompletionTime;
+    return carOrder.getId();
   }
+
+  /**
+   * The estimated delivery time is requested from a given carOrderId
+   *
+   * @param carOrderId
+   * @return the id of the new car order
+   * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
+   */
+  public LocalDateTime getCarOrderEstimatedCompletionTime(int carOrderId) {
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+    Optional<CarOrder> carOrder = loggedInGarageHolder.findCarOrder(carOrderId);
+    if (carOrder.isPresent()) {
+      return carOrder.get().getEstimatedCompletionTime();
+    }
+    throw new IllegalArgumentException("CarOrder with given ID not found");
+  }
+
+  public LocalDateTime placeCarOrderAndReturnEstimatedCompletionTime(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
+    int carOrderId = placeCarOrder(carModelId, body, color, engine, gearbox, seats, airco, wheels, spoiler);
+    return getCarOrderEstimatedCompletionTime(carOrderId);
+  }
+
 }

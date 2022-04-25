@@ -7,9 +7,10 @@ public class ControllerFactoryCarMechanicState extends ControllerFactoryState {
   protected ControllerFactoryCarMechanicState() {
   }
 
-  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-    return new AssemblyLineController(assemblyLine);
-  }
+  // todo REMOVE
+//  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
+//    return new AssemblyLineController(assemblyLine);
+//  }
 
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     return new CheckAssemblyLineStatusController(assemblyLine);

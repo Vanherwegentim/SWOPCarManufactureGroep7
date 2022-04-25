@@ -70,7 +70,7 @@ public class ControllerFactory {
   }
 
   public CheckOrderDetailsController createCheckOrderDetailsController() {
-    return new CheckOrderDetailsController(loggedInGarageHolder);
+    return controllerFactoryState.createCheckOrderDetailsController(loggedInGarageHolder);
   }
 
   /**
@@ -88,20 +88,22 @@ public class ControllerFactory {
    *
    * @return a new instance of the assembly controller
    */
-  public AssemblyLineController createAssemblyLineController() {
-    return controllerFactoryState.createAssemblyLineController(assemblyLine);
-  }
+//todo remove
+  //  public AssemblyLineController createAssemblyLineController() {
+//    return controllerFactoryState.createAssemblyLineController(assemblyLine);
+//  }
 
   /**
    * Generate an instance of the assembly line controller
+   * <p>
+   * //   * @param assemblyLine | can be used for mocking
    *
-   * @param assemblyLine | can be used for mocking
    * @return a new instance of the assembly controller
    */
-  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-    return controllerFactoryState.createAssemblyLineController(assemblyLine);
-  }
-
+  //todo REMOVE
+//  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
+//    return controllerFactoryState.createAssemblyLineController(assemblyLine);
+//  }
   public PerformAssemblyTasksController createPerformAssemblyTasksController() {
     return controllerFactoryState.createPerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
   }
