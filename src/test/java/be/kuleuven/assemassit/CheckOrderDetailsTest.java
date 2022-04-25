@@ -168,8 +168,8 @@ public class CheckOrderDetailsTest {
   private String calculateExpectedDate(int orderCount) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
 
-    LocalDateTime localDateTimeNow = LocalDateTime.now().plusHours(orderCount);
-    LocalDateTime expectedDate = LocalDateTime.now().plusHours(orderCount);
+    LocalDateTime localDateTimeNow = LocalDateTime.now();
+    LocalDateTime expectedDate = LocalDateTime.now();
 
     if (localDateTimeNow.getHour() < 6) {
       expectedDate = expectedDate.withHour(9).withMinute(0);
@@ -178,8 +178,12 @@ public class CheckOrderDetailsTest {
       expectedDate = expectedDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19 || (localDateTimeNow.getHour() == 19 && localDateTimeNow.getMinute() > 0)) {
-      expectedDate = expectedDate.plusDays(1).withHour(11).withMinute(0);
+      expectedDate = expectedDate.plusDays(1).withHour(9).withMinute(0);
     }
-    return expectedDate.format(formatter);
+    if (expectedDate.getHour() + orderCount > 22 || (expectedDate.getHour() + orderCount == 22 && localDateTimeNow.getMinute() > 0)) {
+      expectedDate = expectedDate.plusDays(1).withHour(9).withMinute(0);
+    }
+
+    return expectedDate.plusHours(orderCount).format(formatter);
   }
 }
