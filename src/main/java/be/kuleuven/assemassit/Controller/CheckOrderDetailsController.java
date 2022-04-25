@@ -74,7 +74,7 @@ public class CheckOrderDetailsController {
 
     if (carOrder.isPending())
       result
-        .append("[Estimation time: ")
+        .append("[Estimated time: ")
         .append(carOrder.getEstimatedCompletionTime().format(formatter))
         .append("]");
     else
@@ -104,7 +104,7 @@ public class CheckOrderDetailsController {
 
     if (carOrder.isPending())
       result
-        .append("[Estimation time: ")
+        .append("[Estimated time: ")
         .append(carOrder.getEstimatedCompletionTime().format(formatter))
         .append("]");
     else
@@ -129,6 +129,7 @@ public class CheckOrderDetailsController {
     parts.put("Airco", carOrder.getCar().getAirco().name());
     parts.put("Wheels", carOrder.getCar().getWheels().name());
     parts.put("Seats", carOrder.getCar().getSeats().name());
+    parts.put("Spoiler", carOrder.getCar().getSpoiler().name());
 
     for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
       result

@@ -5,6 +5,7 @@ import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.UI.IOCall;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CheckOrderDetailsActionUI {
   private ControllerFactory controllerFactory;
@@ -34,18 +35,22 @@ public class CheckOrderDetailsActionUI {
 
       choice = IOCall.in();
       if (choice >= 0) {
-        String carOrder = checkOrderDetailsController.giveOrderDetails(choice);
-        IOCall.out(carOrder);
+        Optional<String> carOrder = Optional.of(checkOrderDetailsController.giveOrderDetails(choice));
+        if (carOrder.isEmpty()) {
+          IOCall.out("Please enter a valid ID");
+        } else {
+          IOCall.out(carOrder.get());
 
-        IOCall.out("Press enter to go back to the overview");
-        IOCall.waitForConfirmation();
+          IOCall.out("Press ENTER to continue...");
+          IOCall.waitForConfirmation();
+        }
       }
     } while (choice >= 0);
   }
 
   private void displayCarOrders(List<String> carOrders) {
     for (int i = 0; i < carOrders.size(); i++) {
-      IOCall.out(String.format("%2d", (i + 1)) + ": " + carOrders.get(i));
+      IOCall.out(carOrders.get(i));
     }
   }
 }
