@@ -38,4 +38,7 @@ public abstract class ControllerFactoryState {
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
     throw new IllegalStateException();
   }
+
+  @Override
+  public abstract boolean equals(Object o);
 }
