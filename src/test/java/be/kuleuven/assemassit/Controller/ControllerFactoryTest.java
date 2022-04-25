@@ -94,9 +94,8 @@ public class ControllerFactoryTest {
     assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckAssemblyLineStatusController());
     controllerFactory.loginCarMechanic();
     assertEquals("CheckAssemblyLineStatusController", controllerFactory.createCheckAssemblyLineStatusController().getClass().getSimpleName());
+    assertTrue(controllerFactory.createCheckAssemblyLineStatusController() instanceof CheckAssemblyLineStatusController);
     controllerFactory.logoutCarMechanic();
-
-
   }
 
   @Test
@@ -104,6 +103,8 @@ public class ControllerFactoryTest {
     assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckProductionStatisticsController());
     controllerFactory.loginManager();
     assertEquals("CheckProductionStatisticsController", controllerFactory.createCheckProductionStatisticsController().getClass().getSimpleName());
+    assertTrue(controllerFactory.createCheckProductionStatisticsController() instanceof CheckProductionStatisticsController);
+
     controllerFactory.logoutManager();
   }
 
@@ -111,7 +112,9 @@ public class ControllerFactoryTest {
   public void createPerformyAssemblyTasksController() {
     assertThrows(IllegalStateException.class, () -> controllerFactory.createPerformAssemblyTasksController());
     controllerFactory.loginCarMechanic();
-    assertEquals("PerformAssemblyTasksController", controllerFactory.createCheckProductionStatisticsController().getClass().getSimpleName());
+    assertEquals("PerformAssemblyTasksController", controllerFactory.createPerformAssemblyTasksController().getClass().getSimpleName());
+    assertTrue(controllerFactory.createPerformAssemblyTasksController() instanceof PerformAssemblyTasksController);
+
     controllerFactory.logoutCarMechanic();
   }
 
