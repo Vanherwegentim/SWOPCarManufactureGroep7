@@ -16,7 +16,7 @@ public class AssemblyLineController {
    * @param assemblyLine
    * @throws IllegalArgumentException assembly line is null | assemblyLine == null
    */
-  public AssemblyLineController(AssemblyLine assemblyLine) {
+  protected AssemblyLineController(AssemblyLine assemblyLine) {
     if (assemblyLine == null)
       throw new IllegalArgumentException("AssemblyLine can not be null");
     this.assemblyLine = assemblyLine;
@@ -130,7 +130,7 @@ public class AssemblyLineController {
       }
       return blockingWorkPosts;
     } else {
-      assemblyLine.move(minutes);
+      assemblyLine.move();
       return new ArrayList<>();
     }
   }

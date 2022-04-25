@@ -2,9 +2,8 @@
 
 ![workflow](https://github.com/Vanherwegentim/SWOPCarManufactureGroep7/actions/workflows/maven.yml/badge.svg)
 
+### Build Instructions
 
-
-### Build Instructions 
 ```
 mvn package
 cd ./target

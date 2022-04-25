@@ -15,7 +15,7 @@ public class AdaptSchedulingAlgorithmController {
   private AssemblyLine assemblyLine;
   private Map<Integer, List<CarOption>> mapOfCarOptions;
 
-  public AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
+  protected AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
   }
 

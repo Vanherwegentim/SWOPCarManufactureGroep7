@@ -1,37 +1,26 @@
 package be.kuleuven.assemassit.UI.Actions.CarMechanicActions;
 
-import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
-import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.UI.Actions.CheckAssemblyLineStatusActionUI;
 import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
-import be.kuleuven.assemassit.UI.LoginUI;
 import be.kuleuven.assemassit.UI.UI;
 
 public class CarMechanicActionsOverviewUI implements UI {
 
-  private PerformAssemblyTasksController performAssemblyTasksController;
-  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
-  private PerformAssemblyTasksActionUI performAssemblyTasksActionUI;
-  private CheckAssemblyLineStatusActionUI checkAssemblyLineStatusActionUI;
-  private LoginUI loginUI;
+  private final ControllerFactory controllerFactory;
 
-
-  public CarMechanicActionsOverviewUI(PerformAssemblyTasksController performAssemblyTasksController, CheckAssemblyLineStatusController checkAssemblyLineStatusController) {
-    this.performAssemblyTasksController = performAssemblyTasksController;
-    this.checkAssemblyLineStatusController = checkAssemblyLineStatusController;
-    this.performAssemblyTasksActionUI = new PerformAssemblyTasksActionUI(this.performAssemblyTasksController);
-    this.checkAssemblyLineStatusActionUI = new CheckAssemblyLineStatusActionUI(this.checkAssemblyLineStatusController);
-    this.loginUI = new LoginUI();
+  public CarMechanicActionsOverviewUI(ControllerFactory controllerFactory) {
+    this.controllerFactory = controllerFactory;
   }
 
-  // TODO: change to correct controllers
   @Override
   public void run() {
-    int action;
 
-    do {
-      IOCall.waitForConfirmation();
+    while (true) {
+      int action;
+
+      IOCall.out();
       IOCall.out("Welcome Mechanic");
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Perform assembly task");
@@ -41,16 +30,13 @@ public class CarMechanicActionsOverviewUI implements UI {
       action = IOCall.in();
 
       switch (action) {
-        case 1 -> {
-          this.performAssemblyTasksActionUI.run();
-        }
+        case 1 -> new PerformAssemblyTasksActionUI(controllerFactory).run();
+        case 2 -> new CheckAssemblyLineStatusActionUI(controllerFactory).run();
         case -1 -> {
-          this.loginUI.run();
-        }
-        case 2 -> {
-          this.checkAssemblyLineStatusActionUI.run();
+          controllerFactory.logoutCarMechanic();
+          return;
         }
       }
-    } while (action != -1 && action != 1);
+    }
   }
 }

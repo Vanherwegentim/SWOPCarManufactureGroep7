@@ -10,7 +10,6 @@ import java.util.Queue;
 
 public interface SchedulingAlgorithm {
   int moveAssemblyLine(
-    int minutes,
     int previousOvertimeInMinutes,
     LocalTime endTime,
     Queue<CarAssemblyProcess> carAssemblyProcessesQueue,
