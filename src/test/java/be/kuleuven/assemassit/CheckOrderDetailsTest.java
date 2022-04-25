@@ -11,8 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CheckOrderDetailsTest {
 
@@ -68,6 +67,42 @@ public class CheckOrderDetailsTest {
     assertTrue(completedOrders.isEmpty());
 
     // 2. The user indicates the order he wants to check the details for.
+    // 3. The system shows the details of the order.
+
+    assertEquals(formatExpectedOrderDetails(carOrderID1, calculateExpectedDate(0), 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID2, calculateExpectedDate(1), 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID3, calculateExpectedDate(2), 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+
+    // 4. The user indicates he is finished viewing the details.
+  }
+
+
+  @Test
+  public void checkOrderDetails_UserInsertsIllegalValues_GarageHolderHasPendingOrders() {
+    carOrderID1 = placeCarOrder(0);
+    carOrderID2 = placeCarOrder(1);
+    carOrderID3 = placeCarOrder(2);
+
+    // 1. The system presents an overview of the orders placed by the user
+    List<String> pendingOrders = checkOrderDetailsController.givePendingCarOrders();
+    List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
+
+    String expected = String.format(
+      "Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: %s]    [Car model: Model B]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: %s]    [Car model: Model C]" + System.lineSeparator(),
+      carOrderID1, calculateExpectedDate(0),
+      carOrderID2, calculateExpectedDate(1),
+      carOrderID3, calculateExpectedDate(2));
+
+    assertEquals(expected, pendingOrders.stream().reduce("", (s, s2) -> s + s2));
+    assertTrue(completedOrders.isEmpty());
+
+    // 2. The user indicates the order he wants to check the details for but inserts illegal values.
+
+    assertThrows(IllegalArgumentException.class, () -> checkOrderDetailsController.giveOrderDetails(-1));
+    assertTrue(checkOrderDetailsController.giveOrderDetails(524).isEmpty());
+
     // 3. The system shows the details of the order.
 
     assertEquals(formatExpectedOrderDetails(carOrderID1, calculateExpectedDate(0), 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
