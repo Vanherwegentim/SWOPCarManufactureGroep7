@@ -8,25 +8,20 @@ import be.kuleuven.assemassit.UI.UI;
 
 public class GarageHolderActionsOverviewUI implements UI {
 
-  private OrderNewCarActionUI orderNewCarActionUI;
-  private CheckOrderDetailsActionUI checkOrderDetailsActionUI;
-  private ControllerFactory controllerFactory;
-
+  private final ControllerFactory controllerFactory;
 
   public GarageHolderActionsOverviewUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
-    this.orderNewCarActionUI = new OrderNewCarActionUI(controllerFactory);
-    this.checkOrderDetailsActionUI = new CheckOrderDetailsActionUI(controllerFactory);
   }
 
-  // TODO: change to correct controllers
   @Override
   public void run() {
-    int action;
 
-    do {
+    while (true) {
+      int action;
+
       String loggedInGarageHolderName = controllerFactory.giveLoggedInGarageHolderName();
-      IOCall.waitForConfirmation();
+      IOCall.out();
       IOCall.out("Welcome " + loggedInGarageHolderName);
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Order new car");
@@ -35,11 +30,13 @@ public class GarageHolderActionsOverviewUI implements UI {
 
       action = IOCall.in();
       switch (action) {
-        case 1 -> this.orderNewCarActionUI.run();
-        case 2 -> this.checkOrderDetailsActionUI.run();
+        case 1 -> new OrderNewCarActionUI(controllerFactory).run();
+        case -1 -> {
+          controllerFactory.logoutGarageHolder();
+          return;
+        }
+        case 2 -> new CheckOrderDetailsActionUI(controllerFactory).run();
       }
-    } while (action != -1 && action != 1);
-
-    this.controllerFactory.logoutGarageHolder();
+    }
   }
 }
