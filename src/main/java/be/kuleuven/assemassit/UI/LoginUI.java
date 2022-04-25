@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 
 public class LoginUI implements UI {
-  private ControllerFactory controllerFactory;
-  private LoginController loginController;
+  private final ControllerFactory controllerFactory;
+  private final LoginController loginController;
 
 
-  private ManagerActionsOverviewUI managerActionsOverviewUI;
-  private CarMechanicActionsOverviewUI carMechanicActionsOverviewUI;
-  private GarageHolderActionsOverviewUI garageHolderActionsOverviewUI;
+  private final ManagerActionsOverviewUI managerActionsOverviewUI;
+  private final CarMechanicActionsOverviewUI carMechanicActionsOverviewUI;
+  private final GarageHolderActionsOverviewUI garageHolderActionsOverviewUI;
 
   public LoginUI() {
     this.controllerFactory = new ControllerFactory();
@@ -51,6 +51,7 @@ public class LoginUI implements UI {
     int choice;
 
     do {
+      IOCall.out();
       IOCall.out("Please authenticate yourself:");
       IOCall.out(" 1: I am a garage holder");
       IOCall.out(" 2: I am a manager");
