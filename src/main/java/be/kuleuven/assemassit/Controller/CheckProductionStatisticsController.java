@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class CheckProductionStatisticsController {
   private AssemblyLine assemblyLine;
 
-  public CheckProductionStatisticsController(AssemblyLine assemblyLine) {
+  protected CheckProductionStatisticsController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
   }
 

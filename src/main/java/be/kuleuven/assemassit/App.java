@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit;
 
+import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.LoginUI;
 
 import java.util.InputMismatchException;
@@ -11,14 +12,14 @@ public class App {
     try {
       loginUI.run();
     } catch (IllegalArgumentException e) {
-      System.out.println(e.getMessage());
+      IOCall.out(e.getMessage());
     } catch (IllegalStateException e) {
-      System.out.println(e.getMessage());
+      IOCall.out(e.getMessage());
     } catch (InputMismatchException e) {
-      System.out.println("Be aware, only integers are allowed to choose options in the UI");
+      IOCall.out("Be aware, only integers are allowed to choose options in the UI");
     } catch (Exception e) {
-      System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
-      System.out.println(e.getMessage());
+      IOCall.out("The application experienced unexpected behaviour, please contact the system administrator");
+      IOCall.out(e.getMessage());
     }
   }
 }

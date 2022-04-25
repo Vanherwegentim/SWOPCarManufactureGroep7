@@ -1,6 +1,8 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
 import java.util.ArrayList;
@@ -9,37 +11,41 @@ import java.util.List;
 
 public class CheckAssemblyLineStatusActionUI implements UI {
 
-  public CheckAssemblyLineStatusController checkAssemblyLineStatusController;
+  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
+  private ControllerFactory controllerFactory;
 
-  public CheckAssemblyLineStatusActionUI(CheckAssemblyLineStatusController checkAssemblyLineStatusController) {
-    this.checkAssemblyLineStatusController = checkAssemblyLineStatusController;
+  public CheckAssemblyLineStatusActionUI(ControllerFactory controllerFactory) {
+    this.controllerFactory = controllerFactory;
   }
 
   private static void displayStatus(HashMap<String, List<String>> status) {
+
     List<String> statusKeys = new ArrayList<>(status.keySet());
 
     for (String workPostName : statusKeys) {
-      System.out.println("  * " + workPostName);
+      IOCall.out("  * " + workPostName);
 
       if (status.get(workPostName).isEmpty()) {
-        System.out.println("      - " + "no pending or active tasks");
+        IOCall.out("      - " + "no pending or active tasks");
       }
       for (int j = 0; j < status.get(workPostName).size(); j++) {
-        System.out.println("      - " + status.get(workPostName).get(j));
+        IOCall.out("      - " + status.get(workPostName).get(j));
       }
     }
   }
 
   @Override
   public void run() {
+    this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
+
     while (true) {
 
-      System.out.println();
-      System.out.println("Current assembly line status:");
+      IOCall.out();
+      IOCall.out("Current assembly line status:");
       displayStatus(checkAssemblyLineStatusController.giveAssemblyLineStatusOverview());
 
-      System.out.println();
-      System.out.println("Future assembly line status:");
+      IOCall.out();
+      IOCall.out("Future assembly line status:");
       displayStatus(checkAssemblyLineStatusController.giveFutureAssemblyLineStatusOverview());
 
       String tasks = "";
@@ -53,7 +59,7 @@ public class CheckAssemblyLineStatusActionUI implements UI {
           tasks += s + "\n";
         }
       }
-      System.out.println(tasks);
+      IOCall.out(tasks);
       break; // if we reach this point, the use case is done, java call stack will now return to the previous UI
 
     }

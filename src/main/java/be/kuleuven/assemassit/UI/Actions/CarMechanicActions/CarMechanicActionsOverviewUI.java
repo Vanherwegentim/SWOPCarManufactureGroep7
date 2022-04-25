@@ -1,31 +1,19 @@
 package be.kuleuven.assemassit.UI.Actions.CarMechanicActions;
 
-import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
-import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.UI.Actions.CheckAssemblyLineStatusActionUI;
 import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
-import be.kuleuven.assemassit.UI.LoginUI;
 import be.kuleuven.assemassit.UI.UI;
 
 public class CarMechanicActionsOverviewUI implements UI {
 
-  private PerformAssemblyTasksController performAssemblyTasksController;
-  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
-  private PerformAssemblyTasksActionUI performAssemblyTasksActionUI;
-  private CheckAssemblyLineStatusActionUI checkAssemblyLineStatusActionUI;
-  private LoginUI loginUI;
+  private ControllerFactory controllerFactory;
 
-
-  public CarMechanicActionsOverviewUI(PerformAssemblyTasksController performAssemblyTasksController, CheckAssemblyLineStatusController checkAssemblyLineStatusController) {
-    this.performAssemblyTasksController = performAssemblyTasksController;
-    this.checkAssemblyLineStatusController = checkAssemblyLineStatusController;
-    this.performAssemblyTasksActionUI = new PerformAssemblyTasksActionUI(this.performAssemblyTasksController, this.checkAssemblyLineStatusController);
-    this.checkAssemblyLineStatusActionUI = new CheckAssemblyLineStatusActionUI(this.checkAssemblyLineStatusController);
-    this.loginUI = new LoginUI();
+  public CarMechanicActionsOverviewUI(ControllerFactory controllerFactory) {
+    this.controllerFactory = controllerFactory;
   }
 
-  // TODO: change to correct controllers
   @Override
   public void run() {
     int action;
@@ -42,15 +30,14 @@ public class CarMechanicActionsOverviewUI implements UI {
 
       switch (action) {
         case 1 -> {
-          this.performAssemblyTasksActionUI.run();
-        }
-        case -1 -> {
-          this.loginUI.run();
+          new PerformAssemblyTasksActionUI(controllerFactory);
         }
         case 2 -> {
-          this.checkAssemblyLineStatusActionUI.run();
+          new CheckAssemblyLineStatusActionUI(controllerFactory);
         }
       }
     } while (action != -1 && action != 1);
+
+    controllerFactory.logoutCarMechanic();
   }
 }
