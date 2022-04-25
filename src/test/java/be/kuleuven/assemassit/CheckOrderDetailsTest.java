@@ -1,5 +1,110 @@
 package be.kuleuven.assemassit;
 
+import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
+import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.OrderNewCarController;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class CheckOrderDetailsTest {
-  
+
+  int carOrderID1, carOrderID2, carOrderID3;
+  private OrderNewCarController orderNewCarController;
+  private CheckOrderDetailsController checkOrderDetailsController;
+  private ControllerFactory factory;
+
+  @BeforeEach
+  public void beforeEach() {
+    factory = new ControllerFactory();
+
+    // Precondition: The garage holder is successfully logged into the system.
+    factory.createLoginController().logInGarageHolder(0);
+
+    orderNewCarController = factory.createOrderNewCarController();
+    checkOrderDetailsController = factory.createCheckOrderDetailsController();
+
+
+  }
+
+  @Test
+  public void checkOrderDetails_MainSuccessScenario_GarageHolderHasNoOrders() {
+    // 1. The system presents an overview of the orders placed by the user
+    List<String> pendingOrders = checkOrderDetailsController.givePendingCarOrders();
+    List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
+
+    assertTrue(pendingOrders.isEmpty());
+    assertTrue(completedOrders.isEmpty());
+
+    // The garage holder has no pending or completed orders and the use case ends.
+  }
+
+  @Test
+  public void checkOrderDetails_MainSuccessScenario_GarageHolderHasPendingOrders() {
+    carOrderID1 = placeCarOrder(0);
+    carOrderID2 = placeCarOrder(1);
+    carOrderID3 = placeCarOrder(2);
+
+    // 1. The system presents an overview of the orders placed by the user
+    List<String> pendingOrders = checkOrderDetailsController.givePendingCarOrders();
+    List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
+
+    String expected = String.format(
+      "Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: %s]    [Car model: Model B]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: %s]    [Car model: Model C]" + System.lineSeparator(),
+      carOrderID1, calculateExpectedDate(0),
+      carOrderID2, calculateExpectedDate(1),
+      carOrderID3, calculateExpectedDate(2));
+
+    assertEquals(expected, pendingOrders.stream().reduce("", (s, s2) -> s + s2));
+    assertTrue(completedOrders.isEmpty());
+
+    // 2. The user indicates the order he wants to check the details for.
+    // 3. The system shows the details of the order.
+
+
+    assertEquals("", checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals("", checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals("", checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+  }
+
+  private int placeCarOrder(int modelID) {
+    Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(modelID);
+    return orderNewCarController.placeCarOrder(
+      2,
+      possibleOptionsOfCarModel.get("Body").get(0),
+      possibleOptionsOfCarModel.get("Color").get(0),
+      possibleOptionsOfCarModel.get("Engine").get(0),
+      possibleOptionsOfCarModel.get("GearBox").get(0),
+      possibleOptionsOfCarModel.get("Seats").get(0),
+      possibleOptionsOfCarModel.get("Airco").get(0),
+      possibleOptionsOfCarModel.get("Wheels").get(0),
+      possibleOptionsOfCarModel.get("Spoiler").get(0));
+  }
+
+  private String calculateExpectedDate(int count) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+
+    LocalDateTime localDateTimeNow = LocalDateTime.now().plusHours(count);
+    LocalDateTime expectedDate = LocalDateTime.now().plusHours(count);
+
+    if (localDateTimeNow.getHour() < 6) {
+      expectedDate = expectedDate.withHour(9).withMinute(0);
+    }
+    if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
+      expectedDate = expectedDate.plusHours(3);
+    }
+    if (localDateTimeNow.getHour() > 19) {
+      expectedDate = expectedDate.plusDays(1).withHour(9).withMinute(0);
+    }
+    return expectedDate.format(formatter);
+  }
 }
