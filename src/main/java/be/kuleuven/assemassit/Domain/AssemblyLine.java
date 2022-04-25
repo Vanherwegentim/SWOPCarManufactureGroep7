@@ -406,7 +406,6 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes   the amount of minutes spent during the current phase
    * @param startTime the start time of the company
    * @param endTime   the end time of the company
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
@@ -528,14 +527,30 @@ public class AssemblyLine implements Subject {
    */
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
     List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
-    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
-    if (!finishedCars.isEmpty()) {
-      carAssemblyProcessList.addAll(finishedCars);
+    if (!(drivetrainPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
+    }
+    if (!(carBodyPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
+    }
+    if (!(accessoriesPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
     }
     return carAssemblyProcessList;
   }
+
+  /**
+   * @return a queue of cas assembly processes
+   * @creates | result
+   * @inspects | this
+   */
+  public Queue<CarAssemblyProcess> getCarAssemblyProcessesQueueAsQueue() {
+    return carAssemblyProcessesQueue;
+  }
+
 
   public Map<LocalDate, Integer> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
@@ -560,11 +575,16 @@ public class AssemblyLine implements Subject {
   public int averageCarsInADay() {
     //Calculate the average
     Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
-    int total = 0;
-    for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
-      total = total + entry.getValue();
+    if (carsPerDayMap.size() == 0) {
+      return 0;
+    } else {
+      int total = 0;
+      for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
+        total = total + entry.getValue();
+      }
+      return total / carsPerDayMap.size();
+
     }
-    return total / carsPerDayMap.size();
   }
 
   public int medianCarsInADay() {
@@ -605,14 +625,18 @@ public class AssemblyLine implements Subject {
   //Can a car be ready before it's estimated completion time? if so, add an if test
   public int averageDelayPerOrder() {
     int total = 0;
-    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
-      long diff = duration.toHours();
-      //This conversion could error
-      total = total + Math.toIntExact(diff);
+    if (finishedCars.size() == 0) {
+      return 0;
+    } else {
+      for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
+        Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
+        long diff = duration.toHours();
+        //This conversion could error
+        total = total + Math.toIntExact(diff);
 
+      }
+      return Math.round(total / finishedCars.size());
     }
-    return Math.round(total / finishedCars.size());
   }
 
   public int medianDelayPerOrder() {
