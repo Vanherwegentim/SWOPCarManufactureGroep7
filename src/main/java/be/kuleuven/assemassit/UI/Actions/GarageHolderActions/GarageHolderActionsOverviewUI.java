@@ -1,40 +1,43 @@
 package be.kuleuven.assemassit.UI.Actions.GarageHolderActions;
 
 import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.UI.Actions.CheckOrderDetailsActionUI;
 import be.kuleuven.assemassit.UI.Actions.OrderNewCarActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
 public class GarageHolderActionsOverviewUI implements UI {
 
-  private OrderNewCarActionUI orderNewCarActionUI;
-  private ControllerFactory controllerFactory;
-
+  private final ControllerFactory controllerFactory;
 
   public GarageHolderActionsOverviewUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
-    this.orderNewCarActionUI = new OrderNewCarActionUI(controllerFactory);
   }
 
-  // TODO: change to correct controllers
   @Override
   public void run() {
-    int action;
 
-    do {
+    while (true) {
+      int action;
+
       String loggedInGarageHolderName = controllerFactory.giveLoggedInGarageHolderName();
-      IOCall.waitForConfirmation();
+      IOCall.out();
       IOCall.out("Welcome " + loggedInGarageHolderName);
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Order new car");
+      IOCall.out(" 2: Check order details");
       IOCall.out("-1: Logout and go back");
 
       action = IOCall.in();
       switch (action) {
-        case 1 -> this.orderNewCarActionUI.run();
-      }
-    } while (action != -1 && action != 1);
+        case 1 -> new OrderNewCarActionUI(controllerFactory).run();
+        case 2 -> new CheckOrderDetailsActionUI(controllerFactory).run();
+        case -1 -> {
+          controllerFactory.logoutGarageHolder();
+          return;
+        }
 
-    this.controllerFactory.logoutGarageHolder();
+      }
+    }
   }
 }

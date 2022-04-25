@@ -60,7 +60,7 @@ public class GarageHolder {
     carOrders.add(carOrder);
   }
 
-  public CarOrder getOrder(int id) {
+  public Optional<CarOrder> getOrder(int id) {
     return findCarOrder(id);
   }
 
@@ -73,7 +73,11 @@ public class GarageHolder {
   public LocalDateTime getCompletionTimeFromOrder(int orderId) {
     if (id < 0)
       throw new IllegalArgumentException("ID can not be lower than 0");
-    return findCarOrder(orderId).getCompletionTime();
+    Optional<CarOrder> order = findCarOrder(orderId);
+    if (order.isPresent()) {
+      return order.get().getCompletionTime();
+    }
+    throw new IllegalArgumentException("No order was found with the given ID");
   }
 
   /**
@@ -81,13 +85,9 @@ public class GarageHolder {
    * @return the car order
    * @throws IllegalArgumentException ID can not be lower than 0
    *                                  | id < 0
-   * @throws IllegalArgumentException car order not found
-   *                                  | Optional<CarOrder> carOrder = carOrders.stream()
-   *                                  .filter(wp -> wp.getId() == id)
-   *                                  .findFirst()
    * @inspects | this
    */
-  public CarOrder findCarOrder(int id) {
+  public Optional<CarOrder> findCarOrder(int id) {
     if (id < 0)
       throw new IllegalArgumentException("ID can not be lower than 0");
 
@@ -96,8 +96,8 @@ public class GarageHolder {
       .findFirst();
 
     if (carOrder.isEmpty())
-      throw new IllegalArgumentException("Car order not found");
+      return Optional.empty();
 
-    return carOrder.get();
+    return Optional.of(carOrder.get());
   }
 }

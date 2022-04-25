@@ -8,7 +8,7 @@ import be.kuleuven.assemassit.UI.UI;
 
 public class CarMechanicActionsOverviewUI implements UI {
 
-  private ControllerFactory controllerFactory;
+  private final ControllerFactory controllerFactory;
 
   public CarMechanicActionsOverviewUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -16,10 +16,11 @@ public class CarMechanicActionsOverviewUI implements UI {
 
   @Override
   public void run() {
-    int action;
 
-    do {
-      IOCall.waitForConfirmation();
+    while (true) {
+      int action;
+
+      IOCall.out();
       IOCall.out("Welcome Mechanic");
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Perform assembly task");
@@ -29,15 +30,13 @@ public class CarMechanicActionsOverviewUI implements UI {
       action = IOCall.in();
 
       switch (action) {
-        case 1 -> {
-          new PerformAssemblyTasksActionUI(controllerFactory);
-        }
-        case 2 -> {
-          new CheckAssemblyLineStatusActionUI(controllerFactory);
+        case 1 -> new PerformAssemblyTasksActionUI(controllerFactory).run();
+        case 2 -> new CheckAssemblyLineStatusActionUI(controllerFactory).run();
+        case -1 -> {
+          controllerFactory.logoutCarMechanic();
+          return;
         }
       }
-    } while (action != -1 && action != 1);
-
-    controllerFactory.logoutCarMechanic();
+    }
   }
 }

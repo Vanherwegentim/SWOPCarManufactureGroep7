@@ -6,8 +6,8 @@ import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
 public class ManagerActionsOverviewUI implements UI {
-  private CheckProductionStatisticsActionUI checkProductionStatisticsActionUI;
-  private ControllerFactory controllerFactory;
+
+  private final ControllerFactory controllerFactory;
 
   public ManagerActionsOverviewUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -15,12 +15,11 @@ public class ManagerActionsOverviewUI implements UI {
 
   @Override
   public void run() {
-    this.checkProductionStatisticsActionUI = new CheckProductionStatisticsActionUI(controllerFactory);
 
-    int action;
+    while (true) {
+      int action;
 
-    do {
-      IOCall.waitForConfirmation();
+      IOCall.out();
       IOCall.out("Welcome Manager");
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Car and delay statistics");
@@ -29,10 +28,12 @@ public class ManagerActionsOverviewUI implements UI {
       action = IOCall.in();
 
       switch (action) {
-        case 1 -> this.checkProductionStatisticsActionUI.run();
+        case 1 -> new CheckProductionStatisticsActionUI(controllerFactory).run();
+        case -1 -> {
+          controllerFactory.logoutManager();
+          return;
+        }
       }
-    } while (action != -1 && action != 1);
-
-    controllerFactory.logoutManager();
+    }
   }
 }

@@ -10,4 +10,9 @@ public class ControllerFactoryLoginState extends ControllerFactoryState {
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
     return new LoginController(garageHolderRepository, controllerFactory);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    return o instanceof ControllerFactoryLoginState;
+  }
 }

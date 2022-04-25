@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class PerformAssemblyTasksActionUI implements UI {
-  private PerformAssemblyTasksController performAssemblyTasksController;
+  private final PerformAssemblyTasksController performAssemblyTasksController;
 
   public PerformAssemblyTasksActionUI(ControllerFactory controllerFactory) {
     this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
@@ -82,7 +82,7 @@ public class PerformAssemblyTasksActionUI implements UI {
 
       if (chosenWorkPostIdOptional.isEmpty()) {
         IOCall.out("No work post was chosen.");
-        break; //TODO of continue ik weet het niet staat ook niet in de use case
+        break;
       }
 
       int chosenWorkPostId = chosenWorkPostIdOptional.get();
@@ -94,7 +94,7 @@ public class PerformAssemblyTasksActionUI implements UI {
 
         if (allAssemblyTasks.isEmpty()) {
           IOCall.out("There are currently no pending tasks for this work post");
-          break; //TODO: als dit een continue is dan heb je een infinite loop als er geen taken zijn
+          break;
         }
 
         //3. The system presents an overview of the pending assembly tasks for the car at the current work post.
@@ -103,7 +103,7 @@ public class PerformAssemblyTasksActionUI implements UI {
 
         if (chosenAssemblyTaskIdOptional.isEmpty()) {
           IOCall.out("No task was chosen.");
-          continue;
+          break;
         }
 
         int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
@@ -122,8 +122,6 @@ public class PerformAssemblyTasksActionUI implements UI {
         int duration = displayInputMinutes();
         performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(chosenWorkPostId, duration);
       }
-
-      break; // if we reach this point, the use case is done, java call stack will now return to the previous UI
     }
   }
 }
