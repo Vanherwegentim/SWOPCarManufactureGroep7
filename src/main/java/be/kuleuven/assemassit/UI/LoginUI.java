@@ -77,6 +77,9 @@ public class LoginUI implements UI {
           controllerFactory.loginCarMechanic();
           this.carMechanicActionsOverviewUI.run();
         }
+        case 4 -> {
+          this.controllerFactory.moveInsideCarManufactoringCompany();
+        }
       }
     } while (choice != -1);
   }
