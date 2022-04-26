@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.GarageHolder;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 import java.util.Map;
 import java.util.stream.Collectors;

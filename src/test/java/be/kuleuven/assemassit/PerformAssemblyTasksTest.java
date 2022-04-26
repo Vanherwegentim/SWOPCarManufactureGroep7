@@ -7,9 +7,9 @@ import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.CarModel;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.GarageHolder;
-import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 import be.kuleuven.assemassit.Domain.WorkPost;
+import be.kuleuven.assemassit.Repositories.CarModelRepository;
+import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
