@@ -166,14 +166,12 @@ public class CarManufactoringCompany implements Observer {
    * @mutates | this
    */
   public void triggerAutomaticFirstMove() {
-    if (LocalTime.now().isBefore(this.openingTime))
-      throw new IllegalStateException();
-
-    this.moveAssemblyLine();
+    if (!LocalTime.now().isBefore(this.openingTime) && assemblyLine.canMove())
+      this.moveAssemblyLine();
   }
 
   public boolean isAssemblyLineAvailable() {
-    return this.assemblyLine.getWorkPosts().stream().findFirst().get().getCarAssemblyProcess() == null;
+    return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
   }
 
   @Override
