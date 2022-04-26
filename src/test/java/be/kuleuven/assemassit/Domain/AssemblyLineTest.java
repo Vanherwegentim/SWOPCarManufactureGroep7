@@ -51,7 +51,18 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT,
           Spoiler.LOW)));
-
+    carAssemblyProcess3 = new CarAssemblyProcess(
+      new CarOrder(
+        new Car(
+          new CarModel(0, "Fard Fiesta", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+          Body.SEDAN,
+          Color.BLACK,
+          Engine.PERFORMANCE,
+          Gearbox.FIVE_SPEED_MANUAL,
+          Seat.LEATHER_BLACK,
+          Airco.MANUAL,
+          Wheel.SPORT,
+          Spoiler.LOW)));
   }
 
   @Test
@@ -80,24 +91,27 @@ public class AssemblyLineTest {
     assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
 
-  @Test
-  public void createCarsPerDayMapTest() {
+  private void extraSetup(){
 
     carAssemblyProcess2.complete();
     carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
     carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+
     carAssemblyProcess3.complete();
-    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
-    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
-
-    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
-    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
-    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
-
+    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+  }
 
-    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcessTestPlusDay.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
+  @Test
+  public void createCarsPerDayMapTest() {
+    extraSetup();
+    assertEquals(Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcess3.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
 
   }
 
@@ -124,6 +138,8 @@ public class AssemblyLineTest {
 
   @Test
   public void exactCarsIn2DaysTest() {
+    extraSetup();
+
     assertEquals(2.0, assemblyLine.exactCarsIn2Days());
   }
 
@@ -140,7 +156,9 @@ public class AssemblyLineTest {
 
   @Test
   public void last2DelaysTest() {
-    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
+    extraSetup();
+
+    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 0));
   }
 
   @Test

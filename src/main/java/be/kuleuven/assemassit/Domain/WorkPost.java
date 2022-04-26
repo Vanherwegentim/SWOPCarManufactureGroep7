@@ -181,7 +181,7 @@ public class WorkPost {
 
     List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
     List<AssemblyTask> filteredTasks = tasks.stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
-    return filteredTasks.stream().filter(AssemblyTask::getFinished).toList();
+    return filteredTasks.stream().filter(at -> !at.getPending()).toList();
   }
 
   /**
@@ -194,7 +194,6 @@ public class WorkPost {
       throw new IllegalStateException("There is no active assembly task in this work post");
     activeAssemblyTask.complete();
     activeAssemblyTask.setDuration(duration);
-    activeAssemblyTask.setCompletionTime(completionTime);
     activeAssemblyTask = null;
   }
 

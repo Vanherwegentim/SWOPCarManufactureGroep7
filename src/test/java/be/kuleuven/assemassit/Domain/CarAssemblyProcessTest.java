@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CarAssemblyProcessTest {
   private List<AssemblyTask> assemblyTasks;
   private CarOrder carOrder;
-
   @BeforeEach
   public void beforeEach() {
     carOrder = new CarOrder(
@@ -58,4 +57,13 @@ public class CarAssemblyProcessTest {
 
     }
   }
+
+    @Test
+    void giveAssemblyTask() {
+      CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+      List<AssemblyTask> assemblyTaskList = carAssemblyProcess.getAssemblyTasks();
+
+      assertEquals(assemblyTaskList.get(0), carAssemblyProcess.giveAssemblyTask(assemblyTaskList.get(0).getId()));
+
+    }
 }
