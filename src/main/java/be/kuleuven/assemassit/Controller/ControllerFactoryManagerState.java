@@ -15,6 +15,7 @@ public class ControllerFactoryManagerState extends ControllerFactoryState {
     return new CheckProductionStatisticsController(assemblyLine);
   }
 
+
   @Override
   public boolean equals(Object o) {
     return o instanceof ControllerFactoryManagerState;
