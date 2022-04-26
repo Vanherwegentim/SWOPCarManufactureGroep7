@@ -21,13 +21,17 @@ public class CarBodyAssemblyTask extends AssemblyTask {
    * @param body
    * @throws IllegalArgumentException body can not be null | body == null
    * @mutates | this
-   * @post | this.body = body
+   * @post | this.getBody() == body
    */
   public CarBodyAssemblyTask(Body body) {
     super("Assembly car body");
     if (body == null)
       throw new IllegalArgumentException("Body can not be null");
     this.body = body;
+  }
+
+  public Body getBody() {
+    return body;
   }
 
   @Override

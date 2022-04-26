@@ -17,7 +17,7 @@ public class OrderNewCarController {
 
   /**
    * @param carManufactoringCompany
-   * @post | this.carManufactoringCompany = carManufactoringCompany
+   * @post | this.carManufactoringCompany == carManufactoringCompany
    */
   public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     if (carManufactoringCompany == null)

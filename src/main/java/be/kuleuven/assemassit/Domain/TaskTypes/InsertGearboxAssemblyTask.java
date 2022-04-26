@@ -21,13 +21,17 @@ public class InsertGearboxAssemblyTask extends AssemblyTask {
    * @param gearbox
    * @throws IllegalArgumentException gearbox can not be null | gearbox == null
    * @mutates | this
-   * @post | this.gearbox = gearbox
+   * @post | this.getGearbox() == gearbox
    */
   public InsertGearboxAssemblyTask(Gearbox gearbox) {
     super("Insert gearbox");
     if (gearbox == null)
       throw new IllegalArgumentException("Gearbox can not be null");
     this.gearbox = gearbox;
+  }
+
+  public Gearbox getGearbox() {
+    return gearbox;
   }
 
   @Override

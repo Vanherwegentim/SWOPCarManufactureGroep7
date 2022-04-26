@@ -21,13 +21,17 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
    * @param seat
    * @throws IllegalArgumentException seat is null | seat == null
    * @mutates | this
-   * @post | this.seat = seat
+   * @post | this.getSeat() == seat
    */
   public InstallSeatsAssemblyTask(Seat seat) {
     super("Install seats");
     if (seat == null)
       throw new IllegalArgumentException("Seat can not be null");
     this.seat = seat;
+  }
+
+  public Seat getSeat() {
+    return seat;
   }
 
   @Override

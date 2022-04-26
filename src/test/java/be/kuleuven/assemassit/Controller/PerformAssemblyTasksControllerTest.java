@@ -1,10 +1,13 @@
 package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Domain.*;
-import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.AssemblyTask;
+import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
+import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertEngineAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertGearboxAssemblyTask;
+import be.kuleuven.assemassit.Domain.WorkPost;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -110,8 +112,8 @@ public class PerformAssemblyTasksControllerTest {
     int assemblyTaskId = 0;
 
     when(mockedAssemblyLine.findWorkPost(workPostId)).thenReturn(mockedCarBodyPost);
-    controller.setActiveTask(workPostId, assemblyTaskId);
-    //todo assert schrijven?
+    assertAll(() -> controller.setActiveTask(workPostId, assemblyTaskId));
+
   }
 
   @Test
@@ -136,9 +138,7 @@ public class PerformAssemblyTasksControllerTest {
   @Test
   void completeAssemblyTaskAndMoveIfPossibleTest_succeeds() {
 
-    controller.completeAssemblyTaskAndMoveIfPossible(0, 30);
-
-    //todo test
+    assertAll(() -> controller.completeAssemblyTaskAndMoveIfPossible(0, 30));
   }
 
   @Test

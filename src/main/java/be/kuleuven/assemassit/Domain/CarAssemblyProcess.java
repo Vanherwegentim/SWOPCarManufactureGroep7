@@ -31,9 +31,9 @@ public class CarAssemblyProcess {
   /**
    * @param carOrder the order that should be connected to the car assembly process
    * @throws | carOrder == null
-   * @post | this.id > -1
-   * @post | this.carOrder = carOrder
-   * @post | this.assemblyTasks != null
+   * @post | this.getId() > -1
+   * @post | this.getCarOrder() == carOrder
+   * @post | this.getAssemblyTasks() != null
    * @inspects | carOrder
    * @mutates | this
    */
