@@ -37,7 +37,7 @@ public class PaintCarAssemblyTask extends AssemblyTask {
   @Override
   public List<String> getActions() {
     List<String> actions = new ArrayList<>();
-    actions.add("Painting the car " + color);
+    actions.add("Painting the car " + getColor());
     return actions;
   }
 

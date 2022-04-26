@@ -37,7 +37,7 @@ public class InsertGearboxAssemblyTask extends AssemblyTask {
   @Override
   public List<String> getActions() {
     List<String> actions = new ArrayList<>();
-    actions.add("Installing the " + gearbox + " gearbox");
+    actions.add("Installing the " + getGearbox() + " gearbox");
     return actions;
   }
 

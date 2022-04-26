@@ -51,9 +51,11 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
+    //todo: deze test werkt enkel overdag
     // TODO: DONE this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
     // assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
     assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
     /*
     LocalDateTime localDateTimeNow = LocalDateTime.now();
     LocalDateTime expectedDate = LocalDateTime.now();
