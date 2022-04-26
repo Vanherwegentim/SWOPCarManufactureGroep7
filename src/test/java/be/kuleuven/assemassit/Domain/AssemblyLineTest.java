@@ -11,8 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AssemblyLineTest {
 
@@ -130,4 +129,23 @@ public class AssemblyLineTest {
     assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
   }
 
+  @Test
+  public void givePossibleBatchCars_ReturnsBatch() {
+    CarModel carModel = new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values()));
+
+    Car car1 = new Car(carModel, Body.BREAK, Color.BLACK, Engine.ULTRA, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER);
+    Car car2 = new Car(carModel, Body.BREAK, Color.BLACK, Engine.ULTRA, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER);
+    Car car3 = new Car(carModel, Body.BREAK, Color.BLACK, Engine.ULTRA, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER);
+
+    CarOrder carOrder1 = new CarOrder(car1);
+    CarOrder carOrder2 = new CarOrder(car2);
+    CarOrder carOrder3 = new CarOrder(car3);
+
+    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder1));
+    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder2));
+    assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder3));
+
+    List<Car> cars = assemblyLine.givePossibleBatchCars();
+    assertTrue(cars.size() == 1);
+  }
 }

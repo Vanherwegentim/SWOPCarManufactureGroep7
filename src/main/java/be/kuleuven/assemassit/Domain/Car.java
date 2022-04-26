@@ -33,7 +33,6 @@ public class Car {
   private final Wheel wheels;
   private final Spoiler spoiler;
 
-
   /**
    * @param carModel the corresponding car model that the car is based on
    * @param body
@@ -151,5 +150,10 @@ public class Car {
           ));
     }
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return giveListOfCarOptions().stream().map(o -> o.hashCode()).mapToInt(Integer::intValue).sum();
   }
 }

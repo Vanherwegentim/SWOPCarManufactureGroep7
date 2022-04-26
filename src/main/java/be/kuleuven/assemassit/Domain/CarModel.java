@@ -17,6 +17,7 @@ import java.util.List;
 public class CarModel {
   private int id;
   private String name;
+  private int workPostDuration;
 
   /**
    * @invar | wheelOptions != null && !wheelsOptions.contains(null) && !wheelOptions.isEmpty()
@@ -94,6 +95,30 @@ public class CarModel {
 //    this.aircoOptions = List.copyOf(aircoOptions);
 //  }
   public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions, List<Spoiler> spoilerOptions) {
+    this(id, name, wheelOptions, gearboxOptions, seatOptions, bodyOptions, colorOptions, engineOptions, aircoOptions, spoilerOptions, 60);
+  }
+
+  /**
+   * @param id               car model ID
+   * @param name             name of the car model
+   * @param wheelOptions     list of acceptable wheel options for the car model
+   * @param gearboxOptions   list of acceptable gearbox options for the car model
+   * @param seatOptions      list of acceptable seat options for the car model
+   * @param bodyOptions      list of acceptable body options for the car model
+   * @param colorOptions     list of acceptable color options for the car model
+   * @param engineOptions    list of acceptable engine options for the car model
+   * @param aircoOptions     list of acceptable airco options for the car model
+   * @param workPostDuration the duration of the model on every workpost
+   * @throws IllegalArgumentException name can not be null or empty
+   *                                  | name == null || name.equals("")
+   * @throws IllegalArgumentException options can not be null or empty
+   *                                  | (wheelOptions == null || gearboxOptions == null || seatOptions == null || bodyOptions == null || colorOptions == null || engineOptions == null || aircoOptions == null ||
+   *                                  wheelOptions.isEmpty() || gearboxOptions.isEmpty() || seatOptions.isEmpty() || bodyOptions.isEmpty() || colorOptions.isEmpty() || engineOptions.isEmpty() || aircoOptions.isEmpty())
+   * @throws IllegalArgumentException options can not contain null
+   *                                  | (wheelOptions.contains(null) || gearboxOptions.contains(null) || seatOptions.contains(null) || bodyOptions.contains(null) || colorOptions.contains(null) || engineOptions.contains(null) || aircoOptions.contains(null))
+   * @mutates | this
+   */
+  public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions, List<Spoiler> spoilerOptions, int workPostDuration) {
     if (name == "" || name.equals(null))
       throw new IllegalArgumentException("Car model name cannot be empty or null");
     if (wheelOptions == null || gearboxOptions == null || seatOptions == null || bodyOptions == null || colorOptions == null || engineOptions == null || aircoOptions == null || spoilerOptions == null ||
@@ -111,6 +136,7 @@ public class CarModel {
     this.engineOptions = List.copyOf(engineOptions);
     this.aircoOptions = List.copyOf(aircoOptions);
     this.spoilerOptions = List.copyOf(spoilerOptions);
+    this.workPostDuration = workPostDuration;
   }
 
   public int getId() {
@@ -153,6 +179,10 @@ public class CarModel {
     return spoilerOptions;
   }
 
+  public int getWorkPostDuration() {
+    return workPostDuration;
+  }
+
   /**
    * Method checks if a give configuration of options is valid for the car model
    *
@@ -183,8 +213,6 @@ public class CarModel {
       wheelOptions.contains(wheels) &&
       //spoiler can be null, contains returns true if spoiler is null
       spoilerOptions.contains(spoiler);
-
-
   }
 
   @Override
