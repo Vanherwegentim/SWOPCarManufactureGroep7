@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * @mutable
  * @invar | getCarModels() != null
- * @invar | assemblyLine != null
+ * @invar | getAssemblyLine() != null
  * @invar | getOpeningTime() != null
  * @invar | getClosingTime() != null
  * @invar Opening time should be before the closing time

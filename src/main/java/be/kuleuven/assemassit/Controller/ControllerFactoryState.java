@@ -39,6 +39,10 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
+  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
+    throw new IllegalStateException();
+  }
+
   @Override
   public abstract boolean equals(Object o);
 }

@@ -45,14 +45,14 @@ public class Car {
    * @param wheels`
    * @throws IllegalArgumentException | carModel == null
    * @throws IllegalArgumentException | body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null
-   * @post | this.carModel = carModel
-   * @post | this.body = body
-   * @post | this.color = Color
-   * @post | this.engine = engine
-   * @post | this.gearbox = gearbox
-   * @post | this.seats = seats
-   * @post | this.airco = airco
-   * @post | this.wheels = wheels
+   * @post | this.carModel == carModel
+   * @post | this.body == body
+   * @post | this.color == Color
+   * @post | this.engine == engine
+   * @post | this.gearbox == gearbox
+   * @post | this.seats == seats
+   * @post | this.airco == airco
+   * @post | this.wheels == wheels
    */
   public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels, Spoiler spoiler) {
     if (carModel == null)

@@ -21,13 +21,17 @@ public class InsertEngineAssemblyTask extends AssemblyTask {
    * @param engine
    * @throws IllegalArgumentException engine can not be null | engine == null
    * @mutates | this
-   * @post | this.engine = engine
+   * @post | this.getEngine() == engine
    */
   public InsertEngineAssemblyTask(Engine engine) {
     super("Insert engine");
     if (engine == null)
       throw new IllegalArgumentException("Engine can not be null");
     this.engine = engine;
+  }
+
+  public Engine getEngine() {
+    return engine;
   }
 
   @Override
