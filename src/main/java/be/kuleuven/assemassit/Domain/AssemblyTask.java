@@ -103,7 +103,10 @@ public abstract class AssemblyTask {
 
   @Override
   public boolean equals(Object object) {
-    if (object instanceof AssemblyTask task) task.id = this.id;
+    if (object instanceof AssemblyTask) {
+      AssemblyTask task = (AssemblyTask) object;
+      task.id = this.id;
+    }
     return false;
   }
 

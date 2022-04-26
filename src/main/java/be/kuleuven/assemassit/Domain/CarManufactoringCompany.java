@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Helper.Observer;
-import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
+import be.kuleuven.assemassit.Repositories.CarModelRepository;
+import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -176,7 +176,8 @@ public class CarManufactoringCompany implements Observer {
 
   @Override
   public void update(Object observable, Object value) {
-    if (observable instanceof AssemblyLine && value instanceof Integer overtime) {
+    if (observable instanceof AssemblyLine && value instanceof Integer) {
+      Integer overtime = (Integer) value;
       this.overtime = overtime;
       this.overTimeRepository.setOverTime(this.overtime);
     }

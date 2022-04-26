@@ -37,7 +37,7 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
   @Override
   public List<String> getActions() {
     List<String> actions = new ArrayList<>();
-    actions.add("Installing the " + airco + " airco");
+    actions.add("Installing the " + getAirco() + " airco");
     return actions;
   }
 

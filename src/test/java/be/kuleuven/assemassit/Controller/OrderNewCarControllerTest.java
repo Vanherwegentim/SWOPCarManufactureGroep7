@@ -2,7 +2,7 @@ package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

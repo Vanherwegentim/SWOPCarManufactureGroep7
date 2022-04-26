@@ -37,7 +37,7 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   @Override
   public List<String> getActions() {
     List<String> actions = new ArrayList<>();
-    actions.add("Installing the " + seat + " seats");
+    actions.add("Installing the " + getSeat() + " seats");
     return actions;
   }
 

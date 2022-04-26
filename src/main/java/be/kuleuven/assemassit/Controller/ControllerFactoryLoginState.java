@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 public class ControllerFactoryLoginState extends ControllerFactoryState {
 

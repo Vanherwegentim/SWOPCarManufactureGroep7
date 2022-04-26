@@ -16,17 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AssemblyLineTest {
 
   private AssemblyLine assemblyLine;
-  private CarAssemblyProcess carAssemblyProcess;
-  private CarAssemblyProcess carAssemblyProcessTest;
-  private CarAssemblyProcess carAssemblyProcessTestPlusDay;
+
+  private CarAssemblyProcess carAssemblyProcess1;
+  private CarAssemblyProcess carAssemblyProcess2;
+  private CarAssemblyProcess carAssemblyProcess3;
 
 
   @BeforeEach
   public void beforeEach() {
     this.assemblyLine = new AssemblyLine();
-    assemblyLine.setEndTime(LocalTime.of(22, 0));
     assemblyLine.setStartTime(LocalTime.of(6, 0));
-    carAssemblyProcess = new CarAssemblyProcess(
+    assemblyLine.setEndTime(LocalTime.of(22, 0));
+    carAssemblyProcess1 = new CarAssemblyProcess(
       new CarOrder(
         new Car(
           new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
@@ -38,10 +39,10 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT,
           Spoiler.NO_SPOILER)));
-    carAssemblyProcessTest = new CarAssemblyProcess(
+    carAssemblyProcess2 = new CarAssemblyProcess(
       new CarOrder(
         new Car(
-          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+          new CarModel(0, "Limoen C4", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
           Body.SEDAN,
           Color.BLACK,
           Engine.PERFORMANCE,
@@ -50,30 +51,7 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT,
           Spoiler.LOW)));
-    carAssemblyProcessTestPlusDay = new CarAssemblyProcess(
-      new CarOrder(
-        new Car(
-          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
-          Body.SEDAN,
-          Color.BLACK,
-          Engine.PERFORMANCE,
-          Gearbox.FIVE_SPEED_MANUAL,
-          Seat.LEATHER_BLACK,
-          Airco.MANUAL,
-          Wheel.SPORT,
-          Spoiler.LOW)));
-    carAssemblyProcessTest.complete();
-    carAssemblyProcessTest.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcessTest.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
-    carAssemblyProcess.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcess.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
-    carAssemblyProcessTestPlusDay.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
-    carAssemblyProcessTestPlusDay.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
-    assemblyLine.addCarToFinishedCars(carAssemblyProcessTest);
-    assemblyLine.addCarToFinishedCars(carAssemblyProcessTest);
-    assemblyLine.addCarToFinishedCars(carAssemblyProcessTest);
-    assemblyLine.addCarToFinishedCars(carAssemblyProcessTestPlusDay);
-    assemblyLine.addCarToFinishedCars(carAssemblyProcessTestPlusDay);
+
   }
 
   @Test
@@ -85,8 +63,7 @@ public class AssemblyLineTest {
 
   @Test
   public void givePendingAssemblyTasksFromWorkPostTest() {
-    assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
-    assemblyLine.move();
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
 
     List<AssemblyTask> actual = assemblyLine.givePendingAssemblyTasksFromWorkPost(0);
     assertArrayEquals(new String[]{"Assembly car body", "Paint car"}, actual.stream().map(AssemblyTask::getName).toArray());
@@ -103,6 +80,68 @@ public class AssemblyLineTest {
     assertEquals(workPostStatusses, assemblyLine.giveActiveTasksOverview());
   }
 
+  @Test
+  public void createCarsPerDayMapTest() {
+
+    carAssemblyProcess2.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+
+    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcessTestPlusDay.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
+
+  }
+
+  @Test
+  public void averageCarsInADayTest() {
+    carAssemblyProcess2.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assertEquals(assemblyLine.averageCarsInADay(), 1);
+  }
+
+  @Test
+  public void averageCarsInADayTest2() {
+    assertEquals(assemblyLine.averageCarsInADay(), 0);
+  }
+
+
+  @Test
+  public void medianCarsInADayTest() {
+    assertEquals(2.5, assemblyLine.medianCarsInADay());
+  }
+
+  @Test
+  public void exactCarsIn2DaysTest() {
+    assertEquals(2.0, assemblyLine.exactCarsIn2Days());
+  }
+
+  @Test
+  public void averageDelayPerOrderTest() {
+    assertEquals(1.2, assemblyLine.averageDelayPerOrder());
+  }
+
+  @Test
+  public void medianDelayPerOrderTest() {
+    System.out.println();
+    assertEquals(0, assemblyLine.medianDelayPerOrder());
+  }
+
+  @Test
+  public void last2DelaysTest() {
+    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
+  }
 
   @Test
   public void givePossibleBatchCars_ReturnsBatch() {
@@ -125,42 +164,166 @@ public class AssemblyLineTest {
   }
 
   @Test
-  public void createCarsPerDayMapTest() {
-    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcessTestPlusDay.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
-
-  }
-
-  //Needs more verbose testing
-  @Test
-  public void averageCarsInADayTest() {
-    assertEquals(2.5, assemblyLine.averageCarsInADay());
+  void giveSchedulingAlgorithmNames() {
   }
 
   @Test
-  public void medianCarsInADayTest() {
-    assertEquals(2.5, assemblyLine.medianCarsInADay());
+  void detach() {
   }
 
   @Test
-  public void exactCarsIn2DaysTest() {
-    assertEquals(2.0, assemblyLine.exactCarsIn2Days());
-  }
-
-  //This is probably going to error because of the problem with the estimatedCompletionTime algorithm
-  //TODO fix this
-  @Test
-  public void averageDelayPerOrderTest() {
-    assertEquals(1.2, assemblyLine.averageDelayPerOrder());
+  void notifyObservers() {
   }
 
   @Test
-  public void medianDelayPerOrderTest() {
-    assertEquals(0, assemblyLine.medianDelayPerOrder());
+  void setStartTime() {
   }
 
   @Test
-  public void last2DelaysTest() {
-    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
+  void setEndTime() {
   }
 
+  @Test
+  void getSchedulingAlgorithm() {
+  }
+
+  @Test
+  void setSchedulingAlgorithm() {
+  }
+
+  @Test
+  void addCarAssemblyProcess() {
+  }
+
+  @Test
+  void getCarBodyPost() {
+  }
+
+  @Test
+  void getDrivetrainPost() {
+  }
+
+  @Test
+  void getAccessoriesPost() {
+  }
+
+  @Test
+  void getWorkPosts() {
+  }
+
+  @Test
+  void getFinishedCars() {
+  }
+
+  @Test
+  void givePendingAssemblyTasksFromWorkPost() {
+  }
+
+  @Test
+  void giveFinishedAssemblyTasksFromWorkPost() {
+  }
+
+  @Test
+  void completeAssemblyTask() {
+  }
+
+  @Test
+  void giveActiveTasksOverview() {
+  }
+
+  @Test
+  void giveTasksOverview() {
+  }
+
+  @Test
+  void giveFutureTasksOverview() {
+  }
+
+  @Test
+  void findWorkPost() {
+  }
+
+  @Test
+  void canMove() {
+  }
+
+  @Test
+  void move() {
+  }
+
+  @Test
+  void testMove() {
+  }
+
+  @Test
+  void giveEstimatedCompletionDateOfLatestProcess() {
+  }
+
+  @Test
+  void giveCarAssemblyTask() {
+  }
+
+  @Test
+  void setActiveTask() {
+  }
+
+  @Test
+  void getCarAssemblyProcessesQueue() {
+  }
+
+  @Test
+  void getCarAssemblyProcessesQueueAsQueue() {
+  }
+
+  @Test
+  void createCarsPerDayMap() {
+  }
+
+  @Test
+  void averageCarsInADay() {
+  }
+
+  @Test
+  void medianCarsInADay() {
+  }
+
+  @Test
+  void exactCarsIn2Days() {
+  }
+
+  @Test
+  void averageDelayPerOrder() {
+  }
+
+  @Test
+  void medianDelayPerOrder() {
+  }
+
+  @Test
+  void last2Delays() {
+  }
+
+  @Test
+  void addCarToFinishedCars() {
+  }
+
+  @Test
+  void testGiveSchedulingAlgorithmNames() {
+  }
+
+  @Test
+  void givePossibleBatchCars() {
+  }
+
+  @Test
+  void attach() {
+  }
+
+  @Test
+  void testDetach() {
+  }
+
+  @Test
+  void testNotifyObservers() {
+  }
 }

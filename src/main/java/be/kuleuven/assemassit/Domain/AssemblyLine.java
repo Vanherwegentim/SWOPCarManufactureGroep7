@@ -4,10 +4,10 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
-import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
+import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -68,7 +68,6 @@ public class AssemblyLine implements Subject {
    * @representationObject
    */
   private SchedulingAlgorithm schedulingAlgorithm;
-  private OvertimeRepository overTimeRepository;
 
   /**
    * @post | carBodyPost != null
@@ -88,6 +87,18 @@ public class AssemblyLine implements Subject {
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
     this.observers = new ArrayList<>();
+  }
+
+  public WorkPost getCarBodyPost() {
+    return this.carBodyPost;
+  }
+
+  public WorkPost getDrivetrainPost() {
+    return this.drivetrainPost;
+  }
+
+  public WorkPost getAccessoriesPost() {
+    return this.accessoriesPost;
   }
 
   /**
@@ -155,18 +166,6 @@ public class AssemblyLine implements Subject {
     carAssemblyProcessesQueue.add(carAssemblyProcess);
   }
 
-  public WorkPost getCarBodyPost() {
-    return this.carBodyPost;
-  }
-
-  public WorkPost getDrivetrainPost() {
-    return this.drivetrainPost;
-  }
-
-  public WorkPost getAccessoriesPost() {
-    return this.accessoriesPost;
-  }
-
   /**
    * Collects the work posts of the assembly line in a list.
    *
@@ -205,7 +204,7 @@ public class AssemblyLine implements Subject {
    * Return the list of assembly tasks from an associated work post on the assembly line that are finished
    *
    * @param workPostId
-   * @return The list of pendfiing assembly tasks
+   * @return The list of pending assembly tasks
    * @inspects | this
    * @creates | result
    */
@@ -370,34 +369,6 @@ public class AssemblyLine implements Subject {
       }
     }
     return true;
-  }
-
-  /**
-   * Moves the assembly and gives the duration of the current phase.
-   * The assembly process is moved from one work post to another on the assembly line.
-   *
-   * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
-   * @throws IllegalArgumentException minutes is below 0 | minutes < 0
-   * @mutates | this
-   */
-  public void move() {
-
-    if (!canMove())
-      throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
-
-    int newOvertime = schedulingAlgorithm.moveAssemblyLine
-      (
-        0, // TODO: we just have to remove this "move" method
-        endTime,
-        carAssemblyProcessesQueue,
-        finishedCars,
-        getWorkPosts()
-      );
-
-    if (newOvertime > 0) {
-      // overtime happened so we have to inform the car manufacturing company
-      updateOvertime(newOvertime);
-    }
   }
 
   /**
@@ -672,15 +643,13 @@ public class AssemblyLine implements Subject {
     if (finishedCars.size() == 0) {
       return delays;
     }
+    CarAssemblyProcess car1 = finishedCars.get(0);
     if (finishedCars.size() == 1) {
-      CarAssemblyProcess car1 = finishedCars.get(0);
       Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
       long diff1 = duration1.toHours();
       int conv1 = Math.toIntExact(diff1);
       delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
-      return delays;
     } else {
-      CarAssemblyProcess car1 = finishedCars.get(0);
       CarAssemblyProcess car2 = finishedCars.get(1);
       for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
         if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
@@ -697,8 +666,8 @@ public class AssemblyLine implements Subject {
       long diff2 = duration2.toHours();
       int conv2 = Math.toIntExact(diff2);
       delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
-      return delays;
     }
+    return delays;
   }
 
   public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
