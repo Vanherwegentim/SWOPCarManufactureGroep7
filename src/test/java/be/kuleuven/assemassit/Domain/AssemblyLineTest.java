@@ -148,5 +148,4 @@ public class AssemblyLineTest {
     List<Car> cars = assemblyLine.givePossibleBatchCars();
     assertTrue(cars.size() == 1);
   }
-
 }
