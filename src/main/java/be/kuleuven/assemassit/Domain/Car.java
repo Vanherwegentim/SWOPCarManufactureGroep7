@@ -151,4 +151,9 @@ public class Car {
     }
     return false;
   }
+
+  @Override
+  public int hashCode() {
+    return giveListOfCarOptions().stream().map(o -> o.hashCode()).mapToInt(Integer::intValue).sum();
+  }
 }
