@@ -161,6 +161,22 @@ public class OrderNewCarController {
     return carOrder.getId();
   }
 
+  //TODO remove this when not needed anymore
+  public void placeCarOrderAsCar(CarOrder carOrder) {
+    if (loggedInGarageHolder == null)
+      throw new IllegalStateException();
+
+
+    loggedInGarageHolder.addCarOrder(carOrder);
+
+    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+
+    carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
+    LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
+    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
+
+  }
+
   /**
    * The estimated delivery time is requested from a given carOrderId
    *
