@@ -51,6 +51,18 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT,
           Spoiler.LOW)));
+    carAssemblyProcess3 = new CarAssemblyProcess(
+      new CarOrder(
+        new Car(
+          new CarModel(0, "Limoen C4", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
+          Body.SEDAN,
+          Color.BLACK,
+          Engine.PERFORMANCE,
+          Gearbox.FIVE_SPEED_MANUAL,
+          Seat.LEATHER_BLACK,
+          Airco.MANUAL,
+          Wheel.SPORT,
+          Spoiler.LOW)));
 
   }
 
@@ -66,7 +78,7 @@ public class AssemblyLineTest {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
 
     List<AssemblyTask> actual = assemblyLine.givePendingAssemblyTasksFromWorkPost(0);
-    assertArrayEquals(new String[]{"Assembly car body", "Paint car"}, actual.stream().map(AssemblyTask::getName).toArray());
+    assertArrayEquals(new String[]{}, actual.stream().map(AssemblyTask::getName).toArray());
   }
 
 
@@ -97,7 +109,7 @@ public class AssemblyLineTest {
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
 
-    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcessTestPlusDay.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
+    assertEquals(Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcess3.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
 
   }
 
@@ -106,9 +118,17 @@ public class AssemblyLineTest {
     carAssemblyProcess2.complete();
     carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
     carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
 
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
-    assertEquals(assemblyLine.averageCarsInADay(), 1);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assertEquals(assemblyLine.averageCarsInADay(), 2.5);
   }
 
   @Test
@@ -119,16 +139,55 @@ public class AssemblyLineTest {
 
   @Test
   public void medianCarsInADayTest() {
+    carAssemblyProcess2.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assertEquals(2.5, assemblyLine.medianCarsInADay());
   }
 
   @Test
   public void exactCarsIn2DaysTest() {
+    carAssemblyProcess2.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assertEquals(2.0, assemblyLine.exactCarsIn2Days());
   }
 
   @Test
   public void averageDelayPerOrderTest() {
+    carAssemblyProcess2.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assertEquals(1.2, assemblyLine.averageDelayPerOrder());
   }
 
@@ -140,7 +199,20 @@ public class AssemblyLineTest {
 
   @Test
   public void last2DelaysTest() {
-    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
+    carAssemblyProcess2.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 0));
   }
 
   @Test
