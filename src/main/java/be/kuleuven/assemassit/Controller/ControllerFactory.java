@@ -116,6 +116,11 @@ public class ControllerFactory {
     return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
 
+  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
+    return controllerFactoryState.createAdaptSchedulingAlgorithmController(assemblyLine);
+  }
+
+
   public CarManufactoringCompany getCarManufactoringCompany() {
     return carManufactoringCompany;
   }
