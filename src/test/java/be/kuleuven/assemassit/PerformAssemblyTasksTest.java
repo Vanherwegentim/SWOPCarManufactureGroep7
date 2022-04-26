@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -74,10 +75,19 @@ public class PerformAssemblyTasksTest {
     // Step 1
     Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
     assertEquals(allWorkPosts.size(), 3);
-    int firstWorkPostId = allWorkPosts.keySet().stream().findFirst().get();
+    int firstWorkPostId = allWorkPosts.entrySet().stream()
+      .filter(entry -> Objects.equals(entry.getValue(), "Car Body Post"))
+      .map(Map.Entry::getKey).findFirst().get();
 
-    WorkPost workPost = carManufactoringCompany.getAssemblyLine().findWorkPost(firstWorkPostId);
-    assertNotSame(workPost.getCarAssemblyProcess(), null);
+    WorkPost workPost1 = carManufactoringCompany.getAssemblyLine().findWorkPost(firstWorkPostId);
+    assertNotNull(workPost1.getCarAssemblyProcess());
+
+    int secondWorkPostId = allWorkPosts.entrySet().stream()
+      .filter(entry -> Objects.equals(entry.getValue(), "Drivetrain Post"))
+      .map(Map.Entry::getKey).findFirst().get();
+    WorkPost workPost2 = carManufactoringCompany.getAssemblyLine().findWorkPost(secondWorkPostId);
+    assertNull(workPost2.getCarAssemblyProcess());
+
 
     // Step 2 and 3
     List<String> bodyTasks = Arrays.asList("Paint car", "Assembly car body");
@@ -100,7 +110,7 @@ public class PerformAssemblyTasksTest {
     performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(0, 35);
 
     // Step 7
-    assertFalse(performAssemblyTasksController.givePendingAssemblyTasks(0).containsValue("Installing the BREAK body"));
+    assertEquals(performAssemblyTasksController.givePendingAssemblyTasks(0).size(), 1);
   }
 
   @Test
@@ -120,8 +130,7 @@ public class PerformAssemblyTasksTest {
     List<String> actions = Arrays.asList("Installing the BREAK body");
     List<String> actionsAlternative = Arrays.asList("Painting the car WHITE");
 
-    assertTrue(actions.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1))
-      || actionsAlternative.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1)));
+    assertTrue(actions.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1)) || actionsAlternative.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1)));
     assertEquals(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1).size(), actions.size());
 
     //task1: Step 6
@@ -143,6 +152,20 @@ public class PerformAssemblyTasksTest {
     performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(0, 35);
 
     //task2: Step 7
+    Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
+    assertEquals(allWorkPosts.size(), 3);
+    int firstWorkPostId = allWorkPosts.entrySet().stream()
+      .filter(entry -> Objects.equals(entry.getValue(), "Car Body Post"))
+      .map(Map.Entry::getKey).findFirst().get();
+
+    WorkPost workPost1 = carManufactoringCompany.getAssemblyLine().findWorkPost(firstWorkPostId);
+    assertNotNull(workPost1.getCarAssemblyProcess());
+
+    int secondWorkPostId = allWorkPosts.entrySet().stream()
+      .filter(entry -> Objects.equals(entry.getValue(), "Drivetrain Post"))
+      .map(Map.Entry::getKey).findFirst().get();
+    WorkPost workPost2 = carManufactoringCompany.getAssemblyLine().findWorkPost(secondWorkPostId);
+    assertNotNull(workPost2.getCarAssemblyProcess());
 
 
   }
@@ -168,13 +191,9 @@ public class PerformAssemblyTasksTest {
 
     // Step 6
     assertThrows(IllegalArgumentException.class, () -> performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(-1, 15));
+    assertThrows(IllegalArgumentException.class, () -> performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(1, -15));
 
     // Step 7
     assertThrows(IllegalArgumentException.class, () -> performAssemblyTasksController.givePendingAssemblyTasks(-1));
-  }
-
-  @Test
-  public void mainSuccessScenario_throwsIllegalStateException() {
-    assertThrows(IllegalArgumentException.class, () -> performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(-1, 30));
   }
 }
