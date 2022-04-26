@@ -260,11 +260,9 @@ public class AssemblyLine implements Subject {
    */
   public HashMap<String, List<AssemblyTask>> giveTasksOverview() {
     HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
-
     workPostPairs.put("Car Body Post", carBodyPost.getWorkPostAssemblyTasks());
     workPostPairs.put("Drivetrain Post", drivetrainPost.getWorkPostAssemblyTasks());
     workPostPairs.put("Accessories Post", accessoriesPost.getWorkPostAssemblyTasks());
-
     return workPostPairs;
   }
 
