@@ -158,6 +158,10 @@ public class OrderNewCarController {
     LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
 
+    if (carManufactoringCompany.isAssemblyLineAvailable()) {
+      carManufactoringCompany.triggerAutomaticFirstMove();
+    }
+
     return carOrder.getId();
   }
 
