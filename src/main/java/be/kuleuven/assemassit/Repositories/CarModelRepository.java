@@ -23,7 +23,8 @@ public class CarModelRepository {
         Arrays.asList(Color.RED, Color.BLUE, Color.BLACK, Color.WHITE),
         Arrays.asList(Engine.STANDARD, Engine.PERFORMANCE),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC, Airco.NO_AIRCO),
-        Arrays.asList(Spoiler.NO_SPOILER));
+        Arrays.asList(Spoiler.NO_SPOILER),
+        50);
       CarModel carModelB = new CarModel(
         1,
         "Model B",
@@ -34,7 +35,8 @@ public class CarModelRepository {
         Arrays.asList(Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW),
         Arrays.asList(Engine.STANDARD, Engine.PERFORMANCE, Engine.ULTRA),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC, Airco.NO_AIRCO),
-        Arrays.asList(Spoiler.LOW, Spoiler.NO_SPOILER));
+        Arrays.asList(Spoiler.LOW, Spoiler.NO_SPOILER),
+        70);
       CarModel carModelC = new CarModel(2,
         "Model C",
         Arrays.asList(Wheel.WINTER, Wheel.SPORT),
@@ -44,7 +46,8 @@ public class CarModelRepository {
         Arrays.asList(Color.BLACK, Color.WHITE),
         Arrays.asList(Engine.PERFORMANCE, Engine.ULTRA),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC, Airco.NO_AIRCO),
-        Arrays.asList(Spoiler.LOW, Spoiler.HIGH));
+        Arrays.asList(Spoiler.LOW, Spoiler.HIGH),
+        60);
       carModels.add(carModelA);
       carModels.add(carModelB);
       carModels.add(carModelC);

@@ -160,6 +160,20 @@ public class CarManufactoringCompany implements Observer {
     this.assemblyLine.move(this.openingTime, this.closingTime, this.overtime);
   }
 
+  /**
+   * @throws IllegalStateException | LocalTime.now().isBefore(this.openingTime)
+   * @inspects | this
+   * @mutates | this
+   */
+  public void triggerAutomaticFirstMove() {
+    if (!LocalTime.now().isBefore(this.openingTime) && assemblyLine.canMove())
+      this.moveAssemblyLine();
+  }
+
+  public boolean isAssemblyLineAvailable() {
+    return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
+  }
+
   @Override
   public void update(Object observable, Object value) {
     if (observable instanceof AssemblyLine && value instanceof Integer) {

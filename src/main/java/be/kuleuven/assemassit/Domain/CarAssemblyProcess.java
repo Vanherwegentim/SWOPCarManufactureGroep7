@@ -109,7 +109,6 @@ public class CarAssemblyProcess {
   }
 
   public int giveManufacturingDurationInMinutes() {
-    // TODO: this is very temporary
-    return 70 * 3;
+    return carOrder.getCar().getCarModel().getWorkPostDuration() * 3;
   }
 }

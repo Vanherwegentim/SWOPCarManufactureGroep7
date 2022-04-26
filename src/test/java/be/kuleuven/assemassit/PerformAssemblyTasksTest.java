@@ -51,7 +51,7 @@ public class PerformAssemblyTasksTest {
 
     fillTheSystemWithCarOrders();
     //first move
-    carManufactoringCompany.moveAssemblyLine();
+    //carManufactoringCompany.moveAssemblyLine();
   }
 
   private void mockGarageHolders() {

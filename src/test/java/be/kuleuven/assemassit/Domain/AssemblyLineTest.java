@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AssemblyLineTest {
 
   private AssemblyLine assemblyLine;
+
   private CarAssemblyProcess carAssemblyProcess1;
   private CarAssemblyProcess carAssemblyProcess2;
+  private CarAssemblyProcess carAssemblyProcess3;
 
 
   @BeforeEach
@@ -49,19 +51,11 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT,
           Spoiler.LOW)));
-    //Probably not correct
-/*
- carAssemblyProcess2.complete();
-    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
-    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
-    carAssemblyProcess1.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcess1.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
-    */
+
   }
 
   @Test
-  public void checkCorrectAssemblyTasksPerWorkpost() {
+  public void checkCorrectAssemblyTasksPerWorkpostTest() {
     assertEquals(this.assemblyLine.getCarBodyPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR));
     assertEquals(this.assemblyLine.getDrivetrainPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX));
     assertEquals(this.assemblyLine.getAccessoriesPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS));
@@ -92,13 +86,21 @@ public class AssemblyLineTest {
     carAssemblyProcess2.complete();
     carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
     carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess3.complete();
+    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
 
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
-    assertEquals(Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 1), assemblyLine.createCarsPerDayMap());
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
+
+    assertEquals(Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcessTestPlusDay.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
 
   }
 
-  //Needs more verbose testing
   @Test
   public void averageCarsInADayTest() {
     carAssemblyProcess2.complete();
@@ -117,32 +119,28 @@ public class AssemblyLineTest {
 
   @Test
   public void medianCarsInADayTest() {
-    assertEquals(assemblyLine.medianCarsInADay(), 1);
+    assertEquals(2.5, assemblyLine.medianCarsInADay());
   }
 
   @Test
   public void exactCarsIn2DaysTest() {
-    assertEquals(assemblyLine.exactCarsIn2Days(), 1);
+    assertEquals(2.0, assemblyLine.exactCarsIn2Days());
   }
 
-  //This is probably going to error because of the problem with the estimatedCompletionTime algorithm
-  //TODO fix this
   @Test
   public void averageDelayPerOrderTest() {
-    assertEquals(assemblyLine.averageDelayPerOrder(), 0);
+    assertEquals(1.2, assemblyLine.averageDelayPerOrder());
   }
 
   @Test
   public void medianDelayPerOrderTest() {
     System.out.println();
-    assertEquals(assemblyLine.medianDelayPerOrder(), 0);
+    assertEquals(0, assemblyLine.medianDelayPerOrder());
   }
 
-  //probably going to error because we are only adding one CarAssemblyProcess to the finishedcars list at the moment.
-  //which will try to set an element but the list will be smaller then 2 elements -> OutOfBoundsException
   @Test
   public void last2DelaysTest() {
-    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 0));
+    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));
   }
 
   @Test
