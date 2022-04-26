@@ -15,4 +15,9 @@ public class ControllerFactoryGarageHolderState extends ControllerFactoryState {
   public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     return new OrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    return o instanceof ControllerFactoryGarageHolderState;
+  }
 }

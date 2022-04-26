@@ -28,6 +28,7 @@ public class IOCall {
   }
 
   public static void waitForConfirmation() {
+    input = new Scanner(System.in);
     getScanner().nextLine();
   }
 

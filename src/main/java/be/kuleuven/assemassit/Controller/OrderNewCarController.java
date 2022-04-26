@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderNewCarController {
@@ -61,13 +62,13 @@ public class OrderNewCarController {
    * @throws IllegalArgumentException orderId is below 0 | orderId < 0
    * @throws IllegalStateException    loggedInGarageHolder is null | loggedInGarageHolder == null
    */
-  public CarOrder chooseOrder(int orderId) {
+  public Optional<CarOrder> chooseOrder(int orderId) {
     if (orderId < 0)
       throw new IllegalArgumentException("OrderId cannot be smaller than 0");
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
-    return loggedInGarageHolder.getOrder(orderId);
+    return loggedInGarageHolder.findCarOrder(orderId);
   }
 
   /**
@@ -170,10 +171,11 @@ public class OrderNewCarController {
   public LocalDateTime getCarOrderEstimatedCompletionTime(int carOrderId) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
-    CarOrder carOrder = loggedInGarageHolder.findCarOrder(carOrderId);
-
-
-    return carOrder.getEstimatedCompletionTime();
+    Optional<CarOrder> carOrder = loggedInGarageHolder.findCarOrder(carOrderId);
+    if (carOrder.isPresent()) {
+      return carOrder.get().getEstimatedCompletionTime();
+    }
+    throw new IllegalArgumentException("CarOrder with given ID not found");
   }
 
   public LocalDateTime placeCarOrderAndReturnEstimatedCompletionTime(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {

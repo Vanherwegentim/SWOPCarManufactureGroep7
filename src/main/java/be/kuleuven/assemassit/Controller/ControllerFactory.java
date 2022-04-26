@@ -23,14 +23,6 @@ public class ControllerFactory {
     this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
-  public AssemblyLine getAssemblyLine() {
-    return assemblyLine;
-  }
-
-  public CarManufactoringCompany getCarManufactoringCompany() {
-    return carManufactoringCompany;
-  }
-
   public String giveLoggedInGarageHolderName() {
     return loggedInGarageHolder.getName();
   }
@@ -57,7 +49,7 @@ public class ControllerFactory {
   }
 
   public void logoutManager() {
-    this.controllerFactoryState = new ControllerFactoryManagerState();
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   public void loginCarMechanic() {
@@ -65,7 +57,7 @@ public class ControllerFactory {
   }
 
   public void logoutCarMechanic() {
-    this.controllerFactoryState = new ControllerFactoryCarMechanicState();
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   /**
@@ -78,7 +70,7 @@ public class ControllerFactory {
   }
 
   public CheckOrderDetailsController createCheckOrderDetailsController() {
-    return new CheckOrderDetailsController(loggedInGarageHolder);
+    return controllerFactoryState.createCheckOrderDetailsController(loggedInGarageHolder);
   }
 
   /**
@@ -103,8 +95,15 @@ public class ControllerFactory {
     return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
 
-  public void moveInsideCarManufactoringCompany() {
-    this.carManufactoringCompany.moveAssemblyLine();
+  public CarManufactoringCompany getCarManufactoringCompany() {
+    return carManufactoringCompany;
   }
 
+  public ControllerFactoryState getControllerFactoryState() {
+    return controllerFactoryState;
+  }
+
+  public GarageHolder getLoggedInGarageHolder() {
+    return loggedInGarageHolder;
+  }
 }

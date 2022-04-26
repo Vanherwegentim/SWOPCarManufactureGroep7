@@ -38,6 +38,6 @@ public class GarageHolderTest {
   @Test
   public void findCarOrderTest() {
     garageHolder.addCarOrder(carOrder);
-    assertEquals(garageHolder.findCarOrder(carOrder.getId()), carOrder);
+    assertEquals(garageHolder.findCarOrder(carOrder.getId()).get(), carOrder);
   }
 }

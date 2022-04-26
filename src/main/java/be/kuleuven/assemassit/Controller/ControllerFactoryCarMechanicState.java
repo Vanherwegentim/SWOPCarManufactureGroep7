@@ -19,4 +19,9 @@ public class ControllerFactoryCarMechanicState extends ControllerFactoryState {
   public PerformAssemblyTasksController createPerformAssemblyTasksController(AssemblyLine assemblyLine, CarManufactoringCompany carManufactoringCompany) {
     return new PerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    return o instanceof ControllerFactoryCarMechanicState;
+  }
 }
