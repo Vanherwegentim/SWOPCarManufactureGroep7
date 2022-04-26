@@ -104,9 +104,7 @@ public class SpecificationBatchSchedulingTest {
     assertFalse(assemblyLine.getCarBodyPost().getCarAssemblyProcess().equals(carAssemblyProcess1));
     //if this next assertTrue fails, it means that must be something wrong with the batches
     assertTrue(assemblyLine.getCarBodyPost().getCarAssemblyProcess().equals(carAssemblyProcess3));
-    assertTrue(assemblyLine.getDrivetrainPost().getCarAssemblyProcess().equals(carAssemblyProcess1));
     specificationBatchScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
-    specificationBatchScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
-
+    assertEquals(2, assemblyLine.getFinishedCars().size());
   }
 }

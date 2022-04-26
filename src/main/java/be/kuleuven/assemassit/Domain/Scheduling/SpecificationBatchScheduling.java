@@ -10,10 +10,7 @@ import be.kuleuven.assemassit.Domain.WorkPost;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayDeque;
-import java.util.Collections;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
   private final List<CarOption> batchCarOptions;
@@ -35,7 +32,9 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     int overtime = -1; // return -1 if the end of the day is not reached yet
 
 
+    workPostsInOrder = new ArrayList<>(workPostsInOrder);
     Collections.reverse(workPostsInOrder);
+
     EnhancedIterator<WorkPost> iterator = new MyEnhancedIterator<>(workPostsInOrder);
 
     WorkPost workPost;
@@ -43,15 +42,15 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     do {
       workPost = iterator.next();
 
-      if (workPost != null && workPost.getCarAssemblyProcess() != null) {
+      if (workPost != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
           //assemblyTask.setCompletionTime(minutes);
         }
 
-        CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
-        carAssemblyProcess.complete();
-
-        if (!iterator.hasPrevious()) {
+        // last one
+        if (!iterator.hasPrevious() && workPost.getCarAssemblyProcess() != null) {
+          CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
+          carAssemblyProcess.complete();
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
 
@@ -59,14 +58,15 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
           if (overtimeInMinutes >= 0)
             overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
         }
+      }
 
-        if (iterator.hasNext()) {
-          WorkPost nextWorkPost = iterator.peek();
-          nextWorkPost.addProcessToWorkPost(workPost.getCarAssemblyProcess());
-          workPost.removeCarAssemblyProcess();
-        }
+      if (iterator.hasNext()) {
+        WorkPost previousWorkPost = iterator.peek();
+        workPost.addProcessToWorkPost(previousWorkPost.getCarAssemblyProcess());
+        previousWorkPost.removeCarAssemblyProcess();
       }
     } while (iterator.hasNext());
+
 
     // check if the next process can still be produced today
     CarAssemblyProcess nextProcess = giveNextCarAssemblyProcess(carAssemblyProcessesQueue);
