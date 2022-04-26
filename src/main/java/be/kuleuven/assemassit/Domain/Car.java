@@ -33,7 +33,6 @@ public class Car {
   private Wheel wheels;
   private Spoiler spoiler;
 
-
   /**
    * @param carModel the corresponding car model that the car is based on
    * @param body
