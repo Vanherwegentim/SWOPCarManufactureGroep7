@@ -62,7 +62,6 @@ public class AssemblyLineTest {
           Airco.MANUAL,
           Wheel.SPORT,
           Spoiler.LOW)));
-    //Probably not correct
     carAssemblyProcessTest.complete();
     carAssemblyProcessTest.getCarOrder().setCompletionTime(LocalDateTime.now());
     carAssemblyProcessTest.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
@@ -159,8 +158,6 @@ public class AssemblyLineTest {
     assertEquals(0, assemblyLine.medianDelayPerOrder());
   }
 
-  //probably going to error because we are only adding one CarAssemblyProcess to the finishedcars list at the moment.
-  //which will try to set an element but the list will be smaller then 2 elements -> OutOfBoundsException
   @Test
   public void last2DelaysTest() {
     assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcessTest.getCarOrder().getCompletionTime().toLocalDate(), 0));

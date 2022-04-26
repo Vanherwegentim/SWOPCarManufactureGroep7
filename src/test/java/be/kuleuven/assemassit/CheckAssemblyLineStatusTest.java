@@ -59,6 +59,7 @@ public class CheckAssemblyLineStatusTest {
           Spoiler.NO_SPOILER)));
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
+
   }
 
   @Test
@@ -75,7 +76,7 @@ public class CheckAssemblyLineStatusTest {
 
     assertEquals(Map.of("Car Body Post", List.of("Assembly car body (pending)", "Paint car (pending)"), "Drivetrain Post", List.of(), "Accessories Post", List.of()), controller.giveAssemblyLineStatusOverview());
     assertEquals(Map.of("Car Body Post", List.of(), "Drivetrain Post", List.of("Insert gearbox (pending)", "Insert engine (pending)"), "Accessories Post", List.of()), controller.giveFutureAssemblyLineStatusOverview());
-    assertEquals(Map.of(0, "Assembly car body", 5, "Paint car"), controller.givePendingAssemblyTasks(0));
+    assertEquals(List.of("Assembly car body", "Paint car"), controller.givePendingAssemblyTasks(0).values().stream().toList());
     assertEquals(Map.of(), controller.givePendingAssemblyTasks(1));
     assertEquals(Map.of(), controller.givePendingAssemblyTasks(2));
     assertEquals(Map.of(), controller.giveFinishedAssemblyTasks(0));
