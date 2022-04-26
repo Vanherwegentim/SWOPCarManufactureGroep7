@@ -80,7 +80,6 @@ public class CheckAssemblyLineStatusController {
    */
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
     HashMap<String, AssemblyTask> workPostsWithActiveTasks, HashMap<String, List<AssemblyTask>> workPostPairs) {
-
     HashMap<String, List<String>> output = new LinkedHashMap<>();
 
     for (String key : workPostPairs.keySet()) {
