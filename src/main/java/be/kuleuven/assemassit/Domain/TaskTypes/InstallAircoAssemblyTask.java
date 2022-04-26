@@ -21,13 +21,17 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
    * @param airco
    * @throws IllegalArgumentException airco is null | airco == null
    * @mutates | this
-   * @post | this.airco = airco
+   * @post | this.getAirco() == airco
    */
   public InstallAircoAssemblyTask(Airco airco) {
     super("Install airco");
     if (airco == null)
       throw new IllegalArgumentException("Airco can not be null");
     this.airco = airco;
+  }
+
+  public Airco getAirco() {
+    return airco;
   }
 
   @Override

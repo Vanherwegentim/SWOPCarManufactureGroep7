@@ -4,14 +4,12 @@ import be.kuleuven.assemassit.Domain.CarOrder;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CheckOrderDetailsController {
 
-  private GarageHolder loggedInGarageHolder;
+  private final GarageHolder loggedInGarageHolder;
 
   /**
    * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
@@ -53,14 +51,18 @@ public class CheckOrderDetailsController {
     return loggedInGarageHolder.getCarOrders()
       .stream()
       .filter(co -> !co.isPending())
+      .sorted(Comparator.comparing(CarOrder::getCompletionTime))
       .map(this::carOrderFormattedString)
       .collect(Collectors.toList());
   }
 
-  public String giveOrderDetails(int orderId) {
+  public Optional<String> giveOrderDetails(int orderId) {
 
-    CarOrder order = loggedInGarageHolder.getOrder(orderId);
-    return carOrderDetailedFormattedString(order);
+    Optional<CarOrder> order = loggedInGarageHolder.findCarOrder(orderId);
+    if (order.isPresent()) {
+      return Optional.of(carOrderDetailedFormattedString(order.get()));
+    }
+    return Optional.empty();
   }
 
   private String carOrderFormattedString(CarOrder carOrder) {
@@ -74,7 +76,7 @@ public class CheckOrderDetailsController {
 
     if (carOrder.isPending())
       result
-        .append("[Estimation time: ")
+        .append("[Estimated time: ")
         .append(carOrder.getEstimatedCompletionTime().format(formatter))
         .append("]");
     else
@@ -87,7 +89,7 @@ public class CheckOrderDetailsController {
       .append("[Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
       .append("]");
-    result.append("\n");
+    result.append(System.lineSeparator());
 
 
     return result.toString();
@@ -104,7 +106,7 @@ public class CheckOrderDetailsController {
 
     if (carOrder.isPending())
       result
-        .append("[Estimation time: ")
+        .append("[Estimated time: ")
         .append(carOrder.getEstimatedCompletionTime().format(formatter))
         .append("]");
     else
@@ -112,13 +114,13 @@ public class CheckOrderDetailsController {
         .append("[Completed at: ")
         .append(carOrder.getCompletionTime().format(formatter))
         .append("]");
-    result.append("\n");
+    result.append(System.lineSeparator());
 
     result
       .append(spacer)
       .append("Car model: ")
       .append(carOrder.getCar().getCarModel().getName())
-      .append("\n");
+      .append(System.lineSeparator());
 
 
     Map<String, String> parts = new LinkedHashMap<>();
@@ -129,6 +131,7 @@ public class CheckOrderDetailsController {
     parts.put("Airco", carOrder.getCar().getAirco().name());
     parts.put("Wheels", carOrder.getCar().getWheels().name());
     parts.put("Seats", carOrder.getCar().getSeats().name());
+    parts.put("Spoiler", carOrder.getCar().getSpoiler().name());
 
     for (Map.Entry<String, String> partWithOption : parts.entrySet()) {
       result
@@ -136,11 +139,14 @@ public class CheckOrderDetailsController {
         .append(partWithOption.getKey())
         .append(": ")
         .append(partWithOption.getValue())
-        .append("\n");
+        .append(System.lineSeparator());
     }
 
     return result.toString();
   }
 
 
+  public String giveLoggedInGarageHolderName() {
+    return loggedInGarageHolder.getName();
+  }
 }

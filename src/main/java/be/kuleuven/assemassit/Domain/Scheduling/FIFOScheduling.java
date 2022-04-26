@@ -33,15 +33,15 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
     do {
       workPost = iterator.next();
 
-      if (workPost != null && workPost.getCarAssemblyProcess() != null) {
+      if (workPost != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
           //assemblyTask.setCompletionTime(minutes);
         }
 
-        CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
-        carAssemblyProcess.complete();
-
-        if (!iterator.hasPrevious()) {
+        // last one
+        if (!iterator.hasPrevious() && workPost.getCarAssemblyProcess() != null) {
+          CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
+          carAssemblyProcess.complete();
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
 
@@ -49,12 +49,12 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
           if (overtimeInMinutes >= 0)
             overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
         }
+      }
 
-        if (iterator.hasNext()) {
-          WorkPost nextWorkPost = iterator.peek();
-          nextWorkPost.addProcessToWorkPost(workPost.getCarAssemblyProcess());
-          workPost.removeCarAssemblyProcess();
-        }
+      if (iterator.hasNext()) {
+        WorkPost previousWorkPost = iterator.peek();
+        workPost.addProcessToWorkPost(previousWorkPost.getCarAssemblyProcess());
+        previousWorkPost.removeCarAssemblyProcess();
       }
     } while (iterator.hasNext());
 

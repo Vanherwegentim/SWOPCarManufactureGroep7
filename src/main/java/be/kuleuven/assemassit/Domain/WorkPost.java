@@ -94,7 +94,10 @@ public class WorkPost {
   }
 
   public int getExpectedWorkPostDurationInMinutes() {
-    return this.expectedWorkPostDurationInMinutes;
+    if (getCarAssemblyProcess() != null)
+      return getCarAssemblyProcess().getCarOrder().getCar().getCarModel().getWorkPostDuration();
+    else
+      return 60;
   }
 
   /**
@@ -212,7 +215,7 @@ public class WorkPost {
    * @return the assembly task
    * @throws IllegalArgumentException ID is lower than 0 | id < 0
    * @throws IllegalArgumentException assembly task not found
-   *                                  | Optional<AssemblyTask> assemblyTask = carAssemblyProcess.getAssemblyTasks().stream()
+   *                                  | Optional<AssemblyTask> assemblyTask == carAssemblyProcess.getAssemblyTasks().stream()
    *                                  .filter(at -> at.getId() == id)
    *                                  .findFirst()
    *                                  .get()

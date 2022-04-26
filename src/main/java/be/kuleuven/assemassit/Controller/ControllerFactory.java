@@ -49,7 +49,7 @@ public class ControllerFactory {
   }
 
   public void logoutManager() {
-    this.controllerFactoryState = new ControllerFactoryManagerState();
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   public void loginCarMechanic() {
@@ -57,7 +57,7 @@ public class ControllerFactory {
   }
 
   public void logoutCarMechanic() {
-    this.controllerFactoryState = new ControllerFactoryCarMechanicState();
+    this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
   /**
@@ -70,7 +70,7 @@ public class ControllerFactory {
   }
 
   public CheckOrderDetailsController createCheckOrderDetailsController() {
-    return new CheckOrderDetailsController(loggedInGarageHolder);
+    return controllerFactoryState.createCheckOrderDetailsController(loggedInGarageHolder);
   }
 
   /**
@@ -81,25 +81,6 @@ public class ControllerFactory {
    */
   public OrderNewCarController createOrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
     return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
-  }
-
-  /**
-   * Generate an instance of the assembly line controller
-   *
-   * @return a new instance of the assembly controller
-   */
-  public AssemblyLineController createAssemblyLineController() {
-    return controllerFactoryState.createAssemblyLineController(assemblyLine);
-  }
-
-  /**
-   * Generate an instance of the assembly line controller
-   *
-   * @param assemblyLine | can be used for mocking
-   * @return a new instance of the assembly controller
-   */
-  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-    return controllerFactoryState.createAssemblyLineController(assemblyLine);
   }
 
   public PerformAssemblyTasksController createPerformAssemblyTasksController() {
@@ -113,5 +94,32 @@ public class ControllerFactory {
   public CheckProductionStatisticsController createCheckProductionStatisticsController() {
     return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
+
+  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
+    return controllerFactoryState.createAdaptSchedulingAlgorithmController(assemblyLine);
+  }
+
+
+  public CarManufactoringCompany getCarManufactoringCompany() {
+    return carManufactoringCompany;
+  }
+
+  public ControllerFactoryState getControllerFactoryState() {
+    return controllerFactoryState;
+  }
+
+  public GarageHolder getLoggedInGarageHolder() {
+    return loggedInGarageHolder;
+  }
+
+  public AssemblyLine getAssemblyLine() {
+    return assemblyLine;
+  }
+
+  //todo remove
+  public void moveInsideCarManufactoringCompany() {
+    this.carManufactoringCompany.moveAssemblyLine();
+  }
+
 
 }

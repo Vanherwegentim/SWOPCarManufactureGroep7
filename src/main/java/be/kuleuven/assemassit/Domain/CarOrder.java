@@ -30,8 +30,8 @@ public class CarOrder {
    * @param car the car model that is ordered
    * @throws IllegalArgumentException car can not be null | car == null
    * @post the order time can not be null and should be equal to the current date time
-   * | this.orderTime != null
-   * @post | this.pending == true
+   * | this.getOrderTime() != null
+   * @post | this.isPending() == true
    */
   public CarOrder(Car car) {
     if (car == null)

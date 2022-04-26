@@ -7,9 +7,10 @@ public class ControllerFactoryCarMechanicState extends ControllerFactoryState {
   protected ControllerFactoryCarMechanicState() {
   }
 
-  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-    return new AssemblyLineController(assemblyLine);
-  }
+  // todo REMOVE
+//  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
+//    return new AssemblyLineController(assemblyLine);
+//  }
 
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     return new CheckAssemblyLineStatusController(assemblyLine);
@@ -17,5 +18,10 @@ public class ControllerFactoryCarMechanicState extends ControllerFactoryState {
 
   public PerformAssemblyTasksController createPerformAssemblyTasksController(AssemblyLine assemblyLine, CarManufactoringCompany carManufactoringCompany) {
     return new PerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return o instanceof ControllerFactoryCarMechanicState;
   }
 }

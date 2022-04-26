@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 
 /**
  * @mutable
- * @invar | getCarBodyPost() != null
- * @invar | getDriveTrainPost() != null
- * @invar | getAccessoriesPost() != null
- * @invar | getCarAssemblyProcess() != null
- * @invar | getFinishedCars() != null
- * @invar | getSchedulingAlgorithm() != null
- * @invar | giveSchedulingAlgorithmNames() != null
+ * @invar | this.getCarBodyPost() != null
+ * @invar | this.getDriveTrainPost() != null
+ * @invar | this.getAccessoriesPost() != null
+ * @invar | this.getCarAssemblyProcess() != null
+ * @invar | this.getFinishedCars() != null
+ * @invar | this.getSchedulingAlgorithm() != null
+ * @invar | this.giveSchedulingAlgorithmNames() != null
  */
 public class AssemblyLine implements Subject {
 
@@ -406,7 +406,6 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param minutes   the amount of minutes spent during the current phase
    * @param startTime the start time of the company
    * @param endTime   the end time of the company
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
@@ -528,43 +527,60 @@ public class AssemblyLine implements Subject {
    */
   public List<CarAssemblyProcess> getCarAssemblyProcessesQueue() {
     List<CarAssemblyProcess> carAssemblyProcessList = new ArrayList<>(carAssemblyProcessesQueue);
-    carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(accessoriesPost.getCarAssemblyProcess());
-    carAssemblyProcessList.add(carBodyPost.getCarAssemblyProcess());
-    if (!finishedCars.isEmpty()) {
-      carAssemblyProcessList.addAll(finishedCars);
+    if (!(drivetrainPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
+    }
+    if (!(carBodyPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
+    }
+    if (!(accessoriesPost.getCarAssemblyProcess() == null)) {
+      carAssemblyProcessList.add(drivetrainPost.getCarAssemblyProcess());
+
     }
     return carAssemblyProcessList;
   }
 
-  public Map<LocalDate, Integer> createCarsPerDayMap() {
+  /**
+   * @return a queue of cas assembly processes
+   * @creates | result
+   * @inspects | this
+   */
+  public Queue<CarAssemblyProcess> getCarAssemblyProcessesQueueAsQueue() {
+    return carAssemblyProcessesQueue;
+  }
+
+
+  public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
     //TODO refactor to work with streams;
     List<LocalDateTime> dateTimeList = new ArrayList<>();
     for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
       dateTimeList.add(carAssemblyProcess.getCarOrder().getCompletionTime());
     }
-    Map<LocalDate, Integer> carsPerDayMap = new HashMap<>();
+
+    Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
     for (LocalDateTime localDateTime : dateTimeList) {
       if (carsPerDayMap.containsKey(localDateTime.toLocalDate())) {
-        int i = carsPerDayMap.get(localDateTime);
-        i++;
+        double i = carsPerDayMap.get(localDateTime.toLocalDate());
+        i = i + 1.0;
         carsPerDayMap.replace(localDateTime.toLocalDate(), i);
       } else {
-        carsPerDayMap.put(localDateTime.toLocalDate(), 1);
+        carsPerDayMap.put(localDateTime.toLocalDate(), 1.0);
       }
     }
     return carsPerDayMap;
   }
 
-  public int averageCarsInADay() {
+  public double averageCarsInADay() {
     //Calculate the average
-    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
+    Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     if (carsPerDayMap.size() == 0) {
       return 0;
     } else {
-      int total = 0;
-      for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
+      double total = 0;
+      for (Map.Entry<LocalDate, Double> entry : carsPerDayMap.entrySet()) {
         total = total + entry.getValue();
       }
       return total / carsPerDayMap.size();
@@ -572,67 +588,70 @@ public class AssemblyLine implements Subject {
     }
   }
 
-  public int medianCarsInADay() {
-    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
-    ArrayList<Integer> intList = new ArrayList<>();
-    intList.addAll(carsPerDayMap.values());
-    Collections.sort(intList);
-    if (intList.size() == 0) {
+  public double medianCarsInADay() {
+    Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
+    ArrayList<Double> numList = new ArrayList<>();
+    numList.addAll(carsPerDayMap.values());
+    Collections.sort(numList);
+    if (numList.size() == 0) {
       return 0;
     }
-    if (intList.size() == 1) {
-      return intList.get(0);
+    if (numList.size() == 1) {
+      return numList.get(0);
+    }
+    if (numList.size() == 2) {
+      return (numList.get(0) + numList.get(1)) / 2;
     } else {
-      if (intList.size() % 2 == 0) {
-        int middle = intList.size() / 2;
-        return (intList.get(middle) + intList.get(middle + 1)) / 2;
+      if (numList.size() % 2 == 0) {
+        int middle = numList.size() / 2;
+        return (numList.get(middle) + numList.get(middle + 1)) / 2;
       } else {
-        double middle = (double) intList.size() / 2.0;
-        int middleInt = (int) Math.ceil(middle);
-        return intList.get(middleInt);
+        double middle = numList.size() / 2.0;
+        return middle;
       }
     }
   }
 
-  public int exactCarsIn2Days() {
-    Map<LocalDate, Integer> carsPerDayMap = createCarsPerDayMap();
-    int total = 0;
-
-    for (Map.Entry<LocalDate, Integer> entry : carsPerDayMap.entrySet()) {
-      if (entry.getKey().equals(LocalDate.now()) ||
-        entry.getKey().equals(LocalDate.now().minusDays(1))) {
-        total = total + entry.getValue();
-      }
+  public double exactCarsIn2Days() {
+    Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
+    double total = 0;
+    if (carsPerDayMap.get(LocalDate.now().minusDays(1)) != null) {
+      total += carsPerDayMap.get(LocalDate.now().minusDays(1));
+    }
+    if (carsPerDayMap.get(LocalDate.now().minusDays(2)) != null) {
+      total += carsPerDayMap.get(LocalDate.now().minusDays(2));
     }
     return total;
   }
 
   //Can a car be ready before it's estimated completion time? if so, add an if test
-  public int averageDelayPerOrder() {
-    int total = 0;
+  public double averageDelayPerOrder() {
+    double total = 0;
     if (finishedCars.size() == 0) {
       return 0;
     } else {
       for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
         Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
+
         long diff = duration.toHours();
         //This conversion could error
-        total = total + Math.toIntExact(diff);
+        total = total + (double) diff;
 
       }
-      return Math.round(total / finishedCars.size());
+
+      return total / finishedCars.size();
     }
   }
 
-  public int medianDelayPerOrder() {
-    int total = 0;
-    ArrayList<Integer> dates = new ArrayList<>();
+  public double medianDelayPerOrder() {
+    ArrayList<Double> dates = new ArrayList<>();
     for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
       Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
       long diff = duration.toHours();
-      int conv = Math.toIntExact(diff);
+      double conv = (double) diff;
       dates.add(conv);
     }
+
     if (dates.size() == 0) {
       return 0;
     }
@@ -644,7 +663,7 @@ public class AssemblyLine implements Subject {
         return (dates.get(middle) + dates.get(middle + 1)) / 2;
       } else {
         double middle = (double) dates.size() / 2.0;
-        int middleInt = (int) Math.ceil(middle);
+        int middleInt = (int) Math.floor(middle);
         return dates.get(middleInt);
       }
     }
@@ -715,9 +734,8 @@ public class AssemblyLine implements Subject {
         count = 0;
       }
 
-      frequencyMap.put(c, count++);
+      frequencyMap.put(c, ++count);
     }
-
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
   }
 
