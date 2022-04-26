@@ -90,7 +90,7 @@ public class AssemblyLineTest {
     assemblyLine.move();
 
     List<AssemblyTask> actual = assemblyLine.givePendingAssemblyTasksFromWorkPost(0);
-    assertArrayEquals(new String[]{}, actual.stream().map(AssemblyTask::getName).toArray());
+    assertArrayEquals(new String[]{"Assembly car body", "Paint car"}, actual.stream().map(AssemblyTask::getName).toArray());
   }
 
 
