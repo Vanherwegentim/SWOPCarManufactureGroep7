@@ -24,9 +24,12 @@ public class AdaptSchedulingAlgorithmControllerTest {
     GarageHolder garageHolder = new GarageHolder(0, "Joe Lamb");
     controllerFactory.loginGarageHolder(garageHolder);
     orderNewCarController = controllerFactory.createOrderNewCarController();
+    //Add 1 extra placeCarOrder because one move is already executed when adding a CarOrder
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+    orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+
     controllerFactory.logoutGarageHolder();
     controllerFactory.loginManager();
     algorithmController = controllerFactory.createAdaptSchedulingAlgorithmController();
