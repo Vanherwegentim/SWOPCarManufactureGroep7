@@ -83,27 +83,6 @@ public class ControllerFactory {
     return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
-  /**
-   * Generate an instance of the assembly line controller
-   *
-   * @return a new instance of the assembly controller
-   */
-//todo remove
-  //  public AssemblyLineController createAssemblyLineController() {
-//    return controllerFactoryState.createAssemblyLineController(assemblyLine);
-//  }
-
-  /**
-   * Generate an instance of the assembly line controller
-   * <p>
-   * //   * @param assemblyLine | can be used for mocking
-   *
-   * @return a new instance of the assembly controller
-   */
-  //todo REMOVE
-//  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-//    return controllerFactoryState.createAssemblyLineController(assemblyLine);
-//  }
   public PerformAssemblyTasksController createPerformAssemblyTasksController() {
     return controllerFactoryState.createPerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
   }
@@ -132,4 +111,15 @@ public class ControllerFactory {
   public GarageHolder getLoggedInGarageHolder() {
     return loggedInGarageHolder;
   }
+
+  public AssemblyLine getAssemblyLine() {
+    return assemblyLine;
+  }
+
+  //todo remove
+  public void moveInsideCarManufactoringCompany() {
+    this.carManufactoringCompany.moveAssemblyLine();
+  }
+
+
 }

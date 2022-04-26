@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 
 /**
  * @mutable
- * @invar | getCarBodyPost() != null
- * @invar | getDriveTrainPost() != null
- * @invar | getAccessoriesPost() != null
- * @invar | getCarAssemblyProcess() != null
- * @invar | getFinishedCars() != null
- * @invar | getSchedulingAlgorithm() != null
- * @invar | giveSchedulingAlgorithmNames() != null
+ * @invar | this.getCarBodyPost() != null
+ * @invar | this.getDriveTrainPost() != null
+ * @invar | this.getAccessoriesPost() != null
+ * @invar | this.getCarAssemblyProcess() != null
+ * @invar | this.getFinishedCars() != null
+ * @invar | this.getSchedulingAlgorithm() != null
+ * @invar | this.giveSchedulingAlgorithmNames() != null
  */
 public class AssemblyLine implements Subject {
 

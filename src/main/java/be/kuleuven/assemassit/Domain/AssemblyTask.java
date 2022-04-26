@@ -21,7 +21,7 @@ public abstract class AssemblyTask {
    * @param name the name of the assembly task
    * @throws IllegalArgumentException name can not be null | name == null
    * @throws IllegalArgumentException name can not be empty | name.equals("")
-   * @post | this.name.equals(name)
+   * @post | this.getName().equals(name)
    * @inspects | name
    * @mutates | this
    */

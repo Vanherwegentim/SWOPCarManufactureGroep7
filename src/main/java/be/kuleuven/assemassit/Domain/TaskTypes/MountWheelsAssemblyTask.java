@@ -21,13 +21,17 @@ public class MountWheelsAssemblyTask extends AssemblyTask {
    * @param wheel
    * @throws IllegalArgumentException wheel is null | wheel == null
    * @mutates | this
-   * @post | this.wheel = wheel
+   * @post | this.getWheel() == wheel
    */
   public MountWheelsAssemblyTask(Wheel wheel) {
     super("Mount wheels");
     if (wheel == null)
       throw new IllegalArgumentException("Wheel can not be null");
     this.wheel = wheel;
+  }
+
+  public Wheel getWheel() {
+    return wheel;
   }
 
   @Override
