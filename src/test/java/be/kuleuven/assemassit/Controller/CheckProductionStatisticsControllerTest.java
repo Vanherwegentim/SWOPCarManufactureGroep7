@@ -20,11 +20,11 @@ public class CheckProductionStatisticsControllerTest {
   public void beforeEach() {
     mockedAssemblyLine = mock(AssemblyLine.class);
     controller = new CheckProductionStatisticsController(mockedAssemblyLine);
-    when(mockedAssemblyLine.averageCarsInADay()).thenReturn(1);
-    when(mockedAssemblyLine.medianCarsInADay()).thenReturn(1);
-    when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1);
-    when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1);
-    when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1);
+    when(mockedAssemblyLine.averageCarsInADay()).thenReturn(1.0);
+    when(mockedAssemblyLine.medianCarsInADay()).thenReturn(2.5);
+    when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1.0);
+    when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1.0);
+    when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1.0);
     when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of(LocalDate.now(), 1));
 
   }
@@ -32,35 +32,35 @@ public class CheckProductionStatisticsControllerTest {
 
   @Test
   public void averageCarsInADayToStringTest() {
-    String expected = "The average amount cars made in a day are: 1";
+    String expected = "The average amount cars made in a day are: 1.0";
     String actual = controller.averageCarsInADayToString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void medianCarsInADayToStringTest() {
-    String expected = "The median amount of cars made in a day are: 1";
+    String expected = "The median amount of cars made in a day are: 2.5";
     String actual = controller.medianCarsInADayToString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void exactCarsIn2DaystoStringTest() {
-    String expected = "The exact amount of cars made in the last 2 days are: 1";
+    String expected = "The exact amount of cars made in the last 2 days are: 1.0";
     String actual = controller.exactCarsIn2DaystoString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void averageDelayPerOrderToStringTest() {
-    String expected = "The average delay at the moment is: 1";
+    String expected = "The average delay at the moment is: 1.0";
     String actual = controller.averageDelayPerOrderToString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void medianDelayPerOrderToStringTest() {
-    String expected = "The median delay at the moment is: 1";
+    String expected = "The median delay at the moment is: 1.0";
     String actual = controller.medianDelayPerOrderToString();
     assertEquals(expected, actual);
   }

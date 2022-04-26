@@ -132,6 +132,7 @@ public class Car {
     carOptions.add(this.getSeats());
     carOptions.add(this.getAirco());
     carOptions.add(this.getWheels());
+    carOptions.add(this.getSpoiler());
 
     return carOptions;
   }
