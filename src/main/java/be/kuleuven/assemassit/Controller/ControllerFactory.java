@@ -106,4 +106,14 @@ public class ControllerFactory {
   public GarageHolder getLoggedInGarageHolder() {
     return loggedInGarageHolder;
   }
+
+  public AssemblyLine getAssemblyLine() {
+    return assemblyLine;
+  }
+
+  public void moveInsideCarManufactoringCompany() {
+    this.carManufactoringCompany.moveAssemblyLine();
+  }
+
+
 }
