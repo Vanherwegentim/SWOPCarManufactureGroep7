@@ -20,11 +20,11 @@ public class CheckProductionStatisticsControllerTest {
   public void beforeEach() {
     mockedAssemblyLine = mock(AssemblyLine.class);
     controller = new CheckProductionStatisticsController(mockedAssemblyLine);
-    when(mockedAssemblyLine.averageCarsInADay()).thenReturn(1);
-    when(mockedAssemblyLine.medianCarsInADay()).thenReturn(1);
-    when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1);
-    when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1);
-    when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1);
+    when(mockedAssemblyLine.averageCarsInADay()).thenReturn(1.0);
+    when(mockedAssemblyLine.medianCarsInADay()).thenReturn(2.5);
+    when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1.0);
+    when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1.0);
+    when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1.0);
     when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of(LocalDate.now(), 1));
 
   }
@@ -32,7 +32,7 @@ public class CheckProductionStatisticsControllerTest {
 
   @Test
   public void averageCarsInADayToStringTest() {
-    String expected = "The average amount cars made in a day are: 1";
+    String expected = "The average amount cars made in a day are: 1.0";
     String actual = controller.averageCarsInADayToString();
     assertEquals(expected, actual);
   }
