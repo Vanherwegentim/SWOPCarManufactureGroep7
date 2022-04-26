@@ -39,28 +39,28 @@ public class CheckProductionStatisticsControllerTest {
 
   @Test
   public void medianCarsInADayToStringTest() {
-    String expected = "The median amount of cars made in a day are: 1";
+    String expected = "The median amount of cars made in a day are: 2.5";
     String actual = controller.medianCarsInADayToString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void exactCarsIn2DaystoStringTest() {
-    String expected = "The exact amount of cars made in the last 2 days are: 1";
+    String expected = "The exact amount of cars made in the last 2 days are: 1.0";
     String actual = controller.exactCarsIn2DaystoString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void averageDelayPerOrderToStringTest() {
-    String expected = "The average delay at the moment is: 1";
+    String expected = "The average delay at the moment is: 1.0";
     String actual = controller.averageDelayPerOrderToString();
     assertEquals(expected, actual);
   }
 
   @Test
   public void medianDelayPerOrderToStringTest() {
-    String expected = "The median delay at the moment is: 1";
+    String expected = "The median delay at the moment is: 1.0";
     String actual = controller.medianDelayPerOrderToString();
     assertEquals(expected, actual);
   }
