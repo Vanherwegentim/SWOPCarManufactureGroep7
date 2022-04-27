@@ -84,6 +84,10 @@ public class CarOrder {
     return id;
   }
 
+  public static void resetIdRunner() {
+    CarOrder.idRunner = 0;
+  }
+
   public LocalDateTime getOrderTime() {
     return this.orderTime;
   }

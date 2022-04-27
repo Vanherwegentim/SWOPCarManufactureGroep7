@@ -2,51 +2,47 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.Body;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.time.LocalDateTime;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AssemblyTaskTest {
-  private List<String> actions;
-
-  @BeforeEach
-  public void beforeEach() {
-  }
-
   @Test
   public void constructorTest() {
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
-    assertTrue(assemblyTask.getName().equals("Assembly car body"));
+    assertEquals("Assembly car body", assemblyTask.getName());
   }
 
   @Test
   public void completionTimeTest() {
-    /*
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assemblyTask.setPending(true);
-    assertThrows(IllegalStateException.class, () -> assemblyTask.completionTime());
-    assemblyTask.setCompletionTime(60);
+    assertThrows(IllegalStateException.class, assemblyTask::getCompletionTime);
+    LocalDateTime localDateTime = LocalDateTime.now();
+    assemblyTask.setCompletionTime(localDateTime);
+    assemblyTask.setDuration(60);
     assemblyTask.setPending(false);
 
-    assert assemblyTask.completionTime() == 60;*/
+    assertEquals(localDateTime, assemblyTask.getCompletionTime());
+    assertEquals(60, assemblyTask.getDuration());
   }
 
   @Test
   public void completeTest() {
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
-    assertFalse(!assemblyTask.getPending());
+    assertTrue(assemblyTask.getPending());
+    assemblyTask.complete();
+    assertFalse(assemblyTask.getPending());
   }
 
   @Test
   public void equalsTest() {
+    AssemblyTask.resetRunningId();
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
+    AssemblyTask.resetRunningId();
     AssemblyTask assemblyTask1 = new CarBodyAssemblyTask(Body.BREAK);
-    assemblyTask.equals(assemblyTask1);
-
+    assertEquals(assemblyTask, assemblyTask1);
   }
 
 

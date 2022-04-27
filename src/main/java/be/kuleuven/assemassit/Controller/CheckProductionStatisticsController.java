@@ -44,15 +44,5 @@ public class CheckProductionStatisticsController {
     return string;
   }
 
-//  public String checkStatistics() {
-//    //TODO
-//    return "The average amount cars made in a day are: " + assemblyLine.averageCarsInADay() + System.lineSeparator() +
-//      "The median amount of cars produced in a day are: " + assemblyLine.medianCarsInADay() + System.lineSeparator() +
-//      "The exact amount of cars made in the last 2 days are: " + assemblyLine.exactCarsIn2Days() + System.lineSeparator() +
-//      "The average delay for orders is";
-//
-//
-//  }
-
 
 }

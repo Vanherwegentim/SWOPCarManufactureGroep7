@@ -100,6 +100,10 @@ public class AssemblyLine implements Subject {
     return this.accessoriesPost;
   }
 
+  public LocalTime getStartTime() {
+    return startTime;
+  }
+
   /**
    * Sets the start time of the assembly line.
    *
@@ -112,6 +116,10 @@ public class AssemblyLine implements Subject {
       throw new IllegalArgumentException("StartTime can not be null");
     }
     this.startTime = startTime;
+  }
+
+  public LocalTime getEndTime() {
+    return endTime;
   }
 
   /**
@@ -523,10 +531,7 @@ public class AssemblyLine implements Subject {
   public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
     //TODO refactor to work with streams;
-    List<LocalDateTime> dateTimeList = new ArrayList<>();
-    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-      dateTimeList.add(carAssemblyProcess.getCarOrder().getCompletionTime());
-    }
+    List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
 
     Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
     for (LocalDateTime localDateTime : dateTimeList) {
@@ -547,10 +552,7 @@ public class AssemblyLine implements Subject {
     if (carsPerDayMap.size() == 0) {
       return 0;
     } else {
-      double total = 0;
-      for (Map.Entry<LocalDate, Double> entry : carsPerDayMap.entrySet()) {
-        total = total + entry.getValue();
-      }
+      double total = carsPerDayMap.values().stream().mapToDouble(v -> v).sum();
       return total / carsPerDayMap.size();
 
     }
@@ -594,32 +596,18 @@ public class AssemblyLine implements Subject {
 
   //Can a car be ready before it's estimated completion time? if so, add an if test
   public double averageDelayPerOrder() {
-    double total = 0;
+    double total;
     if (finishedCars.size() == 0) {
       return 0;
     } else {
-      for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-        Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
-
-        long diff = duration.toHours();
-        //This conversion could error
-        total = total + (double) diff;
-
-      }
+      total = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().sum();
 
       return total / finishedCars.size();
     }
   }
 
   public double medianDelayPerOrder() {
-    ArrayList<Double> dates = new ArrayList<>();
-    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
-      long diff = duration.toHours();
-      double conv = (double) diff;
-      dates.add(conv);
-    }
-
+    ArrayList<Double> dates = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().boxed().collect(Collectors.toCollection(ArrayList::new));
     if (dates.size() == 0) {
       return 0;
     }
@@ -703,6 +691,10 @@ public class AssemblyLine implements Subject {
       frequencyMap.put(c, ++count);
     }
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
+  }
+
+  public List<Observer> getObservers() {
+    return observers;
   }
 
   @Override

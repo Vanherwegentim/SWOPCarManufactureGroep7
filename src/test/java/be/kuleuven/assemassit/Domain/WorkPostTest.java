@@ -19,6 +19,7 @@ public class WorkPostTest {
   WorkPostType type;
   CarAssemblyProcess carAssemblyProcess;
   CarOrder carOrder;
+  WorkPost workPost;
 
 
   @BeforeEach
@@ -26,33 +27,22 @@ public class WorkPostTest {
     resetRunningId();
     list = Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR);
     type = WorkPostType.CAR_BODY_POST;
-    this.carOrder = new CarOrder(
-      new Car(
-        new CarModel(0, "Test", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
-        Body.SEDAN,
-        Color.BLACK,
-        Engine.PERFORMANCE,
-        Gearbox.FIVE_SPEED_MANUAL,
-        Seat.LEATHER_BLACK,
-        Airco.MANUAL,
-        Wheel.SPORT,
-        Spoiler.NO_SPOILER));
+    this.carOrder = new CarOrder(new Car(new CarModel(0, "Test", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER));
     carAssemblyProcess = new CarAssemblyProcess(carOrder);
+    workPost = new WorkPost(0, list, type, 60);
   }
 
   @Test
   public void constructorTest() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
-    assert workPost.getId() == 0;
+    assertEquals(workPost.getId(), 0);
     assertEquals(workPost.getAssemblyTaskTypes(), list);
     assertEquals(workPost.getWorkPostType(), type);
-    assert workPost.getExpectedWorkPostDurationInMinutes() == 60;
+    assertEquals(workPost.getExpectedWorkPostDurationInMinutes(), 60);
   }
 
   @Test
   public void addProcessToWorkPostTest() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
     assertEquals(workPost.getCarAssemblyProcess(), carAssemblyProcess);
@@ -60,7 +50,6 @@ public class WorkPostTest {
 
   @Test
   public void removeProcessFromWorkPost() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
     assertEquals(carAssemblyProcess, workPost.removeProcessFromWorkPost());
@@ -68,7 +57,6 @@ public class WorkPostTest {
 
   @Test
   public void setActiveAssemblyTaskTest() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
     assertThrows(NullPointerException.class, () -> workPost.setActiveAssemblyTask(100000));
     workPost.addProcessToWorkPost(carAssemblyProcess);
@@ -80,7 +68,6 @@ public class WorkPostTest {
 
   @Test
   public void givePendingAssemblyTasks() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
 
@@ -90,7 +77,6 @@ public class WorkPostTest {
 
   @Test
   public void completeAssemblyTaskTest() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
@@ -104,10 +90,50 @@ public class WorkPostTest {
 
   @Test
   public void findAssemblyTaskTest() {
-    WorkPost workPost = new WorkPost(0, list, type, 60);
 
     workPost.addProcessToWorkPost(carAssemblyProcess);
 
     assertEquals(workPost.findAssemblyTask(0).getActions(), new CarBodyAssemblyTask(Body.SEDAN).getActions());
+  }
+
+  @Test
+  void removeCarAssemblyProcessTest() {
+    assertNull(workPost.getCarAssemblyProcess());
+    workPost.addProcessToWorkPost(carAssemblyProcess);
+    assertEquals(carAssemblyProcess, workPost.getCarAssemblyProcess());
+    workPost.removeCarAssemblyProcess();
+    assertNull(workPost.getCarAssemblyProcess());
+  }
+
+  @Test
+  void getExpectedWorkPostDurationInMinutesTest() {
+    List<AssemblyTaskType> list = Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.PAINT_CAR);
+    CarOrder order = new CarOrder(new Car(new CarModel(0, "Ik heb honger", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values()), 99), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER));
+    CarAssemblyProcess process = new CarAssemblyProcess(order);
+    WorkPost post = new WorkPost(0, list, WorkPostType.ACCESSORIES_POST, 60);
+    assertEquals(post.getExpectedWorkPostDurationInMinutes(), 60);
+    post.addProcessToWorkPost(process);
+    assertEquals(post.getExpectedWorkPostDurationInMinutes(), 99);
+  }
+
+  @Test
+  void testEquals() {
+    List<AssemblyTaskType> list = Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.PAINT_CAR);
+    CarOrder order = new CarOrder(new Car(new CarModel(0, "Ik heb honger", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values()), 99), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER));
+    CarAssemblyProcess process = new CarAssemblyProcess(order);
+    WorkPost post = new WorkPost(0, list, WorkPostType.ACCESSORIES_POST, 60);
+    assertNotEquals(post, workPost);
+  }
+
+  @Test
+  void giveFinishedAssemblyTasksTest() {
+    assertEquals(workPost.giveFinishedAssemblyTasks().size(), 0);
+    workPost.addProcessToWorkPost(carAssemblyProcess);
+    int id = workPost.getWorkPostAssemblyTasks().stream().findFirst().get().getId();
+    workPost.setActiveAssemblyTask(id);
+    assertEquals(workPost.getActiveAssemblyTask(), workPost.findAssemblyTask(id));
+    workPost.completeAssemblyTask(40, LocalDateTime.now());
+    assertEquals(workPost.giveFinishedAssemblyTasks().size(), 1);
+    assertEquals(workPost.giveFinishedAssemblyTasks().get(0), workPost.findAssemblyTask(id));
   }
 }

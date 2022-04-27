@@ -14,12 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CheckAssemblyLineStatusTest {
 
   private AssemblyLine assemblyLine;
   private FIFOScheduling fifoScheduling;
-  private LocalTime endTime = LocalTime.of(23, 59);
+  private final LocalTime endTime = LocalTime.of(23, 59);
   private CarAssemblyProcess carAssemblyProcess1;
   private CarAssemblyProcess carAssemblyProcess2;
   private CheckAssemblyLineStatusController controller;
@@ -88,13 +89,14 @@ public class CheckAssemblyLineStatusTest {
     assertEquals(Map.of("Car Body Post", List.of(), "Drivetrain Post", List.of("Insert gearbox (pending)", "Insert engine (pending)"), "Accessories Post", List.of()), controller.giveAssemblyLineStatusOverview());
     assertEquals(Map.of("Car Body Post", List.of(), "Drivetrain Post", List.of(), "Accessories Post", List.of("Install airco (pending)", "Mount wheels (pending)", "Install seats (pending)")), controller.giveFutureAssemblyLineStatusOverview());
     assertEquals(Map.of(), controller.givePendingAssemblyTasks(0));
-    assertEquals(Map.of(1, "Insert gearbox", 2, "Insert engine"), controller.givePendingAssemblyTasks(1));
+    assertEquals(2, controller.givePendingAssemblyTasks(1).size());
+    assertTrue(controller.givePendingAssemblyTasks(1).values().stream().toList().contains("Insert gearbox"));
+    assertTrue(controller.givePendingAssemblyTasks(1).values().stream().toList().contains("Insert engine"));
     assertEquals(Map.of(), controller.givePendingAssemblyTasks(2));
     assertEquals(Map.of(), controller.giveFinishedAssemblyTasks(0));
     assertEquals(Map.of(), controller.giveFinishedAssemblyTasks(1));
     assertEquals(Map.of(), controller.giveFinishedAssemblyTasks(2));
 
     //Done
-
   }
 }

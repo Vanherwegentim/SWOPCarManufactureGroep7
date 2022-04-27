@@ -143,11 +143,11 @@ public class Car {
       Car car = (Car) o;
       return
         (car.giveListOfCarOptions().stream().allMatch(co ->
-          this.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+          this.giveListOfCarOptions().stream().anyMatch(co::equals)
         ))
           &&
           (this.giveListOfCarOptions().stream().allMatch(co ->
-            car.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+            car.giveListOfCarOptions().stream().anyMatch(co::equals)
           ));
     }
     return false;
@@ -155,6 +155,6 @@ public class Car {
 
   @Override
   public int hashCode() {
-    return giveListOfCarOptions().stream().map(o -> o.hashCode()).mapToInt(Integer::intValue).sum();
+    return giveListOfCarOptions().stream().map(Object::hashCode).mapToInt(Integer::intValue).sum();
   }
 }
