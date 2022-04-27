@@ -33,10 +33,9 @@ public class OvertimeRepository {
       }
     } catch (FileNotFoundException e) {
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
+      this.overTime = 0;
     }
-
     clearFile();
-    this.overTime = 0;
   }
 
   private void writeOverTime() {
