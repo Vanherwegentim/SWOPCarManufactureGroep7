@@ -52,8 +52,13 @@ public class CarAssemblyProcess {
       new InstallAircoAssemblyTask(carOrder.getCar().getAirco()),
       new MountWheelsAssemblyTask(carOrder.getCar().getWheels()),
       new PaintCarAssemblyTask(carOrder.getCar().getColor()),
-      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats())
+      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats()),
+      new InstallSpoilerAssemblyTask(carOrder.getCar().getSpoiler())
     );
+  }
+
+  public static void resetRunningId() {
+    CarAssemblyProcess.idRunner = 0;
   }
 
   public List<AssemblyTask> getAssemblyTasks() {
@@ -66,10 +71,6 @@ public class CarAssemblyProcess {
 
   public int getId() {
     return this.id;
-  }
-
-  public static void resetRunningId() {
-    CarAssemblyProcess.idRunner = 0;
   }
 
   /**
