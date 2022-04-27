@@ -77,7 +77,8 @@ public class CheckAssemblyLineStatusTest {
 
     assertEquals(Map.of("Car Body Post", List.of("Assembly car body (pending)", "Paint car (pending)"), "Drivetrain Post", List.of(), "Accessories Post", List.of()), controller.giveAssemblyLineStatusOverview());
     assertEquals(Map.of("Car Body Post", List.of(), "Drivetrain Post", List.of("Insert gearbox (pending)", "Insert engine (pending)"), "Accessories Post", List.of()), controller.giveFutureAssemblyLineStatusOverview());
-    assertEquals(List.of("Assembly car body", "Paint car"), controller.givePendingAssemblyTasks(0).values().stream().toList());
+    assertTrue(controller.givePendingAssemblyTasks(0).values().stream().toList().contains("Assembly car body"));
+    assertTrue(controller.givePendingAssemblyTasks(0).values().stream().toList().contains("Paint car"));
     assertEquals(Map.of(), controller.givePendingAssemblyTasks(1));
     assertEquals(Map.of(), controller.givePendingAssemblyTasks(2));
     assertEquals(Map.of(), controller.giveFinishedAssemblyTasks(0));
