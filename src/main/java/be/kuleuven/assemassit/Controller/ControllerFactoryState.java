@@ -10,10 +10,6 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
-  //todo remove
-//  public AssemblyLineController createAssemblyLineController(AssemblyLine assemblyLine) {
-//    throw new IllegalStateException();
-//  }
 
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     throw new IllegalStateException();

@@ -117,9 +117,9 @@ public class ControllerFactory {
   }
 
   //todo remove
-  public void moveInsideCarManufactoringCompany() {
-    this.carManufactoringCompany.moveAssemblyLine();
-  }
+//  public void moveInsideCarManufactoringCompany() {
+//    this.carManufactoringCompany.moveAssemblyLine();
+//  }
 
 
 }
