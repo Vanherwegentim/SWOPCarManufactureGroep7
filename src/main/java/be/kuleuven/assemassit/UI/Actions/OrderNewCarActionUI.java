@@ -160,7 +160,6 @@ public class OrderNewCarActionUI implements UI {
                 IOCall.out();
                 IOCall.out();
                 IOCall.out("Invalid configuration detected");
-                IOCall.out(e.getMessage());
                 IOCall.out();
                 IOCall.out(" 1: Retry creating an order");
                 IOCall.out("-1: Go back");

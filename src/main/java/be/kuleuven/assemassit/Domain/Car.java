@@ -21,12 +21,6 @@ public class Car {
   private static int idRunner = 0;
 
   private final int id;
-  /**
-   * @representationObject
-   */
-
-  private List<CarOptionRestriction> carOptionRestrictions;
-
   private final CarModel carModel;
   private final Body body;
   private final Color color;
@@ -36,6 +30,11 @@ public class Car {
   private final Airco airco;
   private final Wheel wheels;
   private final Spoiler spoiler;
+  /**
+   * @representationObject
+   */
+
+  private List<CarOptionRestriction> carOptionRestrictions;
 
   /**
    * @param carModel the corresponding car model that the car is based on
@@ -79,8 +78,6 @@ public class Car {
       List<CarOption> test = restriction.getRestrictedCarOptions();
       List<CarOption> test2 = this.giveListOfCarOptions();
 
-      System.out.println(test);
-      System.out.println(test2);
 
       if (restriction.getRestrictedCarOptions().stream().allMatch(co -> this.giveListOfCarOptions().contains(co)))
         throw new IllegalArgumentException("Invalid car configuration");
