@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -392,30 +393,51 @@ public class AssemblyLineTest {
 
   @Test
   void giveEstimatedCompletionDateOfLatestProcess() {
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
+    assertEquals(LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
   }
 
   @Test
   void giveCarAssemblyTask() {
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
+
+    assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.giveCarAssemblyTask(0, carAssemblyProcess1.getAssemblyTasks().get(0).getId()));
   }
 
   @Test
   void setActiveTask() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setActiveTask(assemblyLine.getCarBodyPost(), -1));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setActiveTask(null, 5));
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
+    assemblyLine.setActiveTask(assemblyLine.getCarBodyPost(), assemblyLine.getCarBodyPost().getWorkPostAssemblyTasks().get(0).getId());
+    assertEquals(assemblyLine.getCarBodyPost().getWorkPostAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getActiveAssemblyTask());
   }
 
   @Test
   void getCarAssemblyProcessesQueue() {
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
+    assertEquals(List.of(carAssemblyProcess1), assemblyLine.getCarAssemblyProcessesQueue());
   }
 
   @Test
   void getCarAssemblyProcessesQueueAsQueue() {
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
+    assertEquals(List.of(carAssemblyProcess1), assemblyLine.getCarAssemblyProcessesQueue());
+
   }
 
   @Test
   void addCarToFinishedCars() {
+    assemblyLine.addCarToFinishedCars(carAssemblyProcess1);
+    assertEquals(List.of(carAssemblyProcess1), assemblyLine.getFinishedCars());
   }
 
   @Test
   void attach() {
+    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
+    assemblyLine.attach(company);
+    assemblyLine.detach(company);
+    assertEquals(List.of(), assemblyLine.getObservers());
   }
 
 }
