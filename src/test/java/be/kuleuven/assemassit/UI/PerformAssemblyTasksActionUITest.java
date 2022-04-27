@@ -8,8 +8,8 @@ public class PerformAssemblyTasksActionUITest {
 //  @Test
 //  public void PerformAssemblyTasksUseCaseTest() throws IOException {
 //
-//    LocalDateTime localDateTimeNow = LocalDateTime.now();
-//    LocalDateTime actualDate = LocalDateTime.now();
+//    LocalDateTime localDateTimeNow = (new CustomTime().customLocalDateTimeNow());
+//    LocalDateTime actualDate = (new CustomTime().customLocalDateTimeNow());
 //
 //    if (localDateTimeNow.getHour() < 6) {
 //      actualDate = actualDate.withHour(9);

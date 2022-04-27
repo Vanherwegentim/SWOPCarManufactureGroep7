@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain.Scheduling;
 
 import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,7 +45,7 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
     // car can still be manufactured today
     if (carAssemblyProcessesQueue.size() <= remainingCarsForToday) {
       // total duration - max duration of work post + max duration * amount
-      return LocalDateTime.now().plusMinutes(manufacturingTimeInMinutes - maxTimeNeededForWorkPostOnLine).plusMinutes((long) maxTimeNeededForWorkPostOnLine * carAssemblyProcessesQueue.size());
+      return (new CustomTime().customLocalDateTimeNow()).plusMinutes(manufacturingTimeInMinutes - maxTimeNeededForWorkPostOnLine).plusMinutes((long) maxTimeNeededForWorkPostOnLine * carAssemblyProcessesQueue.size());
     }
 
     // car can not be manufactured today
@@ -53,7 +54,7 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
 
 
     // return date of tomorrow + days needed + minutes needed
-    LocalDateTime today = LocalDateTime.now();
+    LocalDateTime today = (new CustomTime().customLocalDateTimeNow());
     int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - Math.abs(remainingCarsForToday)) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine;
     return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), startTime.getHour(), startTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(manufacturingTimeInMinutes - maxTimeNeededForWorkPostOnLine).plusMinutes(remainingMinutesForLastDay);
   }

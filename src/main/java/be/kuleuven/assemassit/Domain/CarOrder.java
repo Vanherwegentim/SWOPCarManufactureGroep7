@@ -1,5 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
+
 import java.time.LocalDateTime;
 
 /**
@@ -38,7 +40,7 @@ public class CarOrder {
       throw new IllegalArgumentException("Car cannot be null");
     this.car = car;
     this.pending = true;
-    this.orderTime = LocalDateTime.now();
+    this.orderTime = (new CustomTime().customLocalDateTimeNow());
     this.id = CarOrder.idRunner++;
   }
 

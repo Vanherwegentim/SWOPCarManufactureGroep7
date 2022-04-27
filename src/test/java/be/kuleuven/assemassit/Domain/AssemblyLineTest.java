@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -110,8 +111,8 @@ public class AssemblyLineTest {
 
 
     carAssemblyProcess3.complete();
-    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
-    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+    carAssemblyProcess3.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1).plusHours(3));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
   }
@@ -392,7 +393,7 @@ public class AssemblyLineTest {
   @Test
   void giveEstimatedCompletionDateOfLatestProcess() {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
-    assertEquals(LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
+    assertEquals((new CustomTime().customLocalDateTimeNow()).plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
   }
 
   @Test

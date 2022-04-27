@@ -1,8 +1,10 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.Body;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +21,7 @@ public class AssemblyTaskTest {
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assemblyTask.setPending(true);
     assertThrows(IllegalStateException.class, assemblyTask::getCompletionTime);
-    LocalDateTime localDateTime = LocalDateTime.now();
+    LocalDateTime localDateTime = (new CustomTime().customLocalDateTimeNow());
     assemblyTask.setCompletionTime(localDateTime);
     assemblyTask.setDuration(60);
     assemblyTask.setPending(false);
