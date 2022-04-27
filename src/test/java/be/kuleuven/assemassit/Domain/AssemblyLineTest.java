@@ -1,17 +1,18 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
+import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
+import be.kuleuven.assemassit.Domain.TaskTypes.InsertEngineAssemblyTask;
+import be.kuleuven.assemassit.Domain.TaskTypes.InstallAircoAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -279,46 +280,116 @@ public class AssemblyLineTest {
   @Test
   void givePendingAssemblyTasksFromWorkPost() {
     CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
-    when(carAssemblyProcess.getAssemblyTasks()).thenReturn((List<AssemblyTask>) new CarBodyAssemblyTask(Body.BREAK));
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK)));
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
     WorkPost workPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     workPost.addProcessToWorkPost(carAssemblyProcess);
+    assertEquals(carAssemblyProcess.getAssemblyTasks(), assemblyLine.givePendingAssemblyTasksFromWorkPost(0));
   }
 
   @Test
   void giveFinishedAssemblyTasksFromWorkPost() {
+    CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK)));
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
+    WorkPost workPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
+    workPost.addProcessToWorkPost(carAssemblyProcess);
+    for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
+      assemblyTask.complete();
+    }
+    assertEquals(carAssemblyProcess.getAssemblyTasks(), assemblyLine.giveFinishedAssemblyTasksFromWorkPost(0));
+
   }
 
   @Test
   void completeAssemblyTask() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.completeAssemblyTask(-1, 5));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.completeAssemblyTask(5, -1));
+    CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK)));
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
+    assemblyLine.getCarBodyPost().setActiveAssemblyTask(assemblyLine.getCarBodyPost().getWorkPostAssemblyTasks().get(0).getId());
+    assemblyLine.completeAssemblyTask(0, 60);
+    assertEquals(carAssemblyProcess.getAssemblyTasks(), assemblyLine.giveFinishedAssemblyTasksFromWorkPost(0));
   }
 
   @Test
   void giveActiveTasksOverview() {
+    CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK)));
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
+    assemblyLine.setActiveTask(assemblyLine.getCarBodyPost(), carAssemblyProcess.getAssemblyTasks().get(0).getId());
+    HashMap<String, AssemblyTask> workPostStatuses = new LinkedHashMap<>();
+    workPostStatuses.put("Car Body Post", carAssemblyProcess.getAssemblyTasks().get(0));
+    workPostStatuses.put("Drivetrain Post", null);
+    workPostStatuses.put("Accessories Post", null);
+    assertEquals(workPostStatuses, assemblyLine.giveActiveTasksOverview());
   }
 
   @Test
   void giveTasksOverview() {
+    CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK), new InsertEngineAssemblyTask(Engine.STANDARD), new InstallAircoAssemblyTask(Airco.MANUAL)));
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
+    assemblyLine.getDrivetrainPost().addProcessToWorkPost(carAssemblyProcess);
+    assemblyLine.getAccessoriesPost().addProcessToWorkPost(carAssemblyProcess);
+    HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
+    workPostPairs.put("Car Body Post", List.of(carAssemblyProcess.getAssemblyTasks().get(0)));
+    workPostPairs.put("Drivetrain Post", List.of(carAssemblyProcess.getAssemblyTasks().get(1)));
+    workPostPairs.put("Accessories Post", List.of(carAssemblyProcess.getAssemblyTasks().get(2)));
+    assertEquals(workPostPairs, assemblyLine.giveTasksOverview());
   }
 
   @Test
   void giveFutureTasksOverview() {
+    CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK), new InsertEngineAssemblyTask(Engine.STANDARD), new InstallAircoAssemblyTask(Airco.MANUAL)));
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
+    assemblyLine.getDrivetrainPost().addProcessToWorkPost(carAssemblyProcess);
+    assemblyLine.getAccessoriesPost().addProcessToWorkPost(carAssemblyProcess);
+    HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
+    workPostPairs.put("Car Body Post", List.of(carAssemblyProcess.getAssemblyTasks().get(0)));
+    workPostPairs.put("Drivetrain Post", List.of(carAssemblyProcess.getAssemblyTasks().get(1)));
+    workPostPairs.put("Accessories Post", List.of(carAssemblyProcess.getAssemblyTasks().get(2)));
+    assertEquals(workPostPairs, assemblyLine.giveFutureTasksOverview());
   }
 
   @Test
   void findWorkPost() {
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.findWorkPost(-1));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.findWorkPost(5));
+    WorkPost workPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
+    assertEquals(workPost, assemblyLine.findWorkPost(0));
+
   }
 
   @Test
   void canMove() {
+    assertTrue(assemblyLine.canMove());
+    CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK), new InsertEngineAssemblyTask(Engine.STANDARD), new InstallAircoAssemblyTask(Airco.MANUAL)));
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
+    assertFalse(assemblyLine.canMove());
   }
 
   @Test
   void move() {
-  }
 
-  @Test
-  void testMove() {
+
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0));
+    assemblyLine.getCarBodyPost().removeProcessFromWorkPost();
+
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
+    SchedulingAlgorithm schedulingAlgorithm = new FIFOScheduling();
+    assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
+    assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0);
+    assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0);
+    System.out.println(assemblyLine.getCarAssemblyProcessesQueue().size());
+    System.out.println(assemblyLine.getCarBodyPost());
+    assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
   }
 
   @Test
@@ -342,54 +413,11 @@ public class AssemblyLineTest {
   }
 
   @Test
-  void createCarsPerDayMap() {
-  }
-
-  @Test
-  void averageCarsInADay() {
-  }
-
-  @Test
-  void medianCarsInADay() {
-  }
-
-  @Test
-  void exactCarsIn2Days() {
-  }
-
-  @Test
-  void averageDelayPerOrder() {
-  }
-
-  @Test
-  void medianDelayPerOrder() {
-  }
-
-  @Test
-  void last2Delays() {
-  }
-
-  @Test
   void addCarToFinishedCars() {
-  }
-
-  @Test
-  void testGiveSchedulingAlgorithmNames() {
-  }
-
-  @Test
-  void givePossibleBatchCars() {
   }
 
   @Test
   void attach() {
   }
 
-  @Test
-  void testDetach() {
-  }
-
-  @Test
-  void testNotifyObservers() {
-  }
 }
