@@ -22,7 +22,7 @@ public class AdaptSchedulingAlgorithmTest {
     factory = new ControllerFactory();
     factory.createLoginController().logInGarageHolder(0);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       createBatchWithColor(i);
     }
     factory.logoutCarMechanic();
@@ -80,7 +80,7 @@ public class AdaptSchedulingAlgorithmTest {
 
     String expectedPossibleBatches = "0" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "RED" + System.lineSeparator() +
+      "BLUE" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -89,7 +89,7 @@ public class AdaptSchedulingAlgorithmTest {
       "NO_SPOILER" + System.lineSeparator() +
       "1" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "BLUE" + System.lineSeparator() +
+      "BLACK" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -98,7 +98,7 @@ public class AdaptSchedulingAlgorithmTest {
       "NO_SPOILER" + System.lineSeparator() +
       "2" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "BLACK" + System.lineSeparator() +
+      "RED" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -148,7 +148,7 @@ public class AdaptSchedulingAlgorithmTest {
 
     String expectedPossibleBatches = "0" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "RED" + System.lineSeparator() +
+      "BLUE" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -157,7 +157,7 @@ public class AdaptSchedulingAlgorithmTest {
       "NO_SPOILER" + System.lineSeparator() +
       "1" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "BLUE" + System.lineSeparator() +
+      "BLACK" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -166,7 +166,7 @@ public class AdaptSchedulingAlgorithmTest {
       "NO_SPOILER" + System.lineSeparator() +
       "2" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "BLACK" + System.lineSeparator() +
+      "RED" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -231,7 +231,7 @@ public class AdaptSchedulingAlgorithmTest {
 
     String expectedPossibleBatches = "0" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "RED" + System.lineSeparator() +
+      "BLUE" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -240,7 +240,7 @@ public class AdaptSchedulingAlgorithmTest {
       "NO_SPOILER" + System.lineSeparator() +
       "1" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "BLUE" + System.lineSeparator() +
+      "BLACK" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
@@ -249,7 +249,7 @@ public class AdaptSchedulingAlgorithmTest {
       "NO_SPOILER" + System.lineSeparator() +
       "2" + System.lineSeparator() +
       "SEDAN" + System.lineSeparator() +
-      "BLACK" + System.lineSeparator() +
+      "RED" + System.lineSeparator() +
       "STANDARD" + System.lineSeparator() +
       "SIX_SPEED_MANUAL" + System.lineSeparator() +
       "LEATHER_WHITE" + System.lineSeparator() +
