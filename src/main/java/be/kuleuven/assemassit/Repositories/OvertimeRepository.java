@@ -33,16 +33,15 @@ public class OvertimeRepository {
       }
     } catch (FileNotFoundException e) {
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
+      this.overTime = 0;
     }
-
     clearFile();
-    this.overTime = 0;
   }
 
   private void writeOverTime() {
     try {
       FileWriter writer = new FileWriter(FILE_PATH, false);
-      writer.write(this.overTime);
+      writer.write(Integer.toString(this.overTime));
       writer.close();
     } catch (IOException e) {
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
