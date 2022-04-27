@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  * @invar | this.getFinishedCars() != null
  * @invar | this.getSchedulingAlgorithm() != null
  * @invar | this.giveSchedulingAlgorithmNames() != null
+ * @invar | this.getObservers() != null
  */
 public class AssemblyLine implements Subject {
 
@@ -35,6 +36,7 @@ public class AssemblyLine implements Subject {
    * @invar | finishedCars != null
    * @invar | (startTime == null || endTime == null) || startTime.isBefore(endTime)
    * @invar | schedulingAlgorithm != null
+   * @invar | observers != null
    * @representationObject
    */
   private final WorkPost carBodyPost;
@@ -69,13 +71,14 @@ public class AssemblyLine implements Subject {
   private SchedulingAlgorithm schedulingAlgorithm;
 
   /**
-   * @post | carBodyPost != null
-   * @post | driveTrainPost != null
-   * @post | accessoriesPost != null
-   * @post | carAssemblyProcessesQueue != null
-   * @post | finishedCars != null
-   * @post | overTimeRepository != null
-   * @post | overTime >= 0
+   * @post | getCarBodyPost() != null
+   * @post | getDriveTrainPost() != null
+   * @post | getAccessoriesPost() != null
+   * @post | getCarAssemblyProcessesQueue() != null
+   * @post | getFinishedCars() != null
+   * @post | getOverTimeRepository() != null
+   * @post | getOverTime() >= 0
+   * @post | getObservers() != null
    * @mutates | this
    */
   public AssemblyLine() {
@@ -152,7 +155,7 @@ public class AssemblyLine implements Subject {
    *
    * @param schedulingAlgorithm
    * @throws IllegalArgumentException schedulingAlgorithm can not be null | schedulingAlgorithm == null
-   * @post | this.schedulingAlgorithm == schedulingAlgorithm
+   * @post | this.getSchedulingAlgorithm() == schedulingAlgorithm
    */
   public void setSchedulingAlgorithm(SchedulingAlgorithm schedulingAlgorithm) {
     if (schedulingAlgorithm == null)
@@ -218,7 +221,6 @@ public class AssemblyLine implements Subject {
   public List<AssemblyTask> giveFinishedAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.giveFinishedAssemblyTasks();
-
   }
 
   /**
@@ -526,7 +528,12 @@ public class AssemblyLine implements Subject {
     return carAssemblyProcessesQueue;
   }
 
-
+  /**
+   * Creates a map of cars per day, this can be used for further calculations
+   *
+   * @return a map of cars for each work day
+   * @creates | result
+   */
   public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
     List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
@@ -544,18 +551,28 @@ public class AssemblyLine implements Subject {
     return carsPerDayMap;
   }
 
+  /**
+   * Calculates the average cars in a single work day
+   *
+   * @return the average of cars in a single work day
+   * @inspects | this
+   */
   public double averageCarsInADay() {
-    //Calculate the average
     Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     if (carsPerDayMap.size() == 0) {
       return 0;
     } else {
       double total = carsPerDayMap.values().stream().mapToDouble(v -> v).sum();
       return total / carsPerDayMap.size();
-
     }
   }
 
+  /**
+   * Calculates the median of cars in a single work day
+   *
+   * @return the median of cars in a single work day
+   * @inspects | this
+   */
   public double medianCarsInADay() {
     Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     ArrayList<Double> numList = new ArrayList<>();
@@ -580,6 +597,12 @@ public class AssemblyLine implements Subject {
     }
   }
 
+  /**
+   * Returns the amount of cars produced in the previous two days
+   *
+   * @return the amount of cars produces in the previous two days
+   * @inspects | this
+   */
   public double exactCarsIn2Days() {
     Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     double total = 0;
@@ -593,6 +616,13 @@ public class AssemblyLine implements Subject {
   }
 
   //Can a car be ready before it's estimated completion time? if so, add an if test
+
+  /**
+   * Returns the average of delays from all the car orders
+   *
+   * @return the average of delays from all the car orders
+   * @inspects | this
+   */
   public double averageDelayPerOrder() {
     double total;
     if (finishedCars.size() == 0) {
@@ -604,6 +634,11 @@ public class AssemblyLine implements Subject {
     }
   }
 
+  /**
+   * Returns the mean of delays from all the car orders
+   *
+   * @return the mean of delays from all the car orders
+   */
   public double medianDelayPerOrder() {
     ArrayList<Double> dates = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().boxed().collect(Collectors.toCollection(ArrayList::new));
     if (dates.size() == 0) {
@@ -623,6 +658,12 @@ public class AssemblyLine implements Subject {
     }
   }
 
+  /**
+   * Returns the last two delays of the car company
+   *
+   * @return the last two delays of the car company
+   * @inspects | this
+   */
   public Map<LocalDate, Integer> last2Delays() {
     Map<LocalDate, Integer> delays = new HashMap<>();
     if (finishedCars.size() == 0) {
@@ -655,6 +696,12 @@ public class AssemblyLine implements Subject {
     return delays;
   }
 
+  /**
+   * Add a process (car) to the list of finished processes (cars)
+   *
+   * @param carAssemblyProcess the process that should be added to the list of finished processes
+   * @mutates | this
+   */
   public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
     finishedCars.add(carAssemblyProcess);
   }
@@ -673,6 +720,10 @@ public class AssemblyLine implements Subject {
       );
   }
 
+  /**
+   * @return the list of possible batches for the batch scheduling algorithm
+   * @inspects | this
+   */
   public List<Car> givePossibleBatchCars() {
     List<Car> cars = this.carAssemblyProcessesQueue
       .stream()
