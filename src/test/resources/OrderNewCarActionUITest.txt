@@ -54,6 +54,47 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1: AUTOMATIC
 > 2: NO_AIRCO
 >-1: Cancel placing the order
+<-1
+>
+>Welcome Louis Brooks
+>Please choose an action:
+> 1: Order new car
+> 2: Check order details
+>-1: Logout and go back
+<1
+>
+>Orders placed by: Louis Brooks
+>Pending:
+>   --no orders found--
+>History:
+>   --no orders found--
+>
+>Please choose an action:
+> 1: Place a new order
+> 2: Create batch of 3
+>-1: Go back
+<1
+>
+>Please choose the model:
+> 0: Model A
+> 1: Model B
+> 2: Model C
+>-1: Go back
+<1
+>Chosen model: Model B
+>
+>Choose the option for: GearBox
+> 0: SIX_SPEED_MANUAL
+> 1: FIVE_SPEED_AUTOMATIC
+>-1: Cancel placing the order
+<1
+>Chosen: FIVE_SPEED_AUTOMATIC
+>
+>Choose the option for: Airco
+> 0: MANUAL
+> 1: AUTOMATIC
+> 2: NO_AIRCO
+>-1: Cancel placing the order
 <1
 >Chosen: AUTOMATIC
 >
