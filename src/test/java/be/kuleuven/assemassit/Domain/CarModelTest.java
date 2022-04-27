@@ -17,14 +17,14 @@ public class CarModelTest {
 
   List<Gearbox> gearboxes1 = Arrays.asList(Gearbox.SIX_SPEED_MANUAL, Gearbox.FIVE_SPEED_MANUAL, Gearbox.FIVE_SPEED_AUTOMATIC);
   List<Gearbox> gearboxes2 = Arrays.asList(Gearbox.SIX_SPEED_MANUAL, Gearbox.FIVE_SPEED_AUTOMATIC);
-  List<Gearbox> gearboxes3 = List.of(Gearbox.SIX_SPEED_MANUAL);
+  List<Gearbox> gearboxes3 = Arrays.asList(Gearbox.SIX_SPEED_MANUAL);
 
   List<Seat> seats1 = Arrays.asList(Seat.LEATHER_WHITE, Seat.LEATHER_BLACK, Seat.VINYL_GREY);
   List<Seat> seats2 = Arrays.asList(Seat.LEATHER_WHITE, Seat.LEATHER_BLACK);
 
   List<Body> body1 = Arrays.asList(Body.SEDAN, Body.BREAK);
   List<Body> body2 = Arrays.asList(Body.SEDAN, Body.BREAK, Body.SPORT);
-  List<Body> body3 = List.of(Body.SPORT);
+  List<Body> body3 = Arrays.asList(Body.SPORT);
 
   List<Color> color1 = Arrays.asList(Color.RED, Color.BLUE, Color.BLACK, Color.WHITE);
   List<Color> color2 = Arrays.asList(Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW);
@@ -36,7 +36,7 @@ public class CarModelTest {
 
   List<Airco> aircos1 = Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC, Airco.NO_AIRCO);
 
-  List<Spoiler> spoilers1 = List.of(Spoiler.NO_SPOILER);
+  List<Spoiler> spoilers1 = Arrays.asList(Spoiler.NO_SPOILER);
   List<Spoiler> spoilers2 = Arrays.asList(Spoiler.LOW, Spoiler.NO_SPOILER);
   List<Spoiler> spoilers3 = Arrays.asList(Spoiler.LOW, Spoiler.HIGH);
 
@@ -92,12 +92,12 @@ public class CarModelTest {
         "testmodel",
         Arrays.asList(Wheel.COMFORT, Wheel.SPORT),
         Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.SIX_SPEED_MANUAL),
-        List.of(Seat.LEATHER_BLACK),
-        List.of(Body.BREAK),
+        Arrays.asList(Seat.LEATHER_BLACK),
+        Arrays.asList(Body.BREAK),
         Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
-        List.of(Spoiler.NO_SPOILER)
+        Arrays.asList(Spoiler.NO_SPOILER)
       ));
   }
 
@@ -110,12 +110,12 @@ public class CarModelTest {
         "",
         Arrays.asList(Wheel.COMFORT, Wheel.SPORT),
         Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.FIVE_SPEED_MANUAL),
-        List.of(Seat.LEATHER_BLACK),
-        List.of(Body.BREAK),
+        Arrays.asList(Seat.LEATHER_BLACK),
+        Arrays.asList(Body.BREAK),
         Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
-        List.of(Spoiler.NO_SPOILER)
+        Arrays.asList(Spoiler.NO_SPOILER)
       ));
     assertThrows(IllegalArgumentException.class, () ->
       new CarModel(
@@ -123,25 +123,25 @@ public class CarModelTest {
         "testmodel",
         null,
         Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.FIVE_SPEED_MANUAL),
-        List.of(Seat.LEATHER_BLACK),
-        List.of(Body.BREAK),
+        Arrays.asList(Seat.LEATHER_BLACK),
+        Arrays.asList(Body.BREAK),
         Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
-        List.of(Spoiler.NO_SPOILER)
+        Arrays.asList(Spoiler.NO_SPOILER)
       ));
     assertThrows(IllegalArgumentException.class, () ->
       new CarModel(
         0,
         "testmodel",
-        List.of(),
+        Arrays.asList(),
         Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.FIVE_SPEED_MANUAL),
-        List.of(Seat.LEATHER_BLACK),
-        List.of(Body.BREAK),
+        Arrays.asList(Seat.LEATHER_BLACK),
+        Arrays.asList(Body.BREAK),
         Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
-        List.of(Spoiler.NO_SPOILER)
+        Arrays.asList(Spoiler.NO_SPOILER)
       ));
 
     List<Wheel> test = new ArrayList<>();
@@ -152,12 +152,12 @@ public class CarModelTest {
         "testmodel",
         test,
         Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.FIVE_SPEED_MANUAL),
-        List.of(Seat.LEATHER_BLACK),
-        List.of(Body.BREAK),
+        Arrays.asList(Seat.LEATHER_BLACK),
+        Arrays.asList(Body.BREAK),
         Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
         Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
         Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
-        List.of(Spoiler.NO_SPOILER)
+        Arrays.asList(Spoiler.NO_SPOILER)
       ));
   }
 
@@ -169,12 +169,12 @@ public class CarModelTest {
       "testmodel",
       Arrays.asList(Wheel.COMFORT, Wheel.SPORT),
       Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.FIVE_SPEED_MANUAL),
-      List.of(Seat.LEATHER_BLACK),
-      List.of(Body.BREAK),
+      Arrays.asList(Seat.LEATHER_BLACK),
+      Arrays.asList(Body.BREAK),
       Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
       Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
       Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
-      List.of(Spoiler.NO_SPOILER)
+      Arrays.asList(Spoiler.NO_SPOILER)
     );
 
     assertEquals(expected, carModel.toString());
