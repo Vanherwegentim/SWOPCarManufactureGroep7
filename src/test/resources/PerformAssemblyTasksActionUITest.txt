@@ -143,6 +143,21 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >   0: Assembly car body
 >   5: Paint car
 >-1: Go back
+<-1
+>No task was chosen.
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<0
+>Chosen work post: Car Body Post
+>
+>Please choose an assembly task:
+>   0: Assembly car body
+>   5: Paint car
+>-1: Go back
 <0
 >Chosen assembly task: Assembly car body
 >
