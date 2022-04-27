@@ -105,8 +105,6 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out();
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Place a new order");
-      //TODO remove this when not needed anymore
-      IOCall.out(" 2: Create batch of 3");
       IOCall.out("-1: Go back");
 
       choice = IOCall.in();
@@ -146,13 +144,6 @@ public class OrderNewCarActionUI implements UI {
           IOCall.out();
           IOCall.out("Press ENTER to continue...");
           IOCall.waitForConfirmation();
-        }
-        //TODO remove this when not needed anymore
-        case 2 -> {
-          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
-          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
-          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
-          IOCall.out("Ordered");
         }
         // Alternate flow: The user indicates he wants to leave the overview.
       }
