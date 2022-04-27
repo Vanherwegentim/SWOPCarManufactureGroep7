@@ -42,14 +42,14 @@ public class OvertimeRepository {
   private void writeOverTime() {
     try {
       FileWriter writer = new FileWriter(FILE_PATH, false);
-      writer.write(this.overTime);
+      writer.write(Integer.toString(this.overTime));
       writer.close();
     } catch (IOException e) {
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
     }
   }
 
-  private void clearFile() {
+  public void clearFile() {
     try {
       new FileWriter(FILE_PATH, false).close();
     } catch (IOException e) {

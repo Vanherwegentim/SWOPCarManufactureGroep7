@@ -232,4 +232,14 @@ public class WorkPost {
 
     return assemblyTask.get();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof WorkPost) {
+      WorkPost workPost = (WorkPost) o;
+      return workPost.getId() == this.id && workPost.getWorkPostType().equals(this.getWorkPostType());
+
+    }
+    return false;
+  }
 }

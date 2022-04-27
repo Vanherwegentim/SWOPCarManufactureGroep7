@@ -182,4 +182,12 @@ public class CarManufactoringCompany implements Observer {
       this.overTimeRepository.setOverTime(this.overtime);
     }
   }
+
+  public OvertimeRepository getOverTimeRepository() {
+    return overTimeRepository;
+  }
+
+  public int getOvertime() {
+    return overtime;
+  }
 }
