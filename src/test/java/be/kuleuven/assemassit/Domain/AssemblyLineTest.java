@@ -279,7 +279,7 @@ public class AssemblyLineTest {
   @Test
   void givePendingAssemblyTasksFromWorkPost() {
     CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
-    when(carAssemblyProcess.getAssemblyTasks()).thenReturn((List<AssemblyTask>) new CarBodyAssemblyTask(Body.BREAK));
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(Arrays.asList(new CarBodyAssemblyTask(Body.BREAK)));
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
     WorkPost workPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     workPost.addProcessToWorkPost(carAssemblyProcess);
