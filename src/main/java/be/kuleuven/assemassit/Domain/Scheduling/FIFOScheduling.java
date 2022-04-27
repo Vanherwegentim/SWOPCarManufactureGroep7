@@ -21,7 +21,6 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
     List<CarAssemblyProcess> finishedCars,
     List<WorkPost> workPostsInOrder
   ) {
-
     int overtime = -1; // return -1 if the end of the day is not reached yet
 
 
@@ -45,7 +44,7 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
 
-          int overtimeInMinutes = differenceInMinutes(endTime, LocalTime.now());
+          int overtimeInMinutes = differenceInMinutes(endTime.minusMinutes(previousOvertimeInMinutes), LocalTime.now());
           if (overtimeInMinutes >= 0)
             overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
         }

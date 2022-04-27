@@ -19,19 +19,19 @@ import java.util.List;
 public class Car {
   private static int idRunner = 0;
 
-  private int id;
+  private final int id;
   /**
    * @representationObject
    */
-  private CarModel carModel;
-  private Body body;
-  private Color color;
-  private Engine engine;
-  private Gearbox gearbox;
-  private Seat seats;
-  private Airco airco;
-  private Wheel wheels;
-  private Spoiler spoiler;
+  private final CarModel carModel;
+  private final Body body;
+  private final Color color;
+  private final Engine engine;
+  private final Gearbox gearbox;
+  private final Seat seats;
+  private final Airco airco;
+  private final Wheel wheels;
+  private final Spoiler spoiler;
 
   /**
    * @param carModel the corresponding car model that the car is based on
@@ -139,14 +139,15 @@ public class Car {
 
   @Override
   public boolean equals(Object o) {
-    if (o instanceof Car car) {
+    if (o instanceof Car) {
+      Car car = (Car) o;
       return
         (car.giveListOfCarOptions().stream().allMatch(co ->
-          this.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+          this.giveListOfCarOptions().stream().anyMatch(co::equals)
         ))
           &&
           (this.giveListOfCarOptions().stream().allMatch(co ->
-            car.giveListOfCarOptions().stream().anyMatch(co2 -> co.equals(co2))
+            car.giveListOfCarOptions().stream().anyMatch(co::equals)
           ));
     }
     return false;
@@ -154,6 +155,6 @@ public class Car {
 
   @Override
   public int hashCode() {
-    return giveListOfCarOptions().stream().map(o -> o.hashCode()).mapToInt(Integer::intValue).sum();
+    return giveListOfCarOptions().stream().map(Object::hashCode).mapToInt(Integer::intValue).sum();
   }
 }

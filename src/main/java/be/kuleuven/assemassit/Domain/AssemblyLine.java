@@ -4,7 +4,6 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
-import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -68,7 +67,6 @@ public class AssemblyLine implements Subject {
    * @representationObject
    */
   private SchedulingAlgorithm schedulingAlgorithm;
-  private OvertimeRepository overTimeRepository;
 
   /**
    * @post | carBodyPost != null
@@ -90,6 +88,22 @@ public class AssemblyLine implements Subject {
     this.observers = new ArrayList<>();
   }
 
+  public WorkPost getCarBodyPost() {
+    return this.carBodyPost;
+  }
+
+  public WorkPost getDrivetrainPost() {
+    return this.drivetrainPost;
+  }
+
+  public WorkPost getAccessoriesPost() {
+    return this.accessoriesPost;
+  }
+
+  public LocalTime getStartTime() {
+    return startTime;
+  }
+
   /**
    * Sets the start time of the assembly line.
    *
@@ -102,6 +116,10 @@ public class AssemblyLine implements Subject {
       throw new IllegalArgumentException("StartTime can not be null");
     }
     this.startTime = startTime;
+  }
+
+  public LocalTime getEndTime() {
+    return endTime;
   }
 
   /**
@@ -155,18 +173,6 @@ public class AssemblyLine implements Subject {
     carAssemblyProcessesQueue.add(carAssemblyProcess);
   }
 
-  public WorkPost getCarBodyPost() {
-    return this.carBodyPost;
-  }
-
-  public WorkPost getDrivetrainPost() {
-    return this.drivetrainPost;
-  }
-
-  public WorkPost getAccessoriesPost() {
-    return this.accessoriesPost;
-  }
-
   /**
    * Collects the work posts of the assembly line in a list.
    *
@@ -205,7 +211,7 @@ public class AssemblyLine implements Subject {
    * Return the list of assembly tasks from an associated work post on the assembly line that are finished
    *
    * @param workPostId
-   * @return The list of pendfiing assembly tasks
+   * @return The list of pending assembly tasks
    * @inspects | this
    * @creates | result
    */
@@ -260,11 +266,9 @@ public class AssemblyLine implements Subject {
    */
   public HashMap<String, List<AssemblyTask>> giveTasksOverview() {
     HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
-
     workPostPairs.put("Car Body Post", carBodyPost.getWorkPostAssemblyTasks());
     workPostPairs.put("Drivetrain Post", drivetrainPost.getWorkPostAssemblyTasks());
     workPostPairs.put("Accessories Post", accessoriesPost.getWorkPostAssemblyTasks());
-
     return workPostPairs;
   }
 
@@ -378,41 +382,12 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
+   * @param endTime the end time of the company
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move() {
-
-    if (!canMove())
-      throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
-
-    int newOvertime = schedulingAlgorithm.moveAssemblyLine
-      (
-        0, // TODO: we just have to remove this "move" method
-        endTime,
-        carAssemblyProcessesQueue,
-        finishedCars,
-        getWorkPosts()
-      );
-
-    if (newOvertime > 0) {
-      // overtime happened so we have to inform the car manufacturing company
-      updateOvertime(newOvertime);
-    }
-  }
-
-  /**
-   * Moves the assembly and gives the duration of the current phase.
-   * The assembly process is moved from one work post to another on the assembly line.
-   *
-   * @param startTime the start time of the company
-   * @param endTime   the end time of the company
-   * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
-   * @throws IllegalArgumentException minutes is below 0 | minutes < 0
-   * @mutates | this
-   */
-  public void move(LocalTime startTime, LocalTime endTime, int overtime) {
+  public void move(LocalTime endTime, int overtime) {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
@@ -555,10 +530,7 @@ public class AssemblyLine implements Subject {
   public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
     //TODO refactor to work with streams;
-    List<LocalDateTime> dateTimeList = new ArrayList<>();
-    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-      dateTimeList.add(carAssemblyProcess.getCarOrder().getCompletionTime());
-    }
+    List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
 
     Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
     for (LocalDateTime localDateTime : dateTimeList) {
@@ -579,10 +551,7 @@ public class AssemblyLine implements Subject {
     if (carsPerDayMap.size() == 0) {
       return 0;
     } else {
-      double total = 0;
-      for (Map.Entry<LocalDate, Double> entry : carsPerDayMap.entrySet()) {
-        total = total + entry.getValue();
-      }
+      double total = carsPerDayMap.values().stream().mapToDouble(v -> v).sum();
       return total / carsPerDayMap.size();
 
     }
@@ -626,32 +595,18 @@ public class AssemblyLine implements Subject {
 
   //Can a car be ready before it's estimated completion time? if so, add an if test
   public double averageDelayPerOrder() {
-    double total = 0;
+    double total;
     if (finishedCars.size() == 0) {
       return 0;
     } else {
-      for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-        Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
-
-        long diff = duration.toHours();
-        //This conversion could error
-        total = total + (double) diff;
-
-      }
+      total = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().sum();
 
       return total / finishedCars.size();
     }
   }
 
   public double medianDelayPerOrder() {
-    ArrayList<Double> dates = new ArrayList<>();
-    for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-      Duration duration = Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime());
-      long diff = duration.toHours();
-      double conv = (double) diff;
-      dates.add(conv);
-    }
-
+    ArrayList<Double> dates = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().boxed().collect(Collectors.toCollection(ArrayList::new));
     if (dates.size() == 0) {
       return 0;
     }
@@ -674,15 +629,13 @@ public class AssemblyLine implements Subject {
     if (finishedCars.size() == 0) {
       return delays;
     }
+    CarAssemblyProcess car1 = finishedCars.get(0);
     if (finishedCars.size() == 1) {
-      CarAssemblyProcess car1 = finishedCars.get(0);
       Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
       long diff1 = duration1.toHours();
       int conv1 = Math.toIntExact(diff1);
       delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
-      return delays;
     } else {
-      CarAssemblyProcess car1 = finishedCars.get(0);
       CarAssemblyProcess car2 = finishedCars.get(1);
       for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
         if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
@@ -699,8 +652,8 @@ public class AssemblyLine implements Subject {
       long diff2 = duration2.toHours();
       int conv2 = Math.toIntExact(diff2);
       delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
-      return delays;
     }
+    return delays;
   }
 
   public void addCarToFinishedCars(CarAssemblyProcess carAssemblyProcess) {
@@ -737,6 +690,10 @@ public class AssemblyLine implements Subject {
       frequencyMap.put(c, ++count);
     }
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
+  }
+
+  public List<Observer> getObservers() {
+    return observers;
   }
 
   @Override

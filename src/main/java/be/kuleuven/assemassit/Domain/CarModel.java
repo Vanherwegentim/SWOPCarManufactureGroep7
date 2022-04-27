@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @mutable
@@ -15,9 +16,9 @@ import java.util.List;
  * @invar | getAircoOptions() != null && !getAircoOptions().contains(null) && !getAircoOptions().isEmpty()
  */
 public class CarModel {
-  private int id;
-  private String name;
-  private int workPostDuration;
+  private final int id;
+  private final String name;
+  private final int workPostDuration;
 
   /**
    * @invar | wheelOptions != null && !wheelsOptions.contains(null) && !wheelOptions.isEmpty()
@@ -29,33 +30,33 @@ public class CarModel {
    * @invar | aircoOptions != null && !aircoOptions.contains(null) && !aircoOptions.isEmpty()
    * @representationObject
    */
-  private List<Wheel> wheelOptions;
+  private final List<Wheel> wheelOptions;
   /**
    * @representationObject
    */
-  private List<Gearbox> gearboxOptions;
+  private final List<Gearbox> gearboxOptions;
   /**
    * @representationObject
    */
-  private List<Seat> seatOptions;
+  private final List<Seat> seatOptions;
   /**
    * @representationObject
    */
-  private List<Body> bodyOptions;
+  private final List<Body> bodyOptions;
   /**
    * @representationObject
    */
-  private List<Color> colorOptions;
+  private final List<Color> colorOptions;
   /**
    * @representationObject
    */
-  private List<Engine> engineOptions;
+  private final List<Engine> engineOptions;
   /**
    * @representationObject
    */
-  private List<Airco> aircoOptions;
+  private final List<Airco> aircoOptions;
 
-  private List<Spoiler> spoilerOptions;
+  private final List<Spoiler> spoilerOptions;
 
   /**
    * @param id             car model ID
@@ -67,6 +68,7 @@ public class CarModel {
    * @param colorOptions   list of acceptable color options for the car model
    * @param engineOptions  list of acceptable engine options for the car model
    * @param aircoOptions   list of acceptable airco options for the car model
+   * @param spoilerOptions list of acceptable spoiler options for the car model
    * @throws IllegalArgumentException name can not be null or empty
    *                                  | name == null || name.equals("")
    * @throws IllegalArgumentException options can not be null or empty
@@ -76,24 +78,6 @@ public class CarModel {
    *                                  | (wheelOptions.contains(null) || gearboxOptions.contains(null) || seatOptions.contains(null) || bodyOptions.contains(null) || colorOptions.contains(null) || engineOptions.contains(null) || aircoOptions.contains(null))
    * @mutates | this
    */
-//  public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions) {
-//    if (name == "" || name.equals(null))
-//      throw new IllegalArgumentException("Car model name cannot be empty or null");
-//    if (wheelOptions == null || gearboxOptions == null || seatOptions == null || bodyOptions == null || colorOptions == null || engineOptions == null || aircoOptions == null ||
-//      wheelOptions.isEmpty() || gearboxOptions.isEmpty() || seatOptions.isEmpty() || bodyOptions.isEmpty() || colorOptions.isEmpty() || engineOptions.isEmpty() || aircoOptions.isEmpty())
-//      throw new IllegalArgumentException("Car model options cannot be empty or null");
-//    if (wheelOptions.contains(null) || gearboxOptions.contains(null) || seatOptions.contains(null) || bodyOptions.contains(null) || colorOptions.contains(null) || engineOptions.contains(null) || aircoOptions.contains(null))
-//      throw new IllegalArgumentException("Car model options cannot contain null");
-//    this.id = id;
-//    this.name = name;
-//    this.wheelOptions = List.copyOf(wheelOptions);
-//    this.gearboxOptions = List.copyOf(gearboxOptions);
-//    this.seatOptions = List.copyOf(seatOptions);
-//    this.bodyOptions = List.copyOf(bodyOptions);
-//    this.colorOptions = List.copyOf(colorOptions);
-//    this.engineOptions = List.copyOf(engineOptions);
-//    this.aircoOptions = List.copyOf(aircoOptions);
-//  }
   public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions, List<Spoiler> spoilerOptions) {
     this(id, name, wheelOptions, gearboxOptions, seatOptions, bodyOptions, colorOptions, engineOptions, aircoOptions, spoilerOptions, 60);
   }
@@ -119,7 +103,7 @@ public class CarModel {
    * @mutates | this
    */
   public CarModel(int id, String name, List<Wheel> wheelOptions, List<Gearbox> gearboxOptions, List<Seat> seatOptions, List<Body> bodyOptions, List<Color> colorOptions, List<Engine> engineOptions, List<Airco> aircoOptions, List<Spoiler> spoilerOptions, int workPostDuration) {
-    if (name == "" || name.equals(null))
+    if (Objects.equals(name, "") || name == null)
       throw new IllegalArgumentException("Car model name cannot be empty or null");
     if (wheelOptions == null || gearboxOptions == null || seatOptions == null || bodyOptions == null || colorOptions == null || engineOptions == null || aircoOptions == null || spoilerOptions == null ||
       wheelOptions.isEmpty() || gearboxOptions.isEmpty() || seatOptions.isEmpty() || bodyOptions.isEmpty() || colorOptions.isEmpty() || engineOptions.isEmpty() || aircoOptions.isEmpty() || spoilerOptions.isEmpty())
@@ -211,7 +195,6 @@ public class CarModel {
       seatOptions.contains(seats) &&
       aircoOptions.contains(airco) &&
       wheelOptions.contains(wheels) &&
-      //spoiler can be null, contains returns true if spoiler is null
       spoilerOptions.contains(spoiler);
   }
 

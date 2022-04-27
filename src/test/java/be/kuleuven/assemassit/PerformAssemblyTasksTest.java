@@ -7,9 +7,9 @@ import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.CarModel;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.GarageHolder;
-import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
 import be.kuleuven.assemassit.Domain.WorkPost;
+import be.kuleuven.assemassit.Repositories.CarModelRepository;
+import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +51,7 @@ public class PerformAssemblyTasksTest {
 
     fillTheSystemWithCarOrders();
     //first move
-    carManufactoringCompany.moveAssemblyLine();
+    //carManufactoringCompany.moveAssemblyLine();
   }
 
   private void mockGarageHolders() {
@@ -131,7 +131,7 @@ public class PerformAssemblyTasksTest {
     List<String> actionsAlternative = Arrays.asList("Painting the car WHITE");
 
     assertTrue(actions.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1)) || actionsAlternative.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1)));
-    assertEquals(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1).size(), actions.size());
+    assertEquals(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId1).size(), 1);
 
     //task1: Step 6
     performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(0, 35);
@@ -145,8 +145,10 @@ public class PerformAssemblyTasksTest {
 
     //task2: Step 5
     List<String> task2actions = performAssemblyTasksController.giveAssemblyTaskActions(0, taskId2);
-    assertEquals(task2actions, actionsAlternative);
-    assertEquals(task2actions.size(), actionsAlternative.size());
+
+    assertTrue(actions.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId2)) || actionsAlternative.containsAll(performAssemblyTasksController.giveAssemblyTaskActions(0, taskId2)));
+
+    assertEquals(task2actions.size(), 1);
 
     //task2: Step 6
     performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(0, 35);

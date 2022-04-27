@@ -1,4 +1,4 @@
-package be.kuleuven.assemassit.Domain.Repositories;
+package be.kuleuven.assemassit.Repositories;
 
 import be.kuleuven.assemassit.Domain.GarageHolder;
 

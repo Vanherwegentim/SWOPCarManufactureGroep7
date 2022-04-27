@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Helper.Observer;
-import be.kuleuven.assemassit.Domain.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Domain.Repositories.OvertimeRepository;
+import be.kuleuven.assemassit.Repositories.CarModelRepository;
+import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -157,14 +157,37 @@ public class CarManufactoringCompany implements Observer {
   }
 
   public void moveAssemblyLine() {
-    this.assemblyLine.move(this.openingTime, this.closingTime, this.overtime);
+    this.assemblyLine.move(this.closingTime, this.overtime);
+  }
+
+  /**
+   * @throws IllegalStateException | LocalTime.now().isBefore(this.openingTime)
+   * @inspects | this
+   * @mutates | this
+   */
+  public void triggerAutomaticFirstMove() {
+    if (!LocalTime.now().isBefore(this.openingTime) && assemblyLine.canMove())
+      this.moveAssemblyLine();
+  }
+
+  public boolean isAssemblyLineAvailable() {
+    return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
   }
 
   @Override
   public void update(Object observable, Object value) {
-    if (observable instanceof AssemblyLine && value instanceof Integer overtime) {
+    if (observable instanceof AssemblyLine && value instanceof Integer) {
+      Integer overtime = (Integer) value;
       this.overtime = overtime;
-      this.overTimeRepository.setOverTime(this.overtime);
+      this.overTimeRepository.setOverTime(overtime);
     }
+  }
+
+  public OvertimeRepository getOverTimeRepository() {
+    return overTimeRepository;
+  }
+
+  public int getOvertime() {
+    return overtime;
   }
 }

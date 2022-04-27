@@ -37,7 +37,7 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   @Override
   public List<String> getActions() {
     List<String> actions = new ArrayList<>();
-    actions.add("Installing the " + body + " body");
+    actions.add("Installing the " + getBody() + " body");
     return actions;
   }
 

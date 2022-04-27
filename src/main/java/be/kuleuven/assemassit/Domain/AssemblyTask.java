@@ -43,10 +43,6 @@ public abstract class AssemblyTask {
     AssemblyTask.runningId = 0;
   }
 
-  public boolean getFinished() {
-    return !this.pending;
-  }
-
   public boolean getPending() {
     return this.pending;
   }
@@ -102,10 +98,7 @@ public abstract class AssemblyTask {
   }
 
   @Override
-  public boolean equals(Object object) {
-    if (object instanceof AssemblyTask task) task.id = this.id;
-    return false;
-  }
+  public abstract boolean equals(Object object);
 
   public LocalDateTime getCompletionTime() {
     if (pending)

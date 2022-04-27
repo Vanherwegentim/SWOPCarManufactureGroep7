@@ -3,7 +3,7 @@ package be.kuleuven.assemassit.Controller;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.GarageHolder;
-import be.kuleuven.assemassit.Domain.Repositories.GarageHolderRepository;
+import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 import java.time.LocalTime;
 
@@ -117,9 +117,9 @@ public class ControllerFactory {
   }
 
   //todo remove
-  public void moveInsideCarManufactoringCompany() {
-    this.carManufactoringCompany.moveAssemblyLine();
-  }
+//  public void moveInsideCarManufactoringCompany() {
+//    this.carManufactoringCompany.moveAssemblyLine();
+//  }
 
 
 }

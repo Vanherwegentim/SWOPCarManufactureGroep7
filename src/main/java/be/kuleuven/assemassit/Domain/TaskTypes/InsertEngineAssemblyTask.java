@@ -37,7 +37,7 @@ public class InsertEngineAssemblyTask extends AssemblyTask {
   @Override
   public List<String> getActions() {
     List<String> actions = new ArrayList<>();
-    actions.add("Inserting a  the " + engine + " engine");
+    actions.add("Inserting a  the " + getEngine() + " engine");
     return actions;
   }
 
