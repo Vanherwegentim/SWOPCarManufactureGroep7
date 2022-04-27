@@ -12,15 +12,15 @@ import java.util.Optional;
  */
 public class GarageHolder {
 
-  private int id;
-  private String name;
+  private final int id;
+  private final String name;
   /**
    * @invar | name != null && !name.isEmpty()
    * @invar | carOrders != null
    * @representationObject
    * @representationObjects
    */
-  private List<CarOrder> carOrders = new ArrayList<>();
+  private final List<CarOrder> carOrders = new ArrayList<>();
 
   /**
    * @param id
@@ -58,10 +58,6 @@ public class GarageHolder {
    */
   public void addCarOrder(CarOrder carOrder) {
     carOrders.add(carOrder);
-  }
-
-  public Optional<CarOrder> getOrder(int id) {
-    return findCarOrder(id);
   }
 
   /**
