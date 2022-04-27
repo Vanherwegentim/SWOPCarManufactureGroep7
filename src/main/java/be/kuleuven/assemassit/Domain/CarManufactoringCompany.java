@@ -178,7 +178,7 @@ public class CarManufactoringCompany implements Observer {
   public void update(Object observable, Object value) {
     if (observable instanceof AssemblyLine && value instanceof Integer) {
       Integer overtime = (Integer) value;
-      //this.overtime = overtime;
+      this.overtime = overtime;
       this.overTimeRepository.setOverTime(overtime);
     }
   }
