@@ -60,6 +60,10 @@ public class AdaptSchedulingAlgorithmController {
 
     List<CarOption> batch = this.mapOfCarOptions.get(specificationId);
 
+    if (batch == null) {
+      throw new IllegalArgumentException("No batch was found with the given ID");
+    }
+
     assemblyLine.setSchedulingAlgorithm(new SpecificationBatchScheduling(batch));
   }
 

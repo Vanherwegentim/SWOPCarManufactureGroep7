@@ -1,6 +1,8 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
+import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertEngineAssemblyTask;
@@ -375,20 +377,15 @@ public class AssemblyLineTest {
 
   @Test
   void move() {
+    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0));
+    assemblyLine.getCarBodyPost().removeProcessFromWorkPost();
 
-
-//    assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
-//    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0));
-//    assemblyLine.getCarBodyPost().removeProcessFromWorkPost();
-//
-//    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
-//    SchedulingAlgorithm schedulingAlgorithm = new FIFOScheduling();
-//    assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
-//    assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0);
-//    assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0);
-//    System.out.println(assemblyLine.getCarAssemblyProcessesQueue().size());
-//    System.out.println(assemblyLine.getCarBodyPost());
-//    assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
+    SchedulingAlgorithm schedulingAlgorithm = new FIFOScheduling();
+    assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
+    assemblyLine.move(LocalTime.of(00, 1), LocalTime.of(23, 59), 0);
+    assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
   }
 
   @Test
