@@ -42,6 +42,10 @@ public class CarOrder {
     this.id = CarOrder.idRunner++;
   }
 
+  public static void resetIdRunner() {
+    CarOrder.idRunner = 0;
+  }
+
   public boolean isPending() {
     return pending;
   }
@@ -82,10 +86,6 @@ public class CarOrder {
 
   public int getId() {
     return id;
-  }
-
-  public static void resetIdRunner() {
-    CarOrder.idRunner = 0;
   }
 
   public LocalDateTime getOrderTime() {

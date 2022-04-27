@@ -12,8 +12,8 @@ public abstract class AssemblyTask {
    */
   private static int runningId = 0;
   private final String name;
-  private boolean pending;
   private final int id;
+  private boolean pending;
   private int duration;
   private LocalDateTime completionTime;
 

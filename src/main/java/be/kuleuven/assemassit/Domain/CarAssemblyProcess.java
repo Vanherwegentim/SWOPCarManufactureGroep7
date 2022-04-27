@@ -56,6 +56,10 @@ public class CarAssemblyProcess {
     );
   }
 
+  public static void resetRunningId() {
+    CarAssemblyProcess.idRunner = 0;
+  }
+
   public List<AssemblyTask> getAssemblyTasks() {
     return assemblyTasks;
   }
@@ -66,10 +70,6 @@ public class CarAssemblyProcess {
 
   public int getId() {
     return this.id;
-  }
-
-  public static void resetRunningId() {
-    CarAssemblyProcess.idRunner = 0;
   }
 
   /**
