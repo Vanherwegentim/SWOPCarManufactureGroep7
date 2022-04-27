@@ -75,10 +75,6 @@ public class Car {
     this.spoiler = spoiler;
 
     for (CarOptionRestriction restriction : getCarOptionsRestrictions()) {
-      List<CarOption> test = restriction.getRestrictedCarOptions();
-      List<CarOption> test2 = this.giveListOfCarOptions();
-
-
       if (restriction.getRestrictedCarOptions().stream().allMatch(co -> this.giveListOfCarOptions().contains(co)))
         throw new IllegalArgumentException("Invalid car configuration");
     }
