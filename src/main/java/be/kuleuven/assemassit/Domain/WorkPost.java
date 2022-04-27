@@ -97,7 +97,7 @@ public class WorkPost {
     if (getCarAssemblyProcess() != null)
       return getCarAssemblyProcess().getCarOrder().getCar().getCarModel().getWorkPostDuration();
     else
-      return 60;
+      return expectedWorkPostDurationInMinutes;
   }
 
   /**
