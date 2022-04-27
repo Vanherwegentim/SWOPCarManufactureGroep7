@@ -36,7 +36,8 @@ public class CarAssemblyProcessTest {
       new InstallAircoAssemblyTask(carOrder.getCar().getAirco()),
       new MountWheelsAssemblyTask(carOrder.getCar().getWheels()),
       new PaintCarAssemblyTask(carOrder.getCar().getColor()),
-      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats())
+      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats()),
+      new InstallSpoilerAssemblyTask(carOrder.getCar().getSpoiler())
 
     );
   }
@@ -74,5 +75,5 @@ public class CarAssemblyProcessTest {
     CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
     assertEquals(carAssemblyProcess.getId(), 0);
   }
-  
+
 }

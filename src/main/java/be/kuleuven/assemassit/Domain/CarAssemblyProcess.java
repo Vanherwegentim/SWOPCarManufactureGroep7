@@ -52,7 +52,8 @@ public class CarAssemblyProcess {
       new InstallAircoAssemblyTask(carOrder.getCar().getAirco()),
       new MountWheelsAssemblyTask(carOrder.getCar().getWheels()),
       new PaintCarAssemblyTask(carOrder.getCar().getColor()),
-      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats())
+      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats()),
+      new InstallSpoilerAssemblyTask(carOrder.getCar().getSpoiler())
     );
   }
 

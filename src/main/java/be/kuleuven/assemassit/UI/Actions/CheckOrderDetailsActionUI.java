@@ -33,7 +33,8 @@ public class CheckOrderDetailsActionUI {
       // 2. The user indicates the order he wants to check the details for.
       // Alternate flow: The user indicates he wants to leave the overview.
       IOCall.out();
-      IOCall.out("Please insert the ID of the order you want to view or insert -1 to go back:");
+      IOCall.out("Insert the ID of the order you want to view.");
+      IOCall.out("Insert -1 to go back.");
 
       choice = IOCall.in();
       if (choice >= 0) {
