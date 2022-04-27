@@ -2,12 +2,12 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
+import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,24 +26,13 @@ public class CarManufactoringCompanyTest {
 
   @BeforeEach
   public void beforeEach() {
-    CarModelRepository carModelRepository = new CarModelRepository();
+    carModelRepository = new CarModelRepository();
     this.carModels = carModelRepository.getCarModels();
     this.assemblyLine = new AssemblyLine();
     this.openingTime = LocalTime.of(LocalTime.of(6, 0).getHour(), LocalTime.of(6, 0).getMinute());
     this.closingTime = LocalTime.of(LocalTime.of(22, 0).getHour(), LocalTime.of(22, 0).getMinute());
     carManufactoringCompany = new CarManufactoringCompany(openingTime, closingTime, assemblyLine);
-    carAssemblyProcess = new CarAssemblyProcess(
-      new CarOrder(
-        new Car(
-          new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())),
-          Body.SEDAN,
-          Color.BLACK,
-          Engine.PERFORMANCE,
-          Gearbox.FIVE_SPEED_MANUAL,
-          Seat.LEATHER_BLACK,
-          Airco.MANUAL,
-          Wheel.SPORT,
-          Spoiler.LOW)));
+    carAssemblyProcess = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
 
     carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
   }
@@ -54,27 +43,25 @@ public class CarManufactoringCompanyTest {
     //todo: deze test werkt enkel overdag
     // TODO: DONE this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
     // assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
-    assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
     //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
-    /*
     LocalDateTime localDateTimeNow = LocalDateTime.now();
     LocalDateTime expectedDate = LocalDateTime.now();
     LocalDateTime actual = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
 
     if (localDateTimeNow.getHour() < 6) {
-      expectedDate = expectedDate.withHour(8).withMinute(0);
+      expectedDate = expectedDate.withHour(9).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
       expectedDate = expectedDate.plusHours(3);
     }
     if (localDateTimeNow.getHour() > 19) {
-      expectedDate = expectedDate.plusDays(1).withHour(8).withMinute(0);
+      expectedDate = expectedDate.plusDays(1).withHour(9).withMinute(0);
     }
 
     assertEquals(expectedDate.getMinute(), actual.getMinute());
     assertEquals(expectedDate.getHour(), actual.getHour());
     assertEquals(expectedDate.toLocalDate(), actual.toLocalDate());
-    */
   }
 
   @Test
@@ -82,7 +69,18 @@ public class CarManufactoringCompanyTest {
     assertEquals(carManufactoringCompany.getOpeningTime(), this.openingTime);
     assertEquals(carManufactoringCompany.getClosingTime(), this.closingTime);
     for (CarAssemblyProcess carAssemblyProcess : carManufactoringCompany.getAssemblyLine().getCarAssemblyProcessesQueue()) {
-      assert assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
+      assertTrue(assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess));
+    }
+  }
+
+  @Test
+  public void constructorTest2() {
+    CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, openingTime, closingTime, assemblyLine);
+
+    assertEquals(company.getOpeningTime(), this.openingTime);
+    assertEquals(company.getClosingTime(), this.closingTime);
+    for (CarAssemblyProcess carAssemblyProcess : company.getAssemblyLine().getCarAssemblyProcessesQueue()) {
+      assertTrue(assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess));
     }
   }
 
@@ -95,8 +93,38 @@ public class CarManufactoringCompanyTest {
   @Test
   public void addCarAssemblyProcessTest() {
 
-    assert carManufactoringCompany.getAssemblyLine().getCarAssemblyProcessesQueue().contains(carAssemblyProcess);
+    assertTrue(carManufactoringCompany.getAssemblyLine().getCarAssemblyProcessesQueue().contains(carAssemblyProcess));
   }
 
 
+  @Test
+  void getCarModels() {
+    List<CarModel> models = carManufactoringCompany.getCarModels();
+    assertEquals(models.size(), 3);
+  }
+
+  @Test
+  void assemblyLineMove() {
+    LocalTime time = LocalTime.now();
+    AssemblyLine line = new AssemblyLine();
+    CarManufactoringCompany company = new CarManufactoringCompany(time.minusHours(1), time.plusHours(15), line);
+    assertTrue(company.isAssemblyLineAvailable());
+    CarAssemblyProcess process = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
+    company.addCarAssemblyProcess(process);
+    assertTrue(company.isAssemblyLineAvailable());
+    company.triggerAutomaticFirstMove();
+    assertFalse(company.isAssemblyLineAvailable());
+  }
+
+  @Test
+  void update() {
+    LocalTime time = LocalTime.now();
+    AssemblyLine line = new AssemblyLine();
+    OvertimeRepository overTimeRepository = new OvertimeRepository();
+    CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, overTimeRepository, time.minusHours(1), time.plusHours(15), line);
+    company.update(line, 88);
+
+    assertEquals(overTimeRepository.getOverTime(), 88);
+
+  }
 }
