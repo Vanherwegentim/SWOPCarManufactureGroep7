@@ -40,4 +40,13 @@ public class InstallSpoilerAssemblyTask extends AssemblyTask {
   public AssemblyTaskType getAssemblyTaskType() {
     return this.assemblyTaskType;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof InstallSpoilerAssemblyTask) {
+      InstallSpoilerAssemblyTask assemblyTask = (InstallSpoilerAssemblyTask) o;
+      return assemblyTask.getId() == this.getId();
+    }
+    return false;
+  }
 }
