@@ -382,13 +382,12 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param startTime the start time of the company
-   * @param endTime   the end time of the company
+   * @param endTime the end time of the company
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(LocalTime startTime, LocalTime endTime, int overtime) {
+  public void move(LocalTime endTime, int overtime) {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");

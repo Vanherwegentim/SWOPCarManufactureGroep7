@@ -157,7 +157,7 @@ public class CarManufactoringCompany implements Observer {
   }
 
   public void moveAssemblyLine() {
-    this.assemblyLine.move(this.openingTime, this.closingTime, this.overtime);
+    this.assemblyLine.move(this.closingTime, this.overtime);
   }
 
   /**

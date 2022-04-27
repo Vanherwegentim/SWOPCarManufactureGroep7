@@ -184,6 +184,7 @@ public class AssemblyLineTest {
     assertEquals(1, cars.size());
   }
 
+
   @Test
   public void giveSchedulingAlgorithmNames() {
     assertEquals(List.of("FIFOScheduling", "SpecificationBatchScheduling"), assemblyLine.giveSchedulingAlgorithmNames());
@@ -378,13 +379,13 @@ public class AssemblyLineTest {
   @Test
   void move() {
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
-    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(13, 0), 0));
     assemblyLine.getCarBodyPost().removeProcessFromWorkPost();
 
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
     SchedulingAlgorithm schedulingAlgorithm = new FIFOScheduling();
     assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
-    assemblyLine.move(LocalTime.of(00, 1), LocalTime.of(23, 59), 0);
+    assemblyLine.move(LocalTime.of(23, 59), 10);
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
   }
 
