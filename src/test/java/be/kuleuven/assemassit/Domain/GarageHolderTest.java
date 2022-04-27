@@ -53,9 +53,10 @@ public class GarageHolderTest {
   @Test
   void getCompletionTimeFromOrder() {
     LocalDateTime localDateTime = LocalDateTime.now();
+    garageHolder.addCarOrder(carOrder);
     carOrder.setCompletionTime(localDateTime);
 
-    assertEquals(localDateTime, garageHolder.getCompletionTimeFromOrder(0));
+    assertEquals(localDateTime, garageHolder.getCompletionTimeFromOrder(carOrder.getId()));
 
   }
 }
