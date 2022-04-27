@@ -59,10 +59,7 @@ public class CheckOrderDetailsController {
   public Optional<String> giveOrderDetails(int orderId) {
 
     Optional<CarOrder> order = loggedInGarageHolder.findCarOrder(orderId);
-    if (order.isPresent()) {
-      return Optional.of(carOrderDetailedFormattedString(order.get()));
-    }
-    return Optional.empty();
+    return order.map(this::carOrderDetailedFormattedString);
   }
 
   private String carOrderFormattedString(CarOrder carOrder) {

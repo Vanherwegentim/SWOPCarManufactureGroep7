@@ -68,22 +68,4 @@ public class AdaptSchedulingAlgorithmController {
   }
 
 
-//  private List<CarOption> transferToCarOptionList(List<String> specification) {
-//    ArrayList<CarAssemblyProcess> batchForQueue = new ArrayList<>();
-//    for (CarAssemblyProcess carAssemblyProcess : assemblyLine.getCarAssemblyProcessesQueue()) {
-//      Car car = carAssemblyProcess.getCarOrder().getCar();
-//      ArrayList<String> carOptions = new ArrayList<>();
-//
-//      for (CarOption carOption : car.giveListOfCarOptions()) {
-//        carOptions.add(carOption.toString());
-//      }
-//      if (carOptions.containsAll(specification)) {
-//        batchForQueue.add(carAssemblyProcess);
-//      }
-//    }
-//    //return batchForQueue;
-//    return new ArrayList<>();
-//  }
-
-
 }

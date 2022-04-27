@@ -36,7 +36,6 @@ public class CarManufactoringCompany implements Observer {
    * @representationObject
    */
   private final AssemblyLine assemblyLine;
-  private final CarModelRepository carModelRepository;
   private final LocalTime openingTime;
   private final LocalTime closingTime;
   private final OvertimeRepository overTimeRepository;
@@ -85,8 +84,7 @@ public class CarManufactoringCompany implements Observer {
     if (openingTime == null || closingTime == null || assemblyLine == null || carModelRepository == null)
       throw new IllegalArgumentException("The parameters can not be null");
 
-    this.carModelRepository = carModelRepository;
-    this.carModels = this.carModelRepository.getCarModels();
+    this.carModels = carModelRepository.getCarModels();
     this.assemblyLine = assemblyLine;
     this.assemblyLine.setStartTime(openingTime);
     this.assemblyLine.setEndTime(closingTime);

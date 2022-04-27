@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class AdaptSchedulingAlgorithmActionUI implements UI {
-  ControllerFactory controllerFactory;
-  AdaptSchedulingAlgorithmController algorithmController;
+  final AdaptSchedulingAlgorithmController algorithmController;
 
   public AdaptSchedulingAlgorithmActionUI(ControllerFactory controllerFactory) {
-    this.controllerFactory = controllerFactory;
     algorithmController = controllerFactory.createAdaptSchedulingAlgorithmController();
   }
 

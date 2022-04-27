@@ -9,14 +9,13 @@ import java.util.Optional;
 
 public class CheckOrderDetailsActionUI {
   private final ControllerFactory controllerFactory;
-  private CheckOrderDetailsController checkOrderDetailsController;
 
   public CheckOrderDetailsActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
   }
 
   public void run() {
-    this.checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
+    CheckOrderDetailsController checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
 
     int choice;
 

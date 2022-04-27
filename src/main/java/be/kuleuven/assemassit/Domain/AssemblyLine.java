@@ -574,8 +574,7 @@ public class AssemblyLine implements Subject {
         int middle = numList.size() / 2;
         return (numList.get(middle) + numList.get(middle + 1)) / 2;
       } else {
-        double middle = numList.size() / 2.0;
-        return middle;
+        return numList.size() / 2.0;
       }
     }
   }

@@ -98,9 +98,9 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
       boolean car1Batch = car1.giveListOfCarOptions().containsAll(batchCarOptions) && batchCarOptions.containsAll(car1.giveListOfCarOptions());
       boolean car2Batch = car2.giveListOfCarOptions().containsAll(batchCarOptions) && batchCarOptions.containsAll(car1.giveListOfCarOptions());
 
-      if (car1Batch == true && car2Batch == true) return 0;
-      if (car1Batch == true) return 1;
-      if (car2Batch == true) return -1;
+      if (car1Batch && car2Batch) return 0;
+      if (car1Batch) return 1;
+      if (car2Batch) return -1;
 
       return 0;
     });
@@ -109,17 +109,6 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
 
     return super.giveEstimatedDeliveryTime(carAssemblyProcessesQueue, manufacturingTimeInMinutes, endTime, startTime, maxTimeNeededForWorkPostOnLine);
   }
-
-  /*private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, CarAssemblyProcess carAssemblyProcessOnFirstWorkPost) {
-    return Collections.max(carAssemblyProcessesQueue.stream().toList(), (p1, p2) -> {
-      Integer amount1 = amountOfEqualSpecifications(p1, carAssemblyProcessOnFirstWorkPost);
-      Integer amount2 = amountOfEqualSpecifications(p2, carAssemblyProcessOnFirstWorkPost);
-      int difference = amount1.compareTo(amount2);
-
-      if (difference == 0) difference = p2.getCarOrder().getOrderTime().compareTo(p1.getCarOrder().getOrderTime());
-      return difference;
-    });
-  }*/
 
   private CarAssemblyProcess giveNextCarAssemblyProcess(Queue<CarAssemblyProcess> carAssemblyProcesses) {
     return carAssemblyProcesses.stream().filter(p -> {
@@ -135,25 +124,4 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     return timeInMinutes2 - timeInMinutes1;
   }
 
-  /*
-  private int amountOfEqualSpecifications(CarAssemblyProcess carAssemblyProcess1, CarAssemblyProcess carAssemblyProcess2) {
-    Car car1 = carAssemblyProcess1.getCarOrder().getCar();
-    Car car2 = carAssemblyProcess2.getCarOrder().getCar();
-
-    return (int) car1.giveListOfCarOptions()
-      .stream()
-      .filter(op1 -> car2
-        .giveListOfCarOptions()
-        .stream()
-        .anyMatch(op2 -> op1.equals(op2)))
-      .count();
-  }*/
-
-  /*
-  private class SpecificationComparator implements Comparator<CarAssemblyProcess> {
-    @Override
-    public int compare(CarAssemblyProcess o1, CarAssemblyProcess o2) {
-      return 0;
-    }
-  }*/
 }

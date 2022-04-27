@@ -12,7 +12,6 @@ import java.util.List;
 public class CheckAssemblyLineStatusActionUI implements UI {
 
   private final ControllerFactory controllerFactory;
-  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
 
   public CheckAssemblyLineStatusActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -36,32 +35,27 @@ public class CheckAssemblyLineStatusActionUI implements UI {
 
   @Override
   public void run() {
-    this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
+    CheckAssemblyLineStatusController checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
 
-    while (true) {
+    IOCall.out();
+    IOCall.out("Current assembly line status:");
+    displayStatus(checkAssemblyLineStatusController.giveAssemblyLineStatusOverview());
 
-      IOCall.out();
-      IOCall.out("Current assembly line status:");
-      displayStatus(checkAssemblyLineStatusController.giveAssemblyLineStatusOverview());
+    IOCall.out();
+    IOCall.out("Future assembly line status:");
+    displayStatus(checkAssemblyLineStatusController.giveFutureAssemblyLineStatusOverview());
+    IOCall.out();
+    String tasks = "";
+    for (int i : checkAssemblyLineStatusController.giveAllWorkPosts().keySet()) {
+      tasks += "The " + checkAssemblyLineStatusController.giveAllWorkPosts().get(i);
 
-      IOCall.out();
-      IOCall.out("Future assembly line status:");
-      displayStatus(checkAssemblyLineStatusController.giveFutureAssemblyLineStatusOverview());
-      IOCall.out();
-      String tasks = "";
-      for (int i : checkAssemblyLineStatusController.giveAllWorkPosts().keySet()) {
-        tasks += "The " + checkAssemblyLineStatusController.giveAllWorkPosts().get(i);
-
-        tasks += " has these finished tasks: \n";
-        for (String s : checkAssemblyLineStatusController.giveFinishedAssemblyTasks(i).values()) {
-          tasks += s + System.lineSeparator();
-        }
+      tasks += " has these finished tasks: \n";
+      for (String s : checkAssemblyLineStatusController.giveFinishedAssemblyTasks(i).values()) {
+        tasks += s + System.lineSeparator();
       }
-      IOCall.out(tasks);
-      break; // if we reach this point, the use case is done, java call stack will now return to the previous UI
-
     }
-
+    IOCall.out(tasks);
+    // if we reach this point, the use case is done, java call stack will now return to the previous UI
 
   }
 }
