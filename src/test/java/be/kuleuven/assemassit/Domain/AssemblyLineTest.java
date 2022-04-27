@@ -179,7 +179,7 @@ public class AssemblyLineTest {
     assemblyLine.addCarAssemblyProcess(new CarAssemblyProcess(carOrder3));
 
     List<Car> cars = assemblyLine.givePossibleBatchCars();
-    assertTrue(cars.size() == 1);
+    assertEquals(1, cars.size());
   }
 
   @Test
