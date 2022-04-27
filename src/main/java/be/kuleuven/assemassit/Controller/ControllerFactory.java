@@ -116,10 +116,5 @@ public class ControllerFactory {
     return assemblyLine;
   }
 
-  //todo remove
-//  public void moveInsideCarManufactoringCompany() {
-//    this.carManufactoringCompany.moveAssemblyLine();
-//  }
-
 
 }

@@ -529,7 +529,6 @@ public class AssemblyLine implements Subject {
 
   public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
-    //TODO refactor to work with streams;
     List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
 
     Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
