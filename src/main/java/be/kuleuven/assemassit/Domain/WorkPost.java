@@ -97,7 +97,7 @@ public class WorkPost {
     if (getCarAssemblyProcess() != null)
       return getCarAssemblyProcess().getCarOrder().getCar().getCarModel().getWorkPostDuration();
     else
-      return 60;
+      return expectedWorkPostDurationInMinutes;
   }
 
   /**
@@ -130,14 +130,6 @@ public class WorkPost {
     if (activeAssemblyTask == null) { // this is actually already checked and thrown in findAssemblyTask
       throw new IllegalArgumentException("There is no Assembly Task with that id.");
     }
-  }
-
-  /**
-   * @post | getActiveAssemblyTask() == null
-   * @mutates | this
-   */
-  public void removeActiveAssemblyTask() {
-    this.activeAssemblyTask = null;
   }
 
   /**
@@ -194,19 +186,8 @@ public class WorkPost {
       throw new IllegalStateException("There is no active assembly task in this work post");
     activeAssemblyTask.complete();
     activeAssemblyTask.setDuration(duration);
+    activeAssemblyTask.setCompletionTime(completionTime);
     activeAssemblyTask = null;
-  }
-
-  public int remainingTimeInMinutes() {
-    List<AssemblyTask> assemblyTasksFromWorkPost = carAssemblyProcess
-      .getAssemblyTasks()
-      .stream()
-      .filter(p -> assemblyTaskTypes.contains(p.getAssemblyTaskType()))
-      .toList();
-
-    if (assemblyTasksFromWorkPost.size() == 0) return 0;
-
-    return (int) Math.floor(expectedWorkPostDurationInMinutes / assemblyTasksFromWorkPost.size() * assemblyTasksFromWorkPost.stream().filter(wp -> wp.getPending()).count());
   }
 
   /**
