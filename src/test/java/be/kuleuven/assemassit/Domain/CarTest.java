@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CarTest {
 
   private CarModel carModel;
+  private CarModel carModel2;
   private Car car;
 
   @BeforeEach
@@ -28,6 +29,19 @@ public class CarTest {
       Arrays.asList(Engine.PERFORMANCE, Engine.STANDARD),
       Arrays.asList(Airco.MANUAL, Airco.AUTOMATIC),
       Arrays.asList(Spoiler.NO_SPOILER)
+    );
+
+    carModel2 = new CarModel(
+      1,
+      "testmodel2",
+      Arrays.asList(Wheel.COMFORT, Wheel.SPORT),
+      Arrays.asList(Gearbox.FIVE_SPEED_AUTOMATIC, Gearbox.FIVE_SPEED_MANUAL),
+      Arrays.asList(Seat.LEATHER_BLACK),
+      Arrays.asList(Body.SPORT, Body.BREAK),
+      Arrays.asList(Color.BLACK, Color.BLUE, Color.RED),
+      Arrays.asList(Engine.ULTRA, Engine.STANDARD),
+      Arrays.asList(Airco.AUTOMATIC, Airco.MANUAL),
+      Arrays.asList(Spoiler.NO_SPOILER, Spoiler.LOW)
     );
 
     car = new Car(carModel, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER);
@@ -50,7 +64,18 @@ public class CarTest {
       new Car(null, Body.BREAK, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)
     );
     assertThrows(IllegalArgumentException.class, () ->
-      new Car(carModel, Body.BREAK, Color.BLACK, null, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)
+      new Car(carModel, Body.BREAK, Color.BLACK, Engine.ULTRA, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.COMFORT, Spoiler.NO_SPOILER)
+    );
+
+    // restrictions
+    assertThrows(IllegalArgumentException.class, () ->
+      new Car(carModel2, Body.SPORT, Color.BLACK, Engine.ULTRA, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.NO_SPOILER)
+    );
+    assertThrows(IllegalArgumentException.class, () ->
+      new Car(carModel2, Body.SPORT, Color.BLACK, Engine.STANDARD, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.SPORT, Spoiler.HIGH)
+    );
+    assertThrows(IllegalArgumentException.class, () ->
+      new Car(carModel2, Body.BREAK, Color.BLACK, Engine.ULTRA, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.AUTOMATIC, Wheel.SPORT, Spoiler.NO_SPOILER)
     );
   }
 

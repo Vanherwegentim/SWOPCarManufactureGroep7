@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +24,9 @@ public class Car {
   /**
    * @representationObject
    */
+
+  private List<CarOptionRestriction> carOptionRestrictions;
+
   private final CarModel carModel;
   private final Body body;
   private final Color color;
@@ -60,15 +64,6 @@ public class Car {
       throw new IllegalArgumentException("Assembly tasks cannot be null");
     if (!carModel.isValidConfiguration(body, color, engine, gearbox, seats, airco, wheels, spoiler))
       throw new IllegalArgumentException("Invalid car configuration");
-    if (Body.SPORT.equals(body) && Spoiler.NO_SPOILER.equals(spoiler)) {
-      throw new IllegalArgumentException("A car with a sport body must have a spoiler");
-    }
-    if (Body.SPORT.equals(body) && Engine.STANDARD.equals(engine)) {
-      throw new IllegalArgumentException("A car with a sport body must have a performance or ultra engine ");
-    }
-    if (Engine.ULTRA.equals(engine) && Airco.AUTOMATIC.equals(airco)) {
-      throw new IllegalArgumentException("A car with an ultra engine cannot have an automatic airco");
-    }
 
     this.carModel = carModel;
     this.body = body;
@@ -79,6 +74,18 @@ public class Car {
     this.airco = airco;
     this.wheels = wheels;
     this.spoiler = spoiler;
+
+    for (CarOptionRestriction restriction : getCarOptionsRestrictions()) {
+      List<CarOption> test = restriction.getRestrictedCarOptions();
+      List<CarOption> test2 = this.giveListOfCarOptions();
+
+      System.out.println(test);
+      System.out.println(test2);
+
+      if (restriction.getRestrictedCarOptions().stream().allMatch(co -> this.giveListOfCarOptions().contains(co)))
+        throw new IllegalArgumentException("Invalid car configuration");
+    }
+
     this.id = Car.idRunner++;
   }
 
@@ -135,6 +142,18 @@ public class Car {
     carOptions.add(this.getSpoiler());
 
     return carOptions;
+  }
+
+  private List<CarOptionRestriction> getCarOptionsRestrictions() {
+    if (carOptionRestrictions == null) {
+      carOptionRestrictions = new ArrayList<>();
+
+      carOptionRestrictions.add(new CarOptionRestriction(Arrays.asList(Body.SPORT, Spoiler.NO_SPOILER)));
+      carOptionRestrictions.add(new CarOptionRestriction(Arrays.asList(Body.SPORT, Engine.STANDARD)));
+      carOptionRestrictions.add(new CarOptionRestriction(Arrays.asList(Engine.ULTRA, Airco.AUTOMATIC)));
+    }
+
+    return carOptionRestrictions;
   }
 
   @Override
