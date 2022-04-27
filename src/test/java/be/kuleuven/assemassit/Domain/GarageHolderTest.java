@@ -4,9 +4,11 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GarageHolderTest {
   private Car car;
@@ -32,12 +34,29 @@ public class GarageHolderTest {
   @Test
   public void addCarOrderTest() {
     garageHolder.addCarOrder(carOrder);
-    assert garageHolder.getCarOrders().contains(carOrder);
+    assertTrue(garageHolder.getCarOrders().contains(carOrder));
   }
 
   @Test
   public void findCarOrderTest() {
     garageHolder.addCarOrder(carOrder);
     assertEquals(garageHolder.findCarOrder(carOrder.getId()).get(), carOrder);
+  }
+
+  @Test
+  public void propertiesTest() {
+    assertEquals(0, garageHolder.getId());
+    assertEquals("testGarageHolder", garageHolder.getName());
+  }
+
+
+  @Test
+  void getCompletionTimeFromOrder() {
+    LocalDateTime localDateTime = LocalDateTime.now();
+    garageHolder.addCarOrder(carOrder);
+    carOrder.setCompletionTime(localDateTime);
+
+    assertEquals(localDateTime, garageHolder.getCompletionTimeFromOrder(carOrder.getId()));
+
   }
 }

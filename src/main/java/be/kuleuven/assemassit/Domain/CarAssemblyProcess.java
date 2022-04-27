@@ -68,6 +68,10 @@ public class CarAssemblyProcess {
     return this.id;
   }
 
+  public static void resetRunningId() {
+    CarAssemblyProcess.idRunner = 0;
+  }
+
   /**
    * Searches in the list of assembly tasks to find the corresponding assembly task
    *

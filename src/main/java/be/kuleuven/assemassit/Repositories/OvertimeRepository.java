@@ -48,7 +48,7 @@ public class OvertimeRepository {
     }
   }
 
-  private void clearFile() {
+  public void clearFile() {
     try {
       new FileWriter(FILE_PATH, false).close();
     } catch (IOException e) {

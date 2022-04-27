@@ -56,7 +56,7 @@ public class CarModelRepository {
 
     return List.copyOf(carModels);
   }
-
+  //todo remove?
 //  private void readCarModelsFromFile() {
 //    List<CarModel> carModels = new ArrayList<>();
 //    try (Scanner input = new Scanner(new FileReader("src/main/resources/car-models.txt"))) {

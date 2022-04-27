@@ -133,14 +133,6 @@ public class WorkPost {
   }
 
   /**
-   * @post | getActiveAssemblyTask() == null
-   * @mutates | this
-   */
-  public void removeActiveAssemblyTask() {
-    this.activeAssemblyTask = null;
-  }
-
-  /**
    * Gives the list of assembly tasks from the work post that can be performed by the work post
    *
    * @return list of assembly tasks that can be performed by the work post
@@ -181,7 +173,7 @@ public class WorkPost {
 
     List<AssemblyTask> tasks = carAssemblyProcess.getAssemblyTasks();
     List<AssemblyTask> filteredTasks = tasks.stream().filter(task -> assemblyTaskTypes.contains(task.getAssemblyTaskType())).toList();
-    return filteredTasks.stream().filter(AssemblyTask::getFinished).toList();
+    return filteredTasks.stream().filter(at -> !at.getPending()).toList();
   }
 
   /**
@@ -196,18 +188,6 @@ public class WorkPost {
     activeAssemblyTask.setDuration(duration);
     activeAssemblyTask.setCompletionTime(completionTime);
     activeAssemblyTask = null;
-  }
-
-  public int remainingTimeInMinutes() {
-    List<AssemblyTask> assemblyTasksFromWorkPost = carAssemblyProcess
-      .getAssemblyTasks()
-      .stream()
-      .filter(p -> assemblyTaskTypes.contains(p.getAssemblyTaskType()))
-      .toList();
-
-    if (assemblyTasksFromWorkPost.size() == 0) return 0;
-
-    return (int) Math.floor(expectedWorkPostDurationInMinutes / assemblyTasksFromWorkPost.size() * assemblyTasksFromWorkPost.stream().filter(wp -> wp.getPending()).count());
   }
 
   /**
@@ -232,5 +212,15 @@ public class WorkPost {
       throw new IllegalArgumentException("AssemblyTask not found");
 
     return assemblyTask.get();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof WorkPost) {
+      WorkPost workPost = (WorkPost) o;
+      return workPost.getId() == this.id && workPost.getWorkPostType().equals(this.getWorkPostType());
+
+    }
+    return false;
   }
 }
