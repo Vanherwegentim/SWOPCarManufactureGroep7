@@ -21,7 +21,6 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
     List<CarAssemblyProcess> finishedCars,
     List<WorkPost> workPostsInOrder
   ) {
-    System.out.println("hier");
     System.out.println(carAssemblyProcessesQueue);
     int overtime = -1; // return -1 if the end of the day is not reached yet
 

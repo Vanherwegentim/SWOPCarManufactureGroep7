@@ -107,7 +107,7 @@ public class CarManufactoringCompanyTest {
   void assemblyLineMove() {
     LocalTime time = LocalTime.now();
     AssemblyLine line = new AssemblyLine();
-    CarManufactoringCompany company = new CarManufactoringCompany(time.minusHours(1), time.plusHours(15), line);
+    CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(00, 1), LocalTime.of(23, 59), line);
     assertTrue(company.isAssemblyLineAvailable());
     CarAssemblyProcess process = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
     company.addCarAssemblyProcess(process);
