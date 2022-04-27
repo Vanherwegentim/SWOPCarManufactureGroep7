@@ -1,80 +1,90 @@
 Ejava -cp target/classes be.kuleuven.assemassit.App
 >
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<1
->
 >Please authenticate yourself:
 > 1: I am a garage holder
 > 2: I am a manager
 > 3: I am a car mechanic
->-1: Go back
+>-1: Exit
 <1
 >
 >Please select your name:
-> 0:  Joe Lamb
-> 1:  Louis Brooks
-> 2:  Charlie Hunt
-> 3:  Sebastian Henderson
+> 0: Joe Lamb
+> 1: Louis Brooks
+> 2: Charlie Hunt
+> 3: Sebastian Henderson
 >-1: Go back
 <1
 >
->Welcome  Louis Brooks
+>Welcome Louis Brooks
 >Please choose an action:
 > 1: Order new car
+> 2: Check order details
 >-1: Logout and go back
 <1
 >
->Orders placed by:  Louis Brooks
+>Orders placed by: Louis Brooks
 >Pending:
+>   --no orders found--
 >History:
+>   --no orders found--
 >
 >Please choose an action:
 > 1: Place a new order
+> 2: Create batch of 3
 >-1: Go back
 <1
 >
 >Please choose the model:
-> 0:  Tolkswagen Rolo
-> 1:  Limoen C4
+> 0: Model A
+> 1: Model B
+> 2: Model C
 >-1: Go back
 <1
->Chosen model:  Limoen C4
+>Chosen model: Model B
 >
 >Choose the option for: GearBox
-> 0: MANUAL
-> 1: AUTOMATIC
+> 0: SIX_SPEED_MANUAL
+> 1: FIVE_SPEED_AUTOMATIC
 >-1: Cancel placing the order
 <1
->Chosen: AUTOMATIC
+>Chosen: FIVE_SPEED_AUTOMATIC
 >
 >Choose the option for: Airco
 > 0: MANUAL
 > 1: AUTOMATIC
+> 2: NO_AIRCO
 >-1: Cancel placing the order
 <1
 >Chosen: AUTOMATIC
 >
->Choose the option for: Wheels
-> 0: COMFORT
-> 1: SPORT
+>Choose the option for: Spoiler
+> 0: LOW
+> 1: NO_SPOILER
 >-1: Cancel placing the order
 <1
->Chosen: SPORT
+>Chosen: NO_SPOILER
+>
+>Choose the option for: Wheels
+> 0: WINTER
+> 1: COMFORT
+> 2: SPORT
+>-1: Cancel placing the order
+<1
+>Chosen: COMFORT
 >
 >Choose the option for: Color
 > 0: RED
 > 1: BLUE
-> 2: BLACK
-> 3: WHITE
+> 2: GREEN
+> 3: YELLOW
 >-1: Cancel placing the order
 <1
 >Chosen: BLUE
 >
 >Choose the option for: Body
-> 0: SEAD
+> 0: SEDAN
 > 1: BREAK
+> 2: SPORT
 >-1: Cancel placing the order
 <1
 >Chosen: BREAK
@@ -82,45 +92,28 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Choose the option for: Engine
 > 0: STANDARD
 > 1: PERFORMANCE
+> 2: ULTRA
 >-1: Cancel placing the order
 <1
 >Chosen: PERFORMANCE
 >
 >Choose the option for: Seats
-> 0: LEATHER_BLACK
-> 1: LEATHER_WHITE
+> 0: LEATHER_WHITE
+> 1: LEATHER_BLACK
 > 2: VINYL_GREY
 >-1: Cancel placing the order
 <1
->Chosen: LEATHER_WHITE
+>Chosen: LEATHER_BLACK
 >
 >The estimated completion date for the order is: %date%
 >
 >Press ENTER to continue...
 <\n
 >
->Orders placed by:  Louis Brooks
->Pending:
-> 1: Order ID: 0    [Estimation time: %date%]
->    Car model:  Limoen C4
->        Body: BREAK
->        Color: BLUE
->        Engine: PERFORMANCE
->        Gearbox: AUTOMATIC
->        Airco: AUTOMATIC
->        Wheels: SPORT
->        Seats: LEATHER_WHITE
->
->History:
->
->Please choose an action:
-> 1: Place a new order
->-1: Go back
-<-1
->
->Welcome  Louis Brooks
+>Welcome Louis Brooks
 >Please choose an action:
 > 1: Order new car
+> 2: Check order details
 >-1: Logout and go back
 <-1
 >
@@ -128,90 +121,23 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1: I am a garage holder
 > 2: I am a manager
 > 3: I am a car mechanic
->-1: Go back
-<2
->
->Welcome Manager
->Please choose an action:
-> 1: Advance assembly line
->-1: Logout and go back
-<1
->
->Current assembly line status:
->  * Car Body Post
->      - no pending or active tasks
->  * Drivetrain Post
->      - no pending or active tasks
->  * Accessories Post
->      - no pending or active tasks
->
->Future assembly line status:
->  * Car Body Post
->      - Assembly car body (pending)
->      - Paint car (pending)
->  * Drivetrain Post
->      - no pending or active tasks
->  * Accessories Post
->      - no pending or active tasks
->
->Please choose an action:
-> 1: Move assembly line forward
->-1: Go back
-<1
->
->What was the amount of minutes spent during the current phase:
-<60
->Assembly line moved.
->
->Current assembly line status:
->  * Car Body Post
->      - Assembly car body (pending)
->      - Paint car (pending)
->  * Drivetrain Post
->      - no pending or active tasks
->  * Accessories Post
->      - no pending or active tasks
->Press ENTER to continue...
-<\n
->
->Welcome Manager
->Please choose an action:
-> 1: Advance assembly line
->-1: Logout and go back
-<-1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Go back
-<-1
->
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
-<1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Go back
+>-1: Exit
 <3
 >
 >Welcome Mechanic
 >Please choose an action:
 > 1: Perform assembly task
+> 2: Check assembly line status
 >-1: Logout and go back
 <1
 >
 >Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
 >-1: Go back
 <0
->Chosen work post: CAR_BODY_POST
+>Chosen work post: Car Body Post
 >
 >Please choose an assembly task:
 >   0: Assembly car body
@@ -223,69 +149,34 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Execute the following actions:
 > 1: Installing the BREAK body
 >
->Press ENTER when the task is finished
-<\n
->
->Welcome Mechanic
->Please choose an action:
-> 1: Perform assembly task
->-1: Logout and go back
-<1
->
->Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
->-1: Go back
-<1
->Chosen work post: DRIVETRAIN_POST
->There are currently no pending tasks for this work post
->
->Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
->-1: Go back
-<2
->Chosen work post: ACCESSORIES_POST
->There are currently no pending tasks for this work post
->
->Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
->-1: Go back
-<0
->Chosen work post: CAR_BODY_POST
+>What was the amount of minutes spent on this task?
+<10
 >
 >Please choose an assembly task:
 >   5: Paint car
 >-1: Go back
-<-1
+<5
+>Chosen assembly task: Paint car
+>
+>Execute the following actions:
+> 1: Painting the car BLUE
+>
+>What was the amount of minutes spent on this task?
+<10
+>There are currently no pending tasks for this work post
 >
 >Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
 >-1: Go back
 <-1
+>No work post was chosen.
 >
 >Welcome Mechanic
 >Please choose an action:
 > 1: Perform assembly task
->-1: Logout and go back
-<1
->
->Please choose a work post:
-> 0: CAR_BODY_POST
-> 1: DRIVETRAIN_POST
-> 2: ACCESSORIES_POST
->-1: Go back
-<-1
->
->Welcome Mechanic
->Please choose an action:
-> 1: Perform assembly task
+> 2: Check assembly line status
 >-1: Logout and go back
 <-1
 >
@@ -293,11 +184,6 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1: I am a garage holder
 > 2: I am a manager
 > 3: I am a car mechanic
->-1: Go back
-<-1
->
->------- ASSEMASSIST ------
-> 1: Authenticate
->-1: Quit
+>-1: Exit
 <-1
 X0
