@@ -19,7 +19,7 @@ public class CheckProductionStatisticsActionUI implements UI {
 
     while (true) {
 
-      IOCall.out("CAR STATISTICS: ");
+      IOCall.out("CAR STATISTICS:");
       IOCall.out();
       IOCall.out(checkProductionStatisticsController.averageCarsInADayToString());
       IOCall.out();
@@ -27,7 +27,7 @@ public class CheckProductionStatisticsActionUI implements UI {
       IOCall.out();
       IOCall.out(checkProductionStatisticsController.exactCarsIn2DaystoString());
       IOCall.out();
-      IOCall.out("DELAY STATISTICS: ");
+      IOCall.out("DELAY STATISTICS:");
       IOCall.out();
       IOCall.out(checkProductionStatisticsController.averageDelayPerOrderToString());
       IOCall.out();

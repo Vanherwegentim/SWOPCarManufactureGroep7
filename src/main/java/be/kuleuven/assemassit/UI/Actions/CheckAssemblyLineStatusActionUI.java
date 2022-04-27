@@ -52,9 +52,10 @@ public class CheckAssemblyLineStatusActionUI implements UI {
       for (int i : checkAssemblyLineStatusController.giveAllWorkPosts().keySet()) {
         tasks += "The " + checkAssemblyLineStatusController.giveAllWorkPosts().get(i);
 
-        tasks += " has these finished tasks: \n";
+        tasks += " has these finished tasks:" + System.lineSeparator();
         for (String s : checkAssemblyLineStatusController.giveFinishedAssemblyTasks(i).values()) {
           tasks += s + System.lineSeparator();
+          IOCall.out();
         }
       }
       IOCall.out(tasks);
