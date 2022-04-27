@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
@@ -159,12 +160,12 @@ public class CarManufactoringCompany implements Observer {
   }
 
   /**
-   * @throws IllegalStateException | LocalTime.now().isBefore(this.openingTime)
+   * @throws IllegalStateException | (new CustomTime().customLocalTimeNow()).isBefore(this.openingTime)
    * @inspects | this
    * @mutates | this
    */
   public void triggerAutomaticFirstMove() {
-    if (!LocalTime.now().isBefore(this.openingTime) && assemblyLine.canMove())
+    if (!(new CustomTime().customLocalTimeNow()).isBefore(this.openingTime) && assemblyLine.canMove())
       this.moveAssemblyLine();
   }
 

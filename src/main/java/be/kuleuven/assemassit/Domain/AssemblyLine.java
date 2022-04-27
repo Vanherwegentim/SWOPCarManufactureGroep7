@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
@@ -236,7 +237,7 @@ public class AssemblyLine implements Subject {
     if (!(duration >= 0 && duration < 180))
       throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask(duration, LocalDateTime.now());
+    workPost.completeAssemblyTask(duration, (new CustomTime().customLocalDateTimeNow()));
   }
 
   /**
@@ -582,11 +583,11 @@ public class AssemblyLine implements Subject {
   public double exactCarsIn2Days() {
     Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     double total = 0;
-    if (carsPerDayMap.get(LocalDate.now().minusDays(1)) != null) {
-      total += carsPerDayMap.get(LocalDate.now().minusDays(1));
+    if (carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(1)) != null) {
+      total += carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(1));
     }
-    if (carsPerDayMap.get(LocalDate.now().minusDays(2)) != null) {
-      total += carsPerDayMap.get(LocalDate.now().minusDays(2));
+    if (carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(2)) != null) {
+      total += carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(2));
     }
     return total;
   }

@@ -106,7 +106,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   void assemblyLineMove() {
-    LocalTime time = LocalTime.now();
+    LocalTime time = (new CustomTime().customLocalTimeNow());
     AssemblyLine line = new AssemblyLine();
     CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(00, 1), LocalTime.of(23, 59), line);
     assertTrue(company.isAssemblyLineAvailable());
@@ -119,7 +119,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   void update() {
-    LocalTime time = LocalTime.now();
+    LocalTime time = (new CustomTime().customLocalTimeNow());
     AssemblyLine line = new AssemblyLine();
     OvertimeRepository overTimeRepository = new OvertimeRepository();
     CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, overTimeRepository, time.minusHours(1), time.plusHours(15), line);

@@ -24,13 +24,13 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
 // calculate remaining cars for this day (1)
     double remaningCarsForTodayDouble = ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
       manufacturingTimeInMinutes - // time needed to manufacture a car
-      (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
+      ((new CustomTime().customLocalTimeNow()).getHour() * 60 + (new CustomTime().customLocalTimeNow()).getMinute()) - // current time
       maxTimeNeededForWorkPostOnLine + // time needed for the slowest work post
       60) / (double) 60);
     int remainingCarsForToday =
       (int) Math.ceil(((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
         manufacturingTimeInMinutes - // time needed to manufacture a car
-        (LocalTime.now().getHour() * 60 + LocalTime.now().getMinute()) - // current time
+        ((new CustomTime().customLocalTimeNow()).getHour() * 60 + (new CustomTime().customLocalTimeNow()).getMinute()) - // current time
         maxTimeNeededForWorkPostOnLine + // time needed for the slowest work post
         60) / (double) 60));
 

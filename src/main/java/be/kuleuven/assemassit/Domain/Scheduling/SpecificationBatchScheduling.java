@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.Car;
 import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
 import be.kuleuven.assemassit.Domain.Enums.CarOption;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.EnhancedIterator;
 import be.kuleuven.assemassit.Domain.Helper.MyEnhancedIterator;
 import be.kuleuven.assemassit.Domain.WorkPost;
@@ -54,7 +55,7 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
 
-          int overtimeInMinutes = differenceInMinutes(endTime.minusMinutes(previousOvertimeInMinutes), LocalTime.now());
+          int overtimeInMinutes = differenceInMinutes(endTime.minusMinutes(previousOvertimeInMinutes), (new CustomTime().customLocalTimeNow()));
           if (overtimeInMinutes >= 0)
             overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
         }
@@ -72,7 +73,7 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     CarAssemblyProcess nextProcess = giveNextCarAssemblyProcess(carAssemblyProcessesQueue);
     if (
       !carAssemblyProcessesQueue.isEmpty() &&
-        LocalTime.now()
+        (new CustomTime().customLocalTimeNow())
           .plusMinutes(nextProcess.giveManufacturingDurationInMinutes())
           .plusMinutes(previousOvertimeInMinutes)
           .isBefore(endTime)

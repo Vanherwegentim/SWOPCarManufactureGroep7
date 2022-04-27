@@ -12,7 +12,6 @@ import be.kuleuven.assemassit.Domain.TaskTypes.InstallSpoilerAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -104,8 +103,8 @@ public class AssemblyLineTest {
   private void extraSetup() {
 
     carAssemblyProcess2.complete();
-    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()));
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
