@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CheckOrderDetailsActionUI {
-  private ControllerFactory controllerFactory;
+  private final ControllerFactory controllerFactory;
   private CheckOrderDetailsController checkOrderDetailsController;
 
   public CheckOrderDetailsActionUI(ControllerFactory controllerFactory) {

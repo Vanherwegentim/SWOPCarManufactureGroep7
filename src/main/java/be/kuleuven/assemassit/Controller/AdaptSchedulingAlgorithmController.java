@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class AdaptSchedulingAlgorithmController {
 
-  private AssemblyLine assemblyLine;
+  private final AssemblyLine assemblyLine;
   private Map<Integer, List<CarOption>> mapOfCarOptions;
 
   protected AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
