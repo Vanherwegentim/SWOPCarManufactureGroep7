@@ -126,5 +126,6 @@ public class CarManufactoringCompanyTest {
 
     assertEquals(overTimeRepository.getOverTime(), 88);
 
+    assertEquals(company.getOvertime(), company.getOverTimeRepository().getOverTime());
   }
 }
