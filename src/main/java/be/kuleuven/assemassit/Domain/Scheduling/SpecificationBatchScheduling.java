@@ -12,6 +12,7 @@ import be.kuleuven.assemassit.Domain.WorkPost;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
   private final List<CarOption> batchCarOptions;
@@ -89,7 +90,7 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
   @Override
   public LocalDateTime giveEstimatedDeliveryTime(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, int manufacturingTimeInMinutes, LocalTime endTime, LocalTime startTime, int maxTimeNeededForWorkPostOnLine) {
 
-    List<CarAssemblyProcess> carAssemblyProcessesList = carAssemblyProcessesQueue.stream().toList();
+    List<CarAssemblyProcess> carAssemblyProcessesList = carAssemblyProcessesQueue.stream().collect(Collectors.toList());
 
     // this is not the most optimal way of doing this, but it is an option and it works
     Collections.sort(carAssemblyProcessesList, (p1, p2) -> {
