@@ -142,7 +142,7 @@ public class OrderNewCarActionUI implements UI {
             try {
               LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
-              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
               IOCall.out();
               IOCall.out("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
 
