@@ -72,7 +72,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder2.isPending()).thenReturn(true);
     when(mockedGarageHolder.getCarOrders()).thenReturn(Arrays.asList(mockedCarOrder, mockedCarOrder2));
 
-    String expected = "Order ID: 0    [Estimated time: 15/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Estimated time: 14/12/1998 at 12:00]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
+    String expected = "Order ID: 0    [Estimated date: 15/12/1998]    [Car model: Tolkswagen Molf]" + System.lineSeparator() + "Order ID: 1    [Estimated date: 14/12/1998]    [Car model: Tolkswagen Molf]" + System.lineSeparator();
 
     assertEquals(expected, checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat));
   }
@@ -99,7 +99,7 @@ public class CheckOrderDetailsControllerTest {
     when(mockedCarOrder.isPending()).thenReturn(true);
 
     String expected =
-      "Order ID: 0    [Estimated time: 15/12/1998 at 12:00]" + System.lineSeparator() +
+      "Order ID: 0    [Estimated date: 15/12/1998]" + System.lineSeparator() +
         "    Car model: Tolkswagen Molf" + System.lineSeparator() +
         "        Body: BREAK" + System.lineSeparator() +
         "        Color: BLACK" + System.lineSeparator() +

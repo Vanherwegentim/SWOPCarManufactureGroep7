@@ -182,6 +182,20 @@ public class OrderNewCarController {
     throw new IllegalArgumentException("CarOrder with given ID not found");
   }
 
+  /**
+   * Place a car order and get the estimated completion time of that order
+   *
+   * @param carModelId
+   * @param body
+   * @param color
+   * @param engine
+   * @param gearbox
+   * @param seats
+   * @param airco
+   * @param wheels
+   * @param spoiler
+   * @return the estimated completion time of the new car order
+   */
   public LocalDateTime placeCarOrderAndReturnEstimatedCompletionTime(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
     int carOrderId = placeCarOrder(carModelId, body, color, engine, gearbox, seats, airco, wheels, spoiler);
     return getCarOrderEstimatedCompletionTime(carOrderId);

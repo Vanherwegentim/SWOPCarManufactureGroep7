@@ -16,10 +16,23 @@ import java.util.List;
  * @invar | getSeats() != null
  * @invar | getAirco() != null
  * @invar | getWheels() != null
+ * @invar | getCarOptionRestrictions() != null
  */
 public class Car {
   private static int idRunner = 0;
 
+  /**
+   * @invar | carModel != null
+   * @invar | body != null
+   * @invar | color != null
+   * @invar | engine != null
+   * @invar | gearbox != null
+   * @invar | seats != null
+   * @invar | airco != null
+   * @invar | wheels != null
+   * @invar | spoiler != null
+   * @invar | carOptionRestrictions != null
+   */
   private final int id;
   private final CarModel carModel;
   private final Body body;
@@ -30,10 +43,10 @@ public class Car {
   private final Airco airco;
   private final Wheel wheels;
   private final Spoiler spoiler;
+
   /**
    * @representationObject
    */
-
   private List<CarOptionRestriction> carOptionRestrictions;
 
   /**
@@ -122,6 +135,10 @@ public class Car {
     return this.id;
   }
 
+  /**
+   * @return All the car options in one list
+   * @inspects | this
+   */
   public List<CarOption> giveListOfCarOptions() {
     List<CarOption> carOptions = new ArrayList<>();
 

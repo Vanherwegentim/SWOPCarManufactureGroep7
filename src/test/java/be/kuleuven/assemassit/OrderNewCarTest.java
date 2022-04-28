@@ -106,10 +106,10 @@ public class OrderNewCarTest {
     LocalDateTime estimatedTime = orderNewCarController.getCarOrderEstimatedCompletionTime(carOrderId);
 
     //Step 7: The system stores the new order and updates the production schedule.
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
-    String expected = String.format("Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
+    String expected = String.format("Order ID: %d    [Estimated date: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
     String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 
     assertEquals(expected, actual);
@@ -267,9 +267,9 @@ public class OrderNewCarTest {
     //Step 7: The system stores the new order and updates the production schedule.
 
     checkOrderDetailsController.givePendingCarOrders().get(0);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    String expected = String.format("Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
+    String expected = String.format("Order ID: %d    [Estimated date: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
 
     String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 

@@ -37,10 +37,10 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >Orders placed by: Louis Brooks
 >Pending:
->Order ID: 0    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]
->Order ID: 1    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]
->Order ID: 2    [Estimated time: 29/08/1999 at 15:42]    [Car model: Model A]
->Order ID: 3    [Estimated time: 29/08/1999 at 16:32]    [Car model: Model A]
+>Order ID: 0    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 1    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 2    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 3    [Estimated date: 29/08/1999]    [Car model: Model A]
 >
 >History:
 >   --no orders found--

@@ -57,9 +57,9 @@ public class CheckOrderDetailsTest {
     List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
 
     String expected = String.format(
-      "Order ID: %d    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: 29/08/1999 at 15:52]    [Car model: Model B]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: 29/08/1999 at 16:22]    [Car model: Model C]" + System.lineSeparator(),
+      "Order ID: %d    [Estimated date: 29/08/1999]    [Car model: Model A]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated date: 29/08/1999]    [Car model: Model B]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated date: 29/08/1999]    [Car model: Model C]" + System.lineSeparator(),
       carOrderID1,
       carOrderID2,
       carOrderID3);
@@ -70,9 +70,9 @@ public class CheckOrderDetailsTest {
     // 2. The user indicates the order he wants to check the details for.
     // 3. The system shows the details of the order.
 
-    assertEquals(formatExpectedOrderDetails(carOrderID1, "29/08/1999 at 14:52", 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID2, "29/08/1999 at 15:52", 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID3, "29/08/1999 at 16:22", 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID1, "29/08/1999", 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID2, "29/08/1999", 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID3, "29/08/1999", 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
 
     // 4. The user indicates he is finished viewing the details.
   }
@@ -89,9 +89,9 @@ public class CheckOrderDetailsTest {
     List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
 
     String expected = String.format(
-      "Order ID: %d    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: 29/08/1999 at 15:52]    [Car model: Model B]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: 29/08/1999 at 16:22]    [Car model: Model C]" + System.lineSeparator(),
+      "Order ID: %d    [Estimated date: 29/08/1999]    [Car model: Model A]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated date: 29/08/1999]    [Car model: Model B]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated date: 29/08/1999]    [Car model: Model C]" + System.lineSeparator(),
       carOrderID1,
       carOrderID2,
       carOrderID3);
@@ -106,9 +106,9 @@ public class CheckOrderDetailsTest {
 
     // 3. The system shows the details of the order.
 
-    assertEquals(formatExpectedOrderDetails(carOrderID1, "29/08/1999 at 14:52", 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID2, "29/08/1999 at 15:52", 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID3, "29/08/1999 at 16:22", 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID1, "29/08/1999", 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID2, "29/08/1999", 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID3, "29/08/1999", 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
 
     // 4. The user indicates he is finished viewing the details.
   }
@@ -130,7 +130,7 @@ public class CheckOrderDetailsTest {
   private String formatExpectedOrderDetails(int orderID, String estimatedTime, int modelID) {
     Map<String, List<String>> possibleOptionsOfCarModel = orderNewCarController.givePossibleOptionsOfCarModel(modelID);
     return String.format(
-      "Order ID: %d    [Estimated time: %s]" + System.lineSeparator() +
+      "Order ID: %d    [Estimated date: %s]" + System.lineSeparator() +
         "    Car model: Model %s" + System.lineSeparator() +
         "        Body: %s" + System.lineSeparator() +
         "        Color: %s" + System.lineSeparator() +

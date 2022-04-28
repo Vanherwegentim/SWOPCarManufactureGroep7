@@ -113,6 +113,10 @@ public class CarAssemblyProcess {
     carOrder.setPending(false);
   }
 
+  /**
+   * @return the manufacturing duration of a process in minutes
+   * @inspects | this
+   */
   public int giveManufacturingDurationInMinutes() {
     return carOrder.getCar().getCarModel().getWorkPostDuration() * 3;
   }
