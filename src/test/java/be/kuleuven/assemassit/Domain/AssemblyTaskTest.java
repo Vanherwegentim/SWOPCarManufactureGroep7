@@ -21,7 +21,7 @@ public class AssemblyTaskTest {
     AssemblyTask assemblyTask = new CarBodyAssemblyTask(Body.BREAK);
     assemblyTask.setPending(true);
     assertThrows(IllegalStateException.class, assemblyTask::getCompletionTime);
-    LocalDateTime localDateTime = (new CustomTime().customLocalDateTimeNow());
+    LocalDateTime localDateTime = (CustomTime.getInstance().customLocalDateTimeNow());
     assemblyTask.setCompletionTime(localDateTime);
     assemblyTask.setDuration(60);
     assemblyTask.setPending(false);

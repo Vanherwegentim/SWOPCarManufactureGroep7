@@ -160,12 +160,12 @@ public class CarManufactoringCompany implements Observer {
   }
 
   /**
-   * @throws IllegalStateException | (new CustomTime().customLocalTimeNow()).isBefore(this.openingTime)
+   * @throws IllegalStateException | (CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime)
    * @inspects | this
    * @mutates | this
    */
   public void triggerAutomaticFirstMove() {
-    if (!(new CustomTime().customLocalTimeNow()).isBefore(this.openingTime) && assemblyLine.canMove())
+    if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime) && assemblyLine.canMove())
       this.moveAssemblyLine();
   }
 

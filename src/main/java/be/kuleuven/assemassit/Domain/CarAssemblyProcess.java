@@ -109,7 +109,7 @@ public class CarAssemblyProcess {
    * @mutates | this
    */
   public void complete() {
-    carOrder.setCompletionTime((new CustomTime().customLocalDateTimeNow()));
+    carOrder.setCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()));
     carOrder.setPending(false);
   }
 

@@ -103,16 +103,16 @@ public class AssemblyLineTest {
   private void extraSetup() {
 
     carAssemblyProcess2.complete();
-    carAssemblyProcess2.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()));
-    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()));
+    carAssemblyProcess2.getCarOrder().setCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()));
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
 
 
     carAssemblyProcess3.complete();
-    carAssemblyProcess3.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1));
-    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1).plusHours(3));
+    carAssemblyProcess3.getCarOrder().setCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()).minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()).minusDays(1).plusHours(3));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
   }
@@ -393,7 +393,7 @@ public class AssemblyLineTest {
   @Test
   void giveEstimatedCompletionDateOfLatestProcess() {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
-    assertEquals((new CustomTime().customLocalDateTimeNow()).plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
+    assertEquals((CustomTime.getInstance().customLocalDateTimeNow()).plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
   }
 
   @Test

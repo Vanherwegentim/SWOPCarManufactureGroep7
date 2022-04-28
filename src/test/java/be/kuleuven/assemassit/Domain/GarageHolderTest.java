@@ -53,7 +53,7 @@ public class GarageHolderTest {
 
   @Test
   void getCompletionTimeFromOrder() {
-    LocalDateTime localDateTime = (new CustomTime().customLocalDateTimeNow());
+    LocalDateTime localDateTime = (CustomTime.getInstance().customLocalDateTimeNow());
     garageHolder.addCarOrder(carOrder);
     carOrder.setCompletionTime(localDateTime);
 

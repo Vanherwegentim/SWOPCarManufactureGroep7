@@ -45,7 +45,7 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
           finishedCars.add(workPost.getCarAssemblyProcess());
           workPost.removeCarAssemblyProcess();
 
-          int overtimeInMinutes = differenceInMinutes(endTime.minusMinutes(previousOvertimeInMinutes), (new CustomTime().customLocalTimeNow()));
+          int overtimeInMinutes = differenceInMinutes(endTime.minusMinutes(previousOvertimeInMinutes), (CustomTime.getInstance().customLocalTimeNow()));
           if (overtimeInMinutes >= 0)
             overtime = overtimeInMinutes; // only set the overtime when it is greater than or equal to zero
         }
@@ -62,7 +62,7 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
     CarAssemblyProcess nextProcess = carAssemblyProcessesQueue.peek();
     if (
       !carAssemblyProcessesQueue.isEmpty() &&
-        (new CustomTime().customLocalTimeNow())
+        (CustomTime.getInstance().customLocalTimeNow())
           .plusMinutes(nextProcess.giveManufacturingDurationInMinutes())
           .plusMinutes(previousOvertimeInMinutes)
           .isBefore(endTime)
