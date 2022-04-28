@@ -432,36 +432,6 @@ public class AssemblyLine implements Subject {
   }
 
   /**
-   * Returns the duration of the slowest work post on the process.
-   * It is possible that all work post have equal durations in the system.
-   *
-   * @return the duration of the slowest work post on the assembly line in minutes
-   * @post | result >= 0
-   * @inspects | this
-   */
-  private int maxTimeNeededForWorkPostOnLine() {
-    return getWorkPosts()
-      .stream()
-      .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
-      .max()
-      .orElse(0);
-  }
-
-  /**
-   * Returns the total manufacturing duration of a car assembly process in minutes.
-   *
-   * @return total manufacturing duration of a car assembly process in minutes
-   * @post | result >= 0
-   * @inspects | this
-   */
-  private int giveManufacturingDurationInMinutes() {
-    return getWorkPosts()
-      .stream()
-      .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
-      .reduce(0, Integer::sum);
-  }
-
-  /**
    * Returns the corresponding assembly task of the corresponding work post
    *
    * @param workPostId     the id of the work post
