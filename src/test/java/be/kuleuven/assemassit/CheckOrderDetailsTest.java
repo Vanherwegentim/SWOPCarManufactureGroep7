@@ -57,12 +57,12 @@ public class CheckOrderDetailsTest {
     List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
 
     String expected = String.format(
-      "Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: %s]    [Car model: Model B]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: %s]    [Car model: Model C]" + System.lineSeparator(),
-      carOrderID1, calculateExpectedDate(0),
-      carOrderID2, calculateExpectedDate(1),
-      carOrderID3, calculateExpectedDate(2));
+      "Order ID: %d    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: 29/08/1999 at 15:52]    [Car model: Model B]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: 29/08/1999 at 16:22]    [Car model: Model C]" + System.lineSeparator(),
+      carOrderID1,
+      carOrderID2,
+      carOrderID3);
 
     assertEquals(expected, pendingOrders.stream().reduce("", (s, s2) -> s + s2));
     assertTrue(completedOrders.isEmpty());
@@ -70,9 +70,9 @@ public class CheckOrderDetailsTest {
     // 2. The user indicates the order he wants to check the details for.
     // 3. The system shows the details of the order.
 
-    assertEquals(formatExpectedOrderDetails(carOrderID1, calculateExpectedDate(0), 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID2, calculateExpectedDate(1), 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID3, calculateExpectedDate(2), 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID1, "29/08/1999 at 14:52", 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID2, "29/08/1999 at 15:52", 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID3, "29/08/1999 at 16:22", 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
 
     // 4. The user indicates he is finished viewing the details.
   }
@@ -89,12 +89,12 @@ public class CheckOrderDetailsTest {
     List<String> completedOrders = checkOrderDetailsController.giveCompletedCarOrders();
 
     String expected = String.format(
-      "Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: %s]    [Car model: Model B]" + System.lineSeparator() +
-        "Order ID: %d    [Estimated time: %s]    [Car model: Model C]" + System.lineSeparator(),
-      carOrderID1, calculateExpectedDate(0),
-      carOrderID2, calculateExpectedDate(1),
-      carOrderID3, calculateExpectedDate(2));
+      "Order ID: %d    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: 29/08/1999 at 15:52]    [Car model: Model B]" + System.lineSeparator() +
+        "Order ID: %d    [Estimated time: 29/08/1999 at 16:22]    [Car model: Model C]" + System.lineSeparator(),
+      carOrderID1,
+      carOrderID2,
+      carOrderID3);
 
     assertEquals(expected, pendingOrders.stream().reduce("", (s, s2) -> s + s2));
     assertTrue(completedOrders.isEmpty());
@@ -106,9 +106,9 @@ public class CheckOrderDetailsTest {
 
     // 3. The system shows the details of the order.
 
-    assertEquals(formatExpectedOrderDetails(carOrderID1, calculateExpectedDate(0), 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID2, calculateExpectedDate(1), 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
-    assertEquals(formatExpectedOrderDetails(carOrderID3, calculateExpectedDate(2), 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID1, "29/08/1999 at 14:52", 0), checkOrderDetailsController.giveOrderDetails(carOrderID1).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID2, "29/08/1999 at 15:52", 1), checkOrderDetailsController.giveOrderDetails(carOrderID2).get());
+    assertEquals(formatExpectedOrderDetails(carOrderID3, "29/08/1999 at 16:22", 2), checkOrderDetailsController.giveOrderDetails(carOrderID3).get());
 
     // 4. The user indicates he is finished viewing the details.
   }
