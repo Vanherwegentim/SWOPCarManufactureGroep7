@@ -18,6 +18,7 @@ public class PerformAssemblyTasksActionUITest {
   /**
    * The withHour has to be change every hour to work because of the error in the estimatedTime algorithm
    */
+
   @Test
   public void PerformAssemblyTasksUseCaseTest() throws IOException {
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MyEnhancedIterator<T> implements EnhancedIterator<T> {
 
-  private List<T> elements;
+  private final List<T> elements;
   private int runner;
 
   public MyEnhancedIterator(List<T> data) {

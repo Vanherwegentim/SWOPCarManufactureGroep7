@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckAssemblyLineStatusController {
-  private AssemblyLine assemblyLine;
+  private final AssemblyLine assemblyLine;
 
   protected CheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     if (assemblyLine == null)

@@ -12,7 +12,6 @@ import java.util.List;
 public class CheckAssemblyLineStatusActionUI implements UI {
 
   private final ControllerFactory controllerFactory;
-  private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
 
   public CheckAssemblyLineStatusActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -36,6 +35,7 @@ public class CheckAssemblyLineStatusActionUI implements UI {
 
   @Override
   public void run() {
+
     this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
 
     while (true) {
@@ -58,11 +58,9 @@ public class CheckAssemblyLineStatusActionUI implements UI {
           IOCall.out();
         }
       }
-      IOCall.out(tasks);
-      break; // if we reach this point, the use case is done, java call stack will now return to the previous UI
-
     }
-
+    IOCall.out(tasks);
+    // if we reach this point, the use case is done, java call stack will now return to the previous UI
 
   }
 }

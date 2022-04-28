@@ -7,7 +7,6 @@ import be.kuleuven.assemassit.UI.UI;
 
 public class CheckProductionStatisticsActionUI implements UI {
   private final ControllerFactory controllerFactory;
-  private CheckProductionStatisticsController checkProductionStatisticsController;
 
   public CheckProductionStatisticsActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -15,7 +14,7 @@ public class CheckProductionStatisticsActionUI implements UI {
 
   @Override
   public void run() {
-    this.checkProductionStatisticsController = controllerFactory.createCheckProductionStatisticsController();
+    CheckProductionStatisticsController checkProductionStatisticsController = controllerFactory.createCheckProductionStatisticsController();
 
     while (true) {
 

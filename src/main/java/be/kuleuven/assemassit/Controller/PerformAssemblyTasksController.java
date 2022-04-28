@@ -95,7 +95,7 @@ public class PerformAssemblyTasksController {
     if (!(duration >= 0 && duration < 180))
       throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     assemblyLine.completeAssemblyTask(workPostId, duration);
-    
+
     if (assemblyLine.canMove()) {
       carManufactoringCompany.moveAssemblyLine();
     }
