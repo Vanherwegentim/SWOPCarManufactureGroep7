@@ -28,7 +28,7 @@ public class ControllerFactory {
   }
 
   public LoginController createLoginController() {
-    return new LoginController(new GarageHolderRepository(), this);
+    return controllerFactoryState.createLoginController(new GarageHolderRepository(), this);
   }
 
   public void loginGarageHolder(GarageHolder loggedInGarageHolder) {

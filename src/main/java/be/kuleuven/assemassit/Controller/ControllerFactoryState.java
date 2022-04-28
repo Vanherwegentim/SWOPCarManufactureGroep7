@@ -10,7 +10,6 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
-
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     throw new IllegalStateException();
   }
@@ -32,10 +31,6 @@ public abstract class ControllerFactoryState {
   }
 
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
-    throw new IllegalStateException();
-  }
-
-  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
     throw new IllegalStateException();
   }
 
