@@ -7,7 +7,7 @@ import java.time.LocalTime;
 public class CustomTime {
   private static CustomTime customTimeInstance = null;
 
-  public Boolean simulateTime = false;
+  private Boolean simulateTime = false;
 
   private CustomTime() {
   }
