@@ -19,7 +19,7 @@ public class ControllerFactory {
 
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
-    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(23, 59), assemblyLine);
+    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
     this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
