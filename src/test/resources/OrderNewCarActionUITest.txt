@@ -131,7 +131,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 <1
 >Chosen: LEATHER_BLACK
 >
->The estimated completion date for the order is: 29/08/1999 at 15:52
+>The estimated completion date for the order is: 29/08/1999
 >
 >Press ENTER to continue...
 <\n
