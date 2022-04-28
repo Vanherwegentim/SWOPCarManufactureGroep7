@@ -291,6 +291,8 @@ public class AdaptSchedulingAlgorithmTest {
 
 
   private void createBatchWithColor(int colorId) {
+    factory.logoutManager();
+
     factory.createLoginController().logInGarageHolder(0);
     OrderNewCarController orderNewCarController = factory.createOrderNewCarController();
 
@@ -298,7 +300,7 @@ public class AdaptSchedulingAlgorithmTest {
       placeCarOrderWithColor(orderNewCarController, 0, i);
     }
 
-    factory.logoutCarMechanic();
+    factory.logoutGarageHolder();
     factory.loginManager();
   }
 

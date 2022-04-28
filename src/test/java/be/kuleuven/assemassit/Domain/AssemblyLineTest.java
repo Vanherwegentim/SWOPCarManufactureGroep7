@@ -397,6 +397,13 @@ public class AssemblyLineTest {
   }
 
   @Test
+  void giveEstimatedCompletionDateOfLatestProcess_2() {
+    assemblyLine.setSchedulingAlgorithm(new SpecificationBatchScheduling(new ArrayList<>()));
+    assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
+    assertEquals((CustomTime.getInstance().customLocalDateTimeNow()).plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
+  }
+
+  @Test
   void giveCarAssemblyTask() {
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
 

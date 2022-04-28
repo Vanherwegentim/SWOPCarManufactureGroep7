@@ -189,10 +189,6 @@ public class AssemblyLine implements Subject {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
-  private void updateOvertime(int overtime) {
-    notifyObservers(overtime);
-  }
-
   public List<CarAssemblyProcess> getFinishedCars() {
     return this.finishedCars;
   }
@@ -406,7 +402,7 @@ public class AssemblyLine implements Subject {
 
     if (newOvertime > 0) {
       // overtime happened so we have to inform the car manufacturing company
-      updateOvertime(newOvertime);
+      notifyObservers(newOvertime);
     }
   }
 
@@ -429,36 +425,6 @@ public class AssemblyLine implements Subject {
         this.startTime,
         this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration()
       );
-  }
-
-  /**
-   * Returns the duration of the slowest work post on the process.
-   * It is possible that all work post have equal durations in the system.
-   *
-   * @return the duration of the slowest work post on the assembly line in minutes
-   * @post | result >= 0
-   * @inspects | this
-   */
-  private int maxTimeNeededForWorkPostOnLine() {
-    return getWorkPosts()
-      .stream()
-      .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
-      .max()
-      .orElse(0);
-  }
-
-  /**
-   * Returns the total manufacturing duration of a car assembly process in minutes.
-   *
-   * @return total manufacturing duration of a car assembly process in minutes
-   * @post | result >= 0
-   * @inspects | this
-   */
-  private int giveManufacturingDurationInMinutes() {
-    return getWorkPosts()
-      .stream()
-      .mapToInt(WorkPost::getExpectedWorkPostDurationInMinutes)
-      .reduce(0, Integer::sum);
   }
 
   /**
