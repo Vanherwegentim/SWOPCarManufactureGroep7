@@ -103,7 +103,7 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out();
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Place a new order");
-      IOCall.out(" 2: Place batch of 3");
+      IOCall.out(" 2: Create batch of 3");
       IOCall.out("-1: Go back");
 
       choice = IOCall.in();
