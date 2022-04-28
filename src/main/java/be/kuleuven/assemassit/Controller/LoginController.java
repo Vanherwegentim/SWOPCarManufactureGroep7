@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 
 public class LoginController {
   final GarageHolderRepository garageHolderRepository;
-  GarageHolder loggedInGarageHolder;
   /**
    * @PeerObject
    */
   final ControllerFactory controllerFactory;
+  GarageHolder loggedInGarageHolder;
 
   public LoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
     this.garageHolderRepository = garageHolderRepository;
@@ -54,6 +54,12 @@ public class LoginController {
       .collect(Collectors.toMap(GarageHolder::getId, GarageHolder::getName));
   }
 
+  /**
+   * Get the name of the logged in garage holder
+   *
+   * @return the name of the logged in garage holder
+   * @inspects | this
+   */
   public String giveLoggedInGarageHolderName() {
     if (this.loggedInGarageHolder == null)
       throw new IllegalStateException();
