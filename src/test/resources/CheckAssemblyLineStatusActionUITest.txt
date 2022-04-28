@@ -1,4 +1,4 @@
-Ejava -cp target/classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -30,85 +30,26 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
-<1
+<2
+>Ordered
 >
->Please choose the model:
-> 0: Model A
-> 1: Model B
-> 2: Model C
+>Orders placed by: Louis Brooks
+>Pending:
+>Order ID: 0    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]
+>Order ID: 1    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]
+>Order ID: 2    [Estimated time: 29/08/1999 at 15:42]    [Car model: Model A]
+>Order ID: 3    [Estimated time: 29/08/1999 at 16:32]    [Car model: Model A]
+>
+>History:
+>   --no orders found--
+>
+>Please choose an action:
+> 1: Place a new order
+> 2: Create batch of 4
 >-1: Go back
-<1
->Chosen model: Model B
->
->Choose the option for: GearBox
-> 0: SIX_SPEED_MANUAL
-> 1: FIVE_SPEED_AUTOMATIC
->-1: Cancel placing the order
-<1
->Chosen: FIVE_SPEED_AUTOMATIC
->
->Choose the option for: Airco
-> 0: MANUAL
-> 1: AUTOMATIC
-> 2: NO_AIRCO
->-1: Cancel placing the order
-<1
->Chosen: AUTOMATIC
->
->Choose the option for: Spoiler
-> 0: LOW
-> 1: NO_SPOILER
->-1: Cancel placing the order
-<1
->Chosen: NO_SPOILER
->
->Choose the option for: Wheels
-> 0: WINTER
-> 1: COMFORT
-> 2: SPORT
->-1: Cancel placing the order
-<1
->Chosen: COMFORT
->
->Choose the option for: Color
-> 0: RED
-> 1: BLUE
-> 2: GREEN
-> 3: YELLOW
->-1: Cancel placing the order
-<1
->Chosen: BLUE
->
->Choose the option for: Body
-> 0: SEDAN
-> 1: BREAK
-> 2: SPORT
->-1: Cancel placing the order
-<1
->Chosen: BREAK
->
->Choose the option for: Engine
-> 0: STANDARD
-> 1: PERFORMANCE
-> 2: ULTRA
->-1: Cancel placing the order
-<1
->Chosen: PERFORMANCE
->
->Choose the option for: Seats
-> 0: LEATHER_WHITE
-> 1: LEATHER_BLACK
-> 2: VINYL_GREY
->-1: Cancel placing the order
-<1
->Chosen: LEATHER_BLACK
->
->The estimated completion date for the order is: %date%
->
->Press ENTER to continue...
-<\n
+<-1
 >
 >Welcome Louis Brooks
 >Please choose an action:
@@ -142,7 +83,8 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Future assembly line status:
 >  * Car Body Post
->      - no pending or active tasks
+>      - Assembly car body (pending)
+>      - Paint car (pending)
 >  * Drivetrain Post
 >      - Insert gearbox (pending)
 >      - Insert engine (pending)

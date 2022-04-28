@@ -1,4 +1,4 @@
-Ejava -cp target/classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -30,149 +30,31 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
 <2
 >Ordered
 >
 >Orders placed by: Louis Brooks
 >Pending:
->Order ID: 0    [Estimated time: 28/04/2022 at 9:00]    [Car model: Model A]
->Order ID: 1    [Estimated time: 28/04/2022 at 8:50]    [Car model: Model A]
->Order ID: 2    [Estimated time: 28/04/2022 at 9:50]    [Car model: Model A]
+>Order ID: 0    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]
+>Order ID: 1    [Estimated time: 29/08/1999 at 14:52]    [Car model: Model A]
+>Order ID: 2    [Estimated time: 29/08/1999 at 15:42]    [Car model: Model A]
+>Order ID: 3    [Estimated time: 29/08/1999 at 16:32]    [Car model: Model A]
 >
 >History:
 >   --no orders found--
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
-<1
->
->Please choose the model:
-> 0: Model A
-> 1: Model B
-> 2: Model C
->-1: Go back
-<0
->Chosen model: Model A
->
->Choose the option for: GearBox
-> 0: SIX_SPEED_MANUAL
-> 1: FIVE_SPEED_MANUAL
-> 2: FIVE_SPEED_AUTOMATIC
->-1: Cancel placing the order
-<1
->Chosen: FIVE_SPEED_MANUAL
->
->Choose the option for: Airco
-> 0: MANUAL
-> 1: AUTOMATIC
-> 2: NO_AIRCO
->-1: Cancel placing the order
-<0
->Chosen: MANUAL
->
->Choose the option for: Spoiler
-> 0: NO_SPOILER
->-1: Cancel placing the order
-<0
->Chosen: NO_SPOILER
->
->Choose the option for: Wheels
-> 0: WINTER
-> 1: COMFORT
-> 2: SPORT
->-1: Cancel placing the order
-<1
->Chosen: COMFORT
->
->Choose the option for: Color
-> 0: RED
-> 1: BLUE
-> 2: BLACK
-> 3: WHITE
->-1: Cancel placing the order
-<0
->Chosen: RED
->
->Choose the option for: Body
-> 0: SEDAN
-> 1: BREAK
->-1: Cancel placing the order
-<1
->Chosen: BREAK
->
->Choose the option for: Engine
-> 0: STANDARD
-> 1: PERFORMANCE
->-1: Cancel placing the order
-<0
->Chosen: STANDARD
->
->Choose the option for: Seats
-> 0: LEATHER_WHITE
-> 1: LEATHER_BLACK
-> 2: VINYL_GREY
->-1: Cancel placing the order
-<1
->Chosen: LEATHER_BLACK
->
->The estimated completion date for the order is: 28/04/2022 at 10:50
->
->Press ENTER to continue...
-<\n
+<-1
 >
 >Welcome Louis Brooks
 >Please choose an action:
 > 1: Order new car
 > 2: Check order details
->-1: Logout and go back
-<-1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Exit
-<3
->
->Welcome Mechanic
->Please choose an action:
-> 1: Perform assembly task
-> 2: Check assembly line status
->-1: Logout and go back
-<2
->
->Current assembly line status:
->  * Car Body Post
->      - Assembly car body (pending)
->      - Paint car (pending)
->  * Drivetrain Post
->      - no pending or active tasks
->  * Accessories Post
->      - no pending or active tasks
->
->Future assembly line status:
->  * Car Body Post
->      - Assembly car body (pending)
->      - Paint car (pending)
->  * Drivetrain Post
->      - Insert gearbox (pending)
->      - Insert engine (pending)
->  * Accessories Post
->      - no pending or active tasks
->
->The Car Body Post has these finished tasks:
->The Drivetrain Post has these finished tasks:
->The Accessories Post has these finished tasks:
->
->
->Welcome Mechanic
->Please choose an action:
-> 1: Perform assembly task
-> 2: Check assembly line status
 >-1: Logout and go back
 <-1
 >
@@ -214,10 +96,11 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 2: SpecificationBatchScheduling
 >-1: Quit
 >Please type the number of the algorithm of your choosing
-<-1
->Quitting...
->
->
+<2
+>Please give the number of the batch of your choosing:
+>0: [BREAK, RED, STANDARD, FIVE_SPEED_MANUAL, LEATHER_BLACK, MANUAL, COMFORT, NO_SPOILER]
+<0
+>The scheduling algorithm has succesfully changed to Batch Scheduling
 >
 >Welcome Manager
 >Please choose an action:
@@ -226,18 +109,17 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >-1: Logout and go back
 <2
 >Active Algorithm:
->FIFOScheduling
+>SpecificationBatchScheduling
 >
 >Available Algorithms:
 > 1: FIFOScheduling
 > 2: SpecificationBatchScheduling
 >-1: Quit
 >Please type the number of the algorithm of your choosing
-<2
->Please give the number of the batch of your choosing:
->0: [BREAK, RED, STANDARD, FIVE_SPEED_MANUAL, LEATHER_BLACK, MANUAL, COMFORT, NO_SPOILER]
-<0
->The scheduling algorithm has succesfully changed to Batch Scheduling
+<-1
+>Quitting...
+>
+>
 >
 >Welcome Manager
 >Please choose an action:
