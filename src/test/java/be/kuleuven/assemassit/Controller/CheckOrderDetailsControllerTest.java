@@ -33,6 +33,7 @@ public class CheckOrderDetailsControllerTest {
     CarModel mockedCarModel = mock(CarModel.class);
 
     when(mockedGarageHolder.findCarOrder(0)).thenReturn(Optional.of(mockedCarOrder));
+    when(mockedGarageHolder.getName()).thenReturn("Ward de fixer");
 
     when(mockedCarOrder.getEstimatedCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 12, 0));
     when(mockedCarOrder.getCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 15, 0));
@@ -123,4 +124,9 @@ public class CheckOrderDetailsControllerTest {
     assertEquals(expected, checkOrderDetailsController.giveOrderDetails(0).get());
   }
 
+    @Test
+    void giveLoggedInGarageHolderName() {
+    assertEquals(checkOrderDetailsController.giveLoggedInGarageHolderName(), "Ward de fixer");
+
+    }
 }

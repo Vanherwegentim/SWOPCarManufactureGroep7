@@ -1,5 +1,7 @@
 package be.kuleuven.assemassit.Controller;
 
+import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,8 @@ public class ControllerFactoryTest {
     controllerFactory.loginGarageHolder(garageHolder);
     assertEquals(controllerFactory.getLoggedInGarageHolder(), garageHolder);
     assertEquals(controllerFactory.getControllerFactoryState(), new ControllerFactoryGarageHolderState());
+
+
   }
 
   @Test
@@ -74,6 +78,18 @@ public class ControllerFactoryTest {
     controllerFactory.loginGarageHolder(garageHolder);
 
     assertEquals("OrderNewCarController", controllerFactory.createOrderNewCarController().getClass().getSimpleName());
+    controllerFactory.logoutGarageHolder();
+  }
+
+  @Test
+  public void createOrderNewCarControllerTest2() {
+    CarManufactoringCompany carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine());
+
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder));
+
+    controllerFactory.loginGarageHolder(garageHolder);
+
+    assertEquals("OrderNewCarController", controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder).getClass().getSimpleName());
     controllerFactory.logoutGarageHolder();
   }
 
@@ -119,4 +135,35 @@ public class ControllerFactoryTest {
   }
 
 
+  @Test
+  void giveLoggedInGarageHolderNameTest() {
+    controllerFactory.loginGarageHolder(garageHolder);
+    assertEquals(controllerFactory.giveLoggedInGarageHolderName(), "Joe Lamb");
+
+  }
+
+  @Test
+  void createLoginControllerTest() {
+    controllerFactory.loginManager();
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createLoginController());
+    controllerFactory.logoutManager();
+    assertEquals("LoginController", controllerFactory.createLoginController().getClass().getSimpleName());
+    assertTrue(controllerFactory.createLoginController() instanceof LoginController);
+
+  }
+
+  @Test
+  void createAdaptSchedulingAlgorithmControllerTest() {
+    assertThrows(IllegalStateException.class, () -> controllerFactory.createAdaptSchedulingAlgorithmController());
+    controllerFactory.loginManager();
+    assertEquals("AdaptSchedulingAlgorithmController", controllerFactory.createAdaptSchedulingAlgorithmController().getClass().getSimpleName());
+    assertTrue(controllerFactory.createAdaptSchedulingAlgorithmController() instanceof AdaptSchedulingAlgorithmController);
+
+    controllerFactory.logoutManager();
+  }
+
+  @Test
+  void getAssemblyLineTest() {
+    assertEquals("AssemblyLine", controllerFactory.getAssemblyLine().getClass().getSimpleName());
+  }
 }
