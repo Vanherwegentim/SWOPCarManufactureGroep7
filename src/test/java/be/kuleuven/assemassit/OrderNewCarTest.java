@@ -19,12 +19,13 @@ public class OrderNewCarTest {
   private OrderNewCarController orderNewCarController;
   private CheckOrderDetailsController checkOrderDetailsController;
   private ControllerFactory factory;
+  private  LoginController loginController;
 
   @BeforeEach
   public void beforeEach() {
     factory = new ControllerFactory();
 
-    LoginController loginController = factory.createLoginController();
+    loginController = factory.createLoginController();
     loginController.logInGarageHolder(0);
     orderNewCarController = factory.createOrderNewCarController();
     checkOrderDetailsController = factory.createCheckOrderDetailsController();
@@ -301,7 +302,8 @@ public class OrderNewCarTest {
 
     //Step 1: The system throws an illegalStateException, indicating that it can not show orders if there is no logged-in user.
     //The user cannot proceed the use case at this point.
-    factory.createLoginController().logOffGarageHolder();
+
+    loginController.logOffGarageHolder();
 
     assertThrows(IllegalStateException.class, () -> factory.createOrderNewCarController());
   }
