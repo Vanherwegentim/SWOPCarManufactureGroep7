@@ -18,6 +18,7 @@ import java.util.Optional;
  * @invar | getClosingTime() != null
  * @invar Opening time should be before the closing time
  * | (getOpeningTime() != null && getClosingTime() != null) || getOpeningTime().isBefore(getClosingTime())
+ * @invar | getOvertime() >= 0
  */
 public class CarManufactoringCompany implements Observer {
   /**
@@ -28,7 +29,7 @@ public class CarManufactoringCompany implements Observer {
    * @invar | closingTime != null
    * @invar Opening time should be before the closing time
    * | (openingTime != null && closingTime != null) || openingTime.isBefore(closingTime)
-   * @invar | overtime != null
+   * @invar | overtime >= 0
    * @representationObject
    * @representationObjects
    */
@@ -50,7 +51,7 @@ public class CarManufactoringCompany implements Observer {
    * @mutates | this
    * @post | openingTime.getHour() == this.openingTime.getHour()
    * @post | closingTime.getHour() == this.closingTime.getHour()
-   * @post | this.assemblyLine.equals(assemblyLine)
+   * @post | this.getAssemblyLine.equals(assemblyLine)
    */
   public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     this(new CarModelRepository(), new OvertimeRepository(), openingTime, closingTime, assemblyLine);
@@ -64,7 +65,7 @@ public class CarManufactoringCompany implements Observer {
    * @mutates | this
    * @post | openingTime.getHour() == this.openingTime.getHour()
    * @post | closingTime.getHour() == this.closingTime.getHour()
-   * @post | this.assemblyLine.equals(assemblyLine)
+   * @post | this.getAssemblyLine().equals(assemblyLine)
    */
   public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     this(carModelRepository, new OvertimeRepository(), openingTime, closingTime, assemblyLine);
@@ -151,16 +152,26 @@ public class CarManufactoringCompany implements Observer {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess);
   }
 
+  /**
+   * @return the estimated completion date of the last placed process in the queue
+   * @inspects | this
+   */
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
   }
 
+  /**
+   * Move the assembly line forward if possible
+   *
+   * @mutates | this
+   */
   public void moveAssemblyLine() {
     this.assemblyLine.move(this.closingTime, this.overtime);
   }
 
   /**
-   * @throws IllegalStateException | (CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime)
+   * Trigger the first move, this can be done on placing an order and if the order is the first order of the day
+   *
    * @inspects | this
    * @mutates | this
    */
