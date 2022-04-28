@@ -26,7 +26,7 @@ public class CarOrderTest {
   public void carOrderTest_succeeds() {
     CarOrder.resetIdRunner();
     CarOrder carOrder = new CarOrder(car);
-    assertTrue((new CustomTime().customLocalDateTimeNow()).toEpochSecond(ZoneOffset.UTC) - carOrder.getOrderTime().toEpochSecond(ZoneOffset.UTC) < 1000);
+    assertTrue((CustomTime.getInstance().customLocalDateTimeNow()).toEpochSecond(ZoneOffset.UTC) - carOrder.getOrderTime().toEpochSecond(ZoneOffset.UTC) < 1000);
     assertEquals(0, carOrder.getId());
     assertTrue(carOrder.isPending());
     carOrder.setPending(false);

@@ -83,7 +83,7 @@ public class WorkPostTest {
 
     workPost.setActiveAssemblyTask(0);
     assertNotNull(workPost.getActiveAssemblyTask());
-    workPost.completeAssemblyTask(15, (new CustomTime().customLocalDateTimeNow()));
+    workPost.completeAssemblyTask(15, (CustomTime.getInstance().customLocalDateTimeNow()));
     assertNull(workPost.getActiveAssemblyTask());
   }
 
@@ -132,7 +132,7 @@ public class WorkPostTest {
     int id = workPost.getWorkPostAssemblyTasks().stream().findFirst().get().getId();
     workPost.setActiveAssemblyTask(id);
     assertEquals(workPost.getActiveAssemblyTask(), workPost.findAssemblyTask(id));
-    workPost.completeAssemblyTask(40, (new CustomTime().customLocalDateTimeNow()));
+    workPost.completeAssemblyTask(40, (CustomTime.getInstance().customLocalDateTimeNow()));
     assertEquals(workPost.giveFinishedAssemblyTasks().size(), 1);
     assertEquals(workPost.giveFinishedAssemblyTasks().get(0), workPost.findAssemblyTask(id));
   }

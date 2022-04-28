@@ -40,7 +40,7 @@ public class CarOrder {
       throw new IllegalArgumentException("Car cannot be null");
     this.car = car;
     this.pending = true;
-    this.orderTime = (new CustomTime().customLocalDateTimeNow());
+    this.orderTime = (CustomTime.getInstance().customLocalDateTimeNow());
     this.id = CarOrder.idRunner++;
   }
 
