@@ -122,7 +122,7 @@ public class OrderNewCarTest {
       expectedDate = expectedDate.withHour(8).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
-      expectedDate = expectedDate.plusHours(3);
+      expectedDate = expectedDate.plusHours(3).minusMinutes(30);
     }
     if (localDateTimeNow.getHour() > 19) {
       expectedDate = expectedDate.plusDays(1).withHour(8).withMinute(0);
@@ -283,7 +283,7 @@ public class OrderNewCarTest {
       actualDate = actualDate.withHour(9).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
-      actualDate = actualDate.plusHours(3);
+      actualDate = actualDate.plusHours(3).minusMinutes(30);
     }
     if (localDateTimeNow.getHour() > 19) {
       actualDate = actualDate.plusDays(1).withHour(9).withMinute(0);

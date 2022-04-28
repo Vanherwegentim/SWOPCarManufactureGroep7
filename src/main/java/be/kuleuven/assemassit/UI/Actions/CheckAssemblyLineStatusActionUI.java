@@ -35,23 +35,28 @@ public class CheckAssemblyLineStatusActionUI implements UI {
 
   @Override
   public void run() {
-    CheckAssemblyLineStatusController checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
 
-    IOCall.out();
-    IOCall.out("Current assembly line status:");
-    displayStatus(checkAssemblyLineStatusController.giveAssemblyLineStatusOverview());
+    this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
 
-    IOCall.out();
-    IOCall.out("Future assembly line status:");
-    displayStatus(checkAssemblyLineStatusController.giveFutureAssemblyLineStatusOverview());
-    IOCall.out();
-    String tasks = "";
-    for (int i : checkAssemblyLineStatusController.giveAllWorkPosts().keySet()) {
-      tasks += "The " + checkAssemblyLineStatusController.giveAllWorkPosts().get(i);
+    while (true) {
 
-      tasks += " has these finished tasks: \n";
-      for (String s : checkAssemblyLineStatusController.giveFinishedAssemblyTasks(i).values()) {
-        tasks += s + System.lineSeparator();
+      IOCall.out();
+      IOCall.out("Current assembly line status:");
+      displayStatus(checkAssemblyLineStatusController.giveAssemblyLineStatusOverview());
+
+      IOCall.out();
+      IOCall.out("Future assembly line status:");
+      displayStatus(checkAssemblyLineStatusController.giveFutureAssemblyLineStatusOverview());
+      IOCall.out();
+      String tasks = "";
+      for (int i : checkAssemblyLineStatusController.giveAllWorkPosts().keySet()) {
+        tasks += "The " + checkAssemblyLineStatusController.giveAllWorkPosts().get(i);
+
+        tasks += " has these finished tasks:" + System.lineSeparator();
+        for (String s : checkAssemblyLineStatusController.giveFinishedAssemblyTasks(i).values()) {
+          tasks += s + System.lineSeparator();
+          IOCall.out();
+        }
       }
     }
     IOCall.out(tasks);

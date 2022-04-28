@@ -422,10 +422,10 @@ public class AssemblyLine implements Subject {
     return this.schedulingAlgorithm
       .giveEstimatedDeliveryTime(
         this.carAssemblyProcessesQueue,
-        giveManufacturingDurationInMinutes(),
+        this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration() * 3,
         this.endTime,
         this.startTime,
-        maxTimeNeededForWorkPostOnLine()
+        this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration()
       );
   }
 
