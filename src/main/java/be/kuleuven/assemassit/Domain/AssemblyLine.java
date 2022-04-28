@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
@@ -236,7 +237,7 @@ public class AssemblyLine implements Subject {
     if (!(duration >= 0 && duration < 180))
       throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask(duration, LocalDateTime.now());
+    workPost.completeAssemblyTask(duration, (new CustomTime().customLocalDateTimeNow()));
   }
 
   /**
@@ -382,13 +383,12 @@ public class AssemblyLine implements Subject {
    * Moves the assembly and gives the duration of the current phase.
    * The assembly process is moved from one work post to another on the assembly line.
    *
-   * @param startTime the start time of the company
-   * @param endTime   the end time of the company
+   * @param endTime the end time of the company
    * @throws IllegalStateException    when the assembly line can not be moved | !canMove()
    * @throws IllegalArgumentException minutes is below 0 | minutes < 0
    * @mutates | this
    */
-  public void move(LocalTime startTime, LocalTime endTime, int overtime) {
+  public void move(LocalTime endTime, int overtime) {
 
     if (!canMove())
       throw new IllegalArgumentException("AssemblyLine cannot be moved forward!");
@@ -422,10 +422,10 @@ public class AssemblyLine implements Subject {
     return this.schedulingAlgorithm
       .giveEstimatedDeliveryTime(
         this.carAssemblyProcessesQueue,
-        giveManufacturingDurationInMinutes(),
+        this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration() * 3,
         this.endTime,
         this.startTime,
-        maxTimeNeededForWorkPostOnLine()
+        this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration()
       );
   }
 
@@ -530,7 +530,6 @@ public class AssemblyLine implements Subject {
 
   public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
-    //TODO refactor to work with streams;
     List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
 
     Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
@@ -576,8 +575,7 @@ public class AssemblyLine implements Subject {
         int middle = numList.size() / 2;
         return (numList.get(middle) + numList.get(middle + 1)) / 2;
       } else {
-        double middle = numList.size() / 2.0;
-        return middle;
+        return numList.size() / 2.0;
       }
     }
   }
@@ -585,11 +583,11 @@ public class AssemblyLine implements Subject {
   public double exactCarsIn2Days() {
     Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     double total = 0;
-    if (carsPerDayMap.get(LocalDate.now().minusDays(1)) != null) {
-      total += carsPerDayMap.get(LocalDate.now().minusDays(1));
+    if (carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(1)) != null) {
+      total += carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(1));
     }
-    if (carsPerDayMap.get(LocalDate.now().minusDays(2)) != null) {
-      total += carsPerDayMap.get(LocalDate.now().minusDays(2));
+    if (carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(2)) != null) {
+      total += carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(2));
     }
     return total;
   }

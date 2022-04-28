@@ -129,64 +129,30 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1: Perform assembly task
 > 2: Check assembly line status
 >-1: Logout and go back
-<1
+<2
 >
->Please choose a work post:
-> 0: Car Body Post
-> 1: Drivetrain Post
-> 2: Accessories Post
->-1: Go back
-<0
->Chosen work post: Car Body Post
+>Current assembly line status:
+>  * Car Body Post
+>      - Assembly car body (pending)
+>      - Paint car (pending)
+>  * Drivetrain Post
+>      - no pending or active tasks
+>  * Accessories Post
+>      - no pending or active tasks
 >
->Please choose an assembly task:
->   0: Assembly car body
->   5: Paint car
->-1: Go back
-<-1
->No task was chosen.
+>Future assembly line status:
+>  * Car Body Post
+>      - no pending or active tasks
+>  * Drivetrain Post
+>      - Insert gearbox (pending)
+>      - Insert engine (pending)
+>  * Accessories Post
+>      - no pending or active tasks
 >
->Please choose a work post:
-> 0: Car Body Post
-> 1: Drivetrain Post
-> 2: Accessories Post
->-1: Go back
-<0
->Chosen work post: Car Body Post
+>The Car Body Post has these finished tasks:
+>The Drivetrain Post has these finished tasks:
+>The Accessories Post has these finished tasks:
 >
->Please choose an assembly task:
->   0: Assembly car body
->   5: Paint car
->-1: Go back
-<0
->Chosen assembly task: Assembly car body
->
->Execute the following actions:
-> 1: Installing the BREAK body
->
->What was the amount of minutes spent on this task?
-<10
->
->Please choose an assembly task:
->   5: Paint car
->-1: Go back
-<5
->Chosen assembly task: Paint car
->
->Execute the following actions:
-> 1: Painting the car BLUE
->
->What was the amount of minutes spent on this task?
-<10
->There are currently no pending tasks for this work post
->
->Please choose a work post:
-> 0: Car Body Post
-> 1: Drivetrain Post
-> 2: Accessories Post
->-1: Go back
-<-1
->No work post was chosen.
 >
 >Welcome Mechanic
 >Please choose an action:

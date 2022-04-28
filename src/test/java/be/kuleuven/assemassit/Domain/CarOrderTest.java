@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ public class CarOrderTest {
   public void carOrderTest_succeeds() {
     CarOrder.resetIdRunner();
     CarOrder carOrder = new CarOrder(car);
-    assertTrue(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - carOrder.getOrderTime().toEpochSecond(ZoneOffset.UTC) < 1000);
+    assertTrue((new CustomTime().customLocalDateTimeNow()).toEpochSecond(ZoneOffset.UTC) - carOrder.getOrderTime().toEpochSecond(ZoneOffset.UTC) < 1000);
     assertEquals(0, carOrder.getId());
     assertTrue(carOrder.isPending());
     carOrder.setPending(false);

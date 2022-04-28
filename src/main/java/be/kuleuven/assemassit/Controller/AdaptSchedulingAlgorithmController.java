@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class AdaptSchedulingAlgorithmController {
 
-  private AssemblyLine assemblyLine;
+  private final AssemblyLine assemblyLine;
   private Map<Integer, List<CarOption>> mapOfCarOptions;
 
   protected AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
@@ -66,24 +66,6 @@ public class AdaptSchedulingAlgorithmController {
 
     assemblyLine.setSchedulingAlgorithm(new SpecificationBatchScheduling(batch));
   }
-
-
-//  private List<CarOption> transferToCarOptionList(List<String> specification) {
-//    ArrayList<CarAssemblyProcess> batchForQueue = new ArrayList<>();
-//    for (CarAssemblyProcess carAssemblyProcess : assemblyLine.getCarAssemblyProcessesQueue()) {
-//      Car car = carAssemblyProcess.getCarOrder().getCar();
-//      ArrayList<String> carOptions = new ArrayList<>();
-//
-//      for (CarOption carOption : car.giveListOfCarOptions()) {
-//        carOptions.add(carOption.toString());
-//      }
-//      if (carOptions.containsAll(specification)) {
-//        batchForQueue.add(carAssemblyProcess);
-//      }
-//    }
-//    //return batchForQueue;
-//    return new ArrayList<>();
-//  }
 
 
 }

@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -11,7 +12,6 @@ import be.kuleuven.assemassit.Domain.TaskTypes.InstallSpoilerAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -103,16 +103,16 @@ public class AssemblyLineTest {
   private void extraSetup() {
 
     carAssemblyProcess2.complete();
-    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()));
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
 
 
     carAssemblyProcess3.complete();
-    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
-    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+    carAssemblyProcess3.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1).plusHours(3));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
   }
@@ -184,6 +184,7 @@ public class AssemblyLineTest {
     List<Car> cars = assemblyLine.givePossibleBatchCars();
     assertEquals(1, cars.size());
   }
+
 
   @Test
   public void giveSchedulingAlgorithmNames() {
@@ -379,20 +380,20 @@ public class AssemblyLineTest {
   @Test
   void move() {
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
-    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(12, 0), LocalTime.of(13, 0), 0));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.move(LocalTime.of(13, 0), 0));
     assemblyLine.getCarBodyPost().removeProcessFromWorkPost();
 
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
     SchedulingAlgorithm schedulingAlgorithm = new FIFOScheduling();
     assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
-    assemblyLine.move(LocalTime.of(00, 1), LocalTime.of(23, 59), 0);
+    assemblyLine.move(LocalTime.of(23, 59), 10);
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
   }
 
   @Test
   void giveEstimatedCompletionDateOfLatestProcess() {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
-    assertEquals(LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
+    assertEquals((new CustomTime().customLocalDateTimeNow()).plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
   }
 
   @Test

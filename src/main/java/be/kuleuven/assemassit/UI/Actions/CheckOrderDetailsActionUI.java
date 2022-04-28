@@ -8,15 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class CheckOrderDetailsActionUI {
-  private ControllerFactory controllerFactory;
-  private CheckOrderDetailsController checkOrderDetailsController;
+  private final ControllerFactory controllerFactory;
 
   public CheckOrderDetailsActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
   }
 
   public void run() {
-    this.checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
+    CheckOrderDetailsController checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
 
     int choice;
 
