@@ -1,4 +1,4 @@
-Ejava -cp target/classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -30,113 +30,111 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
-<2
->Ordered
+<1
+>
+>Please choose the model:
+> 0: Model A
+> 1: Model B
+> 2: Model C
+>-1: Go back
+<-1
+>
+>Welcome Louis Brooks
+>Please choose an action:
+> 1: Order new car
+> 2: Check order details
+>-1: Logout and go back
+<1
 >
 >Orders placed by: Louis Brooks
 >Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
+>   --no orders found--
 >History:
 >   --no orders found--
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
-<-1
->
->Welcome Louis Brooks
->Please choose an action:
-> 1: Order new car
-> 2: Check order details
->-1: Logout and go back
-<2
->
->Orders placed by: Louis Brooks
->Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
->History:
->   --no orders found--
->
->Please insert the ID of the order you want to view or insert -1 to go back:
-<0
->Order ID: 0    [Estimated time: %date%]
->    Car model: Model A
->        Body: BREAK
->        Color: RED
->        Engine: STANDARD
->        Gearbox: FIVE_SPEED_MANUAL
->        Airco: MANUAL
->        Wheels: COMFORT
->        Seats: LEATHER_BLACK
->        Spoiler: NO_SPOILER
->
->Press ENTER to continue...
-<\n
->
->Orders placed by: Louis Brooks
->Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
->History:
->   --no orders found--
->
->Please insert the ID of the order you want to view or insert -1 to go back:
-<-1
->
->Welcome Louis Brooks
->Please choose an action:
-> 1: Order new car
-> 2: Check order details
->-1: Logout and go back
-<2
->
->Orders placed by: Louis Brooks
->Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
->History:
->   --no orders found--
->
->Please insert the ID of the order you want to view or insert -1 to go back:
 <1
->Order ID: 1    [Estimated time: %date%]
->    Car model: Model A
->        Body: BREAK
->        Color: RED
->        Engine: STANDARD
->        Gearbox: FIVE_SPEED_MANUAL
->        Airco: MANUAL
->        Wheels: COMFORT
->        Seats: LEATHER_BLACK
->        Spoiler: NO_SPOILER
+>
+>Please choose the model:
+> 0: Model A
+> 1: Model B
+> 2: Model C
+>-1: Go back
+<1
+>Chosen model: Model B
+>
+>Choose the option for: GearBox
+> 0: SIX_SPEED_MANUAL
+> 1: FIVE_SPEED_AUTOMATIC
+>-1: Cancel placing the order
+<1
+>Chosen: FIVE_SPEED_AUTOMATIC
+>
+>Choose the option for: Airco
+> 0: MANUAL
+> 1: AUTOMATIC
+> 2: NO_AIRCO
+>-1: Cancel placing the order
+<1
+>Chosen: AUTOMATIC
+>
+>Choose the option for: Spoiler
+> 0: LOW
+> 1: NO_SPOILER
+>-1: Cancel placing the order
+<1
+>Chosen: NO_SPOILER
+>
+>Choose the option for: Wheels
+> 0: WINTER
+> 1: COMFORT
+> 2: SPORT
+>-1: Cancel placing the order
+<1
+>Chosen: COMFORT
+>
+>Choose the option for: Color
+> 0: RED
+> 1: BLUE
+> 2: GREEN
+> 3: YELLOW
+>-1: Cancel placing the order
+<1
+>Chosen: BLUE
+>
+>Choose the option for: Body
+> 0: SEDAN
+> 1: BREAK
+> 2: SPORT
+>-1: Cancel placing the order
+<1
+>Chosen: BREAK
+>
+>Choose the option for: Engine
+> 0: STANDARD
+> 1: PERFORMANCE
+> 2: ULTRA
+>-1: Cancel placing the order
+<1
+>Chosen: PERFORMANCE
+>
+>Choose the option for: Seats
+> 0: LEATHER_WHITE
+> 1: LEATHER_BLACK
+> 2: VINYL_GREY
+>-1: Cancel placing the order
+<1
+>Chosen: LEATHER_BLACK
+>
+>The estimated completion date for the order is: 29/08/1999
 >
 >Press ENTER to continue...
 <\n
->
->Orders placed by: Louis Brooks
->Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
->History:
->   --no orders found--
->
->Please insert the ID of the order you want to view or insert -1 to go back:
-<-1
 >
 >Welcome Louis Brooks
 >Please choose an action:

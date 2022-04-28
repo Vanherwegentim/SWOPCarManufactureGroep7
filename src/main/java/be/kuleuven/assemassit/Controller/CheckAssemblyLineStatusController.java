@@ -35,6 +35,12 @@ public class CheckAssemblyLineStatusController {
       .collect(Collectors.toMap(AssemblyTask::getId, AssemblyTask::getName));
   }
 
+  /**
+   * Get a list of tasks that are finished on a work post
+   *
+   * @param postId the id of the work post
+   * @return a map with the assembly task ID and name
+   */
   public Map<Integer, String> giveFinishedAssemblyTasks(int postId) {
     if (postId < 0)
       throw new IllegalArgumentException("postId cannot be smaller than 0");

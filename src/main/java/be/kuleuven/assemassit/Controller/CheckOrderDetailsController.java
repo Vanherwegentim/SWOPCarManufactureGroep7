@@ -63,7 +63,8 @@ public class CheckOrderDetailsController {
   }
 
   private String carOrderFormattedString(CarOrder carOrder) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    DateTimeFormatter estimatedDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter completionTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
     String spacer = " ".repeat(4);
     StringBuilder result = new StringBuilder();
     result
@@ -73,13 +74,13 @@ public class CheckOrderDetailsController {
 
     if (carOrder.isPending())
       result
-        .append("[Estimated time: ")
-        .append(carOrder.getEstimatedCompletionTime().format(formatter))
+        .append("[Estimated date: ")
+        .append(carOrder.getEstimatedCompletionTime().format(estimatedDateFormatter))
         .append("]");
     else
       result
         .append("[Completed at: ")
-        .append(carOrder.getCompletionTime().format(formatter))
+        .append(carOrder.getCompletionTime().format(completionTimeFormatter))
         .append("]");
     result.append(spacer);
     result
@@ -93,7 +94,8 @@ public class CheckOrderDetailsController {
   }
 
   private String carOrderDetailedFormattedString(CarOrder carOrder) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    DateTimeFormatter estimatedDateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    DateTimeFormatter completionTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
     String spacer = " ".repeat(4);
     StringBuilder result = new StringBuilder();
     result
@@ -103,13 +105,13 @@ public class CheckOrderDetailsController {
 
     if (carOrder.isPending())
       result
-        .append("[Estimated time: ")
-        .append(carOrder.getEstimatedCompletionTime().format(formatter))
+        .append("[Estimated date: ")
+        .append(carOrder.getEstimatedCompletionTime().format(estimatedDateFormatter))
         .append("]");
     else
       result
         .append("[Completed at: ")
-        .append(carOrder.getCompletionTime().format(formatter))
+        .append(carOrder.getCompletionTime().format(completionTimeFormatter))
         .append("]");
     result.append(System.lineSeparator());
 

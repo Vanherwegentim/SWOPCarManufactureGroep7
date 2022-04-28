@@ -1,4 +1,4 @@
-Ejava -cp target/classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -30,7 +30,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
 <1
 >
@@ -105,7 +105,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 <1
 >Chosen: LEATHER_BLACK
 >
->The estimated completion date for the order is: %date%
+>The estimated completion date for the order is: 29/08/1999
 >
 >Press ENTER to continue...
 <\n

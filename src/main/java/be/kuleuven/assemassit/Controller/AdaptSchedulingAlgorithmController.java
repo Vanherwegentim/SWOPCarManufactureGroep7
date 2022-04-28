@@ -19,10 +19,20 @@ public class AdaptSchedulingAlgorithmController {
     this.assemblyLine = assemblyLine;
   }
 
+  /**
+   * Get a list of names of scheduling algorithms that can be chosen
+   *
+   * @return list of strings that represent algorithm names
+   */
   public List<String> giveSchedulingAlgorithmNames() {
     return assemblyLine.giveSchedulingAlgorithmNames();
   }
 
+  /**
+   * Get the name of the current scheduling algorithm
+   *
+   * @return name of the current scheduling algorithm
+   */
   public String giveCurrentSchedulingAlgorithmName() {
     return assemblyLine
       .getSchedulingAlgorithm()
@@ -30,6 +40,12 @@ public class AdaptSchedulingAlgorithmController {
       .getSimpleName();
   }
 
+  /**
+   * Get a map of possible batches that can be used for the batch scheduling algorithm
+   * this list is automatically generated
+   *
+   * @return map of possible batches
+   */
   public Map<Integer, List<String>> givePossibleBatches() {
     this.mapOfCarOptions = new HashMap<>();
     Map<Integer, List<String>> mapOfCarOptionsStrings = new HashMap<>();
@@ -47,11 +63,19 @@ public class AdaptSchedulingAlgorithmController {
   }
 
 
-  // it is necessary to split it in multiple methods because of different arguments
+  /**
+   * Change the current scheduling algorithm to the FIFO algorithm
+   */
   public void changeAlgorithmToFIFO() {
     assemblyLine.setSchedulingAlgorithm(new FIFOScheduling());
   }
 
+  /**
+   * Change the current scheduling algorithm to the Specification batch algorithm
+   *
+   * @param specificationId the id of the batch, this is necessary for the algorithm, this ID can be achieved by calling
+   *                        the givePossibleBatches() method
+   */
   public void changeAlgorithmToSpecificationBatch(int specificationId) {
 
     if (this.mapOfCarOptions == null || this.mapOfCarOptions.isEmpty()) {
@@ -66,6 +90,4 @@ public class AdaptSchedulingAlgorithmController {
 
     assemblyLine.setSchedulingAlgorithm(new SpecificationBatchScheduling(batch));
   }
-
-
 }

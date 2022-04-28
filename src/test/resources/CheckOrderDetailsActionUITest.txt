@@ -1,4 +1,4 @@
-Ejava -cp target/classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -30,23 +30,24 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
 <2
 >Ordered
 >
 >Orders placed by: Louis Brooks
 >Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
+>Order ID: 0    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 1    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 2    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 3    [Estimated date: 29/08/1999]    [Car model: Model A]
 >
 >History:
 >   --no orders found--
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Create batch of 3
+> 2: Create batch of 4
 >-1: Go back
 <-1
 >
@@ -59,16 +60,18 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Orders placed by: Louis Brooks
 >Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
+>Order ID: 0    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 1    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 2    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 3    [Estimated date: 29/08/1999]    [Car model: Model A]
 >
 >History:
 >   --no orders found--
 >
->Please insert the ID of the order you want to view or insert -1 to go back:
+>Insert the ID of the order you want to view.
+>Insert -1 to go back.
 <0
->Order ID: 0    [Estimated time: %date%]
+>Order ID: 0    [Estimated date: 29/08/1999]
 >    Car model: Model A
 >        Body: BREAK
 >        Color: RED
@@ -84,14 +87,16 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Orders placed by: Louis Brooks
 >Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
+>Order ID: 0    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 1    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 2    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 3    [Estimated date: 29/08/1999]    [Car model: Model A]
 >
 >History:
 >   --no orders found--
 >
->Please insert the ID of the order you want to view or insert -1 to go back:
+>Insert the ID of the order you want to view.
+>Insert -1 to go back.
 <-1
 >
 >Welcome Louis Brooks

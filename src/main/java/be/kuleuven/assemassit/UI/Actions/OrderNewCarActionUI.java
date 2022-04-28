@@ -103,7 +103,7 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out();
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Place a new order");
-      IOCall.out(" 2: Place batch of 3");
+      IOCall.out(" 2: Create batch of 4");
       IOCall.out("-1: Go back");
 
       choice = IOCall.in();
@@ -142,7 +142,7 @@ public class OrderNewCarActionUI implements UI {
             try {
               LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
 
-              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
               IOCall.out();
               IOCall.out("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
 
@@ -170,6 +170,8 @@ public class OrderNewCarActionUI implements UI {
           orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
           orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
           orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+
           IOCall.out("Ordered");
         }
         // Alternate flow: The user indicates he wants to leave the overview.

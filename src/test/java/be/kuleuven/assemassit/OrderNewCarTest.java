@@ -106,17 +106,17 @@ public class OrderNewCarTest {
     LocalDateTime estimatedTime = orderNewCarController.getCarOrderEstimatedCompletionTime(carOrderId);
 
     //Step 7: The system stores the new order and updates the production schedule.
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
-    String expected = String.format("Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
+    String expected = String.format("Order ID: %d    [Estimated date: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
     String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 
     assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
-    LocalDateTime localDateTimeNow = (new CustomTime().customLocalDateTimeNow());
-    LocalDateTime expectedDate = (new CustomTime().customLocalDateTimeNow());
+    LocalDateTime localDateTimeNow = (CustomTime.getInstance().customLocalDateTimeNow());
+    LocalDateTime expectedDate = (CustomTime.getInstance().customLocalDateTimeNow());
 
     if (localDateTimeNow.getHour() < 6) {
       expectedDate = expectedDate.withHour(8).withMinute(0);
@@ -267,17 +267,17 @@ public class OrderNewCarTest {
     //Step 7: The system stores the new order and updates the production schedule.
 
     checkOrderDetailsController.givePendingCarOrders().get(0);
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    String expected = String.format("Order ID: %d    [Estimated time: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
+    String expected = String.format("Order ID: %d    [Estimated date: %s]    [Car model: Model A]" + System.lineSeparator(), carOrderId, estimatedTime.format(formatter));
 
     String actual = checkOrderDetailsController.givePendingCarOrders().stream().reduce("", String::concat);
 
     assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
-    LocalDateTime localDateTimeNow = (new CustomTime().customLocalDateTimeNow());
-    LocalDateTime actualDate = (new CustomTime().customLocalDateTimeNow());
+    LocalDateTime localDateTimeNow = (CustomTime.getInstance().customLocalDateTimeNow());
+    LocalDateTime actualDate = (CustomTime.getInstance().customLocalDateTimeNow());
 
     if (localDateTimeNow.getHour() < 6) {
       actualDate = actualDate.withHour(9).withMinute(0);

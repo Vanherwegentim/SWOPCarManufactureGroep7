@@ -25,7 +25,7 @@ public class CheckProductionStatisticsControllerTest {
     when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1.0);
     when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1.0);
     when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1.0);
-    when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of((new CustomTime().customLocalDateNow()), 1));
+    when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of((CustomTime.getInstance().customLocalDateNow()), 1));
 
   }
 
@@ -67,7 +67,7 @@ public class CheckProductionStatisticsControllerTest {
 
   @Test
   public void last2DelaysToStringTest() {
-    String expected = "The last 2 delays were at:" + System.lineSeparator() + (new CustomTime().customLocalDateNow()) + System.lineSeparator() + "and were this long:" + System.lineSeparator() + mockedAssemblyLine.last2Delays().get((new CustomTime().customLocalDateNow())) + System.lineSeparator();
+    String expected = "The last 2 delays were at:" + System.lineSeparator() + (CustomTime.getInstance().customLocalDateNow()) + System.lineSeparator() + "and were this long:" + System.lineSeparator() + mockedAssemblyLine.last2Delays().get((CustomTime.getInstance().customLocalDateNow())) + System.lineSeparator();
     String actual = controller.last2DelaysToString();
     assertEquals(expected, actual);
 

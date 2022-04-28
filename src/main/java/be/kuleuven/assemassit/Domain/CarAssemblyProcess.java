@@ -109,10 +109,14 @@ public class CarAssemblyProcess {
    * @mutates | this
    */
   public void complete() {
-    carOrder.setCompletionTime((new CustomTime().customLocalDateTimeNow()));
+    carOrder.setCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()));
     carOrder.setPending(false);
   }
 
+  /**
+   * @return the manufacturing duration of a process in minutes
+   * @inspects | this
+   */
   public int giveManufacturingDurationInMinutes() {
     return carOrder.getCar().getCarModel().getWorkPostDuration() * 3;
   }

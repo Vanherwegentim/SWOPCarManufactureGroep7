@@ -19,7 +19,7 @@ public class ControllerFactory {
 
   public ControllerFactory() {
     this.assemblyLine = new AssemblyLine();
-    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(23, 59), assemblyLine);
+    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
     this.controllerFactoryState = new ControllerFactoryLoginState();
   }
 
@@ -69,6 +69,11 @@ public class ControllerFactory {
     return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
+  /**
+   * Generate an instance of the checkOrderDetailsController
+   *
+   * @return a new instance of the checkOrderDetailsController
+   */
   public CheckOrderDetailsController createCheckOrderDetailsController() {
     return controllerFactoryState.createCheckOrderDetailsController(loggedInGarageHolder);
   }
@@ -83,18 +88,38 @@ public class ControllerFactory {
     return controllerFactoryState.createOrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
+  /**
+   * Generate an instance of the performAssemblyTasksController
+   *
+   * @return a new instance of the performAssemblyTasksController
+   */
   public PerformAssemblyTasksController createPerformAssemblyTasksController() {
     return controllerFactoryState.createPerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
   }
 
+  /**
+   * Generate an instance of the checkAssemblyLineStatusController
+   *
+   * @return a new instance of the checkAssemblyLineStatusController
+   */
   public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
     return controllerFactoryState.createCheckAssemblyLineStatusController(assemblyLine);
   }
 
+  /**
+   * Generate an instance of the checkProductionStatisticsController
+   *
+   * @return a new instance of the checkProductionStatisticsController
+   */
   public CheckProductionStatisticsController createCheckProductionStatisticsController() {
     return controllerFactoryState.createCheckProductionStatisticsController(assemblyLine);
   }
 
+  /**
+   * Generate an instance of the checkProductionStatisticsController
+   *
+   * @return a new instance of the checkProductionStatisticsController
+   */
   public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
     return controllerFactoryState.createAdaptSchedulingAlgorithmController(assemblyLine);
   }
@@ -115,6 +140,4 @@ public class ControllerFactory {
   public AssemblyLine getAssemblyLine() {
     return assemblyLine;
   }
-
-
 }

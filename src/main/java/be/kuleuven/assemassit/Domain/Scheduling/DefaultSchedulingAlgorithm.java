@@ -24,13 +24,13 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
 // calculate remaining cars for this day (1)
     double remaningCarsForTodayDouble = ((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
       manufacturingTimeInMinutes - // time needed to manufacture a car
-      ((new CustomTime().customLocalTimeNow()).getHour() * 60 + (new CustomTime().customLocalTimeNow()).getMinute()) - // current time
+      ((CustomTime.getInstance().customLocalTimeNow()).getHour() * 60 + (CustomTime.getInstance().customLocalTimeNow()).getMinute()) - // current time
       maxTimeNeededForWorkPostOnLine + // time needed for the slowest work post
       60) / (double) 60);
     int remainingCarsForToday =
       (int) Math.ceil(((double) ((endTime.getHour() * 60 + endTime.getMinute()) - // end time
         manufacturingTimeInMinutes - // time needed to manufacture a car
-        ((new CustomTime().customLocalTimeNow()).getHour() * 60 + (new CustomTime().customLocalTimeNow()).getMinute()) - // current time
+        ((CustomTime.getInstance().customLocalTimeNow()).getHour() * 60 + (CustomTime.getInstance().customLocalTimeNow()).getMinute()) - // current time
         maxTimeNeededForWorkPostOnLine + // time needed for the slowest work post
         60) / (double) 60));
 
@@ -45,7 +45,7 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
     // car can still be manufactured today
     if (carAssemblyProcessesQueue.size() <= remainingCarsForToday) {
       // total duration - max duration of work post + max duration * amount
-      return (new CustomTime().customLocalDateTimeNow()).plusMinutes(manufacturingTimeInMinutes - maxTimeNeededForWorkPostOnLine).plusMinutes((long) maxTimeNeededForWorkPostOnLine * carAssemblyProcessesQueue.size());
+      return (CustomTime.getInstance().customLocalDateTimeNow()).plusMinutes(manufacturingTimeInMinutes - maxTimeNeededForWorkPostOnLine).plusMinutes((long) maxTimeNeededForWorkPostOnLine * carAssemblyProcessesQueue.size());
     }
 
     // car can not be manufactured today
@@ -54,7 +54,7 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
 
 
     // return date of tomorrow + days needed + minutes needed
-    LocalDateTime today = (new CustomTime().customLocalDateTimeNow());
+    LocalDateTime today = (CustomTime.getInstance().customLocalDateTimeNow());
     int remainingMinutesForLastDay = (((carAssemblyProcessesQueue.size() - Math.abs(remainingCarsForToday)) % amountOfCarsWholeDay) + 1) * maxTimeNeededForWorkPostOnLine;
     return LocalDateTime.of(today.getYear(), today.getMonth(), today.getDayOfMonth(), startTime.getHour(), startTime.getMinute()).plusDays(1).plusDays(daysNeeded).plusMinutes(manufacturingTimeInMinutes - maxTimeNeededForWorkPostOnLine).plusMinutes(remainingMinutesForLastDay);
   }

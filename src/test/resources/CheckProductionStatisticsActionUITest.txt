@@ -1,4 +1,351 @@
-Ejava -cp target/classes be.kuleuven.assemassit.App
+Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Exit
+<1
+>
+>Please select your name:
+> 0: Joe Lamb
+> 1: Louis Brooks
+> 2: Charlie Hunt
+> 3: Sebastian Henderson
+>-1: Go back
+<1
+>
+>Welcome Louis Brooks
+>Please choose an action:
+> 1: Order new car
+> 2: Check order details
+>-1: Logout and go back
+<1
+>
+>Orders placed by: Louis Brooks
+>Pending:
+>   --no orders found--
+>History:
+>   --no orders found--
+>
+>Please choose an action:
+> 1: Place a new order
+> 2: Create batch of 4
+>-1: Go back
+<2
+>Ordered
+>
+>Orders placed by: Louis Brooks
+>Pending:
+>Order ID: 0    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 1    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 2    [Estimated date: 29/08/1999]    [Car model: Model A]
+>Order ID: 3    [Estimated date: 29/08/1999]    [Car model: Model A]
+>
+>History:
+>   --no orders found--
+>
+>Please choose an action:
+> 1: Place a new order
+> 2: Create batch of 4
+>-1: Go back
+<-1
+>
+>Welcome Louis Brooks
+>Please choose an action:
+> 1: Order new car
+> 2: Check order details
+>-1: Logout and go back
+<-1
+>
+>Please authenticate yourself:
+> 1: I am a garage holder
+> 2: I am a manager
+> 3: I am a car mechanic
+>-1: Exit
+<3
+>
+>Welcome Mechanic
+>Please choose an action:
+> 1: Perform assembly task
+> 2: Check assembly line status
+>-1: Logout and go back
+<1
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<0
+>Chosen work post: Car Body Post
+>
+>Please choose an assembly task:
+>   0: Assembly car body
+>   5: Paint car
+>-1: Go back
+<0
+>Chosen assembly task: Assembly car body
+>
+>Execute the following actions:
+> 1: Installing the BREAK body
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>   5: Paint car
+>-1: Go back
+<5
+>Chosen assembly task: Paint car
+>
+>Execute the following actions:
+> 1: Painting the car RED
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>   8: Assembly car body
+>  13: Paint car
+>-1: Go back
+<-1
+>No task was chosen.
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<1
+>Chosen work post: Drivetrain Post
+>
+>Please choose an assembly task:
+>   1: Insert gearbox
+>   2: Insert engine
+>-1: Go back
+<1
+>Chosen assembly task: Insert gearbox
+>
+>Execute the following actions:
+> 1: Installing the FIVE_SPEED_MANUAL gearbox
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>   2: Insert engine
+>-1: Go back
+<2
+>Chosen assembly task: Insert engine
+>
+>Execute the following actions:
+> 1: Inserting a  the STANDARD engine
+>
+>What was the amount of minutes spent on this task?
+<10
+>There are currently no pending tasks for this work post
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<2
+>Chosen work post: Accessories Post
+>There are currently no pending tasks for this work post
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<0
+>Chosen work post: Car Body Post
+>
+>Please choose an assembly task:
+>   8: Assembly car body
+>  13: Paint car
+>-1: Go back
+<8
+>Chosen assembly task: Assembly car body
+>
+>Execute the following actions:
+> 1: Installing the BREAK body
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>  13: Paint car
+>-1: Go back
+<13
+>Chosen assembly task: Paint car
+>
+>Execute the following actions:
+> 1: Painting the car RED
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>  16: Assembly car body
+>  21: Paint car
+>-1: Go back
+<-1
+>No task was chosen.
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<2
+>Chosen work post: Accessories Post
+>
+>Please choose an assembly task:
+>   3: Install airco
+>   4: Mount wheels
+>   6: Install seats
+>   7: Install spoiler
+>-1: Go back
+<3
+>Chosen assembly task: Install airco
+>
+>Execute the following actions:
+> 1: Installing the MANUAL airco
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>   4: Mount wheels
+>   6: Install seats
+>   7: Install spoiler
+>-1: Go back
+<4
+>Chosen assembly task: Mount wheels
+>
+>Execute the following actions:
+> 1: Installing the COMFORT wheels
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>   6: Install seats
+>   7: Install spoiler
+>-1: Go back
+<6
+>Chosen assembly task: Install seats
+>
+>Execute the following actions:
+> 1: Installing the LEATHER_BLACK seats
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>   7: Install spoiler
+>-1: Go back
+<7
+>Chosen assembly task: Install spoiler
+>
+>Execute the following actions:
+> 1: Installing the NO_SPOILER spoiler
+>
+>What was the amount of minutes spent on this task?
+<10
+>There are currently no pending tasks for this work post
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<1
+>Chosen work post: Drivetrain Post
+>
+>Please choose an assembly task:
+>   9: Insert gearbox
+>  10: Insert engine
+>-1: Go back
+<9
+>Chosen assembly task: Insert gearbox
+>
+>Execute the following actions:
+> 1: Installing the FIVE_SPEED_MANUAL gearbox
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>  10: Insert engine
+>-1: Go back
+<10
+>Chosen assembly task: Insert engine
+>
+>Execute the following actions:
+> 1: Inserting a  the STANDARD engine
+>
+>What was the amount of minutes spent on this task?
+<10
+>There are currently no pending tasks for this work post
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<0
+>Chosen work post: Car Body Post
+>
+>Please choose an assembly task:
+>  16: Assembly car body
+>  21: Paint car
+>-1: Go back
+<16
+>Chosen assembly task: Assembly car body
+>
+>Execute the following actions:
+> 1: Installing the BREAK body
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>  21: Paint car
+>-1: Go back
+<21
+>Chosen assembly task: Paint car
+>
+>Execute the following actions:
+> 1: Painting the car RED
+>
+>What was the amount of minutes spent on this task?
+<10
+>
+>Please choose an assembly task:
+>  24: Assembly car body
+>  29: Paint car
+>-1: Go back
+<-1
+>No task was chosen.
+>
+>Please choose a work post:
+> 0: Car Body Post
+> 1: Drivetrain Post
+> 2: Accessories Post
+>-1: Go back
+<-1
+>No work post was chosen.
+>
+>Welcome Mechanic
+>Please choose an action:
+> 1: Perform assembly task
+> 2: Check assembly line status
+>-1: Logout and go back
+<-1
 >
 >Please authenticate yourself:
 > 1: I am a garage holder
@@ -15,20 +362,22 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 <1
 >CAR STATISTICS:
 >
->The average amount cars made in a day are: 0.0
+>The average amount cars made in a day are: 1.0
 >
->The median amount of cars made in a day are: 0.0
+>The median amount of cars made in a day are: 1.0
 >
 >The exact amount of cars made in the last 2 days are: 0.0
 >
 >DELAY STATISTICS:
 >
->The average delay at the moment is: 0.0
+>The average delay at the moment is: 2.0
 >
->The median delay at the moment is: 0.0
+>The median delay at the moment is: 2.0
 >
 >The last 2 delays were at:
+>1999-08-29
 >and were this long:
+>2
 >
 >
 >Welcome Manager
@@ -36,12 +385,5 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 > 1: Car and delay statistics
 > 2: Change the scheduling algorithm
 >-1: Logout and go back
-<-1
->
->Please authenticate yourself:
-> 1: I am a garage holder
-> 2: I am a manager
-> 3: I am a car mechanic
->-1: Exit
 <-1
 X0
