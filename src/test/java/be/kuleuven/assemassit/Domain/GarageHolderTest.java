@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +53,7 @@ public class GarageHolderTest {
 
   @Test
   void getCompletionTimeFromOrder() {
-    LocalDateTime localDateTime = LocalDateTime.now();
+    LocalDateTime localDateTime = (new CustomTime().customLocalDateTimeNow());
     garageHolder.addCarOrder(carOrder);
     carOrder.setCompletionTime(localDateTime);
 

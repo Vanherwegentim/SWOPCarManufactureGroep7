@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
@@ -81,7 +82,7 @@ public class AssemblyLine implements Subject {
   public AssemblyLine() {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
-    this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS), WorkPostType.ACCESSORIES_POST, 60);
+    this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS, AssemblyTaskType.INSTALL_SPOILER), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
@@ -236,7 +237,7 @@ public class AssemblyLine implements Subject {
     if (!(duration >= 0 && duration < 180))
       throw new IllegalArgumentException("The duration of a task cannot be smaller than 0 or greater than 180");
     WorkPost workPost = findWorkPost(workPostId);
-    workPost.completeAssemblyTask(duration, LocalDateTime.now());
+    workPost.completeAssemblyTask(duration, (new CustomTime().customLocalDateTimeNow()));
   }
 
   /**
@@ -421,10 +422,10 @@ public class AssemblyLine implements Subject {
     return this.schedulingAlgorithm
       .giveEstimatedDeliveryTime(
         this.carAssemblyProcessesQueue,
-        giveManufacturingDurationInMinutes(),
+        this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration() * 3,
         this.endTime,
         this.startTime,
-        maxTimeNeededForWorkPostOnLine()
+        this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration()
       );
   }
 
@@ -529,7 +530,6 @@ public class AssemblyLine implements Subject {
 
   public Map<LocalDate, Double> createCarsPerDayMap() {
     //Create a map that counts how many cars were made every day(LocalDate)
-    //TODO refactor to work with streams;
     List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
 
     Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
@@ -575,8 +575,7 @@ public class AssemblyLine implements Subject {
         int middle = numList.size() / 2;
         return (numList.get(middle) + numList.get(middle + 1)) / 2;
       } else {
-        double middle = numList.size() / 2.0;
-        return middle;
+        return numList.size() / 2.0;
       }
     }
   }
@@ -584,11 +583,11 @@ public class AssemblyLine implements Subject {
   public double exactCarsIn2Days() {
     Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
     double total = 0;
-    if (carsPerDayMap.get(LocalDate.now().minusDays(1)) != null) {
-      total += carsPerDayMap.get(LocalDate.now().minusDays(1));
+    if (carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(1)) != null) {
+      total += carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(1));
     }
-    if (carsPerDayMap.get(LocalDate.now().minusDays(2)) != null) {
-      total += carsPerDayMap.get(LocalDate.now().minusDays(2));
+    if (carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(2)) != null) {
+      total += carsPerDayMap.get((new CustomTime().customLocalDateNow()).minusDays(2));
     }
     return total;
   }

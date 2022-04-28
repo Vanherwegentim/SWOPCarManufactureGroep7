@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,8 +52,13 @@ public class CarAssemblyProcess {
       new InstallAircoAssemblyTask(carOrder.getCar().getAirco()),
       new MountWheelsAssemblyTask(carOrder.getCar().getWheels()),
       new PaintCarAssemblyTask(carOrder.getCar().getColor()),
-      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats())
+      new InstallSeatsAssemblyTask(carOrder.getCar().getSeats()),
+      new InstallSpoilerAssemblyTask(carOrder.getCar().getSpoiler())
     );
+  }
+
+  public static void resetRunningId() {
+    CarAssemblyProcess.idRunner = 0;
   }
 
   public List<AssemblyTask> getAssemblyTasks() {
@@ -66,10 +71,6 @@ public class CarAssemblyProcess {
 
   public int getId() {
     return this.id;
-  }
-
-  public static void resetRunningId() {
-    CarAssemblyProcess.idRunner = 0;
   }
 
   /**
@@ -108,7 +109,7 @@ public class CarAssemblyProcess {
    * @mutates | this
    */
   public void complete() {
-    carOrder.setCompletionTime(LocalDateTime.now());
+    carOrder.setCompletionTime((new CustomTime().customLocalDateTimeNow()));
     carOrder.setPending(false);
   }
 

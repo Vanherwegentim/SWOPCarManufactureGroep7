@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LoginController {
-  GarageHolderRepository garageHolderRepository;
+  final GarageHolderRepository garageHolderRepository;
   GarageHolder loggedInGarageHolder;
   /**
    * @PeerObject
    */
-  ControllerFactory controllerFactory;
+  final ControllerFactory controllerFactory;
 
   public LoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
     this.garageHolderRepository = garageHolderRepository;

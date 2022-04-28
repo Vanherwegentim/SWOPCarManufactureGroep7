@@ -1,16 +1,17 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InsertEngineAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.InstallAircoAssemblyTask;
+import be.kuleuven.assemassit.Domain.TaskTypes.InstallSpoilerAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -77,7 +78,7 @@ public class AssemblyLineTest {
   public void checkCorrectAssemblyTasksPerWorkpostTest() {
     assertEquals(this.assemblyLine.getCarBodyPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR));
     assertEquals(this.assemblyLine.getDrivetrainPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX));
-    assertEquals(this.assemblyLine.getAccessoriesPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS));
+    assertEquals(this.assemblyLine.getAccessoriesPost().getAssemblyTaskTypes(), List.of(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS, AssemblyTaskType.INSTALL_SPOILER));
   }
 
   @Test
@@ -102,16 +103,16 @@ public class AssemblyLineTest {
   private void extraSetup() {
 
     carAssemblyProcess2.complete();
-    carAssemblyProcess2.getCarOrder().setCompletionTime(LocalDateTime.now());
-    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now());
+    carAssemblyProcess2.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()));
+    carAssemblyProcess2.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess2);
 
 
     carAssemblyProcess3.complete();
-    carAssemblyProcess3.getCarOrder().setCompletionTime(LocalDateTime.now().minusDays(1));
-    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime(LocalDateTime.now().minusDays(1).plusHours(3));
+    carAssemblyProcess3.getCarOrder().setCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1));
+    carAssemblyProcess3.getCarOrder().setEstimatedCompletionTime((new CustomTime().customLocalDateTimeNow()).minusDays(1).plusHours(3));
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
   }
@@ -331,14 +332,14 @@ public class AssemblyLineTest {
   @Test
   void giveTasksOverview() {
     CarAssemblyProcess carAssemblyProcess = mock(CarAssemblyProcess.class);
-    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK), new InsertEngineAssemblyTask(Engine.STANDARD), new InstallAircoAssemblyTask(Airco.MANUAL)));
+    when(carAssemblyProcess.getAssemblyTasks()).thenReturn(List.of(new CarBodyAssemblyTask(Body.BREAK), new InsertEngineAssemblyTask(Engine.STANDARD), new InstallAircoAssemblyTask(Airco.MANUAL), new InstallSpoilerAssemblyTask(Spoiler.NO_SPOILER)));
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess);
     assemblyLine.getDrivetrainPost().addProcessToWorkPost(carAssemblyProcess);
     assemblyLine.getAccessoriesPost().addProcessToWorkPost(carAssemblyProcess);
     HashMap<String, List<AssemblyTask>> workPostPairs = new LinkedHashMap<>();
     workPostPairs.put("Car Body Post", List.of(carAssemblyProcess.getAssemblyTasks().get(0)));
     workPostPairs.put("Drivetrain Post", List.of(carAssemblyProcess.getAssemblyTasks().get(1)));
-    workPostPairs.put("Accessories Post", List.of(carAssemblyProcess.getAssemblyTasks().get(2)));
+    workPostPairs.put("Accessories Post", List.of(carAssemblyProcess.getAssemblyTasks().get(2), carAssemblyProcess.getAssemblyTasks().get(3)));
     assertEquals(workPostPairs, assemblyLine.giveTasksOverview());
   }
 
@@ -392,7 +393,7 @@ public class AssemblyLineTest {
   @Test
   void giveEstimatedCompletionDateOfLatestProcess() {
     assemblyLine.addCarAssemblyProcess(carAssemblyProcess1);
-    assertEquals(LocalDateTime.now().plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
+    assertEquals((new CustomTime().customLocalDateTimeNow()).plusHours(3).truncatedTo(ChronoUnit.SECONDS), assemblyLine.giveEstimatedCompletionDateOfLatestProcess().truncatedTo(ChronoUnit.SECONDS));
   }
 
   @Test

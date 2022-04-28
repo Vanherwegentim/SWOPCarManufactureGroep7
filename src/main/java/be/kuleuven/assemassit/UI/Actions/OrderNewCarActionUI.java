@@ -13,8 +13,6 @@ import java.util.*;
 
 public class OrderNewCarActionUI implements UI {
   private final ControllerFactory controllerFactory;
-  private OrderNewCarController orderNewCarController;
-  private CheckOrderDetailsController checkOrderDetailsController;
 
   public OrderNewCarActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -82,8 +80,8 @@ public class OrderNewCarActionUI implements UI {
   }
 
   public void run() {
-    this.orderNewCarController = controllerFactory.createOrderNewCarController();
-    this.checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
+    OrderNewCarController orderNewCarController = controllerFactory.createOrderNewCarController();
+    CheckOrderDetailsController checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
 
     int choice;
 
@@ -105,8 +103,7 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out();
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Place a new order");
-      //TODO remove this when not needed anymore
-      IOCall.out(" 2: Create batch of 3");
+      IOCall.out(" 2: Place batch of 3");
       IOCall.out("-1: Go back");
 
       choice = IOCall.in();
@@ -127,27 +124,48 @@ public class OrderNewCarActionUI implements UI {
           // 6. The user completes the ordering form.
           Map<String, List<String>> parts = orderNewCarController.givePossibleOptionsOfCarModel(chosenCarModelId);
 
-          Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
+          int choice2 = -1;
+          do {
 
-          if (selectedPartsOptional.isEmpty())
-            continue;
+            Optional<Map<String, String>> selectedPartsOptional = displayOrderingForm(parts);
+
+            if (selectedPartsOptional.isEmpty())
+              continue;
 
 
-          Map<String, String> selectedParts = selectedPartsOptional.get();
+            Map<String, String> selectedParts = selectedPartsOptional.get();
 
-          // 7. The system stores the new order and updates the production schedule.
-          // 8. The system presents an estimated completion date for the new order
-          LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
+            // 7. The system stores the new order and updates the production schedule.
+            // 8. The system presents an estimated completion date for the new order
 
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
-          IOCall.out();
-          IOCall.out("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
 
-          IOCall.out();
-          IOCall.out("Press ENTER to continue...");
-          IOCall.waitForConfirmation();
+            try {
+              LocalDateTime estimatedCompletionDate = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(chosenCarModelId, selectedParts.get("Body"), selectedParts.get("Color"), selectedParts.get("Engine"), selectedParts.get("GearBox"), selectedParts.get("Seats"), selectedParts.get("Airco"), selectedParts.get("Wheels"), selectedParts.get("Spoiler"));
+
+              DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
+              IOCall.out();
+              IOCall.out("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
+
+              IOCall.out();
+              IOCall.out("Press ENTER to continue...");
+              IOCall.waitForConfirmation();
+              choice2 = -1;
+
+            } catch (IllegalArgumentException e) {
+
+              do {
+                IOCall.out();
+                IOCall.out();
+                IOCall.out("Invalid configuration detected");
+                IOCall.out();
+                IOCall.out(" 1: Retry creating an order");
+                IOCall.out("-1: Go back");
+
+                choice2 = IOCall.in();
+              } while (choice2 != 1 && choice2 != -1);
+            }
+          } while (choice2 != -1);
         }
-        //TODO remove this when not needed anymore
         case 2 -> {
           orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
           orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");

@@ -56,31 +56,4 @@ public class CarModelRepository {
 
     return List.copyOf(carModels);
   }
-  //todo remove?
-//  private void readCarModelsFromFile() {
-//    List<CarModel> carModels = new ArrayList<>();
-//    try (Scanner input = new Scanner(new FileReader("src/main/resources/car-models.txt"))) {
-//
-//      while (input.hasNext()) {
-//        int id = input.nextInt();
-//        String name = input.nextLine();
-//        carModels.add(
-//          new CarModel(
-//            id,
-//            name,
-//            Arrays.asList(Wheel.values()),
-//            Arrays.asList(Gearbox.values()),
-//            Arrays.asList(Seat.values()),
-//            Arrays.asList(Body.values()),
-//            Arrays.asList(Color.values()),
-//            Arrays.asList(Engine.values()),
-//            Arrays.asList(Airco.values())
-//          ));
-//      }
-//
-//      this.carModels = carModels;
-//    } catch (FileNotFoundException e) {
-//      System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
-//    }
-//  }
 }
