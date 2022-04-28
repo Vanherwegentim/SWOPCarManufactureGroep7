@@ -189,10 +189,6 @@ public class AssemblyLine implements Subject {
     return Arrays.asList(carBodyPost, drivetrainPost, accessoriesPost);
   }
 
-  private void updateOvertime(int overtime) {
-    notifyObservers(overtime);
-  }
-
   public List<CarAssemblyProcess> getFinishedCars() {
     return this.finishedCars;
   }
@@ -406,7 +402,7 @@ public class AssemblyLine implements Subject {
 
     if (newOvertime > 0) {
       // overtime happened so we have to inform the car manufacturing company
-      updateOvertime(newOvertime);
+      notifyObservers(newOvertime);
     }
   }
 
