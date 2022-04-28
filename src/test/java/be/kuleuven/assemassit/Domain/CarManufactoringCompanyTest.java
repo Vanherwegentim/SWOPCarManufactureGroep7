@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,11 +43,11 @@ public class CarManufactoringCompanyTest {
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
     //todo: deze test werkt enkel overdag
     // TODO: DONE this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
-    // assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), LocalDateTime.now().plusHours(3));
-    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
-    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - LocalDateTime.now().plusHours(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
-    LocalDateTime localDateTimeNow = LocalDateTime.now();
-    LocalDateTime expectedDate = LocalDateTime.now();
+    // assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), (CustomTime.getInstance().customLocalDateTimeNow()).plusHours(3));
+    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - (CustomTime.getInstance().customLocalDateTimeNow()).plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - (CustomTime.getInstance().customLocalDateTimeNow()).plusHours(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+    LocalDateTime localDateTimeNow = (CustomTime.getInstance().customLocalDateTimeNow());
+    LocalDateTime expectedDate = (CustomTime.getInstance().customLocalDateTimeNow());
     LocalDateTime actual = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
 
     if (localDateTimeNow.getHour() < 6) {
@@ -105,7 +106,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   void assemblyLineMove() {
-    LocalTime time = LocalTime.now();
+    LocalTime time = (CustomTime.getInstance().customLocalTimeNow());
     AssemblyLine line = new AssemblyLine();
     CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(00, 1), LocalTime.of(23, 59), line);
     assertTrue(company.isAssemblyLineAvailable());
@@ -118,7 +119,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   void update() {
-    LocalTime time = LocalTime.now();
+    LocalTime time = (CustomTime.getInstance().customLocalTimeNow());
     AssemblyLine line = new AssemblyLine();
     OvertimeRepository overTimeRepository = new OvertimeRepository();
     CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, overTimeRepository, time.minusHours(1), time.plusHours(15), line);

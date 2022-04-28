@@ -13,8 +13,6 @@ import java.util.*;
 
 public class OrderNewCarActionUI implements UI {
   private final ControllerFactory controllerFactory;
-  private OrderNewCarController orderNewCarController;
-  private CheckOrderDetailsController checkOrderDetailsController;
 
   public OrderNewCarActionUI(ControllerFactory controllerFactory) {
     this.controllerFactory = controllerFactory;
@@ -82,8 +80,8 @@ public class OrderNewCarActionUI implements UI {
   }
 
   public void run() {
-    this.orderNewCarController = controllerFactory.createOrderNewCarController();
-    this.checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
+    OrderNewCarController orderNewCarController = controllerFactory.createOrderNewCarController();
+    CheckOrderDetailsController checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
 
     int choice;
 
@@ -105,6 +103,7 @@ public class OrderNewCarActionUI implements UI {
       IOCall.out();
       IOCall.out("Please choose an action:");
       IOCall.out(" 1: Place a new order");
+      IOCall.out(" 2: Create batch of 3");
       IOCall.out("-1: Go back");
 
       choice = IOCall.in();
@@ -166,6 +165,12 @@ public class OrderNewCarActionUI implements UI {
               } while (choice2 != 1 && choice2 != -1);
             }
           } while (choice2 != -1);
+        }
+        case 2 -> {
+          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+          orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
+          IOCall.out("Ordered");
         }
         // Alternate flow: The user indicates he wants to leave the overview.
       }

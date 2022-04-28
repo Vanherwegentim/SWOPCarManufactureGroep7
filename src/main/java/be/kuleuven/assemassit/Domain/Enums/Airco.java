@@ -1,5 +1,5 @@
 package be.kuleuven.assemassit.Domain.Enums;
 
-public enum Airco implements CarOption{
+public enum Airco implements CarOption {
   MANUAL, AUTOMATIC, NO_AIRCO
 }

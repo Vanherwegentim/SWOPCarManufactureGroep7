@@ -30,7 +30,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Place batch of 3
+> 2: Create batch of 3
 >-1: Go back
 <2
 >Ordered
@@ -46,7 +46,7 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >
 >Please choose an action:
 > 1: Place a new order
-> 2: Place batch of 3
+> 2: Create batch of 3
 >-1: Go back
 <-1
 >
@@ -69,50 +69,6 @@ Ejava -cp target/classes be.kuleuven.assemassit.App
 >Please insert the ID of the order you want to view or insert -1 to go back:
 <0
 >Order ID: 0    [Estimated time: %date%]
->    Car model: Model A
->        Body: BREAK
->        Color: RED
->        Engine: STANDARD
->        Gearbox: FIVE_SPEED_MANUAL
->        Airco: MANUAL
->        Wheels: COMFORT
->        Seats: LEATHER_BLACK
->        Spoiler: NO_SPOILER
->
->Press ENTER to continue...
-<\n
->
->Orders placed by: Louis Brooks
->Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
->History:
->   --no orders found--
->
->Please insert the ID of the order you want to view or insert -1 to go back:
-<-1
->
->Welcome Louis Brooks
->Please choose an action:
-> 1: Order new car
-> 2: Check order details
->-1: Logout and go back
-<2
->
->Orders placed by: Louis Brooks
->Pending:
->Order ID: 0    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 1    [Estimated time: %date%]    [Car model: Model A]
->Order ID: 2    [Estimated time: %date%]    [Car model: Model A]
->
->History:
->   --no orders found--
->
->Please insert the ID of the order you want to view or insert -1 to go back:
-<1
->Order ID: 1    [Estimated time: %date%]
 >    Car model: Model A
 >        Body: BREAK
 >        Color: RED

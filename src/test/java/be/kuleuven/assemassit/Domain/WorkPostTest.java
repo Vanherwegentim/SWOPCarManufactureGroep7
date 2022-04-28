@@ -1,12 +1,12 @@
 package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.TaskTypes.CarBodyAssemblyTask;
 import be.kuleuven.assemassit.Domain.TaskTypes.PaintCarAssemblyTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,7 +83,7 @@ public class WorkPostTest {
 
     workPost.setActiveAssemblyTask(0);
     assertNotNull(workPost.getActiveAssemblyTask());
-    workPost.completeAssemblyTask(15, LocalDateTime.now());
+    workPost.completeAssemblyTask(15, (CustomTime.getInstance().customLocalDateTimeNow()));
     assertNull(workPost.getActiveAssemblyTask());
   }
 
@@ -132,7 +132,7 @@ public class WorkPostTest {
     int id = workPost.getWorkPostAssemblyTasks().stream().findFirst().get().getId();
     workPost.setActiveAssemblyTask(id);
     assertEquals(workPost.getActiveAssemblyTask(), workPost.findAssemblyTask(id));
-    workPost.completeAssemblyTask(40, LocalDateTime.now());
+    workPost.completeAssemblyTask(40, (CustomTime.getInstance().customLocalDateTimeNow()));
     assertEquals(workPost.giveFinishedAssemblyTasks().size(), 1);
     assertEquals(workPost.giveFinishedAssemblyTasks().get(0), workPost.findAssemblyTask(id));
   }

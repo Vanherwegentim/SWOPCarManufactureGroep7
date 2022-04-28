@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
 import be.kuleuven.assemassit.Controller.ControllerFactory;
 import be.kuleuven.assemassit.Controller.LoginController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -114,14 +115,14 @@ public class OrderNewCarTest {
     assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
-    LocalDateTime localDateTimeNow = LocalDateTime.now();
-    LocalDateTime expectedDate = LocalDateTime.now();
+    LocalDateTime localDateTimeNow = (CustomTime.getInstance().customLocalDateTimeNow());
+    LocalDateTime expectedDate = (CustomTime.getInstance().customLocalDateTimeNow());
 
     if (localDateTimeNow.getHour() < 6) {
       expectedDate = expectedDate.withHour(8).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
-      expectedDate = expectedDate.plusHours(3);
+      expectedDate = expectedDate.plusHours(3).minusMinutes(30);
     }
     if (localDateTimeNow.getHour() > 19) {
       expectedDate = expectedDate.plusDays(1).withHour(8).withMinute(0);
@@ -275,14 +276,14 @@ public class OrderNewCarTest {
     assertEquals(expected, actual);
 
     //step 8: The system presents an estimated completion date for the new order.
-    LocalDateTime localDateTimeNow = LocalDateTime.now();
-    LocalDateTime actualDate = LocalDateTime.now();
+    LocalDateTime localDateTimeNow = (CustomTime.getInstance().customLocalDateTimeNow());
+    LocalDateTime actualDate = (CustomTime.getInstance().customLocalDateTimeNow());
 
     if (localDateTimeNow.getHour() < 6) {
       actualDate = actualDate.withHour(9).withMinute(0);
     }
     if (localDateTimeNow.getHour() >= 6 && localDateTimeNow.getHour() <= 19) {
-      actualDate = actualDate.plusHours(3);
+      actualDate = actualDate.plusHours(3).minusMinutes(30);
     }
     if (localDateTimeNow.getHour() > 19) {
       actualDate = actualDate.plusDays(1).withHour(9).withMinute(0);

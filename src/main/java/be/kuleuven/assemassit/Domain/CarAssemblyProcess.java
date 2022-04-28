@@ -1,8 +1,8 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.TaskTypes.*;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +109,7 @@ public class CarAssemblyProcess {
    * @mutates | this
    */
   public void complete() {
-    carOrder.setCompletionTime(LocalDateTime.now());
+    carOrder.setCompletionTime((CustomTime.getInstance().customLocalDateTimeNow()));
     carOrder.setPending(false);
   }
 

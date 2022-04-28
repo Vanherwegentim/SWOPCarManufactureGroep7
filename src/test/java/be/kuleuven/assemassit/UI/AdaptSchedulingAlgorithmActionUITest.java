@@ -13,14 +13,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PerformAssemblyTasksActionUITest {
-
-  /**
-   * The withHour has to be change every hour to work because of the error in the estimatedTime algorithm
-   */
+public class AdaptSchedulingAlgorithmActionUITest {
 
   @Test
-  public void PerformAssemblyTasksUseCaseTest() throws IOException {
+  public void AdaptSchedulingAlgorithmActionUITest() throws IOException {
 
     LocalDateTime localDateTimeNow = LocalDateTime.now();
     LocalDateTime actualDate = LocalDateTime.now();
@@ -35,7 +31,7 @@ public class PerformAssemblyTasksActionUITest {
       actualDate = actualDate.plusDays(1).withHour(10).withMinute(0);
     }
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'at' H:mm");
-    String str = Files.readString(Path.of("src/test/resources/PerformAssemblyTasksActionUITest.txt"));
+    String str = Files.readString(Path.of("src/test/resources/AdaptSchedulingAlgorithmActionUITest.txt"));
     Pattern p = Pattern.compile("%date%", Pattern.CASE_INSENSITIVE);
     Matcher m = p.matcher(str);
     String result = m.replaceAll(actualDate.format(formatter));
@@ -44,5 +40,4 @@ public class PerformAssemblyTasksActionUITest {
 
     TextUITestScriptRunner.runTestScript(is);
   }
-
 }

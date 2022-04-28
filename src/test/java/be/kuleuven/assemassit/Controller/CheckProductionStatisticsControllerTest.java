@@ -1,10 +1,10 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,7 @@ public class CheckProductionStatisticsControllerTest {
     when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1.0);
     when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1.0);
     when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1.0);
-    when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of(LocalDate.now(), 1));
+    when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of((CustomTime.getInstance().customLocalDateNow()), 1));
 
   }
 
@@ -67,7 +67,7 @@ public class CheckProductionStatisticsControllerTest {
 
   @Test
   public void last2DelaysToStringTest() {
-    String expected = "The last 2 delays were at:" + System.lineSeparator() + LocalDate.now() + System.lineSeparator() + "and were this long:" + System.lineSeparator() + mockedAssemblyLine.last2Delays().get(LocalDate.now()) + System.lineSeparator();
+    String expected = "The last 2 delays were at:" + System.lineSeparator() + (CustomTime.getInstance().customLocalDateNow()) + System.lineSeparator() + "and were this long:" + System.lineSeparator() + mockedAssemblyLine.last2Delays().get((CustomTime.getInstance().customLocalDateNow())) + System.lineSeparator();
     String actual = controller.last2DelaysToString();
     assertEquals(expected, actual);
 
