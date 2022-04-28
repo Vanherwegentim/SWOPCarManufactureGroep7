@@ -439,11 +439,4 @@ public class AssemblyLineTest {
     assertEquals(List.of(), assemblyLine.getObservers());
   }
 
-  void moveCreateOvertime() {
-
-
-    assemblyLine.move(LocalTime.of(23, 59), 10);
-    assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
-  }
-
 }
