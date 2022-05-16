@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,47 +29,22 @@ public class CheckProductionStatisticsControllerTest {
 
   }
 
-
   @Test
-  public void averageCarsInADayToStringTest() {
-    String expected = "The average amount cars made in a day are: 1.0";
-    String actual = controller.averageCarsInADayToString();
-    assertEquals(expected, actual);
+  public void getStatisticsTest() {
+    String expected = "CAR STATISTICS:" + System.lineSeparator() +
+      "The average amount cars made in a day are: 1.0" + System.lineSeparator() +
+      "The median amount of cars made in a day are: 2.5" + System.lineSeparator() +
+      "The exact amount of cars made in the last 2 days are: 1.0" + System.lineSeparator() +
+      System.lineSeparator() +
+      "DELAY STATISTICS:" + System.lineSeparator() +
+      "The average delay at the moment is: 1.0" + System.lineSeparator() +
+      "The median delay at the moment is: 1.0" + System.lineSeparator() +
+      "The last 2 delays were at:" + System.lineSeparator() +
+      "1999-08-29" + System.lineSeparator() +
+      "and were this long:" + System.lineSeparator() +
+      "1" + System.lineSeparator();
+    String actual = controller.getStatistics();
+    assertTrue(actual.equals(expected));
   }
 
-  @Test
-  public void medianCarsInADayToStringTest() {
-    String expected = "The median amount of cars made in a day are: 2.5";
-    String actual = controller.medianCarsInADayToString();
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void exactCarsIn2DaystoStringTest() {
-    String expected = "The exact amount of cars made in the last 2 days are: 1.0";
-    String actual = controller.exactCarsIn2DaystoString();
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void averageDelayPerOrderToStringTest() {
-    String expected = "The average delay at the moment is: 1.0";
-    String actual = controller.averageDelayPerOrderToString();
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void medianDelayPerOrderToStringTest() {
-    String expected = "The median delay at the moment is: 1.0";
-    String actual = controller.medianDelayPerOrderToString();
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  public void last2DelaysToStringTest() {
-    String expected = "The last 2 delays were at:" + System.lineSeparator() + (CustomTime.getInstance().customLocalDateNow()) + System.lineSeparator() + "and were this long:" + System.lineSeparator() + mockedAssemblyLine.last2Delays().get((CustomTime.getInstance().customLocalDateNow())) + System.lineSeparator();
-    String actual = controller.last2DelaysToString();
-    assertEquals(expected, actual);
-
-  }
 }

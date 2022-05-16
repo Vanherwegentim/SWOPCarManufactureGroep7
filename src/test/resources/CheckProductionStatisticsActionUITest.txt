@@ -361,19 +361,13 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >-1: Logout and go back
 <1
 >CAR STATISTICS:
->
 >The average amount cars made in a day are: 1.0
->
 >The median amount of cars made in a day are: 1.0
->
 >The exact amount of cars made in the last 2 days are: 0.0
 >
 >DELAY STATISTICS:
->
 >The average delay at the moment is: 2.0
->
 >The median delay at the moment is: 2.0
->
 >The last 2 delays were at:
 >1999-08-29
 >and were this long:
