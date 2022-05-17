@@ -1,6 +1,7 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
+import be.kuleuven.assemassit.Domain.ProductionStatistics;
 
 public class ControllerFactoryManagerState extends ControllerFactoryState {
 
@@ -12,7 +13,7 @@ public class ControllerFactoryManagerState extends ControllerFactoryState {
   }
 
   public CheckProductionStatisticsController createCheckProductionStatisticsController(AssemblyLine assemblyLine) {
-    return new CheckProductionStatisticsController(assemblyLine);
+    return new CheckProductionStatisticsController(new ProductionStatistics(assemblyLine.getFinishedCars()));
   }
 
 

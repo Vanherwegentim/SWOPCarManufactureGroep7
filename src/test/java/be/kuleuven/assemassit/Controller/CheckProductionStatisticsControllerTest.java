@@ -1,31 +1,31 @@
 package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
+import be.kuleuven.assemassit.Domain.ProductionStatistics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CheckProductionStatisticsControllerTest {
   private CheckProductionStatisticsController controller;
-  private AssemblyLine mockedAssemblyLine;
+  private ProductionStatistics productionStatistics;
 
 
   @BeforeEach
   public void beforeEach() {
-    mockedAssemblyLine = mock(AssemblyLine.class);
-    controller = new CheckProductionStatisticsController(mockedAssemblyLine);
-    when(mockedAssemblyLine.averageCarsInADay()).thenReturn(1.0);
-    when(mockedAssemblyLine.medianCarsInADay()).thenReturn(2.5);
-    when(mockedAssemblyLine.exactCarsIn2Days()).thenReturn(1.0);
-    when(mockedAssemblyLine.averageDelayPerOrder()).thenReturn(1.0);
-    when(mockedAssemblyLine.medianDelayPerOrder()).thenReturn(1.0);
-    when(mockedAssemblyLine.last2Delays()).thenReturn(Map.of((CustomTime.getInstance().customLocalDateNow()), 1));
+    productionStatistics = mock(ProductionStatistics.class);
+    controller = new CheckProductionStatisticsController(productionStatistics);
+    when(productionStatistics.averageCarsInADay()).thenReturn(1.0);
+    when(productionStatistics.medianCarsInADay()).thenReturn(2.5);
+    when(productionStatistics.exactCarsIn2Days()).thenReturn(1.0);
+    when(productionStatistics.averageDelayPerOrder()).thenReturn(1.0);
+    when(productionStatistics.medianDelayPerOrder()).thenReturn(1.0);
+    when(productionStatistics.last2Delays()).thenReturn(Map.of((CustomTime.getInstance().customLocalDateNow()), 1));
 
   }
 
@@ -44,7 +44,7 @@ public class CheckProductionStatisticsControllerTest {
       "and were this long:" + System.lineSeparator() +
       "1" + System.lineSeparator();
     String actual = controller.getStatistics();
-    assertTrue(actual.equals(expected));
+    assertEquals(actual, expected);
   }
 
 }
