@@ -167,13 +167,10 @@ public class OrderNewCarControllerTest {
 
   @Test
   public void placeCarOrderTest_succeeds() {
+    when(mockedCarManufacturingCompany.designCarOrder(mockedGarageHolder, 0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER")).thenReturn(0);
+
+    when(mockedCarOrder.getCompletionTime()).thenReturn(LocalDateTime.of(1998, 12, 15, 15, 0));
     LocalDateTime time = orderNewCarController.placeCarOrderAndReturnEstimatedCompletionTime(0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
     assertEquals(LocalDateTime.of(1998, 12, 15, 12, 0), time);
   }
-
-  @Test
-  public void placeCarOrderTest_throws() {
-    assertThrows(IllegalArgumentException.class, () -> orderNewCarController.placeCarOrder(0, "", "", "", "", "", "", "", ""));
-  }
-
 }

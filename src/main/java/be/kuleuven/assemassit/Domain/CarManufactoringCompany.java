@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
@@ -158,6 +159,64 @@ public class CarManufactoringCompany implements Observer {
    */
   public LocalDateTime giveEstimatedCompletionDateOfLatestProcess() {
     return assemblyLine.giveEstimatedCompletionDateOfLatestProcess();
+  }
+
+  /**
+   * A new car order is made
+   *
+   * @param carModelId
+   * @param body
+   * @param color
+   * @param engine
+   * @param gearbox
+   * @param seats
+   * @param airco
+   * @param wheels
+   * @return the id of the newly created car order
+   * @throws IllegalStateException currentGarageHolder == null
+   * @throws IllegalArgumentException if there is a non-valid option provided
+   */
+  public int designCarOrder(GarageHolder currentGarageHolder, int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
+    if (currentGarageHolder == null)
+      throw new IllegalStateException();
+
+    CarModel carModel = giveCarModelWithId(carModelId);
+    Car car;
+
+    try {
+      car = new Car
+        (
+          carModel,
+          Body.valueOf(body),
+          Color.valueOf(color),
+          Engine.valueOf(engine),
+          Gearbox.valueOf(gearbox),
+          Seat.valueOf(seats),
+          Airco.valueOf(airco),
+          Wheel.valueOf(wheels),
+          Spoiler.valueOf(spoiler)
+        );
+    } catch (IllegalArgumentException e) {
+      if (e.getLocalizedMessage().startsWith("No enum constant")) {
+        throw new IllegalArgumentException("One or more invalid car options were provided");
+      }
+      throw new IllegalArgumentException(e.getMessage());
+    }
+
+    CarOrder carOrder = new CarOrder(car);
+    currentGarageHolder.addCarOrder(carOrder);
+
+    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+
+    addCarAssemblyProcess(carAssemblyProcess);
+    LocalDateTime estimatedCompletionTime = giveEstimatedCompletionDateOfLatestProcess();
+    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
+
+    if (isAssemblyLineAvailable()) {
+      triggerAutomaticFirstMove();
+    }
+
+    return carOrder.getId();
   }
 
   /**
