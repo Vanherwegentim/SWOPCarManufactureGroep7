@@ -25,6 +25,9 @@ public class AssemblyLineTime {
 
 
   public void update(int overtime) {
+    if (overtime < 0) {
+      throw new IllegalArgumentException("Overtime can not be lower than 0");
+    }
     this.overtime = overtime;
     this.overTimeRepository.setOverTime(overtime);
   }
@@ -70,9 +73,6 @@ public class AssemblyLineTime {
     return overtime;
   }
 
-  public void setOvertime(int overtime) {
-    this.overtime = overtime;
-  }
 
   public OvertimeRepository getOverTimeRepository() {
     return overTimeRepository;
