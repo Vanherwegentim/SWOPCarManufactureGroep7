@@ -44,6 +44,7 @@ public class ControllerFactoryTest {
 
   @Test
   public void logOutGarageHolderTest() {
+    controllerFactoryMiddleWare.loginGarageHolder(new GarageHolder(0, "Johny"));
     controllerFactoryMiddleWare.logoutGarageHolder();
     assertTrue(controllerFactoryMiddleWare.getLoggedInGarageHolder() == null);
     assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), (new ControllerFactoryMiddleWareLoginState()));

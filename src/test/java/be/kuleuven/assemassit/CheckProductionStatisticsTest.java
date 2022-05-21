@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.CheckProductionStatisticsController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +16,10 @@ public class CheckProductionStatisticsTest {
   @BeforeEach
   public void beforeEach() {
     assemblyLine = new AssemblyLine();
-    ControllerFactory controllerFactory = new ControllerFactory();
+    ControllerFactoryMiddleWare controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
     GarageHolder garageHolder = new GarageHolder(5, "yeet smith");
-    controllerFactory.loginManager();
-    controller = controllerFactory.createCheckProductionStatisticsController();
+    controllerFactoryMiddleWare.loginManager();
+    controller = controllerFactoryMiddleWare.createCheckProductionStatisticsController();
   }
 
   @Test

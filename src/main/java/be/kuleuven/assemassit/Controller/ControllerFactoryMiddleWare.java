@@ -18,6 +18,7 @@ public class ControllerFactoryMiddleWare {
   private CarManufactoringCompany carManufactoringCompany;
 
   public ControllerFactoryMiddleWare() {
+    this.assemblyLine = new AssemblyLine();
     this.controllerFactoryMiddleWareState = new ControllerFactoryMiddleWareLoginState();
     this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
   }
@@ -87,7 +88,7 @@ public class ControllerFactoryMiddleWare {
   }
 
   public void logoutGarageHolder() {
-    if (loggedInGarageHolder != null)
+    if (this.loggedInGarageHolder == null)
       throw new IllegalArgumentException("There is no garage holder logged in");
 
     this.loggedInGarageHolder = null;
