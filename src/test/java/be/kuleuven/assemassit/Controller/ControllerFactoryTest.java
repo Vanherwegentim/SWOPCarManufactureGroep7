@@ -8,162 +8,164 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ControllerFactoryTest {
-  private ControllerFactory controllerFactory;
+  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
   private GarageHolder garageHolder;
 
 
   @BeforeEach
   public void beforeEach() {
-    this.controllerFactory = new ControllerFactory();
+    this.controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
     this.garageHolder = new GarageHolder(0, "Joe Lamb");
 
   }
 
   @Test
   public void controllerTest() {
-    assertEquals(LocalTime.of(6, 0), controllerFactory.getCarManufactoringCompany().getOpeningTime());
-    assertEquals(LocalTime.of(22, 0), controllerFactory.getCarManufactoringCompany().getClosingTime());
+    assertEquals(LocalTime.of(6, 0), controllerFactoryMiddleWare.getCarManufactoringCompany().getOpeningTime());
+    assertEquals(LocalTime.of(22, 0), controllerFactoryMiddleWare.getCarManufactoringCompany().getClosingTime());
 
-    assertEquals(controllerFactory.getControllerFactoryState(), new ControllerFactoryLoginState());
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), new ControllerFactoryMiddleWareLoginState());
   }
 
   @Test
   public void loginGarageHolderTest() {
-    assertThrows(IllegalArgumentException.class, () -> controllerFactory.loginGarageHolder(null));
-    controllerFactory.loginGarageHolder(garageHolder);
-    assertEquals(controllerFactory.getLoggedInGarageHolder(), garageHolder);
-    assertEquals(controllerFactory.getControllerFactoryState(), new ControllerFactoryGarageHolderState());
+    assertThrows(IllegalArgumentException.class, () -> controllerFactoryMiddleWare.loginGarageHolder(null));
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
+    assertEquals(controllerFactoryMiddleWare.getLoggedInGarageHolder(), garageHolder);
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), new ControllerFactoryMiddleWareGarageHolderState());
 
 
   }
 
   @Test
   public void logOutGarageHolderTest() {
-    controllerFactory.logoutGarageHolder();
-    assertTrue(controllerFactory.getLoggedInGarageHolder() == null);
-    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryLoginState()));
+    controllerFactoryMiddleWare.logoutGarageHolder();
+    assertTrue(controllerFactoryMiddleWare.getLoggedInGarageHolder() == null);
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), (new ControllerFactoryMiddleWareLoginState()));
   }
 
   @Test
   public void loginManager() {
-    controllerFactory.loginManager();
-    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryManagerState()));
+    controllerFactoryMiddleWare.loginManager();
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), (new ControllerFactoryMiddleWareManagerState()));
   }
 
   @Test
   public void logOutManagerTest() {
-    controllerFactory.logoutManager();
-    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryLoginState()));
+    controllerFactoryMiddleWare.logoutManager();
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), (new ControllerFactoryMiddleWareLoginState()));
   }
 
   @Test
   public void loginCarMechanic() {
-    controllerFactory.loginCarMechanic();
-    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryCarMechanicState()));
+    controllerFactoryMiddleWare.loginCarMechanic();
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), (new ControllerFactoryMiddleWareCarMechanicState()));
   }
 
   @Test
   public void logOutCarMechanicTest() {
-    controllerFactory.logoutCarMechanic();
-    assertEquals(controllerFactory.getControllerFactoryState(), (new ControllerFactoryLoginState()));
+    controllerFactoryMiddleWare.logoutCarMechanic();
+    assertEquals(controllerFactoryMiddleWare.getControllerFactoryMiddleWareState(), (new ControllerFactoryMiddleWareLoginState()));
   }
 
   @Test
   public void createOrderNewCarControllerTest() {
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createOrderNewCarController());
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createOrderNewCarController());
 
-    controllerFactory.loginGarageHolder(garageHolder);
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
 
-    assertEquals("OrderNewCarController", controllerFactory.createOrderNewCarController().getClass().getSimpleName());
-    controllerFactory.logoutGarageHolder();
+    assertEquals("OrderNewCarController", controllerFactoryMiddleWare.createOrderNewCarController().getClass().getSimpleName());
+    controllerFactoryMiddleWare.logoutGarageHolder();
   }
 
   @Test
   public void createOrderNewCarControllerTest2() {
     CarManufactoringCompany carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine());
 
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder));
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createOrderNewCarController(carManufactoringCompany, garageHolder));
 
-    controllerFactory.loginGarageHolder(garageHolder);
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
 
-    assertEquals("OrderNewCarController", controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder).getClass().getSimpleName());
-    controllerFactory.logoutGarageHolder();
+    assertEquals("OrderNewCarController", controllerFactoryMiddleWare.createOrderNewCarController(carManufactoringCompany, garageHolder).getClass().getSimpleName());
+    controllerFactoryMiddleWare.logoutGarageHolder();
   }
 
   @Test
   public void createCheckOrderDetailsControllerTest() {
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckOrderDetailsController());
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createCheckOrderDetailsController());
 
-    controllerFactory.loginGarageHolder(garageHolder);
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
 
 
-    assertEquals("CheckOrderDetailsController", controllerFactory.createCheckOrderDetailsController().getClass().getSimpleName());
-    controllerFactory.logoutGarageHolder();
+    assertEquals("CheckOrderDetailsController", controllerFactoryMiddleWare.createCheckOrderDetailsController().getClass().getSimpleName());
+    controllerFactoryMiddleWare.logoutGarageHolder();
 
   }
 
   @Test
   public void createCheckAssemblyLineStatusControllerTest() {
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckAssemblyLineStatusController());
-    controllerFactory.loginCarMechanic();
-    assertEquals("CheckAssemblyLineStatusController", controllerFactory.createCheckAssemblyLineStatusController().getClass().getSimpleName());
-    assertTrue(controllerFactory.createCheckAssemblyLineStatusController() instanceof CheckAssemblyLineStatusController);
-    controllerFactory.logoutCarMechanic();
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createCheckAssemblyLineStatusController());
+    controllerFactoryMiddleWare.loginCarMechanic();
+    assertEquals("CheckAssemblyLineStatusController", controllerFactoryMiddleWare.createCheckAssemblyLineStatusController().getClass().getSimpleName());
+    assertTrue(controllerFactoryMiddleWare.createCheckAssemblyLineStatusController() instanceof CheckAssemblyLineStatusController);
+    controllerFactoryMiddleWare.logoutCarMechanic();
   }
 
   @Test
   public void createCheckProductionStatisticsControllerTest() {
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createCheckProductionStatisticsController());
-    controllerFactory.loginManager();
-    assertEquals("CheckProductionStatisticsController", controllerFactory.createCheckProductionStatisticsController().getClass().getSimpleName());
-    assertTrue(controllerFactory.createCheckProductionStatisticsController() instanceof CheckProductionStatisticsController);
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createCheckProductionStatisticsController());
+    controllerFactoryMiddleWare.loginManager();
+    assertEquals("CheckProductionStatisticsController", controllerFactoryMiddleWare.createCheckProductionStatisticsController().getClass().getSimpleName());
+    assertTrue(controllerFactoryMiddleWare.createCheckProductionStatisticsController() instanceof CheckProductionStatisticsController);
 
-    controllerFactory.logoutManager();
+    controllerFactoryMiddleWare.logoutManager();
   }
 
   @Test
   public void createPerformyAssemblyTasksController() {
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createPerformAssemblyTasksController());
-    controllerFactory.loginCarMechanic();
-    assertEquals("PerformAssemblyTasksController", controllerFactory.createPerformAssemblyTasksController().getClass().getSimpleName());
-    assertTrue(controllerFactory.createPerformAssemblyTasksController() instanceof PerformAssemblyTasksController);
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createPerformAssemblyTasksController());
+    controllerFactoryMiddleWare.loginCarMechanic();
+    assertEquals("PerformAssemblyTasksController", controllerFactoryMiddleWare.createPerformAssemblyTasksController().getClass().getSimpleName());
+    assertTrue(controllerFactoryMiddleWare.createPerformAssemblyTasksController() instanceof PerformAssemblyTasksController);
 
-    controllerFactory.logoutCarMechanic();
+    controllerFactoryMiddleWare.logoutCarMechanic();
   }
 
 
   @Test
   void giveLoggedInGarageHolderNameTest() {
-    controllerFactory.loginGarageHolder(garageHolder);
-    assertEquals(controllerFactory.giveLoggedInGarageHolderName(), "Joe Lamb");
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
+    assertEquals(controllerFactoryMiddleWare.giveLoggedInGarageHolderName(), "Joe Lamb");
 
   }
 
   @Test
   void createLoginControllerTest() {
-    controllerFactory.loginManager();
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createLoginController());
-    controllerFactory.logoutManager();
-    assertEquals("LoginController", controllerFactory.createLoginController().getClass().getSimpleName());
-    assertTrue(controllerFactory.createLoginController() instanceof LoginController);
+    controllerFactoryMiddleWare.loginManager();
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createLoginController());
+    controllerFactoryMiddleWare.logoutManager();
+    assertEquals("LoginController", controllerFactoryMiddleWare.createLoginController().getClass().getSimpleName());
+    assertTrue(controllerFactoryMiddleWare.createLoginController() instanceof LoginController);
 
   }
 
   @Test
   void createAdaptSchedulingAlgorithmControllerTest() {
-    assertThrows(IllegalStateException.class, () -> controllerFactory.createAdaptSchedulingAlgorithmController());
-    controllerFactory.loginManager();
-    assertEquals("AdaptSchedulingAlgorithmController", controllerFactory.createAdaptSchedulingAlgorithmController().getClass().getSimpleName());
-    assertTrue(controllerFactory.createAdaptSchedulingAlgorithmController() instanceof AdaptSchedulingAlgorithmController);
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createAdaptSchedulingAlgorithmController());
+    controllerFactoryMiddleWare.loginManager();
+    assertEquals("AdaptSchedulingAlgorithmController", controllerFactoryMiddleWare.createAdaptSchedulingAlgorithmController().getClass().getSimpleName());
+    assertTrue(controllerFactoryMiddleWare.createAdaptSchedulingAlgorithmController() instanceof AdaptSchedulingAlgorithmController);
 
-    controllerFactory.logoutManager();
+    controllerFactoryMiddleWare.logoutManager();
   }
 
   @Test
   void getAssemblyLineTest() {
-    assertEquals("AssemblyLine", controllerFactory.getAssemblyLine().getClass().getSimpleName());
+    assertEquals("AssemblyLine", controllerFactoryMiddleWare.getAssemblyLine().getClass().getSimpleName());
   }
 }

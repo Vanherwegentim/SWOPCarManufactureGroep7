@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit.UI;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.LoginController;
 import be.kuleuven.assemassit.UI.Actions.CarMechanicActions.CarMechanicActionsOverviewUI;
 import be.kuleuven.assemassit.UI.Actions.GarageHolderActions.GarageHolderActionsOverviewUI;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class LoginUI implements UI {
-  private final ControllerFactory controllerFactory;
+  private final ControllerFactoryMiddleWare controllerFactoryMiddleWare;
   private final LoginController loginController;
 
 
@@ -19,12 +19,12 @@ public class LoginUI implements UI {
   private final GarageHolderActionsOverviewUI garageHolderActionsOverviewUI;
 
   public LoginUI() {
-    this.controllerFactory = new ControllerFactory();
-    this.loginController = controllerFactory.createLoginController();
+    this.controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
+    this.loginController = controllerFactoryMiddleWare.createLoginController();
 
-    this.managerActionsOverviewUI = new ManagerActionsOverviewUI(this.controllerFactory);
-    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(this.controllerFactory);
-    this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.controllerFactory);
+    this.managerActionsOverviewUI = new ManagerActionsOverviewUI(this.controllerFactoryMiddleWare);
+    this.carMechanicActionsOverviewUI = new CarMechanicActionsOverviewUI(this.controllerFactoryMiddleWare);
+    this.garageHolderActionsOverviewUI = new GarageHolderActionsOverviewUI(this.controllerFactoryMiddleWare);
   }
 
   private Optional<Integer> displayGarageHolderForm(Map<Integer, String> garageHolders) {
@@ -70,11 +70,11 @@ public class LoginUI implements UI {
           this.garageHolderActionsOverviewUI.run();
         }
         case 2 -> {
-          controllerFactory.loginManager();
+          controllerFactoryMiddleWare.loginManager();
           this.managerActionsOverviewUI.run();
         }
         case 3 -> {
-          controllerFactory.loginCarMechanic();
+          controllerFactoryMiddleWare.loginCarMechanic();
           this.carMechanicActionsOverviewUI.run();
         }
       }

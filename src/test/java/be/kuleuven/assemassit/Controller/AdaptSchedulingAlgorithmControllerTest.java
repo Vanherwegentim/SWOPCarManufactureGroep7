@@ -15,24 +15,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AdaptSchedulingAlgorithmControllerTest {
   AssemblyLine assemblyLine = new AssemblyLine();
-  ControllerFactory controllerFactory = new ControllerFactory();
+  ControllerFactoryMiddleWare controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
   AdaptSchedulingAlgorithmController algorithmController;
   OrderNewCarController orderNewCarController;
 
   @BeforeEach
   public void beforeEach() {
     GarageHolder garageHolder = new GarageHolder(0, "Joe Lamb");
-    controllerFactory.loginGarageHolder(garageHolder);
-    orderNewCarController = controllerFactory.createOrderNewCarController();
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
+    orderNewCarController = controllerFactoryMiddleWare.createOrderNewCarController();
     //Add 1 extra placeCarOrder because one move is already executed when adding a CarOrder
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
     orderNewCarController.placeCarOrder(0, "BREAK", "RED", "STANDARD", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "MANUAL", "COMFORT", "NO_SPOILER");
 
-    controllerFactory.logoutGarageHolder();
-    controllerFactory.loginManager();
-    algorithmController = controllerFactory.createAdaptSchedulingAlgorithmController();
+    controllerFactoryMiddleWare.logoutGarageHolder();
+    controllerFactoryMiddleWare.loginManager();
+    algorithmController = controllerFactoryMiddleWare.createAdaptSchedulingAlgorithmController();
   }
 
   @Test

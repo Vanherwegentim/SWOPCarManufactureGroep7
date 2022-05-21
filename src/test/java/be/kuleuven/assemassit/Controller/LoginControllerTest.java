@@ -16,7 +16,7 @@ public class LoginControllerTest {
 
   private LoginController loginController;
   private GarageHolderRepository mockedGarageHolderRepository;
-  private ControllerFactory mockedControllerFactory;
+  private ControllerFactoryMiddleWare mockedControllerFactoryMiddleWare;
   private GarageHolder mockedGarageHolder;
 
   @BeforeEach
@@ -28,9 +28,9 @@ public class LoginControllerTest {
     mockedGarageHolderRepository = mock(GarageHolderRepository.class);
     when(mockedGarageHolderRepository.getGarageHolders()).thenReturn(Arrays.asList(mockedGarageHolder));
 
-    mockedControllerFactory = mock(ControllerFactory.class);
+    mockedControllerFactoryMiddleWare = mock(ControllerFactoryMiddleWare.class);
 
-    loginController = new LoginController(mockedGarageHolderRepository, mockedControllerFactory);
+    loginController = new LoginController(mockedGarageHolderRepository, mockedControllerFactoryMiddleWare);
   }
 
   @Test

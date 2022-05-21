@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,17 +19,17 @@ public class CheckOrderDetailsTest {
   int carOrderID1, carOrderID2, carOrderID3;
   private OrderNewCarController orderNewCarController;
   private CheckOrderDetailsController checkOrderDetailsController;
-  private ControllerFactory factory;
+  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
 
   @BeforeEach
   public void beforeEach() {
-    factory = new ControllerFactory();
+    controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
 
     // Precondition: The garage holder is successfully logged into the system.
-    factory.createLoginController().logInGarageHolder(0);
+    controllerFactoryMiddleWare.createLoginController().logInGarageHolder(0);
 
-    orderNewCarController = factory.createOrderNewCarController();
-    checkOrderDetailsController = factory.createCheckOrderDetailsController();
+    orderNewCarController = controllerFactoryMiddleWare.createOrderNewCarController();
+    checkOrderDetailsController = controllerFactoryMiddleWare.createCheckOrderDetailsController();
 
 
   }

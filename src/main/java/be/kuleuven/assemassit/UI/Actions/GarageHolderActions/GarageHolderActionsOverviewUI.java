@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions.GarageHolderActions;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.UI.Actions.CheckOrderDetailsActionUI;
 import be.kuleuven.assemassit.UI.Actions.OrderNewCarActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
@@ -8,10 +8,10 @@ import be.kuleuven.assemassit.UI.UI;
 
 public class GarageHolderActionsOverviewUI implements UI {
 
-  private final ControllerFactory controllerFactory;
+  private final ControllerFactoryMiddleWare controllerFactoryMiddleWare;
 
-  public GarageHolderActionsOverviewUI(ControllerFactory controllerFactory) {
-    this.controllerFactory = controllerFactory;
+  public GarageHolderActionsOverviewUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.controllerFactoryMiddleWare = controllerFactoryMiddleWare;
   }
 
   @Override
@@ -20,7 +20,7 @@ public class GarageHolderActionsOverviewUI implements UI {
     while (true) {
       int action;
 
-      String loggedInGarageHolderName = controllerFactory.giveLoggedInGarageHolderName();
+      String loggedInGarageHolderName = controllerFactoryMiddleWare.giveLoggedInGarageHolderName();
       IOCall.out();
       IOCall.out("Welcome " + loggedInGarageHolderName);
       IOCall.out("Please choose an action:");
@@ -30,10 +30,10 @@ public class GarageHolderActionsOverviewUI implements UI {
 
       action = IOCall.in();
       switch (action) {
-        case 1 -> new OrderNewCarActionUI(controllerFactory).run();
-        case 2 -> new CheckOrderDetailsActionUI(controllerFactory).run();
+        case 1 -> new OrderNewCarActionUI(controllerFactoryMiddleWare).run();
+        case 2 -> new CheckOrderDetailsActionUI(controllerFactoryMiddleWare).run();
         case -1 -> {
-          controllerFactory.logoutGarageHolder();
+          controllerFactoryMiddleWare.logoutGarageHolder();
           return;
         }
 

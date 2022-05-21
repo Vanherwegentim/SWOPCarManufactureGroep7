@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions.ManagerActions;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.UI.Actions.AdaptSchedulingAlgorithmActionUI;
 import be.kuleuven.assemassit.UI.Actions.CheckProductionStatisticsActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
@@ -8,10 +8,10 @@ import be.kuleuven.assemassit.UI.UI;
 
 public class ManagerActionsOverviewUI implements UI {
 
-  private final ControllerFactory controllerFactory;
+  private final ControllerFactoryMiddleWare controllerFactoryMiddleWare;
 
-  public ManagerActionsOverviewUI(ControllerFactory controllerFactory) {
-    this.controllerFactory = controllerFactory;
+  public ManagerActionsOverviewUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.controllerFactoryMiddleWare = controllerFactoryMiddleWare;
   }
 
   @Override
@@ -30,8 +30,8 @@ public class ManagerActionsOverviewUI implements UI {
       action = IOCall.in();
 
       switch (action) {
-        case 1 -> new CheckProductionStatisticsActionUI(controllerFactory).run();
-        case 2 -> new AdaptSchedulingAlgorithmActionUI(controllerFactory).run();
+        case 1 -> new CheckProductionStatisticsActionUI(controllerFactoryMiddleWare).run();
+        case 2 -> new AdaptSchedulingAlgorithmActionUI(controllerFactoryMiddleWare).run();
         case -1 -> {
           controllerFactory.logoutManager();
           return;
