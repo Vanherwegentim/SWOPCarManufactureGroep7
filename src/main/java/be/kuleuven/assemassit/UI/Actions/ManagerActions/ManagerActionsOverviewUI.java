@@ -33,7 +33,7 @@ public class ManagerActionsOverviewUI implements UI {
         case 1 -> new CheckProductionStatisticsActionUI(controllerFactoryMiddleWare).run();
         case 2 -> new AdaptSchedulingAlgorithmActionUI(controllerFactoryMiddleWare).run();
         case -1 -> {
-          controllerFactory.logoutManager();
+          controllerFactoryMiddleWare.logoutManager();
           return;
         }
       }

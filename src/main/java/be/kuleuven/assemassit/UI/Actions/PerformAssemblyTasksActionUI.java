@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit.UI.Actions;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
@@ -12,8 +12,8 @@ import java.util.Optional;
 public class PerformAssemblyTasksActionUI implements UI {
   private final PerformAssemblyTasksController performAssemblyTasksController;
 
-  public PerformAssemblyTasksActionUI(ControllerFactory controllerFactory) {
-    this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
+  public PerformAssemblyTasksActionUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.performAssemblyTasksController = controllerFactoryMiddleWare.createPerformAssemblyTasksController();
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {

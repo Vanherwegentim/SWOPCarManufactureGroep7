@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AdaptSchedulingAlgorithmController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
@@ -11,8 +11,8 @@ import java.util.Map;
 public class AdaptSchedulingAlgorithmActionUI implements UI {
   final AdaptSchedulingAlgorithmController algorithmController;
 
-  public AdaptSchedulingAlgorithmActionUI(ControllerFactory controllerFactory) {
-    algorithmController = controllerFactory.createAdaptSchedulingAlgorithmController();
+  public AdaptSchedulingAlgorithmActionUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    algorithmController = controllerFactoryMiddleWare.createAdaptSchedulingAlgorithmController();
   }
 
   @Override
