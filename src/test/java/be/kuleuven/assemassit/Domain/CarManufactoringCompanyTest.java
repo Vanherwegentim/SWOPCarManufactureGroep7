@@ -11,8 +11,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class CarManufactoringCompanyTest {
@@ -130,5 +134,20 @@ public class CarManufactoringCompanyTest {
     int repOT = company.getOverTimeRepository().getOverTime();
 
     assertEquals(companyOT, repOT);
+  }
+
+  @Test
+  public void designCarOrderOrderTest_succeeds() {
+    GarageHolder mockedGarageHolder = mock(GarageHolder.class);
+    CarOrder.resetIdRunner();
+    int carOrderId = carManufactoringCompany.designCarOrder(mockedGarageHolder, 0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
+    assertEquals(carOrderId, 0);
+  }
+
+  @Test
+  public void designCarOrderTest_throws() {
+    GarageHolder mockedGarageHolder = mock(GarageHolder.class);
+
+    assertThrows(IllegalArgumentException.class, () -> carManufactoringCompany.designCarOrder(mockedGarageHolder, 0, "", "", "", "", "", "", "", ""));
   }
 }
