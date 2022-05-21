@@ -12,17 +12,6 @@ public class ControllerFactoryMiddleWareManagerState extends ControllerFactoryMi
     return new CheckProductionStatisticsController(assemblyLine);
   }
 
-  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
-    //return new AdaptSchedulingAlgorithmController(assemblyLine);
-    return null;
-  }
-
-  public CheckProductionStatisticsController createCheckProductionStatisticsController() {
-    //return new CheckProductionStatisticsController(assemblyLine);
-    return null;
-  }
-
-
   @Override
   public boolean equals(Object o) {
     return o instanceof ControllerFactoryMiddleWareManagerState;

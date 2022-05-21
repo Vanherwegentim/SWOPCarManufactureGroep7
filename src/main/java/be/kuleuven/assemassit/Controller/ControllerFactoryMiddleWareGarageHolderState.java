@@ -13,16 +13,6 @@ public class ControllerFactoryMiddleWareGarageHolderState extends ControllerFact
     return new OrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
   }
 
-  public CheckOrderDetailsController createCheckOrderDetailsController() {
-    //return new CheckOrderDetailsController(loggedInGarageHolder);
-    return null;
-  }
-
-  public OrderNewCarController createOrderNewCarController() {
-    //return new OrderNewCarController(carManufactoringCompany, loggedInGarageHolder);
-    return null;
-  }
-
   @Override
   public boolean equals(Object o) {
     return o instanceof ControllerFactoryMiddleWareGarageHolderState;

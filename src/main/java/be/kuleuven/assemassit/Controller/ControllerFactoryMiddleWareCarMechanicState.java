@@ -13,16 +13,6 @@ public class ControllerFactoryMiddleWareCarMechanicState extends ControllerFacto
     return new PerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
   }
 
-  public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
-    //return new CheckAssemblyLineStatusController(assemblyLine);
-    return null;
-  }
-
-  public PerformAssemblyTasksController createPerformAssemblyTasksController() {
-    //return new PerformAssemblyTasksController(assemblyLine, carManufactoringCompany);
-    return null;
-  }
-
   @Override
   public boolean equals(Object o) {
     return o instanceof ControllerFactoryMiddleWareCarMechanicState;
