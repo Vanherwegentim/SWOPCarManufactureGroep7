@@ -3,6 +3,7 @@ package be.kuleuven.assemassit.Controller;
 import be.kuleuven.assemassit.Domain.AssemblyLine;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.GarageHolder;
+import be.kuleuven.assemassit.Domain.ProductionStatistics;
 import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 import java.time.LocalTime;
@@ -106,20 +107,11 @@ public class ControllerFactory {
   /**
    * Generate an instance of the checkProductionStatisticsController
    *
-   * @return a new instance of the checkProductionStatisticsController
-   */
-  public CheckProductionStatisticsController createCheckProductionStatisticsController() {
-    return new CheckProductionStatisticsController(assemblyLine);
-  }
-
-  /**
-   * Generate an instance of the checkProductionStatisticsController
-   *
    * @param assemblyLine The assembly line instance that should be used for creating the controller
    * @return a new instance of the checkProductionStatisticsController
    */
   public CheckProductionStatisticsController createCheckProductionStatisticsController(AssemblyLine assemblyLine) {
-    return new CheckProductionStatisticsController(assemblyLine);
+    return new CheckProductionStatisticsController(new ProductionStatistics(assemblyLine.getFinishedCars()));
   }
 
   /**
