@@ -4,7 +4,6 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
-import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
  * @invar | this.giveSchedulingAlgorithmNames() != null
  * @invar | this.getObservers() != null
  */
-public class AssemblyLine implements Subject {
+public class AssemblyLine implements Observer {
 
   /**
    * @invar | carBodyPost != null
@@ -60,7 +59,6 @@ public class AssemblyLine implements Subject {
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
-  private final List<Observer> observers;
   private AssemblyLineTime assemblyLineTime;
   /**
    * @representationObject
@@ -85,7 +83,7 @@ public class AssemblyLine implements Subject {
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
-    this.observers = new ArrayList<>();
+//    this.observers = new ArrayList<>();
     this.assemblyLineTime = new AssemblyLineTime();
   }
 
@@ -698,25 +696,11 @@ public class AssemblyLine implements Subject {
   }
 
 
-  //Observer for first move
-  public List<Observer> getObservers() {
-    return observers;
-  }
-
   @Override
-  public void attach(Observer observer) {
-    this.observers.add(observer);
-  }
-
-  @Override
-  public void detach(Observer observer) {
-    this.observers.remove(observer);
-  }
-
-  @Override
-  public void notifyObservers(Object value) {
-    for (Observer observer : observers) {
-      observer.update(this, value);
+  public void update(Object observable, Object value) {
+    if (observable instanceof CarManufactoringCompany && value instanceof CarOrder) {
+      if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.getOpeningTime()) && this.canMove())
+        this.move(this.getClosingTime(), this.getOverTime());
     }
   }
 }

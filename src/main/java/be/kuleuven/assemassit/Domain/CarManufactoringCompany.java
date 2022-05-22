@@ -3,11 +3,13 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
+import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +23,10 @@ import java.util.Optional;
  * | (getOpeningTime() != null && getClosingTime() != null) || getOpeningTime().isBefore(getClosingTime())
  * @invar | getOvertime() >= 0
  */
-public class CarManufactoringCompany implements Observer {
+public class CarManufactoringCompany implements Subject {
+
+  private final List<Observer> observers;
+
   /**
    * @invar | carModels != null
    * @invar | assemblyLine != null
@@ -90,6 +95,8 @@ public class CarManufactoringCompany implements Observer {
 
 
 //    this.assemblyLine.attach(this);
+    this.observers = new ArrayList<>();
+
   }
 
   public AssemblyLine getAssemblyLine() {
@@ -201,6 +208,8 @@ public class CarManufactoringCompany implements Observer {
       triggerAutomaticFirstMove();
     }
 
+    notifyObservers(carOrder);
+
     return carOrder.getId();
   }
 
@@ -228,16 +237,29 @@ public class CarManufactoringCompany implements Observer {
     return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
   }
 
+  //Observer for first move
+  public List<Observer> getObservers() {
+    return observers;
+  }
+
   @Override
-  public void update(Object observable, Object value) {
-    if (observable instanceof AssemblyLine && value instanceof Integer) {
-      Integer overtime = (Integer) value;
-      this.overtime = overtime;
-      this.overTimeRepository.setOverTime(overtime);
+  public void attach(Observer observer) {
+    this.observers.add(observer);
+  }
+
+  @Override
+  public void detach(Observer observer) {
+    this.observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers(Object value) {
+    for (Observer observer : observers) {
+      observer.update(this, value);
     }
   }
-}
 
+}
 //  @Override
 //  public void update(Object observable, Object value) {
 //    if (observable instanceof AssemblyLine && value instanceof Integer) {

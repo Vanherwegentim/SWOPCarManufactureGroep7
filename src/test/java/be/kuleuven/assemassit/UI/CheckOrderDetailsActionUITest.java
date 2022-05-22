@@ -13,6 +13,7 @@ public class CheckOrderDetailsActionUITest {
   @Test
   public void CheckProductionStatisticsUseCase() throws IOException {
     String str = Files.readString(Path.of("src/test/resources/CheckOrderDetailsActionUITest.txt"));
+    System.out.println(str);
     InputStream is = new ByteArrayInputStream(str.getBytes());
     TextUITestScriptRunner.runTestScript(is);
   }
