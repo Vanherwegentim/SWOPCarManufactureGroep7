@@ -235,9 +235,9 @@ public class CarManufactoringCompany implements Observer {
    * @mutates | this
    */
   public void triggerAutomaticFirstMove(int manufacturingDurationInMinutes) {
-    if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime)
+    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.openingTime))
       && assemblyLine.canMove()
-      && !CustomTime.getInstance().customLocalTimeNow().isAfter(this.openingTime.minusMinutes(this.overtime).minusMinutes(manufacturingDurationInMinutes)))
+      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.closingTime.minusMinutes(this.overtime).minusMinutes(manufacturingDurationInMinutes))))
       this.moveAssemblyLine();
   }
 
