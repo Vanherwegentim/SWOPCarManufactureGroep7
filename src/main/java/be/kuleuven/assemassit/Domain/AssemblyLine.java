@@ -4,6 +4,7 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
+import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  * @invar | this.giveSchedulingAlgorithmNames() != null
  * @invar | this.getObservers() != null
  */
-public class AssemblyLine {
+public class AssemblyLine implements Subject {
 
   /**
    * @invar | carBodyPost != null
@@ -696,25 +697,27 @@ public class AssemblyLine {
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
   }
 
-//  public List<Observer> getObservers() {
-//    return observers;
-//  }
-//
-//  @Override
-//  public void attach(Observer observer) {
-//    this.observers.add(observer);
-//  }
-//
-//  @Override
-//  public void detach(Observer observer) {
-//    this.observers.remove(observer);
-//  }
-//
-//  @Override
-//  public void notifyObservers(Object value) {
-//    for (Observer observer : observers) {
-//      observer.update(this, value);
-//    }
-//  }
+
+  //Observer for first move
+  public List<Observer> getObservers() {
+    return observers;
+  }
+
+  @Override
+  public void attach(Observer observer) {
+    this.observers.add(observer);
+  }
+
+  @Override
+  public void detach(Observer observer) {
+    this.observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers(Object value) {
+    for (Observer observer : observers) {
+      observer.update(this, value);
+    }
+  }
 }
 

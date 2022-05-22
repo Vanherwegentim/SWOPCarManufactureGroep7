@@ -2,6 +2,7 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
+import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
@@ -20,7 +21,7 @@ import java.util.Optional;
  * | (getOpeningTime() != null && getClosingTime() != null) || getOpeningTime().isBefore(getClosingTime())
  * @invar | getOvertime() >= 0
  */
-public class CarManufactoringCompany {
+public class CarManufactoringCompany implements Observer {
   /**
    * @invar | carModels != null
    * @invar | assemblyLine != null
@@ -157,7 +158,7 @@ public class CarManufactoringCompany {
    * @param airco
    * @param wheels
    * @return the id of the newly created car order
-   * @throws IllegalStateException currentGarageHolder == null
+   * @throws IllegalStateException    currentGarageHolder == null
    * @throws IllegalArgumentException if there is a non-valid option provided
    */
   public int designCarOrder(GarageHolder currentGarageHolder, int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
@@ -227,6 +228,16 @@ public class CarManufactoringCompany {
     return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
   }
 
+  @Override
+  public void update(Object observable, Object value) {
+    if (observable instanceof AssemblyLine && value instanceof Integer) {
+      Integer overtime = (Integer) value;
+      this.overtime = overtime;
+      this.overTimeRepository.setOverTime(overtime);
+    }
+  }
+}
+
 //  @Override
 //  public void update(Object observable, Object value) {
 //    if (observable instanceof AssemblyLine && value instanceof Integer) {
@@ -243,4 +254,3 @@ public class CarManufactoringCompany {
 //  public int getOvertime() {
 //    return overtime;
 //  }
-}
