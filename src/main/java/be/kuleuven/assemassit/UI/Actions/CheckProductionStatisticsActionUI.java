@@ -1,20 +1,20 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.CheckProductionStatisticsController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
 public class CheckProductionStatisticsActionUI implements UI {
-  private final ControllerFactory controllerFactory;
+  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
 
-  public CheckProductionStatisticsActionUI(ControllerFactory controllerFactory) {
-    this.controllerFactory = controllerFactory;
+  public CheckProductionStatisticsActionUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.controllerFactoryMiddleWare = controllerFactoryMiddleWare;
   }
 
   @Override
   public void run() {
-    CheckProductionStatisticsController checkProductionStatisticsController = controllerFactory.createCheckProductionStatisticsController();
+    CheckProductionStatisticsController checkProductionStatisticsController = controllerFactoryMiddleWare.createCheckProductionStatisticsController();
 
     IOCall.out(checkProductionStatisticsController.getStatistics());
 

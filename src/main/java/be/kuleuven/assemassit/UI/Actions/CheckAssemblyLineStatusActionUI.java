@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
@@ -11,11 +11,11 @@ import java.util.List;
 
 public class CheckAssemblyLineStatusActionUI implements UI {
 
-  private final ControllerFactory controllerFactory;
+  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
   private CheckAssemblyLineStatusController checkAssemblyLineStatusController;
 
-  public CheckAssemblyLineStatusActionUI(ControllerFactory controllerFactory) {
-    this.controllerFactory = controllerFactory;
+  public CheckAssemblyLineStatusActionUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.controllerFactoryMiddleWare = controllerFactoryMiddleWare;
   }
 
   private static void displayStatus(HashMap<String, List<String>> status) {
@@ -37,7 +37,7 @@ public class CheckAssemblyLineStatusActionUI implements UI {
   @Override
   public void run() {
 
-    this.checkAssemblyLineStatusController = controllerFactory.createCheckAssemblyLineStatusController();
+    this.checkAssemblyLineStatusController = controllerFactoryMiddleWare.createCheckAssemblyLineStatusController();
 
 
     IOCall.out();

@@ -1,21 +1,21 @@
 package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.UI.IOCall;
 
 import java.util.List;
 import java.util.Optional;
 
 public class CheckOrderDetailsActionUI {
-  private final ControllerFactory controllerFactory;
+  private final ControllerFactoryMiddleWare controllerFactoryMiddleWare;
 
-  public CheckOrderDetailsActionUI(ControllerFactory controllerFactory) {
-    this.controllerFactory = controllerFactory;
+  public CheckOrderDetailsActionUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.controllerFactoryMiddleWare = controllerFactoryMiddleWare;
   }
 
   public void run() {
-    CheckOrderDetailsController checkOrderDetailsController = controllerFactory.createCheckOrderDetailsController();
+    CheckOrderDetailsController checkOrderDetailsController = controllerFactoryMiddleWare.createCheckOrderDetailsController();
 
     int choice;
 
