@@ -11,12 +11,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 public class CarManufactoringCompanyTest {
@@ -117,7 +114,7 @@ public class CarManufactoringCompanyTest {
     CarAssemblyProcess process = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
     company.addCarAssemblyProcess(process);
     assertTrue(company.isAssemblyLineAvailable());
-    company.triggerAutomaticFirstMove();
+    company.triggerAutomaticFirstMove(process.giveManufacturingDurationInMinutes());
     assertFalse(company.isAssemblyLineAvailable());
   }
 

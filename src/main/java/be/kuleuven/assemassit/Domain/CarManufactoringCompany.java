@@ -173,7 +173,7 @@ public class CarManufactoringCompany implements Observer {
    * @param airco
    * @param wheels
    * @return the id of the newly created car order
-   * @throws IllegalStateException currentGarageHolder == null
+   * @throws IllegalStateException    currentGarageHolder == null
    * @throws IllegalArgumentException if there is a non-valid option provided
    */
   public int designCarOrder(GarageHolder currentGarageHolder, int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
@@ -213,7 +213,7 @@ public class CarManufactoringCompany implements Observer {
     carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
 
     if (isAssemblyLineAvailable()) {
-      triggerAutomaticFirstMove();
+      triggerAutomaticFirstMove(carAssemblyProcess.giveManufacturingDurationInMinutes());
     }
 
     return carOrder.getId();
@@ -234,8 +234,10 @@ public class CarManufactoringCompany implements Observer {
    * @inspects | this
    * @mutates | this
    */
-  public void triggerAutomaticFirstMove() {
-    if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime) && assemblyLine.canMove())
+  public void triggerAutomaticFirstMove(int manufacturingDurationInMinutes) {
+    if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime)
+      && assemblyLine.canMove()
+      && !CustomTime.getInstance().customLocalTimeNow().isAfter(this.openingTime.minusMinutes(this.overtime).minusMinutes(manufacturingDurationInMinutes)))
       this.moveAssemblyLine();
   }
 
