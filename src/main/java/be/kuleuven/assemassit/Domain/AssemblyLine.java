@@ -4,10 +4,10 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.Observer;
-import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
+import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @invar | this.giveSchedulingAlgorithmNames() != null
  * @invar | this.getObservers() != null
  */
-public class AssemblyLine implements Subject {
+public class AssemblyLine {
 
   /**
    * @invar | carBodyPost != null
@@ -41,31 +41,26 @@ public class AssemblyLine implements Subject {
    * @representationObject
    */
   private final WorkPost carBodyPost;
-
   /**
    * @representationObject
    */
   private final WorkPost drivetrainPost;
-
   /**
    * @representationObject
    */
   private final WorkPost accessoriesPost;
-
   /**
    * @representationObject
    * @representationObjects
    */
   private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
-
   /**
    * @representationObject
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
   private final List<Observer> observers;
-  private LocalTime startTime;
-  private LocalTime endTime;
+  private AssemblyLineTime assemblyLineTime;
   /**
    * @representationObject
    */
@@ -90,6 +85,7 @@ public class AssemblyLine implements Subject {
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
     this.observers = new ArrayList<>();
+    this.assemblyLineTime = new AssemblyLineTime();
   }
 
   public WorkPost getCarBodyPost() {
@@ -104,41 +100,28 @@ public class AssemblyLine implements Subject {
     return this.accessoriesPost;
   }
 
-  public LocalTime getStartTime() {
-    return startTime;
+  public LocalTime getOpeningTime() {
+    return assemblyLineTime.getOpeningTime();
   }
 
-  /**
-   * Sets the start time of the assembly line.
-   *
-   * @param startTime
-   * @throws IllegalArgumentException startTime can not be null | startTime == null
-   * @post | this.startTime == startTime
-   */
-  public void setStartTime(LocalTime startTime) {
-    if (startTime == null) {
-      throw new IllegalArgumentException("StartTime can not be null");
-    }
-    this.startTime = startTime;
+  public void setOpeningTime(LocalTime openingTime) {
+    this.assemblyLineTime.setOpeningTime(openingTime);
   }
 
-  public LocalTime getEndTime() {
-    return endTime;
+  public LocalTime getClosingTime() {
+    return assemblyLineTime.getClosingTime();
   }
 
-  /**
-   * Sets the end time of the assembly line.
-   * This is always set by the car manufacturing company and is not outside of the opening hours of the company.
-   *
-   * @param endTime
-   * @throws IllegalArgumentException endTime can not be null | endTime == null
-   * @post | this.endTime == endTime
-   */
-  public void setEndTime(LocalTime endTime) {
-    if (endTime == null) {
-      throw new IllegalArgumentException("EndTime can not be null");
-    }
-    this.endTime = endTime;
+  public void setClosingTime(LocalTime closingTime) {
+    this.assemblyLineTime.setClosingTime(closingTime);
+  }
+
+  public OvertimeRepository getOvertimeRepository() {
+    return this.assemblyLineTime.getOverTimeRepository();
+  }
+
+  public int getOverTime() {
+    return this.assemblyLineTime.getOvertime();
   }
 
   /**
@@ -218,6 +201,10 @@ public class AssemblyLine implements Subject {
   public List<AssemblyTask> giveFinishedAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.giveFinishedAssemblyTasks();
+  }
+
+  public AssemblyLineTime getAssemblyLineTime() {
+    return assemblyLineTime;
   }
 
   /**
@@ -402,7 +389,8 @@ public class AssemblyLine implements Subject {
 
     if (newOvertime > 0) {
       // overtime happened so we have to inform the car manufacturing company
-      notifyObservers(newOvertime);
+//      notifyObservers(newOvertime);
+      assemblyLineTime.update(newOvertime);
     }
   }
 
@@ -421,8 +409,8 @@ public class AssemblyLine implements Subject {
       .giveEstimatedDeliveryTime(
         this.carAssemblyProcessesQueue,
         this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration() * 3,
-        this.endTime,
-        this.startTime,
+        this.assemblyLineTime.getClosingTime(),
+        this.assemblyLineTime.getOpeningTime(),
         this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration()
       );
   }
@@ -708,25 +696,25 @@ public class AssemblyLine implements Subject {
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
   }
 
-  public List<Observer> getObservers() {
-    return observers;
-  }
-
-  @Override
-  public void attach(Observer observer) {
-    this.observers.add(observer);
-  }
-
-  @Override
-  public void detach(Observer observer) {
-    this.observers.remove(observer);
-  }
-
-  @Override
-  public void notifyObservers(Object value) {
-    for (Observer observer : observers) {
-      observer.update(this, value);
-    }
-  }
+//  public List<Observer> getObservers() {
+//    return observers;
+//  }
+//
+//  @Override
+//  public void attach(Observer observer) {
+//    this.observers.add(observer);
+//  }
+//
+//  @Override
+//  public void detach(Observer observer) {
+//    this.observers.remove(observer);
+//  }
+//
+//  @Override
+//  public void notifyObservers(Object value) {
+//    for (Observer observer : observers) {
+//      observer.update(this, value);
+//    }
+//  }
 }
 
