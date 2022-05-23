@@ -117,53 +117,6 @@ public class AssemblyLineTest {
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
   }
 
-  @Test
-  public void createCarsPerDayMapTest() {
-    extraSetup();
-    assertEquals(Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcess3.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
-
-  }
-
-  @Test
-  public void averageCarsInADayTest() {
-    extraSetup();
-    assertEquals(assemblyLine.averageCarsInADay(), 2.5);
-  }
-
-  @Test
-  public void averageCarsInADayTest2() {
-    assertEquals(assemblyLine.averageCarsInADay(), 0);
-  }
-
-
-  @Test
-  public void medianCarsInADayTest() {
-    extraSetup();
-    assertEquals(2.5, assemblyLine.medianCarsInADay());
-  }
-
-  @Test
-  public void exactCarsIn2DaysTest() {
-    extraSetup();
-    assertEquals(2.0, assemblyLine.exactCarsIn2Days());
-  }
-
-  @Test
-  public void averageDelayPerOrderTest() {
-    extraSetup();
-    assertEquals(1.2, assemblyLine.averageDelayPerOrder());
-  }
-
-  @Test
-  public void medianDelayPerOrderTest() {
-    assertEquals(0, assemblyLine.medianDelayPerOrder());
-  }
-
-  @Test
-  public void last2DelaysTest() {
-    extraSetup();
-    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 0));
-  }
 
   @Test
   public void givePossibleBatchCars_ReturnsBatch() {

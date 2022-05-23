@@ -5,7 +5,8 @@ import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
 import be.kuleuven.assemassit.Domain.GarageHolder;
 import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
-public abstract class ControllerFactoryState {
+public abstract class ControllerFactoryMiddleWareState {
+
   public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
     throw new IllegalStateException();
   }
@@ -30,7 +31,35 @@ public abstract class ControllerFactoryState {
     throw new IllegalStateException();
   }
 
-  public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
+  public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    throw new IllegalStateException();
+  }
+
+  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
+    throw new IllegalStateException();
+  }
+
+  public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
+    throw new IllegalStateException();
+  }
+
+  public CheckOrderDetailsController createCheckOrderDetailsController() {
+    throw new IllegalStateException();
+  }
+
+  public OrderNewCarController createOrderNewCarController() {
+    throw new IllegalStateException();
+  }
+
+  public PerformAssemblyTasksController createPerformAssemblyTasksController() {
+    throw new IllegalStateException();
+  }
+
+  public CheckProductionStatisticsController createCheckProductionStatisticsController() {
+    throw new IllegalStateException();
+  }
+
+  public LoginController createLoginController() {
     throw new IllegalStateException();
   }
 

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 
 public class CarManufactoringCompanyTest {
@@ -112,9 +113,31 @@ public class CarManufactoringCompanyTest {
     CarAssemblyProcess process = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
     company.addCarAssemblyProcess(process);
     assertTrue(company.isAssemblyLineAvailable());
-    company.triggerAutomaticFirstMove();
+    company.triggerAutomaticFirstMove(process.giveManufacturingDurationInMinutes());
     assertFalse(company.isAssemblyLineAvailable());
   }
 
 
+
+    assertEquals(overTimeRepository.getOverTime(), 88);
+    int companyOT = company.getOvertime();
+    int repOT = company.getOverTimeRepository().getOverTime();
+
+    assertEquals(companyOT, repOT);
+  }
+
+  @Test
+  public void designCarOrderOrderTest_succeeds() {
+    GarageHolder mockedGarageHolder = mock(GarageHolder.class);
+    CarOrder.resetIdRunner();
+    int carOrderId = carManufactoringCompany.designCarOrder(mockedGarageHolder, 0, "BREAK", "BLACK", "PERFORMANCE", "FIVE_SPEED_MANUAL", "LEATHER_BLACK", "AUTOMATIC", "COMFORT", "NO_SPOILER");
+    assertEquals(carOrderId, 0);
+  }
+
+  @Test
+  public void designCarOrderTest_throws() {
+    GarageHolder mockedGarageHolder = mock(GarageHolder.class);
+
+    assertThrows(IllegalArgumentException.class, () -> carManufactoringCompany.designCarOrder(mockedGarageHolder, 0, "", "", "", "", "", "", "", ""));
+  }
 }

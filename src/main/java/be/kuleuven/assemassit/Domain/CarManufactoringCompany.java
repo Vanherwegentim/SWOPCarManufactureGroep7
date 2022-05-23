@@ -1,5 +1,6 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
@@ -144,6 +145,64 @@ public class CarManufactoringCompany {
   }
 
   /**
+   * A new car order is made
+   *
+   * @param carModelId
+   * @param body
+   * @param color
+   * @param engine
+   * @param gearbox
+   * @param seats
+   * @param airco
+   * @param wheels
+   * @return the id of the newly created car order
+   * @throws IllegalStateException    currentGarageHolder == null
+   * @throws IllegalArgumentException if there is a non-valid option provided
+   */
+  public int designCarOrder(GarageHolder currentGarageHolder, int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
+    if (currentGarageHolder == null)
+      throw new IllegalStateException();
+
+    CarModel carModel = giveCarModelWithId(carModelId);
+    Car car;
+
+    try {
+      car = new Car
+        (
+          carModel,
+          Body.valueOf(body),
+          Color.valueOf(color),
+          Engine.valueOf(engine),
+          Gearbox.valueOf(gearbox),
+          Seat.valueOf(seats),
+          Airco.valueOf(airco),
+          Wheel.valueOf(wheels),
+          Spoiler.valueOf(spoiler)
+        );
+    } catch (IllegalArgumentException e) {
+      if (e.getLocalizedMessage().startsWith("No enum constant")) {
+        throw new IllegalArgumentException("One or more invalid car options were provided");
+      }
+      throw new IllegalArgumentException(e.getMessage());
+    }
+
+    CarOrder carOrder = new CarOrder(car);
+    currentGarageHolder.addCarOrder(carOrder);
+
+    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+
+    addCarAssemblyProcess(carAssemblyProcess);
+    LocalDateTime estimatedCompletionTime = giveEstimatedCompletionDateOfLatestProcess();
+    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
+
+    if (isAssemblyLineAvailable()) {
+      triggerAutomaticFirstMove(carAssemblyProcess.giveManufacturingDurationInMinutes());
+    }
+
+    return carOrder.getId();
+  }
+
+  /**
    * Move the assembly line forward if possible
    *
    * @mutates | this
@@ -158,8 +217,12 @@ public class CarManufactoringCompany {
    * @inspects | this
    * @mutates | this
    */
-  public void triggerAutomaticFirstMove() {
-    if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.assemblyLine.getOpeningTime()) && assemblyLine.canMove())
+
+  public void triggerAutomaticFirstMove(int manufacturingDurationInMinutes) {
+    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.openingTime))
+      && assemblyLine.canMove()
+      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.closingTime.minusMinutes(this.overtime).minusMinutes(manufacturingDurationInMinutes))))
+
       this.moveAssemblyLine();
   }
 

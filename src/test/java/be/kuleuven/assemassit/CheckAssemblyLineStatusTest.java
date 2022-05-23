@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.CheckAssemblyLineStatusController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Domain.*;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
@@ -27,11 +27,12 @@ public class CheckAssemblyLineStatusTest {
 
   @BeforeEach
   public void beforeEach() {
-    ControllerFactory controllerFactory = new ControllerFactory();
-    controllerFactory.loginCarMechanic();
-    controller = controllerFactory.createCheckAssemblyLineStatusController();
+    ControllerFactoryMiddleWare controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
+    controllerFactoryMiddleWare.loginCarMechanic();
+    controller = controllerFactoryMiddleWare.createCheckAssemblyLineStatusController();
     fifoScheduling = new FIFOScheduling();
-    assemblyLine = controllerFactory.getAssemblyLine();
+
+    assemblyLine = controllerFactoryMiddleWare.getAssemblyLine();
     assemblyLine.setClosingTime(LocalTime.of(22, 0));
     assemblyLine.setOpeningTime(LocalTime.of(6, 0));
     carAssemblyProcess1 = new CarAssemblyProcess(
