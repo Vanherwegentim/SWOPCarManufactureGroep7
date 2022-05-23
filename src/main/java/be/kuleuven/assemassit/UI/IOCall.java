@@ -35,6 +35,7 @@ public class IOCall {
     getScanner().nextLine();
   }
 
+
   private static Scanner getScanner() {
     if (input == null)
       input = new Scanner(System.in);

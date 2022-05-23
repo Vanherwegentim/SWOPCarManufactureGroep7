@@ -155,8 +155,17 @@ public class OrderNewCarActionUI implements UI {
                 IOCall.out("The estimated completion date for the order is: " + estimatedCompletionDate.format(formatter));
 
                 IOCall.out();
-                IOCall.out("Press ENTER to continue...");
-                IOCall.waitForConfirmation();
+                int one = 0;
+                do {
+                  try {
+                    IOCall.out("Press 1 to continue...");
+                    one = IOCall.in();
+                  } catch (InputMismatchException | UIException ex) {
+                    IOCall.out("ERROR, only integers are allowed here!");
+                    IOCall.next();
+                  }
+                } while (one != 1);
+
                 choice2 = -1;
 
               } catch (IllegalArgumentException e) {

@@ -50,8 +50,16 @@ public class CheckOrderDetailsActionUI {
             IOCall.out(carOrder.get());
 
             // 4. The user indicates he is finished viewing the details.
-            IOCall.out("Press ENTER to continue...");
-            IOCall.waitForConfirmation();
+            int one = 0;
+            do {
+              try {
+                IOCall.out("Press 1 to continue...");
+                one = IOCall.in();
+              } catch (InputMismatchException | UIException ex) {
+                IOCall.out("ERROR, only integers are allowed here!");
+                IOCall.next();
+              }
+            } while (one != 1);
           }
         }
         // Alternate flow: The user indicates he wants to view another order.

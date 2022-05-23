@@ -133,8 +133,8 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >
 >The estimated completion date for the order is: 29/08/1999
 >
->Press ENTER to continue...
-<\n
+>Press 1 to continue...
+<1
 >
 >Welcome Louis Brooks
 >Please choose an action:
