@@ -118,14 +118,6 @@ public class CarManufactoringCompanyTest {
   }
 
 
-
-    assertEquals(overTimeRepository.getOverTime(), 88);
-    int companyOT = company.getOvertime();
-    int repOT = company.getOverTimeRepository().getOverTime();
-
-    assertEquals(companyOT, repOT);
-  }
-
   @Test
   public void designCarOrderOrderTest_succeeds() {
     GarageHolder mockedGarageHolder = mock(GarageHolder.class);

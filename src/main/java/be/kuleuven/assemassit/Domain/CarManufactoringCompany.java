@@ -219,9 +219,9 @@ public class CarManufactoringCompany {
    */
 
   public void triggerAutomaticFirstMove(int manufacturingDurationInMinutes) {
-    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.openingTime))
+    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.assemblyLine.getOpeningTime()))
       && assemblyLine.canMove()
-      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.closingTime.minusMinutes(this.overtime).minusMinutes(manufacturingDurationInMinutes))))
+      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.assemblyLine.getClosingTime().minusMinutes(this.assemblyLine.getOverTime()).minusMinutes(manufacturingDurationInMinutes))))
 
       this.moveAssemblyLine();
   }
