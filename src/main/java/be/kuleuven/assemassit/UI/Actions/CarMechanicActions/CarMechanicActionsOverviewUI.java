@@ -1,10 +1,13 @@
 package be.kuleuven.assemassit.UI.Actions.CarMechanicActions;
 
 import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
+import be.kuleuven.assemassit.Exceptions.UIException;
 import be.kuleuven.assemassit.UI.Actions.CheckAssemblyLineStatusActionUI;
 import be.kuleuven.assemassit.UI.Actions.PerformAssemblyTasksActionUI;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
+
+import java.util.InputMismatchException;
 
 public class CarMechanicActionsOverviewUI implements UI {
 
@@ -18,24 +21,30 @@ public class CarMechanicActionsOverviewUI implements UI {
   public void run() {
 
     while (true) {
-      int action;
+      try {
+        int action;
 
-      IOCall.out();
-      IOCall.out("Welcome Mechanic");
-      IOCall.out("Please choose an action:");
-      IOCall.out(" 1: Perform assembly task");
-      IOCall.out(" 2: Check assembly line status");
-      IOCall.out("-1: Logout and go back");
+        IOCall.out();
+        IOCall.out("Welcome Mechanic");
+        IOCall.out("Please choose an action:");
+        IOCall.out(" 1: Perform assembly task");
+        IOCall.out(" 2: Check assembly line status");
+        IOCall.out("-1: Logout and go back");
 
-      action = IOCall.in();
+        action = IOCall.in();
 
-      switch (action) {
-        case 1 -> new PerformAssemblyTasksActionUI(controllerFactoryMiddleWare).run();
-        case 2 -> new CheckAssemblyLineStatusActionUI(controllerFactoryMiddleWare).run();
-        case -1 -> {
-          controllerFactoryMiddleWare.logoutCarMechanic();
-          return;
+        switch (action) {
+          case 1 -> new PerformAssemblyTasksActionUI(controllerFactoryMiddleWare).run();
+          case 2 -> new CheckAssemblyLineStatusActionUI(controllerFactoryMiddleWare).run();
+          case -1 -> {
+            controllerFactoryMiddleWare.logoutCarMechanic();
+            return;
+          }
         }
+
+      } catch (InputMismatchException | UIException ex) {
+        IOCall.out("ERROR, only integers are allowed here!");
+        IOCall.next();
       }
     }
   }
