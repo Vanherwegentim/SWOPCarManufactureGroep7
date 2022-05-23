@@ -2,7 +2,6 @@ package be.kuleuven.assemassit.Domain;
 
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
-import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
@@ -21,7 +20,7 @@ import java.util.Optional;
  * | (getOpeningTime() != null && getClosingTime() != null) || getOpeningTime().isBefore(getClosingTime())
  * @invar | getOvertime() >= 0
  */
-public class CarManufactoringCompany implements Observer {
+public class CarManufactoringCompany {
   /**
    * @invar | carModels != null
    * @invar | assemblyLine != null
@@ -39,10 +38,6 @@ public class CarManufactoringCompany implements Observer {
    * @representationObject
    */
   private final AssemblyLine assemblyLine;
-  private final LocalTime openingTime;
-  private final LocalTime closingTime;
-  private final OvertimeRepository overTimeRepository;
-  private int overtime;
 
   /**
    * @param openingTime  the opening time of the factory
@@ -89,14 +84,10 @@ public class CarManufactoringCompany implements Observer {
 
     this.carModels = carModelRepository.getCarModels();
     this.assemblyLine = assemblyLine;
-    this.assemblyLine.setStartTime(openingTime);
-    this.assemblyLine.setEndTime(closingTime);
-    this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
-    this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
-    this.overTimeRepository = overTimeRepository;
-    this.overtime = overTimeRepository.getOverTime();
+    this.assemblyLine.setOpeningTime(openingTime);
+    this.assemblyLine.setClosingTime(closingTime);
 
-    this.assemblyLine.attach(this);
+
   }
 
   public AssemblyLine getAssemblyLine() {
@@ -109,14 +100,6 @@ public class CarManufactoringCompany implements Observer {
    */
   public List<CarModel> getCarModels() {
     return List.copyOf(carModels);
-  }
-
-  public LocalTime getOpeningTime() {
-    return openingTime;
-  }
-
-  public LocalTime getClosingTime() {
-    return closingTime;
   }
 
   /**
@@ -225,7 +208,7 @@ public class CarManufactoringCompany implements Observer {
    * @mutates | this
    */
   public void moveAssemblyLine() {
-    this.assemblyLine.move(this.closingTime, this.overtime);
+    this.assemblyLine.move(this.assemblyLine.getClosingTime(), this.assemblyLine.getOverTime());
   }
 
   /**
@@ -234,10 +217,12 @@ public class CarManufactoringCompany implements Observer {
    * @inspects | this
    * @mutates | this
    */
+
   public void triggerAutomaticFirstMove(int manufacturingDurationInMinutes) {
-    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.openingTime))
+    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.assemblyLine.getOpeningTime()))
       && assemblyLine.canMove()
-      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.closingTime.minusMinutes(this.overtime).minusMinutes(manufacturingDurationInMinutes))))
+      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.assemblyLine.getClosingTime().minusMinutes(this.assemblyLine.getOverTime()).minusMinutes(manufacturingDurationInMinutes))))
+
       this.moveAssemblyLine();
   }
 
@@ -245,20 +230,5 @@ public class CarManufactoringCompany implements Observer {
     return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
   }
 
-  @Override
-  public void update(Object observable, Object value) {
-    if (observable instanceof AssemblyLine && value instanceof Integer) {
-      Integer overtime = (Integer) value;
-      this.overtime = overtime;
-      this.overTimeRepository.setOverTime(overtime);
-    }
-  }
 
-  public OvertimeRepository getOverTimeRepository() {
-    return overTimeRepository;
-  }
-
-  public int getOvertime() {
-    return overtime;
-  }
 }

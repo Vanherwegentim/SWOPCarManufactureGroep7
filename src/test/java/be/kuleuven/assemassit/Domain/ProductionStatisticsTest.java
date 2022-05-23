@@ -23,8 +23,8 @@ public class ProductionStatisticsTest {
   @BeforeEach
   public void beforeEach() {
     this.assemblyLine = new AssemblyLine();
-    assemblyLine.setStartTime(LocalTime.of(6, 0));
-    assemblyLine.setEndTime(LocalTime.of(22, 0));
+    assemblyLine.setOpeningTime(LocalTime.of(6, 0));
+    assemblyLine.setClosingTime(LocalTime.of(22, 0));
     carAssemblyProcess1 = new CarAssemblyProcess(
       new CarOrder(
         new Car(

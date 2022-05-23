@@ -32,8 +32,8 @@ public class AssemblyLineTest {
   @BeforeEach
   public void beforeEach() {
     this.assemblyLine = new AssemblyLine();
-    assemblyLine.setStartTime(LocalTime.of(6, 0));
-    assemblyLine.setEndTime(LocalTime.of(22, 0));
+    assemblyLine.setOpeningTime(LocalTime.of(6, 0));
+    assemblyLine.setClosingTime(LocalTime.of(22, 0));
     carAssemblyProcess1 = new CarAssemblyProcess(
       new CarOrder(
         new Car(
@@ -144,37 +144,20 @@ public class AssemblyLineTest {
     assertEquals(List.of("FIFOScheduling", "SpecificationBatchScheduling"), assemblyLine.giveSchedulingAlgorithmNames());
   }
 
-  @Test
-  public void detach() {
-    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
-    assemblyLine.attach(company);
-    assemblyLine.detach(company);
-    assertEquals(List.of(), assemblyLine.getObservers());
-  }
-
-  @Test
-  public void notifyObservers() {
-    CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-    assemblyLine.attach(company);
-    assemblyLine.notifyObservers(3);
-    assertEquals(3, company.getOvertime());
-    assertEquals(3, company.getOverTimeRepository().getOverTime());
-    company.getOverTimeRepository().clearFile();
-  }
 
   @Test
   public void setStartTime() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setStartTime(null));
-    assemblyLine.setStartTime(LocalTime.of(6, 0));
-    assertEquals(LocalTime.of(6, 0), assemblyLine.getStartTime());
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setOpeningTime(null));
+    assemblyLine.setOpeningTime(LocalTime.of(6, 0));
+    assertEquals(LocalTime.of(6, 0), assemblyLine.getOpeningTime());
 
   }
 
   @Test
   public void setEndTime() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setEndTime(null));
-    assemblyLine.setStartTime(LocalTime.of(22, 0));
-    assertEquals(LocalTime.of(22, 0), assemblyLine.getEndTime());
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setClosingTime(null));
+    assemblyLine.setClosingTime(LocalTime.of(22, 0));
+    assertEquals(LocalTime.of(22, 0), assemblyLine.getClosingTime());
   }
 
   @Test
@@ -341,6 +324,7 @@ public class AssemblyLineTest {
     assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
     assemblyLine.move(LocalTime.of(23, 59), 10);
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
+
   }
 
   @Test
@@ -391,12 +375,12 @@ public class AssemblyLineTest {
     assertEquals(List.of(carAssemblyProcess1), assemblyLine.getFinishedCars());
   }
 
-  @Test
-  void attach() {
-    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
-    assemblyLine.attach(company);
-    assemblyLine.detach(company);
-    assertEquals(List.of(), assemblyLine.getObservers());
-  }
+//  @Test
+//  void attach() {
+//    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
+//    assemblyLine.attach(company);
+//    assemblyLine.detach(company);
+//    assertEquals(List.of(), assemblyLine.getObservers());
+//  }
 
 }

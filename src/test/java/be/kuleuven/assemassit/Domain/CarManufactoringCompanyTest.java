@@ -3,7 +3,6 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,8 +67,8 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void constructorTest() {
-    assertEquals(carManufactoringCompany.getOpeningTime(), this.openingTime);
-    assertEquals(carManufactoringCompany.getClosingTime(), this.closingTime);
+    assertEquals(assemblyLine.getOpeningTime(), this.openingTime);
+    assertEquals(assemblyLine.getClosingTime(), this.closingTime);
     for (CarAssemblyProcess carAssemblyProcess : carManufactoringCompany.getAssemblyLine().getCarAssemblyProcessesQueue()) {
       assertTrue(assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess));
     }
@@ -79,8 +78,8 @@ public class CarManufactoringCompanyTest {
   public void constructorTest2() {
     CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, openingTime, closingTime, assemblyLine);
 
-    assertEquals(company.getOpeningTime(), this.openingTime);
-    assertEquals(company.getClosingTime(), this.closingTime);
+    assertEquals(assemblyLine.getOpeningTime(), this.openingTime);
+    assertEquals(assemblyLine.getClosingTime(), this.closingTime);
     for (CarAssemblyProcess carAssemblyProcess : company.getAssemblyLine().getCarAssemblyProcessesQueue()) {
       assertTrue(assemblyLine.getCarAssemblyProcessesQueue().contains(carAssemblyProcess));
     }
@@ -118,20 +117,6 @@ public class CarManufactoringCompanyTest {
     assertFalse(company.isAssemblyLineAvailable());
   }
 
-  @Test
-  void update() {
-    LocalTime time = (CustomTime.getInstance().customLocalTimeNow());
-    AssemblyLine line = new AssemblyLine();
-    OvertimeRepository overTimeRepository = new OvertimeRepository();
-    CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, overTimeRepository, time.minusHours(1), time.plusHours(15), line);
-    company.update(line, 88);
-
-    assertEquals(overTimeRepository.getOverTime(), 88);
-    int companyOT = company.getOvertime();
-    int repOT = company.getOverTimeRepository().getOverTime();
-
-    assertEquals(companyOT, repOT);
-  }
 
   @Test
   public void designCarOrderOrderTest_succeeds() {
