@@ -24,8 +24,8 @@ public class ControllerFactoryTest {
 
   @Test
   public void controllerTest() {
-//    assertEquals(LocalTime.of(6, 0), controllerFactory.getCarManufactoringCompany().getOpeningTime());
-//    assertEquals(LocalTime.of(22, 0), controllerFactory.getCarManufactoringCompany().getClosingTime());
+    assertEquals(LocalTime.of(6, 0), controllerFactory.getAssemblyLine().getOpeningTime());
+    assertEquals(LocalTime.of(22, 0), controllerFactory.getAssemblyLine().getClosingTime());
 
     assertEquals(controllerFactory.getControllerFactoryState(), new ControllerFactoryLoginState());
   }

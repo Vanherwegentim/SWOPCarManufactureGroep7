@@ -191,23 +191,6 @@ public class AssemblyLineTest {
     assertEquals(List.of("FIFOScheduling", "SpecificationBatchScheduling"), assemblyLine.giveSchedulingAlgorithmNames());
   }
 
-//  @Test
-//  public void detach() {
-//    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
-//    assemblyLine.attach(company);
-//    assemblyLine.detach(company);
-//    assertEquals(List.of(), assemblyLine.getObservers());
-//  }
-
-//  @Test
-//  public void notifyObservers() {
-//    CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-////    assemblyLine.attach(company);
-////    assemblyLine.notifyObservers(3);
-//    assertEquals(3, assemblyLine.getOverTime());
-//    assertEquals(3, assemblyLine.getOvertimeRepository().getOverTime());
-//    assemblyLine.getOvertimeRepository().clearFile();
-//  }
 
   @Test
   public void setStartTime() {
@@ -388,6 +371,7 @@ public class AssemblyLineTest {
     assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
     assemblyLine.move(LocalTime.of(23, 59), 10);
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
+
   }
 
   @Test

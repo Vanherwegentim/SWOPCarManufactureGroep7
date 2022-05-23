@@ -116,18 +116,5 @@ public class CarManufactoringCompanyTest {
     assertFalse(company.isAssemblyLineAvailable());
   }
 
-//  @Test
-//  void update() {
-//    LocalTime time = (CustomTime.getInstance().customLocalTimeNow());
-//    AssemblyLine line = new AssemblyLine();
-//    OvertimeRepository overTimeRepository = new OvertimeRepository();
-//    CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, overTimeRepository, time.minusHours(1), time.plusHours(15), line);
-//    company.update(line, 88);
-//
-//    assertEquals(overTimeRepository.getOverTime(), 88);
-//    int companyOT = company.getOvertime();
-//    int repOT = company.getOverTimeRepository().getOverTime();
-//
-//    assertEquals(companyOT, repOT);
-//  }
+
 }
