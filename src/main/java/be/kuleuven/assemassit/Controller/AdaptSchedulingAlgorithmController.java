@@ -20,7 +20,7 @@ public class AdaptSchedulingAlgorithmController {
   private Map<Integer, List<CarOption>> mapOfCarOptions;
 
   /**
-   * @param assemblyLine
+   * @param assemblyLine The current assembly line of the program
    * @throws IllegalArgumentException | assemblyLine == null
    * @mutates | this
    * @post | getAssemblyLine().equals(assemblyLine)
