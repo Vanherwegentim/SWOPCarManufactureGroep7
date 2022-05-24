@@ -44,7 +44,7 @@ public class ControllerFactoryMiddleWare {
   }
 
   public LoginController createLoginController() {
-    return controllerFactoryMiddleWareState.createLoginController(new GarageHolderRepository(), this);
+    return createLoginController(new GarageHolderRepository());
   }
 
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository) {
