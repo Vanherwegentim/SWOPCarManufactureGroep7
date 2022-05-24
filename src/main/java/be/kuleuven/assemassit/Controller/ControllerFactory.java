@@ -8,8 +8,8 @@ import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 public class ControllerFactory {
 
-  public LoginController createLoginController(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
-    return new LoginController(new GarageHolderRepository(), controllerFactoryMiddleWare);
+  public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    return new LoginController(garageHolderRepository, controllerFactoryMiddleWare);
   }
 
   /**

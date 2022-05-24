@@ -7,6 +7,12 @@ import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 public abstract class ControllerFactoryMiddleWareState {
 
+  protected ControllerFactory factory;
+
+  public ControllerFactoryMiddleWareState() {
+    this.factory = new ControllerFactory();
+  }
+
   public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
     throw new IllegalStateException();
   }
