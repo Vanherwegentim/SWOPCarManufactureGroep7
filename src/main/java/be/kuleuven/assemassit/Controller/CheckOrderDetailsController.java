@@ -9,15 +9,24 @@ import java.util.stream.Collectors;
 
 public class CheckOrderDetailsController {
 
+  /**
+   * @invar logged in garage holder can not bu null | loggedInGarageHolder != null
+   */
   private final GarageHolder loggedInGarageHolder;
 
   /**
    * @throws IllegalStateException loggedInGarageHolder is null | loggedInGarageHolder == null
+   * @mutates | this
+   * @post | getLoggedInGarageHolder().equals(loggedInGarageHolder)
    */
   public CheckOrderDetailsController(GarageHolder loggedInGarageHolder) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
     this.loggedInGarageHolder = loggedInGarageHolder;
+  }
+
+  protected GarageHolder getLoggedInGarageHolder() {
+    return this.loggedInGarageHolder;
   }
 
   /**
@@ -56,6 +65,12 @@ public class CheckOrderDetailsController {
       .collect(Collectors.toList());
   }
 
+  /**
+   * Returns the order details of a given orderId
+   *
+   * @param orderId the ID of the order
+   * @return a list of order details from the order with given orderId
+   */
   public Optional<String> giveOrderDetails(int orderId) {
 
     Optional<CarOrder> order = loggedInGarageHolder.findCarOrder(orderId);
@@ -145,6 +160,12 @@ public class CheckOrderDetailsController {
   }
 
 
+  /**
+   * Give the name of the logged in garage holder
+   *
+   * @return the name of the logged in garage holder
+   * @inspects | this.loggedInGarageHolder
+   */
   public String giveLoggedInGarageHolderName() {
     return loggedInGarageHolder.getName();
   }
