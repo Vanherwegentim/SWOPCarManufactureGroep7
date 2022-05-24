@@ -21,8 +21,8 @@ public class AdaptSchedulingAlgorithmController {
 
   /**
    * @param assemblyLine The current assembly line of the program
-   * @throws IllegalArgumentException | assemblyLine == null
    * @mutates | this
+   * @pre assemblyLine can not be null | assemblyLine != null
    * @post | getAssemblyLine().equals(assemblyLine)
    */
   protected AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
