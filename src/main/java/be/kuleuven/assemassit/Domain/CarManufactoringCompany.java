@@ -50,21 +50,7 @@ public class CarManufactoringCompany {
    * @post | this.getAssemblyLine.equals(assemblyLine)
    */
   public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    this(new CarModelRepository(), new OvertimeRepository(), openingTime, closingTime, assemblyLine);
-  }
-
-  /**
-   * @param openingTime  the opening time of the factory
-   * @param closingTime  the closing time of the factory
-   * @param assemblyLine the assembly line that the factory will be using
-   * @throws IllegalArgumentException some parameters are null | (openingTime == null || closingTime == null || assemblyLine == null)
-   * @mutates | this
-   * @post | openingTime.getHour() == this.openingTime.getHour()
-   * @post | closingTime.getHour() == this.closingTime.getHour()
-   * @post | this.getAssemblyLine().equals(assemblyLine)
-   */
-  public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    this(carModelRepository, new OvertimeRepository(), openingTime, closingTime, assemblyLine);
+    this(new CarModelRepository(), openingTime, closingTime, assemblyLine);
   }
 
   /**
@@ -78,7 +64,7 @@ public class CarManufactoringCompany {
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.assemblyLine.equals(assemblyLine)
    */
-  public CarManufactoringCompany(CarModelRepository carModelRepository, OvertimeRepository overTimeRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
+  public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
     if (openingTime == null || closingTime == null || assemblyLine == null || carModelRepository == null)
       throw new IllegalArgumentException("The parameters can not be null");
 
@@ -86,8 +72,6 @@ public class CarManufactoringCompany {
     this.assemblyLine = assemblyLine;
     this.assemblyLine.setOpeningTime(openingTime);
     this.assemblyLine.setClosingTime(closingTime);
-
-
   }
 
   public AssemblyLine getAssemblyLine() {
@@ -229,6 +213,4 @@ public class CarManufactoringCompany {
   public boolean isAssemblyLineAvailable() {
     return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
   }
-
-
 }

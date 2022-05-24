@@ -19,7 +19,7 @@ public class AssemblyLineTime {
 
   public AssemblyLineTime(LocalTime openingTime, LocalTime closingTime, OvertimeRepository overTimeRepository) {
     this.openingTime = openingTime;
-    this.closingTime = LocalTime.of(22, 0);
+    this.closingTime = closingTime;
     this.overTimeRepository = overTimeRepository;
   }
 
