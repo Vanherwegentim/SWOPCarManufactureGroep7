@@ -10,13 +10,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class AdaptSchedulingAlgorithmController {
 
+  /**
+   * @invar | assemblyLine != null
+   */
   private final AssemblyLine assemblyLine;
   private Map<Integer, List<CarOption>> mapOfCarOptions;
 
+  /**
+   * @param assemblyLine
+   * @mutates | this
+   * @pre assemblyLine can not be null | assemblyLine != null
+   * @post | getAssemblyLine().equals(assemblyLine)
+   */
   protected AdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
     this.assemblyLine = assemblyLine;
+  }
+
+  protected AssemblyLine getAssemblyLine() {
+    return assemblyLine;
   }
 
   /**
@@ -45,6 +59,8 @@ public class AdaptSchedulingAlgorithmController {
    * this list is automatically generated
    *
    * @return map of possible batches
+   * @mutates | this.mapOfCarOptions
+   * @creates | result
    */
   public Map<Integer, List<String>> givePossibleBatches() {
     this.mapOfCarOptions = new HashMap<>();
@@ -65,6 +81,8 @@ public class AdaptSchedulingAlgorithmController {
 
   /**
    * Change the current scheduling algorithm to the FIFO algorithm
+   *
+   * @mutates | this.assemblyLine
    */
   public void changeAlgorithmToFIFO() {
     assemblyLine.setSchedulingAlgorithm(new FIFOScheduling());
@@ -75,6 +93,7 @@ public class AdaptSchedulingAlgorithmController {
    *
    * @param specificationId the id of the batch, this is necessary for the algorithm, this ID can be achieved by calling
    *                        the givePossibleBatches() method
+   * @inspects | this.mapOfCarOptions
    */
   public void changeAlgorithmToSpecificationBatch(int specificationId) {
 
