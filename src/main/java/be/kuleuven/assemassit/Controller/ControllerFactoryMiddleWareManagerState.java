@@ -1,16 +1,15 @@
 package be.kuleuven.assemassit.Controller;
 
 import be.kuleuven.assemassit.Domain.AssemblyLine;
-import be.kuleuven.assemassit.Domain.ProductionStatistics;
 
 public class ControllerFactoryMiddleWareManagerState extends ControllerFactoryMiddleWareState {
 
   public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
-    return new AdaptSchedulingAlgorithmController(assemblyLine);
+    return factory.createAdaptSchedulingAlgorithmController(assemblyLine);
   }
 
   public CheckProductionStatisticsController createCheckProductionStatisticsController(AssemblyLine assemblyLine) {
-    return new CheckProductionStatisticsController(new ProductionStatistics(assemblyLine.getFinishedCars()));
+    return factory.createCheckProductionStatisticsController(assemblyLine);
   }
 
   @Override
