@@ -18,9 +18,12 @@ public class ControllerFactoryMiddleWare {
   private CarManufactoringCompany carManufactoringCompany;
 
   public ControllerFactoryMiddleWare() {
-    this.assemblyLine = new AssemblyLine();
+
+    LocalTime openingTime = LocalTime.of(6, 0);
+    LocalTime closingTime = LocalTime.of(22, 0);
+    this.assemblyLine = new AssemblyLine(openingTime, closingTime);
     this.controllerFactoryMiddleWareState = new ControllerFactoryMiddleWareLoginState();
-    this.carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
+    this.carManufactoringCompany = new CarManufactoringCompany(assemblyLine);
   }
 
   protected ControllerFactoryMiddleWareState getControllerFactoryMiddleWareState() {
