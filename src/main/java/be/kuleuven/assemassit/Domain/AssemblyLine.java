@@ -3,7 +3,6 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
-import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
@@ -392,8 +391,7 @@ public class AssemblyLine {
       );
 
     if (newOvertime > 0) {
-      // overtime happened so we have to inform the car manufacturing company
-//      notifyObservers(newOvertime);
+      // Overtime happened so we have to inform the car manufacturing company
       assemblyLineTime.update(newOvertime);
     }
   }

@@ -61,7 +61,5 @@ public class CheckAssemblyLineStatusActionUI implements UI {
     IOCall.out(tasks);
 
 
-    // if we reach this point, the use case is done, java call stack will now return to the previous UI
-
   }
 }

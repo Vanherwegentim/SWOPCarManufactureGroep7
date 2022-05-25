@@ -32,7 +32,7 @@ public class CarManufactoringCompanyTest {
     this.openingTime = LocalTime.of(LocalTime.of(6, 0).getHour(), LocalTime.of(6, 0).getMinute());
     this.closingTime = LocalTime.of(LocalTime.of(22, 0).getHour(), LocalTime.of(22, 0).getMinute());
     this.assemblyLine = new AssemblyLine(openingTime, closingTime);
-    carManufactoringCompany = new CarManufactoringCompany( assemblyLine);
+    carManufactoringCompany = new CarManufactoringCompany(assemblyLine);
     carAssemblyProcess = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
 
     carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
@@ -41,11 +41,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void giveEstimatedCompletionDateOfLatestProcessTest() {
-    //todo: deze test werkt enkel overdag
-    // TODO: DONE this test should be rewritten, also, do no use equals with date; instead compare hour, minutes (and seconds)
-    // assertEquals(carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess(), (CustomTime.getInstance().customLocalDateTimeNow()).plusHours(3));
-    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - (CustomTime.getInstance().customLocalDateTimeNow()).plusHours(3).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
-    //assertTrue((carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - (CustomTime.getInstance().customLocalDateTimeNow()).plusHours(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < 1000));
+
     LocalDateTime localDateTimeNow = (CustomTime.getInstance().customLocalDateTimeNow());
     LocalDateTime expectedDate = (CustomTime.getInstance().customLocalDateTimeNow());
     LocalDateTime actual = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();

@@ -102,7 +102,6 @@ public class ProductionStatistics {
     return total;
   }
 
-  //Can a car be ready before it's estimated completion time? if so, add an if test
 
   /**
    * Returns the average of delays from all the car orders
