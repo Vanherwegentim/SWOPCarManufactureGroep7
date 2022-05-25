@@ -2,9 +2,11 @@ package be.kuleuven.assemassit.UI.Actions;
 
 import be.kuleuven.assemassit.Controller.AdaptSchedulingAlgorithmController;
 import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
+import be.kuleuven.assemassit.Exceptions.UIException;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,36 +19,40 @@ public class AdaptSchedulingAlgorithmActionUI implements UI {
 
   @Override
   public void run() {
-    IOCall.out("Active Algorithm:");
-    IOCall.out(algorithmController.giveCurrentSchedulingAlgorithmName());
-    IOCall.out();
-    IOCall.out("Available Algorithms:");
-    IOCall.out(" 1: " + algorithmController.giveSchedulingAlgorithmNames().get(0));
-    IOCall.out(" 2: " + algorithmController.giveSchedulingAlgorithmNames().get(1));
-    IOCall.out("-1: Quit");
 
-    IOCall.out("Please type the number of the algorithm of your choosing");
-    int algoNum;
+
+    int algoNum = 0;
     do {
-      algoNum = IOCall.in();
-
-    } while (!(algoNum == 1 || algoNum == 2 || algoNum == -1));
-    if (algoNum == -1) {
-      IOCall.out("Quitting...");
+      IOCall.out("Active Algorithm:");
+      IOCall.out(algorithmController.giveCurrentSchedulingAlgorithmName());
       IOCall.out();
-      IOCall.out();
+      IOCall.out("Available Algorithms:");
+      IOCall.out(" 1: " + algorithmController.giveSchedulingAlgorithmNames().get(0));
+      IOCall.out(" 2: " + algorithmController.giveSchedulingAlgorithmNames().get(1));
+      IOCall.out("-1: Quit");
+      IOCall.out("Please type the number of the algorithm of your choosing");
+      try {
+        algoNum = IOCall.in();
+        switch (algoNum) {
+          case 1 -> {
+            algorithmController.changeAlgorithmToFIFO();
+            IOCall.out("The scheduling algorithm has succesfully changed to FIFO Scheduling");
+          }
+          case 2 -> {
+            changeToSpecificationBatchScheduling();
+          }
+          case -1 -> {
+            IOCall.out("Quitting...");
+            IOCall.out();
+            IOCall.out();
+          }
+        }
+      } catch (InputMismatchException | UIException ex) {
+        IOCall.out("ERROR, only integers are allowed here!");
+        IOCall.next();
+      }
 
-
-    }
-    if (algoNum == 1) {
-      algorithmController.changeAlgorithmToFIFO();
-      IOCall.out("The scheduling algorithm has succesfully changed to FIFO Scheduling");
-    }
-    if (algoNum == 2) {
-      changeToSpecificationBatchScheduling();
-    }
-
-
+    } while (algoNum != -1);
   }
 
   public void changeToSpecificationBatchScheduling() {
