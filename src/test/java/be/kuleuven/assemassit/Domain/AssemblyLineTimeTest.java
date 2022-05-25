@@ -46,7 +46,7 @@ public class AssemblyLineTimeTest {
 
   @Test
   public void getOverTimeRepositoryTest() {
-    AssemblyLineTime assemblyLineTime1 = new AssemblyLineTime(LocalTime.of(6, 0), LocalTime.of(22, 00), overtimeRepository);
+    AssemblyLineTime assemblyLineTime1 = new AssemblyLineTime(LocalTime.of(6, 0), LocalTime.of(22, 0), overtimeRepository);
     assertEquals(overtimeRepository, assemblyLineTime1.getOverTimeRepository());
   }
 

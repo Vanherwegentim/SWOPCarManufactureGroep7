@@ -27,10 +27,14 @@ public class IOCall {
     }
   }
 
+  public static String next() {
+    return getScanner().nextLine();
+  }
+
   public static void waitForConfirmation() {
-    input = new Scanner(System.in);
     getScanner().nextLine();
   }
+
 
   private static Scanner getScanner() {
     if (input == null)

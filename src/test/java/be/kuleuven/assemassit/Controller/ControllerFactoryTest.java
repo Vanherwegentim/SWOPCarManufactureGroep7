@@ -87,7 +87,7 @@ public class ControllerFactoryTest {
 
   @Test
   public void createOrderNewCarControllerTest2() {
-    CarManufactoringCompany carManufactoringCompany = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), new AssemblyLine());
+    CarManufactoringCompany carManufactoringCompany = new CarManufactoringCompany(new AssemblyLine());
 
     assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createOrderNewCarController(carManufactoringCompany, garageHolder));
 
@@ -169,5 +169,10 @@ public class ControllerFactoryTest {
   @Test
   void getAssemblyLineTest() {
     assertEquals("AssemblyLine", controllerFactoryMiddleWare.getAssemblyLine().getClass().getSimpleName());
+  }
+
+  @Test
+  void getCarManufactoringCompany() {
+    assertEquals("CarManufactoringCompany", controllerFactoryMiddleWare.getCarManufactoringCompany().getClass().getSimpleName());
   }
 }

@@ -82,8 +82,8 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >        Seats: LEATHER_BLACK
 >        Spoiler: NO_SPOILER
 >
->Press ENTER to continue...
-<\n
+>Press 1 to continue...
+<1
 >
 >Orders placed by: Louis Brooks
 >Pending:

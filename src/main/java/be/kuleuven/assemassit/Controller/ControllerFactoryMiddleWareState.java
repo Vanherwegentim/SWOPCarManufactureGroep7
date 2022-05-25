@@ -7,6 +7,12 @@ import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 public abstract class ControllerFactoryMiddleWareState {
 
+  protected ControllerFactory factory;
+
+  public ControllerFactoryMiddleWareState() {
+    this.factory = new ControllerFactory();
+  }
+
   public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController(AssemblyLine assemblyLine) {
     throw new IllegalStateException();
   }
@@ -34,35 +40,7 @@ public abstract class ControllerFactoryMiddleWareState {
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
     throw new IllegalStateException();
   }
-
-  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
-    throw new IllegalStateException();
-  }
-
-  public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
-    throw new IllegalStateException();
-  }
-
-  public CheckOrderDetailsController createCheckOrderDetailsController() {
-    throw new IllegalStateException();
-  }
-
-  public OrderNewCarController createOrderNewCarController() {
-    throw new IllegalStateException();
-  }
-
-  public PerformAssemblyTasksController createPerformAssemblyTasksController() {
-    throw new IllegalStateException();
-  }
-
-  public CheckProductionStatisticsController createCheckProductionStatisticsController() {
-    throw new IllegalStateException();
-  }
-
-  public LoginController createLoginController() {
-    throw new IllegalStateException();
-  }
-
+  
   @Override
   public abstract boolean equals(Object o);
 }

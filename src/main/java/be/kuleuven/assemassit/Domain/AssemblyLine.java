@@ -57,8 +57,7 @@ public class AssemblyLine {
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
-  private final List<Observer> observers;
-  private AssemblyLineTime assemblyLineTime;
+  private final AssemblyLineTime assemblyLineTime;
   /**
    * @representationObject
    */
@@ -76,14 +75,21 @@ public class AssemblyLine {
    * @mutates | this
    */
   public AssemblyLine() {
+    this(new AssemblyLineTime());
+  }
+
+  public AssemblyLine(LocalTime openingTime, LocalTime closingTime) {
+    this(new AssemblyLineTime(openingTime, closingTime, new OvertimeRepository()));
+  }
+
+  public AssemblyLine(AssemblyLineTime assemblyLineTime) {
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS, AssemblyTaskType.INSTALL_SPOILER), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
-    this.observers = new ArrayList<>();
-    this.assemblyLineTime = new AssemblyLineTime();
+    this.assemblyLineTime = assemblyLineTime;
   }
 
   public WorkPost getCarBodyPost() {
@@ -135,7 +141,7 @@ public class AssemblyLine {
   /**
    * Sets the scheduling algorithm of the assembly line.
    *
-   * @param schedulingAlgorithm
+   * @param schedulingAlgorithm the new scheduling algorithm
    * @throws IllegalArgumentException schedulingAlgorithm can not be null | schedulingAlgorithm == null
    * @post | this.getSchedulingAlgorithm() == schedulingAlgorithm
    */
@@ -305,7 +311,7 @@ public class AssemblyLine {
    *
    * @param allAssemblyTasks  the list of assembly tasks where the filter should be applied on
    * @param assemblyTaskTypes the list of assembly task types that has to be filtered on
-   * @return
+   * @return the list of assembly tasks where the filter is applied on
    * @throws IllegalArgumentException the list of assembly tasks is null or empty | (allAssemblyTasks == null || allAssemblyTasks.isEmpty())
    * @throws IllegalArgumentException the list of assembly tasks types is null or empty | (assemblyTaskTypes == null || assemblyTaskTypes.isEmpty())
    * @inspects | this
@@ -481,7 +487,6 @@ public class AssemblyLine {
     return carAssemblyProcessesQueue;
   }
 
-
   /**
    * Add a process (car) to the list of finished processes (cars)
    *
@@ -513,8 +518,7 @@ public class AssemblyLine {
   public List<Car> givePossibleBatchCars() {
     List<Car> cars = this.carAssemblyProcessesQueue
       .stream()
-      .map(p -> p.getCarOrder().getCar())
-      .collect(Collectors.toList());
+      .map(p -> p.getCarOrder().getCar()).toList();
 
     Map<Car, Integer> frequencyMap = new HashMap<>();
     for (Car c : cars) {
@@ -527,26 +531,5 @@ public class AssemblyLine {
     }
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
   }
-
-//  public List<Observer> getObservers() {
-//    return observers;
-//  }
-//
-//  @Override
-//  public void attach(Observer observer) {
-//    this.observers.add(observer);
-//  }
-//
-//  @Override
-//  public void detach(Observer observer) {
-//    this.observers.remove(observer);
-//  }
-//
-//  @Override
-//  public void notifyObservers(Object value) {
-//    for (Observer observer : observers) {
-//      observer.update(this, value);
-//    }
-//  }
 }
 

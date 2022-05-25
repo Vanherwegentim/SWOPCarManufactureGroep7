@@ -81,13 +81,6 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >Please type the number of the algorithm of your choosing
 <1
 >The scheduling algorithm has succesfully changed to FIFO Scheduling
->
->Welcome Manager
->Please choose an action:
-> 1: Car and delay statistics
-> 2: Change the scheduling algorithm
->-1: Logout and go back
-<2
 >Active Algorithm:
 >FIFOScheduling
 >
@@ -101,13 +94,6 @@ Ejava -cp target/classes be.kuleuven.assemassit.App simulate_time
 >0: [BREAK, RED, STANDARD, FIVE_SPEED_MANUAL, LEATHER_BLACK, MANUAL, COMFORT, NO_SPOILER]
 <0
 >The scheduling algorithm has succesfully changed to Batch Scheduling
->
->Welcome Manager
->Please choose an action:
-> 1: Car and delay statistics
-> 2: Change the scheduling algorithm
->-1: Logout and go back
-<2
 >Active Algorithm:
 >SpecificationBatchScheduling
 >
