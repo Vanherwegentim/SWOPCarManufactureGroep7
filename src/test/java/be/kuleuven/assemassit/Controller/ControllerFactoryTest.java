@@ -170,4 +170,9 @@ public class ControllerFactoryTest {
   void getAssemblyLineTest() {
     assertEquals("AssemblyLine", controllerFactoryMiddleWare.getAssemblyLine().getClass().getSimpleName());
   }
+
+  @Test
+  void getCarManufactoringCompany() {
+    assertEquals("CarManufactoringCompany", controllerFactoryMiddleWare.getCarManufactoringCompany().getClass().getSimpleName());
+  }
 }
