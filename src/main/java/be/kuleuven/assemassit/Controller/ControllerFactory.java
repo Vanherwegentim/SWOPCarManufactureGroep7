@@ -12,11 +12,12 @@ public class ControllerFactory {
    * Genearte an instance of the login controller
    *
    * @param controllerFactoryMiddleWare the controller factory middleware for changing the state
+   * @param garageHolderRepository the repository to get the garage holders list
    * @return the newly created login controller
    * @creates | result
    */
-  public LoginController createLoginController(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
-    return new LoginController(new GarageHolderRepository(), controllerFactoryMiddleWare);
+  public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    return new LoginController(garageHolderRepository, controllerFactoryMiddleWare);
   }
 
   /**

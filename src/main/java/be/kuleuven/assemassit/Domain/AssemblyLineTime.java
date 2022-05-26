@@ -15,11 +15,12 @@ public class AssemblyLineTime {
     this.openingTime = LocalTime.of(6, 0);
     this.closingTime = LocalTime.of(22, 0);
     this.overTimeRepository = new OvertimeRepository();
+    this.overtime = overTimeRepository.getOverTime();
   }
 
   public AssemblyLineTime(LocalTime openingTime, LocalTime closingTime, OvertimeRepository overTimeRepository) {
     this.openingTime = openingTime;
-    this.closingTime = LocalTime.of(22, 0);
+    this.closingTime = closingTime;
     this.overTimeRepository = overTimeRepository;
   }
 

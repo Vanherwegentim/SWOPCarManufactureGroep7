@@ -29,10 +29,10 @@ public class CarManufactoringCompanyTest {
   public void beforeEach() {
     carModelRepository = new CarModelRepository();
     this.carModels = carModelRepository.getCarModels();
-    this.assemblyLine = new AssemblyLine();
     this.openingTime = LocalTime.of(LocalTime.of(6, 0).getHour(), LocalTime.of(6, 0).getMinute());
     this.closingTime = LocalTime.of(LocalTime.of(22, 0).getHour(), LocalTime.of(22, 0).getMinute());
-    carManufactoringCompany = new CarManufactoringCompany(openingTime, closingTime, assemblyLine);
+    this.assemblyLine = new AssemblyLine(openingTime, closingTime);
+    carManufactoringCompany = new CarManufactoringCompany( assemblyLine);
     carAssemblyProcess = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
 
     carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
@@ -76,7 +76,7 @@ public class CarManufactoringCompanyTest {
 
   @Test
   public void constructorTest2() {
-    CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, openingTime, closingTime, assemblyLine);
+    CarManufactoringCompany company = new CarManufactoringCompany(carModelRepository, assemblyLine);
 
     assertEquals(assemblyLine.getOpeningTime(), this.openingTime);
     assertEquals(assemblyLine.getClosingTime(), this.closingTime);
@@ -107,8 +107,8 @@ public class CarManufactoringCompanyTest {
   @Test
   void assemblyLineMove() {
     LocalTime time = (CustomTime.getInstance().customLocalTimeNow());
-    AssemblyLine line = new AssemblyLine();
-    CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(00, 1), LocalTime.of(23, 59), line);
+    AssemblyLine line = new AssemblyLine(LocalTime.of(0, 1), LocalTime.of(23, 59));
+    CarManufactoringCompany company = new CarManufactoringCompany(line);
     assertTrue(company.isAssemblyLineAvailable());
     CarAssemblyProcess process = new CarAssemblyProcess(new CarOrder(new Car(new CarModel(0, "Tolkswagen Rolo", Arrays.asList(Wheel.values()), Arrays.asList(Gearbox.values()), Arrays.asList(Seat.values()), Arrays.asList(Body.values()), Arrays.asList(Color.values()), Arrays.asList(Engine.values()), Arrays.asList(Airco.values()), Arrays.asList(Spoiler.values())), Body.SEDAN, Color.BLACK, Engine.PERFORMANCE, Gearbox.FIVE_SPEED_MANUAL, Seat.LEATHER_BLACK, Airco.MANUAL, Wheel.SPORT, Spoiler.LOW)));
     company.addCarAssemblyProcess(process);

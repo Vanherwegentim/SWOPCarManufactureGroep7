@@ -5,7 +5,7 @@ import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 public class ControllerFactoryMiddleWareLoginState extends ControllerFactoryMiddleWareState {
 
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
-    return new LoginController(garageHolderRepository, controllerFactoryMiddleWare);
+    return factory.createLoginController(garageHolderRepository, controllerFactoryMiddleWare);
   }
 
   @Override

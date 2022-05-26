@@ -7,6 +7,12 @@ import be.kuleuven.assemassit.Repositories.GarageHolderRepository;
 
 public abstract class ControllerFactoryMiddleWareState {
 
+    protected ControllerFactory factory;
+
+  public ControllerFactoryMiddleWareState() {
+    this.factory = new ControllerFactory();
+  }
+
   /**
    * Create an instance of the adapt scheduling algorithm controller
    *
@@ -86,77 +92,7 @@ public abstract class ControllerFactoryMiddleWareState {
   public LoginController createLoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
     throw new IllegalStateException();
   }
-
-  /**
-   * Create an instance of adapt scheduling algorithm controller
-   *
-   * @return the new instance of the adapt scheduling algorithm controller
-   * @throws IllegalStateException
-   */
-  public AdaptSchedulingAlgorithmController createAdaptSchedulingAlgorithmController() {
-    throw new IllegalStateException();
-  }
-
-  /**
-   * Create an instance of check assembly line controller
-   *
-   * @return the new instance of check assembly line controller
-   * @throws IllegalStateException
-   */
-  public CheckAssemblyLineStatusController createCheckAssemblyLineStatusController() {
-    throw new IllegalStateException();
-  }
-
-  /**
-   * Create an instance of check order details controller
-   *
-   * @return the new instance of the check order details controller
-   * @throws IllegalStateException
-   */
-  public CheckOrderDetailsController createCheckOrderDetailsController() {
-    throw new IllegalStateException();
-  }
-
-  /**
-   * Create an instance of order new car controller
-   *
-   * @return the new instance of order new car controller
-   * @throws IllegalStateException
-   */
-  public OrderNewCarController createOrderNewCarController() {
-    throw new IllegalStateException();
-  }
-
-  /**
-   * Create an instance of perform assembly task controller
-   *
-   * @return the new instance of the perform assembly task controller
-   * @throws IllegalStateException
-   */
-  public PerformAssemblyTasksController createPerformAssemblyTasksController() {
-    throw new IllegalStateException();
-  }
-
-  /**
-   * Create an instance of check production statistics controller
-   *
-   * @return the new instance of the check production statistics controller
-   * @throws IllegalStateException
-   */
-  public CheckProductionStatisticsController createCheckProductionStatisticsController() {
-    throw new IllegalStateException();
-  }
-
-  /**
-   * Create an instance of login controller
-   *
-   * @return the new instance of the login controller
-   * @throws IllegalStateException
-   */
-  public LoginController createLoginController() {
-    throw new IllegalStateException();
-  }
-
+  
   @Override
   public abstract boolean equals(Object o);
 }
