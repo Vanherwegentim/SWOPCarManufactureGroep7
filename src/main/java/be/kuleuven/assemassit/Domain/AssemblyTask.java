@@ -40,7 +40,7 @@ public abstract class AssemblyTask {
   }
 
   /**
-   * This method should only be used for testing purposes
+   * Reset the counter of automatic IDs, this is for testing purposes
    */
   public static void resetRunningId() {
     AssemblyTask.runningId = 0;

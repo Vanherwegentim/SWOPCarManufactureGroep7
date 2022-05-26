@@ -44,6 +44,9 @@ public class CarOrder {
     this.id = CarOrder.idRunner++;
   }
 
+  /**
+   * Reset the counter of automatic IDs, this is for testing purposes
+   */
   public static void resetIdRunner() {
     CarOrder.idRunner = 0;
   }

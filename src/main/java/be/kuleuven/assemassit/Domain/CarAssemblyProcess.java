@@ -57,6 +57,9 @@ public class CarAssemblyProcess {
     );
   }
 
+  /**
+   * Reset the counter of automatic IDs, this is for testing purposes
+   */
   public static void resetRunningId() {
     CarAssemblyProcess.idRunner = 0;
   }
