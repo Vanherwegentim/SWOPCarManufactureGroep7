@@ -375,12 +375,15 @@ public class AssemblyLineTest {
     assertEquals(List.of(carAssemblyProcess1), assemblyLine.getFinishedCars());
   }
 
-//  @Test
-//  void attach() {
-//    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
-//    assemblyLine.attach(company);
-//    assemblyLine.detach(company);
-//    assertEquals(List.of(), assemblyLine.getObservers());
-//  }
+  @Test
+  void assemblyLineTimeTest() {
+    assertEquals("AssemblyLineTime", assemblyLine.getAssemblyLineTime().getClass().getSimpleName());
+  }
+
+  @Test
+  void overtimeRepositoryTest() {
+    assertEquals("OvertimeRepository", assemblyLine.getOvertimeRepository().getClass().getSimpleName());
+  }
+
 
 }
