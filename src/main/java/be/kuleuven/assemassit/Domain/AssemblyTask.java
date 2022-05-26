@@ -103,6 +103,10 @@ public abstract class AssemblyTask {
   @Override
   public abstract boolean equals(Object object);
 
+  /**
+   * @return the completion time
+   * @throws IllegalArgumentException | getPending() == null
+   */
   public LocalDateTime getCompletionTime() {
     if (pending)
       throw new IllegalStateException();
