@@ -14,6 +14,7 @@ import java.util.Objects;
  * @invar | getColorOptions() != null && !getColorOptions().contains(null) && !getColorOptions().isEmpty()
  * @invar | getEngineOptions() != null && !getEngineOptions().contains(null) && !getEngineOptions().isEmpty()
  * @invar | getAircoOptions() != null && !getAircoOptions().contains(null) && !getAircoOptions().isEmpty()
+ * @invar | getSpoilerOptions() != null && !getSpoilerOptions().contains(null) && !getSpoilerOptions().isEmpty()
  */
 public class CarModel {
   private final int id;
@@ -28,6 +29,7 @@ public class CarModel {
    * @invar | colorOptions != null && !colorOptions.contains(null) && !colorOptions.isEmpty()
    * @invar | engineOptions != null && !engineOptions.contains(null) && !engineOptions.isEmpty()
    * @invar | aircoOptions != null && !aircoOptions.contains(null) && !aircoOptions.isEmpty()
+   * @invar | spoilerOptions != null && !spoilerOptions.contains(null) && !spoilerOptions.isEmpty()
    * @representationObject
    */
   private final List<Wheel> wheelOptions;
@@ -56,6 +58,9 @@ public class CarModel {
    */
   private final List<Airco> aircoOptions;
 
+  /**
+   * @representationObject
+   */
   private final List<Spoiler> spoilerOptions;
 
   /**

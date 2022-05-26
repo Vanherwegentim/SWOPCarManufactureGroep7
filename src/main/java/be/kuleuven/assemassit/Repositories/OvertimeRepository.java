@@ -16,6 +16,12 @@ public class OvertimeRepository {
     return this.overTime;
   }
 
+  /**
+   * Set the over time with the new over time, this will be used by the scheduling algorithm on the next work day
+   *
+   * @param overTime the new over time
+   * @throws IllegalStateException | overTime < 0
+   */
   public void setOverTime(int overTime) {
     if (overTime < 0)
       throw new IllegalArgumentException("Over time can not be lower than zero");

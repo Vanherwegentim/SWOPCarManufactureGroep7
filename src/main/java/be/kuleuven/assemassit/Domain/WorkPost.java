@@ -166,6 +166,13 @@ public class WorkPost {
     return filteredTasks.stream().filter(AssemblyTask::getPending).toList();
   }
 
+  /**
+   * Give a list of all the finished assembly tasks
+   *
+   * @return the list of finished assembly tasks
+   * @creates | result
+   * @inspects | this
+   */
   public List<AssemblyTask> giveFinishedAssemblyTasks() {
 
     if (carAssemblyProcess == null)
