@@ -1,6 +1,6 @@
 package be.kuleuven.assemassit;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
 import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
@@ -34,7 +34,7 @@ public class PerformAssemblyTasksTest {
 
   @BeforeEach
   public void beforeEach() {
-    ControllerFactory controllerFactory = new ControllerFactory();
+    ControllerFactoryMiddleWare controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
     garageHolder = new GarageHolder(0, "Ward");
 
     mockedGarageHolderRepository = mock(GarageHolderRepository.class);
@@ -43,11 +43,11 @@ public class PerformAssemblyTasksTest {
     mockGarageHolders();
     mockCarModels();
 
-    carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, LocalTime.of(6, 0), LocalTime.of(22, 0), controllerFactory.getAssemblyLine());
-    controllerFactory.loginGarageHolder(garageHolder);
-    orderNewCarController = controllerFactory.createOrderNewCarController(carManufactoringCompany, garageHolder);
-    controllerFactory.loginCarMechanic();
-    performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
+    carManufactoringCompany = new CarManufactoringCompany(mockedCarModelRepository, controllerFactoryMiddleWare.getAssemblyLine());
+    controllerFactoryMiddleWare.loginGarageHolder(garageHolder);
+    orderNewCarController = controllerFactoryMiddleWare.createOrderNewCarController(carManufactoringCompany, garageHolder);
+    controllerFactoryMiddleWare.loginCarMechanic();
+    performAssemblyTasksController = controllerFactoryMiddleWare.createPerformAssemblyTasksController();
 
     fillTheSystemWithCarOrders();
     //first move

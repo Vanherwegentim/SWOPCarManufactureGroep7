@@ -10,6 +10,12 @@ import java.util.List;
 public class CarModelRepository {
   private List<CarModel> carModels;
 
+  /**
+   * Get the active lis of car models provived by the car manufatoring company
+   *
+   * @return the list of active car models
+   * @creates | result
+   */
   public List<CarModel> getCarModels() {
     if (carModels == null) {
       carModels = new ArrayList<>();
@@ -52,7 +58,6 @@ public class CarModelRepository {
       carModels.add(carModelB);
       carModels.add(carModelC);
     }
-    //readCarModelsFromFile();
 
     return List.copyOf(carModels);
   }

@@ -32,8 +32,8 @@ public class AssemblyLineTest {
   @BeforeEach
   public void beforeEach() {
     this.assemblyLine = new AssemblyLine();
-    assemblyLine.setStartTime(LocalTime.of(6, 0));
-    assemblyLine.setEndTime(LocalTime.of(22, 0));
+    assemblyLine.setOpeningTime(LocalTime.of(6, 0));
+    assemblyLine.setClosingTime(LocalTime.of(22, 0));
     carAssemblyProcess1 = new CarAssemblyProcess(
       new CarOrder(
         new Car(
@@ -117,53 +117,6 @@ public class AssemblyLineTest {
     assemblyLine.addCarToFinishedCars(carAssemblyProcess3);
   }
 
-  @Test
-  public void createCarsPerDayMapTest() {
-    extraSetup();
-    assertEquals(Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 3.0, carAssemblyProcess3.getCarOrder().getCompletionTime().toLocalDate(), 2.0), assemblyLine.createCarsPerDayMap());
-
-  }
-
-  @Test
-  public void averageCarsInADayTest() {
-    extraSetup();
-    assertEquals(assemblyLine.averageCarsInADay(), 2.5);
-  }
-
-  @Test
-  public void averageCarsInADayTest2() {
-    assertEquals(assemblyLine.averageCarsInADay(), 0);
-  }
-
-
-  @Test
-  public void medianCarsInADayTest() {
-    extraSetup();
-    assertEquals(2.5, assemblyLine.medianCarsInADay());
-  }
-
-  @Test
-  public void exactCarsIn2DaysTest() {
-    extraSetup();
-    assertEquals(2.0, assemblyLine.exactCarsIn2Days());
-  }
-
-  @Test
-  public void averageDelayPerOrderTest() {
-    extraSetup();
-    assertEquals(1.2, assemblyLine.averageDelayPerOrder());
-  }
-
-  @Test
-  public void medianDelayPerOrderTest() {
-    assertEquals(0, assemblyLine.medianDelayPerOrder());
-  }
-
-  @Test
-  public void last2DelaysTest() {
-    extraSetup();
-    assertEquals(assemblyLine.last2Delays(), Map.of(carAssemblyProcess2.getCarOrder().getCompletionTime().toLocalDate(), 0));
-  }
 
   @Test
   public void givePossibleBatchCars_ReturnsBatch() {
@@ -191,37 +144,20 @@ public class AssemblyLineTest {
     assertEquals(List.of("FIFOScheduling", "SpecificationBatchScheduling"), assemblyLine.giveSchedulingAlgorithmNames());
   }
 
-  @Test
-  public void detach() {
-    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
-    assemblyLine.attach(company);
-    assemblyLine.detach(company);
-    assertEquals(List.of(), assemblyLine.getObservers());
-  }
-
-  @Test
-  public void notifyObservers() {
-    CarManufactoringCompany company = new CarManufactoringCompany(LocalTime.of(6, 0), LocalTime.of(22, 0), assemblyLine);
-    assemblyLine.attach(company);
-    assemblyLine.notifyObservers(3);
-    assertEquals(3, company.getOvertime());
-    assertEquals(3, company.getOverTimeRepository().getOverTime());
-    company.getOverTimeRepository().clearFile();
-  }
 
   @Test
   public void setStartTime() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setStartTime(null));
-    assemblyLine.setStartTime(LocalTime.of(6, 0));
-    assertEquals(LocalTime.of(6, 0), assemblyLine.getStartTime());
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setOpeningTime(null));
+    assemblyLine.setOpeningTime(LocalTime.of(6, 0));
+    assertEquals(LocalTime.of(6, 0), assemblyLine.getOpeningTime());
 
   }
 
   @Test
   public void setEndTime() {
-    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setEndTime(null));
-    assemblyLine.setStartTime(LocalTime.of(22, 0));
-    assertEquals(LocalTime.of(22, 0), assemblyLine.getEndTime());
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.setClosingTime(null));
+    assemblyLine.setClosingTime(LocalTime.of(22, 0));
+    assertEquals(LocalTime.of(22, 0), assemblyLine.getClosingTime());
   }
 
   @Test
@@ -388,6 +324,7 @@ public class AssemblyLineTest {
     assemblyLine.setSchedulingAlgorithm(schedulingAlgorithm);
     assemblyLine.move(LocalTime.of(23, 59), 10);
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.getCarBodyPost().getCarAssemblyProcess().getAssemblyTasks().get(0));
+
   }
 
   @Test
@@ -406,6 +343,8 @@ public class AssemblyLineTest {
   @Test
   void giveCarAssemblyTask() {
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.giveCarAssemblyTask(-1, 0));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.giveCarAssemblyTask(0, -1));
 
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.giveCarAssemblyTask(0, carAssemblyProcess1.getAssemblyTasks().get(0).getId()));
   }
@@ -438,12 +377,16 @@ public class AssemblyLineTest {
     assertEquals(List.of(carAssemblyProcess1), assemblyLine.getFinishedCars());
   }
 
+
   @Test
-  void attach() {
-    CarManufactoringCompany company = mock(CarManufactoringCompany.class);
-    assemblyLine.attach(company);
-    assemblyLine.detach(company);
-    assertEquals(List.of(), assemblyLine.getObservers());
+  void assemblyLineTimeTest() {
+    assertEquals("AssemblyLineTime", assemblyLine.getAssemblyLineTime().getClass().getSimpleName());
   }
+
+  @Test
+  void overtimeRepositoryTest() {
+    assertEquals("OvertimeRepository", assemblyLine.getOvertimeRepository().getClass().getSimpleName());
+  }
+
 
 }

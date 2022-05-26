@@ -3,14 +3,11 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import be.kuleuven.assemassit.Domain.Enums.WorkPostType;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
-import be.kuleuven.assemassit.Domain.Helper.Observer;
-import be.kuleuven.assemassit.Domain.Helper.Subject;
 import be.kuleuven.assemassit.Domain.Scheduling.FIFOScheduling;
 import be.kuleuven.assemassit.Domain.Scheduling.SchedulingAlgorithm;
 import be.kuleuven.assemassit.Domain.Scheduling.SpecificationBatchScheduling;
+import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -25,9 +22,8 @@ import java.util.stream.Collectors;
  * @invar | this.getFinishedCars() != null
  * @invar | this.getSchedulingAlgorithm() != null
  * @invar | this.giveSchedulingAlgorithmNames() != null
- * @invar | this.getObservers() != null
  */
-public class AssemblyLine implements Subject {
+public class AssemblyLine {
 
   /**
    * @invar | carBodyPost != null
@@ -37,35 +33,28 @@ public class AssemblyLine implements Subject {
    * @invar | finishedCars != null
    * @invar | (startTime == null || endTime == null) || startTime.isBefore(endTime)
    * @invar | schedulingAlgorithm != null
-   * @invar | observers != null
    * @representationObject
    */
   private final WorkPost carBodyPost;
-
   /**
    * @representationObject
    */
   private final WorkPost drivetrainPost;
-
   /**
    * @representationObject
    */
   private final WorkPost accessoriesPost;
-
   /**
    * @representationObject
    * @representationObjects
    */
   private final Queue<CarAssemblyProcess> carAssemblyProcessesQueue;
-
   /**
    * @representationObject
    * @representationObjects
    */
   private final List<CarAssemblyProcess> finishedCars;
-  private final List<Observer> observers;
-  private LocalTime startTime;
-  private LocalTime endTime;
+  private final AssemblyLineTime assemblyLineTime;
   /**
    * @representationObject
    */
@@ -83,13 +72,36 @@ public class AssemblyLine implements Subject {
    * @mutates | this
    */
   public AssemblyLine() {
+    this(new AssemblyLineTime());
+  }
+
+  public AssemblyLine(LocalTime openingTime, LocalTime closingTime) {
+    this(new AssemblyLineTime(openingTime, closingTime, new OvertimeRepository()));
+  }
+
+  /**
+   * @param assemblyLineTime the instance of the assembly line time class
+   * @throws IllegalArgumentException | assemblyLineTime == null
+   * @post | getCarBodyPost() != null
+   * @post | getDriveTrainPost() != null
+   * @post | getAccessoriesPost() != null
+   * @post | getCarAssemblyProcessesQueue() != null
+   * @post | getFinishedCars() != null
+   * @post | getOverTimeRepository() != null
+   * @post | getOverTime() >= 0
+   * @post | getObservers() != null
+   * @mutates | this
+   */
+  public AssemblyLine(AssemblyLineTime assemblyLineTime) {
+    if (assemblyLineTime == null)
+      throw new IllegalArgumentException();
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS, AssemblyTaskType.INSTALL_SPOILER), WorkPostType.ACCESSORIES_POST, 60);
     this.finishedCars = new ArrayList<>();
     this.carAssemblyProcessesQueue = new ArrayDeque<>();
     this.schedulingAlgorithm = new FIFOScheduling();
-    this.observers = new ArrayList<>();
+    this.assemblyLineTime = assemblyLineTime;
   }
 
   public WorkPost getCarBodyPost() {
@@ -104,41 +116,28 @@ public class AssemblyLine implements Subject {
     return this.accessoriesPost;
   }
 
-  public LocalTime getStartTime() {
-    return startTime;
+  public LocalTime getOpeningTime() {
+    return assemblyLineTime.getOpeningTime();
   }
 
-  /**
-   * Sets the start time of the assembly line.
-   *
-   * @param startTime
-   * @throws IllegalArgumentException startTime can not be null | startTime == null
-   * @post | this.startTime == startTime
-   */
-  public void setStartTime(LocalTime startTime) {
-    if (startTime == null) {
-      throw new IllegalArgumentException("StartTime can not be null");
-    }
-    this.startTime = startTime;
+  public void setOpeningTime(LocalTime openingTime) {
+    this.assemblyLineTime.setOpeningTime(openingTime);
   }
 
-  public LocalTime getEndTime() {
-    return endTime;
+  public LocalTime getClosingTime() {
+    return assemblyLineTime.getClosingTime();
   }
 
-  /**
-   * Sets the end time of the assembly line.
-   * This is always set by the car manufacturing company and is not outside of the opening hours of the company.
-   *
-   * @param endTime
-   * @throws IllegalArgumentException endTime can not be null | endTime == null
-   * @post | this.endTime == endTime
-   */
-  public void setEndTime(LocalTime endTime) {
-    if (endTime == null) {
-      throw new IllegalArgumentException("EndTime can not be null");
-    }
-    this.endTime = endTime;
+  public void setClosingTime(LocalTime closingTime) {
+    this.assemblyLineTime.setClosingTime(closingTime);
+  }
+
+  public OvertimeRepository getOvertimeRepository() {
+    return this.assemblyLineTime.getOverTimeRepository();
+  }
+
+  public int getOverTime() {
+    return this.assemblyLineTime.getOvertime();
   }
 
   /**
@@ -154,7 +153,7 @@ public class AssemblyLine implements Subject {
   /**
    * Sets the scheduling algorithm of the assembly line.
    *
-   * @param schedulingAlgorithm
+   * @param schedulingAlgorithm the new scheduling algorithm
    * @throws IllegalArgumentException schedulingAlgorithm can not be null | schedulingAlgorithm == null
    * @post | this.getSchedulingAlgorithm() == schedulingAlgorithm
    */
@@ -218,6 +217,10 @@ public class AssemblyLine implements Subject {
   public List<AssemblyTask> giveFinishedAssemblyTasksFromWorkPost(int workPostId) {
     WorkPost workPost = findWorkPost(workPostId);
     return workPost.giveFinishedAssemblyTasks();
+  }
+
+  public AssemblyLineTime getAssemblyLineTime() {
+    return assemblyLineTime;
   }
 
   /**
@@ -320,7 +323,7 @@ public class AssemblyLine implements Subject {
    *
    * @param allAssemblyTasks  the list of assembly tasks where the filter should be applied on
    * @param assemblyTaskTypes the list of assembly task types that has to be filtered on
-   * @return
+   * @return the list of assembly tasks where the filter is applied on
    * @throws IllegalArgumentException the list of assembly tasks is null or empty | (allAssemblyTasks == null || allAssemblyTasks.isEmpty())
    * @throws IllegalArgumentException the list of assembly tasks types is null or empty | (assemblyTaskTypes == null || assemblyTaskTypes.isEmpty())
    * @inspects | this
@@ -401,8 +404,8 @@ public class AssemblyLine implements Subject {
       );
 
     if (newOvertime > 0) {
-      // overtime happened so we have to inform the car manufacturing company
-      notifyObservers(newOvertime);
+      // Overtime happened so we have to inform the car manufacturing company
+      assemblyLineTime.update(newOvertime);
     }
   }
 
@@ -421,8 +424,8 @@ public class AssemblyLine implements Subject {
       .giveEstimatedDeliveryTime(
         this.carAssemblyProcessesQueue,
         this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration() * 3,
-        this.endTime,
-        this.startTime,
+        this.assemblyLineTime.getClosingTime(),
+        this.assemblyLineTime.getOpeningTime(),
         this.carAssemblyProcessesQueue.stream().toList().get(carAssemblyProcessesQueue.size() - 1).getCarOrder().getCar().getCarModel().getWorkPostDuration()
       );
   }
@@ -496,173 +499,6 @@ public class AssemblyLine implements Subject {
   }
 
   /**
-   * Creates a map of cars per day, this can be used for further calculations
-   *
-   * @return a map of cars for each work day
-   * @creates | result
-   */
-  public Map<LocalDate, Double> createCarsPerDayMap() {
-    //Create a map that counts how many cars were made every day(LocalDate)
-    List<LocalDateTime> dateTimeList = finishedCars.stream().map(carAssemblyProcess -> carAssemblyProcess.getCarOrder().getCompletionTime()).collect(Collectors.toList());
-
-    Map<LocalDate, Double> carsPerDayMap = new HashMap<>();
-    for (LocalDateTime localDateTime : dateTimeList) {
-      if (carsPerDayMap.containsKey(localDateTime.toLocalDate())) {
-        double i = carsPerDayMap.get(localDateTime.toLocalDate());
-        i = i + 1.0;
-        carsPerDayMap.replace(localDateTime.toLocalDate(), i);
-      } else {
-        carsPerDayMap.put(localDateTime.toLocalDate(), 1.0);
-      }
-    }
-    return carsPerDayMap;
-  }
-
-  /**
-   * Calculates the average cars in a single work day
-   *
-   * @return the average of cars in a single work day
-   * @inspects | this
-   */
-  public double averageCarsInADay() {
-    Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
-    if (carsPerDayMap.size() == 0) {
-      return 0;
-    } else {
-      double total = carsPerDayMap.values().stream().mapToDouble(v -> v).sum();
-      return total / carsPerDayMap.size();
-    }
-  }
-
-  /**
-   * Calculates the median of cars in a single work day
-   *
-   * @return the median of cars in a single work day
-   * @inspects | this
-   */
-  public double medianCarsInADay() {
-    Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
-    ArrayList<Double> numList = new ArrayList<>();
-    numList.addAll(carsPerDayMap.values());
-    Collections.sort(numList);
-    if (numList.size() == 0) {
-      return 0;
-    }
-    if (numList.size() == 1) {
-      return numList.get(0);
-    }
-    if (numList.size() == 2) {
-      return (numList.get(0) + numList.get(1)) / 2;
-    } else {
-      if (numList.size() % 2 == 0) {
-        int middle = numList.size() / 2;
-        return (numList.get(middle) + numList.get(middle + 1)) / 2;
-      } else {
-        return numList.size() / 2.0;
-      }
-    }
-  }
-
-  /**
-   * Returns the amount of cars produced in the previous two days
-   *
-   * @return the amount of cars produces in the previous two days
-   * @inspects | this
-   */
-  public double exactCarsIn2Days() {
-    Map<LocalDate, Double> carsPerDayMap = createCarsPerDayMap();
-    double total = 0;
-    if (carsPerDayMap.get((CustomTime.getInstance().customLocalDateNow()).minusDays(1)) != null) {
-      total += carsPerDayMap.get((CustomTime.getInstance().customLocalDateNow()).minusDays(1));
-    }
-    if (carsPerDayMap.get((CustomTime.getInstance().customLocalDateNow()).minusDays(2)) != null) {
-      total += carsPerDayMap.get((CustomTime.getInstance().customLocalDateNow()).minusDays(2));
-    }
-    return total;
-  }
-
-  //Can a car be ready before it's estimated completion time? if so, add an if test
-
-  /**
-   * Returns the average of delays from all the car orders
-   *
-   * @return the average of delays from all the car orders
-   * @inspects | this
-   */
-  public double averageDelayPerOrder() {
-    double total;
-    if (finishedCars.size() == 0) {
-      return 0;
-    } else {
-      total = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().sum();
-
-      return total / finishedCars.size();
-    }
-  }
-
-  /**
-   * Returns the mean of delays from all the car orders
-   *
-   * @return the mean of delays from all the car orders
-   */
-  public double medianDelayPerOrder() {
-    ArrayList<Double> dates = finishedCars.stream().map(carAssemblyProcess -> Duration.between(carAssemblyProcess.getCarOrder().getCompletionTime(), carAssemblyProcess.getCarOrder().getEstimatedCompletionTime())).mapToLong(Duration::toHours).asDoubleStream().boxed().collect(Collectors.toCollection(ArrayList::new));
-    if (dates.size() == 0) {
-      return 0;
-    }
-    if (dates.size() == 1) {
-      return dates.get(0);
-    } else {
-      if (dates.size() % 2 == 0) {
-        int middle = dates.size() / 2;
-        return (dates.get(middle) + dates.get(middle + 1)) / 2;
-      } else {
-        double middle = (double) dates.size() / 2.0;
-        int middleInt = (int) Math.floor(middle);
-        return dates.get(middleInt);
-      }
-    }
-  }
-
-  /**
-   * Returns the last two delays of the car company
-   *
-   * @return the last two delays of the car company
-   * @inspects | this
-   */
-  public Map<LocalDate, Integer> last2Delays() {
-    Map<LocalDate, Integer> delays = new HashMap<>();
-    if (finishedCars.size() == 0) {
-      return delays;
-    }
-    CarAssemblyProcess car1 = finishedCars.get(0);
-    if (finishedCars.size() == 1) {
-      Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
-      long diff1 = duration1.toHours();
-      int conv1 = Math.toIntExact(diff1);
-      delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
-    } else {
-      CarAssemblyProcess car2 = finishedCars.get(1);
-      for (CarAssemblyProcess carAssemblyProcess : finishedCars) {
-        if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car1.getCarOrder().getCompletionTime())) {
-          car1 = carAssemblyProcess;
-        } else if (carAssemblyProcess.getCarOrder().getCompletionTime().isAfter(car2.getCarOrder().getCompletionTime())) {
-          car2 = carAssemblyProcess;
-        }
-      }
-      Duration duration1 = Duration.between(car1.getCarOrder().getCompletionTime(), car1.getCarOrder().getEstimatedCompletionTime());
-      long diff1 = duration1.toHours();
-      int conv1 = Math.toIntExact(diff1);
-      delays.put(car1.getCarOrder().getCompletionTime().toLocalDate(), conv1);
-      Duration duration2 = Duration.between(car2.getCarOrder().getCompletionTime(), car2.getCarOrder().getEstimatedCompletionTime());
-      long diff2 = duration2.toHours();
-      int conv2 = Math.toIntExact(diff2);
-      delays.put(car2.getCarOrder().getCompletionTime().toLocalDate(), conv2);
-    }
-    return delays;
-  }
-
-  /**
    * Add a process (car) to the list of finished processes (cars)
    *
    * @param carAssemblyProcess the process that should be added to the list of finished processes
@@ -693,8 +529,7 @@ public class AssemblyLine implements Subject {
   public List<Car> givePossibleBatchCars() {
     List<Car> cars = this.carAssemblyProcessesQueue
       .stream()
-      .map(p -> p.getCarOrder().getCar())
-      .collect(Collectors.toList());
+      .map(p -> p.getCarOrder().getCar()).toList();
 
     Map<Car, Integer> frequencyMap = new HashMap<>();
     for (Car c : cars) {
@@ -706,27 +541,6 @@ public class AssemblyLine implements Subject {
       frequencyMap.put(c, ++count);
     }
     return cars.stream().filter(c -> frequencyMap.get(c) >= 3).distinct().collect(Collectors.toList());
-  }
-
-  public List<Observer> getObservers() {
-    return observers;
-  }
-
-  @Override
-  public void attach(Observer observer) {
-    this.observers.add(observer);
-  }
-
-  @Override
-  public void detach(Observer observer) {
-    this.observers.remove(observer);
-  }
-
-  @Override
-  public void notifyObservers(Object value) {
-    for (Observer observer : observers) {
-      observer.update(this, value);
-    }
   }
 }
 

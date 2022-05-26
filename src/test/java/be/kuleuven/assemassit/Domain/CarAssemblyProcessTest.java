@@ -54,7 +54,7 @@ public class CarAssemblyProcessTest {
     assert !carAssemblyProcess.getAssemblyTasks().isEmpty();
     for (int i = 0; i < assemblyTasks.size(); i++) {
 
-      //all id's of assemblytask are 0 now so this is trivial
+
       assertEquals(carAssemblyProcess.getAssemblyTasks().get(i).getActions(), (assemblyTasks.get(i).getActions()));
 
     }

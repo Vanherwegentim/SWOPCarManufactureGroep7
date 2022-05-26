@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit.Domain;
 
+import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
-import be.kuleuven.assemassit.Domain.Helper.Observer;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
 import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
@@ -20,7 +20,7 @@ import java.util.Optional;
  * | (getOpeningTime() != null && getClosingTime() != null) || getOpeningTime().isBefore(getClosingTime())
  * @invar | getOvertime() >= 0
  */
-public class CarManufactoringCompany implements Observer {
+public class CarManufactoringCompany {
   /**
    * @invar | carModels != null
    * @invar | assemblyLine != null
@@ -38,14 +38,8 @@ public class CarManufactoringCompany implements Observer {
    * @representationObject
    */
   private final AssemblyLine assemblyLine;
-  private final LocalTime openingTime;
-  private final LocalTime closingTime;
-  private final OvertimeRepository overTimeRepository;
-  private int overtime;
 
   /**
-   * @param openingTime  the opening time of the factory
-   * @param closingTime  the closing time of the factory
    * @param assemblyLine the assembly line that the factory will be using
    * @throws IllegalArgumentException some parameters are null | (openingTime == null || closingTime == null || assemblyLine == null)
    * @mutates | this
@@ -53,28 +47,12 @@ public class CarManufactoringCompany implements Observer {
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.getAssemblyLine.equals(assemblyLine)
    */
-  public CarManufactoringCompany(LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    this(new CarModelRepository(), new OvertimeRepository(), openingTime, closingTime, assemblyLine);
-  }
-
-  /**
-   * @param openingTime  the opening time of the factory
-   * @param closingTime  the closing time of the factory
-   * @param assemblyLine the assembly line that the factory will be using
-   * @throws IllegalArgumentException some parameters are null | (openingTime == null || closingTime == null || assemblyLine == null)
-   * @mutates | this
-   * @post | openingTime.getHour() == this.openingTime.getHour()
-   * @post | closingTime.getHour() == this.closingTime.getHour()
-   * @post | this.getAssemblyLine().equals(assemblyLine)
-   */
-  public CarManufactoringCompany(CarModelRepository carModelRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    this(carModelRepository, new OvertimeRepository(), openingTime, closingTime, assemblyLine);
+  public CarManufactoringCompany(AssemblyLine assemblyLine) {
+    this(new CarModelRepository(), assemblyLine);
   }
 
   /**
    * @param carModelRepository the repository that can be mocked
-   * @param openingTime        the opening time of the factory
-   * @param closingTime        the closing time of the factory
    * @param assemblyLine       the assembly line that the factory will be using
    * @throws IllegalArgumentException some parameters are null | (openingTime == null || closingTime == null || assemblyLine == null)
    * @mutates | this
@@ -82,20 +60,12 @@ public class CarManufactoringCompany implements Observer {
    * @post | closingTime.getHour() == this.closingTime.getHour()
    * @post | this.assemblyLine.equals(assemblyLine)
    */
-  public CarManufactoringCompany(CarModelRepository carModelRepository, OvertimeRepository overTimeRepository, LocalTime openingTime, LocalTime closingTime, AssemblyLine assemblyLine) {
-    if (openingTime == null || closingTime == null || assemblyLine == null || carModelRepository == null)
+  public CarManufactoringCompany(CarModelRepository carModelRepository, AssemblyLine assemblyLine) {
+    if (assemblyLine == null || carModelRepository == null)
       throw new IllegalArgumentException("The parameters can not be null");
 
     this.carModels = carModelRepository.getCarModels();
     this.assemblyLine = assemblyLine;
-    this.assemblyLine.setStartTime(openingTime);
-    this.assemblyLine.setEndTime(closingTime);
-    this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
-    this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
-    this.overTimeRepository = overTimeRepository;
-    this.overtime = overTimeRepository.getOverTime();
-
-    this.assemblyLine.attach(this);
   }
 
   public AssemblyLine getAssemblyLine() {
@@ -108,14 +78,6 @@ public class CarManufactoringCompany implements Observer {
    */
   public List<CarModel> getCarModels() {
     return List.copyOf(carModels);
-  }
-
-  public LocalTime getOpeningTime() {
-    return openingTime;
-  }
-
-  public LocalTime getClosingTime() {
-    return closingTime;
   }
 
   /**
@@ -161,12 +123,70 @@ public class CarManufactoringCompany implements Observer {
   }
 
   /**
+   * A new car order is made
+   *
+   * @param carModelId
+   * @param body
+   * @param color
+   * @param engine
+   * @param gearbox
+   * @param seats
+   * @param airco
+   * @param wheels
+   * @return the id of the newly created car order
+   * @throws IllegalStateException    currentGarageHolder == null
+   * @throws IllegalArgumentException if there is a non-valid option provided
+   */
+  public int designCarOrder(GarageHolder currentGarageHolder, int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
+    if (currentGarageHolder == null)
+      throw new IllegalStateException();
+
+    CarModel carModel = giveCarModelWithId(carModelId);
+    Car car;
+
+    try {
+      car = new Car
+        (
+          carModel,
+          Body.valueOf(body),
+          Color.valueOf(color),
+          Engine.valueOf(engine),
+          Gearbox.valueOf(gearbox),
+          Seat.valueOf(seats),
+          Airco.valueOf(airco),
+          Wheel.valueOf(wheels),
+          Spoiler.valueOf(spoiler)
+        );
+    } catch (IllegalArgumentException e) {
+      if (e.getLocalizedMessage().startsWith("No enum constant")) {
+        throw new IllegalArgumentException("One or more invalid car options were provided");
+      }
+      throw new IllegalArgumentException(e.getMessage());
+    }
+
+    CarOrder carOrder = new CarOrder(car);
+    currentGarageHolder.addCarOrder(carOrder);
+
+    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
+
+    addCarAssemblyProcess(carAssemblyProcess);
+    LocalDateTime estimatedCompletionTime = giveEstimatedCompletionDateOfLatestProcess();
+    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
+
+    if (isAssemblyLineAvailable()) {
+      triggerAutomaticFirstMove(carAssemblyProcess.giveManufacturingDurationInMinutes());
+    }
+
+    return carOrder.getId();
+  }
+
+  /**
    * Move the assembly line forward if possible
    *
    * @mutates | this
    */
   public void moveAssemblyLine() {
-    this.assemblyLine.move(this.closingTime, this.overtime);
+    this.assemblyLine.move(this.assemblyLine.getClosingTime(), this.assemblyLine.getOverTime());
   }
 
   /**
@@ -175,29 +195,16 @@ public class CarManufactoringCompany implements Observer {
    * @inspects | this
    * @mutates | this
    */
-  public void triggerAutomaticFirstMove() {
-    if (!(CustomTime.getInstance().customLocalTimeNow()).isBefore(this.openingTime) && assemblyLine.canMove())
+
+  public void triggerAutomaticFirstMove(int manufacturingDurationInMinutes) {
+    if (!(CustomTime.getInstance().customLocalTimeNow().isBefore(this.assemblyLine.getOpeningTime()))
+      && assemblyLine.canMove()
+      && !(CustomTime.getInstance().customLocalTimeNow().isAfter(this.assemblyLine.getClosingTime().minusMinutes(this.assemblyLine.getOverTime()).minusMinutes(manufacturingDurationInMinutes))))
+
       this.moveAssemblyLine();
   }
 
   public boolean isAssemblyLineAvailable() {
     return this.assemblyLine.getWorkPosts().stream().allMatch(wp -> wp.getCarAssemblyProcess() == null);
-  }
-
-  @Override
-  public void update(Object observable, Object value) {
-    if (observable instanceof AssemblyLine && value instanceof Integer) {
-      Integer overtime = (Integer) value;
-      this.overtime = overtime;
-      this.overTimeRepository.setOverTime(overtime);
-    }
-  }
-
-  public OvertimeRepository getOverTimeRepository() {
-    return overTimeRepository;
-  }
-
-  public int getOvertime() {
-    return overtime;
   }
 }

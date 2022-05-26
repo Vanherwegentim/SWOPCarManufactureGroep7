@@ -1,7 +1,9 @@
 package be.kuleuven.assemassit.Controller;
 
-import be.kuleuven.assemassit.Domain.*;
-import be.kuleuven.assemassit.Domain.Enums.*;
+import be.kuleuven.assemassit.Domain.CarManufactoringCompany;
+import be.kuleuven.assemassit.Domain.CarModel;
+import be.kuleuven.assemassit.Domain.CarOrder;
+import be.kuleuven.assemassit.Domain.GarageHolder;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,6 +33,8 @@ public class OrderNewCarController {
   }
 
   /**
+   * Get the name of the logged in garage holder
+   *
    * @return the name of the logged in garage holder
    */
   public String giveLoggedInGarageHolderName() {
@@ -40,6 +44,8 @@ public class OrderNewCarController {
   }
 
   /**
+   * Get the completion date of the order with given order ID
+   *
    * @param orderId to get the completion date from
    * @return the completion date
    * @throws IllegalArgumentException OrderId is below 0 | orderId < 0
@@ -55,7 +61,7 @@ public class OrderNewCarController {
   }
 
   /**
-   * get an order from the garage holder
+   * Get a specific order with given order ID from the logged in garage holder
    *
    * @param orderId the id of the order
    * @return the car order
@@ -111,7 +117,7 @@ public class OrderNewCarController {
   /**
    * A new car order is made and the estimated delivery time is calculated
    *
-   * @param carModelId
+   * @param carModelId the id of the car model
    * @param body
    * @param color
    * @param engine
@@ -120,49 +126,13 @@ public class OrderNewCarController {
    * @param airco
    * @param wheels
    * @return the id of the new car order
-   * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
+   * @throws IllegalStateException loggedInGarageHolder == null
    */
   public int placeCarOrder(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {
     if (loggedInGarageHolder == null)
       throw new IllegalStateException();
 
-    CarModel carModel = carManufactoringCompany.giveCarModelWithId(carModelId);
-    Car car;
-
-    try {
-      car = new Car
-        (
-          carModel,
-          Body.valueOf(body),
-          Color.valueOf(color),
-          Engine.valueOf(engine),
-          Gearbox.valueOf(gearbox),
-          Seat.valueOf(seats),
-          Airco.valueOf(airco),
-          Wheel.valueOf(wheels),
-          Spoiler.valueOf(spoiler)
-        );
-    } catch (IllegalArgumentException e) {
-      if (e.getLocalizedMessage().startsWith("No enum constant")) {
-        throw new IllegalArgumentException("One or more invalid car options were provided");
-      }
-      throw new IllegalArgumentException(e.getMessage());
-    }
-
-    CarOrder carOrder = new CarOrder(car);
-    loggedInGarageHolder.addCarOrder(carOrder);
-
-    CarAssemblyProcess carAssemblyProcess = new CarAssemblyProcess(carOrder);
-
-    carManufactoringCompany.addCarAssemblyProcess(carAssemblyProcess);
-    LocalDateTime estimatedCompletionTime = carManufactoringCompany.giveEstimatedCompletionDateOfLatestProcess();
-    carOrder.setEstimatedCompletionTime(estimatedCompletionTime);
-
-    if (carManufactoringCompany.isAssemblyLineAvailable()) {
-      carManufactoringCompany.triggerAutomaticFirstMove();
-    }
-
-    return carOrder.getId();
+    return carManufactoringCompany.designCarOrder(loggedInGarageHolder, carModelId, body, color, engine, gearbox, seats, airco, wheels, spoiler);
   }
 
   /**

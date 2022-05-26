@@ -5,9 +5,12 @@ import be.kuleuven.assemassit.Domain.Enums.AssemblyTaskType;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @mutable
+ * @invar | getName() != null && !getName().equals("")
+ */
 public abstract class AssemblyTask {
   /**
-   * @mutable
    * @invar | name != null && !name.equals("")
    */
   private static int runningId = 0;

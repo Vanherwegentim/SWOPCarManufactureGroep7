@@ -7,16 +7,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LoginController {
-  final GarageHolderRepository garageHolderRepository;
+
   /**
    * @PeerObject
    */
-  final ControllerFactory controllerFactory;
-  GarageHolder loggedInGarageHolder;
+  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
+  private GarageHolderRepository garageHolderRepository;
+  private GarageHolder loggedInGarageHolder;
 
-  public LoginController(GarageHolderRepository garageHolderRepository, ControllerFactory controllerFactory) {
+  public LoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
     this.garageHolderRepository = garageHolderRepository;
-    this.controllerFactory = controllerFactory;
+    this.controllerFactoryMiddleWare = controllerFactoryMiddleWare;
   }
 
   /**
@@ -31,7 +32,7 @@ public class LoginController {
 
     try {
       this.loggedInGarageHolder = garageHolderRepository.getGarageHolders().get(garageHolderId);
-      controllerFactory.loginGarageHolder(loggedInGarageHolder);
+      controllerFactoryMiddleWare.loginGarageHolder(loggedInGarageHolder);
     } catch (ArrayIndexOutOfBoundsException e) {
       throw new IllegalArgumentException("There is no garage holder with the given id");
     }
@@ -42,10 +43,14 @@ public class LoginController {
    */
   public void logOffGarageHolder() {
     this.loggedInGarageHolder = null;
-    controllerFactory.logoutCarMechanic();
+    controllerFactoryMiddleWare.logoutCarMechanic();
   }
 
   /**
+   * Get a map with an overview of the garage holders
+   * key: id of the garage holder
+   * value: name of the garage holder
+   *
    * @return a map with garage holders, the key is the id and de value is the name of the garage holder
    */
   public Map<Integer, String> giveGarageHolders() {

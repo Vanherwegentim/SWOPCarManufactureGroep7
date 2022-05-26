@@ -1,10 +1,12 @@
 package be.kuleuven.assemassit.UI.Actions;
 
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.PerformAssemblyTasksController;
+import be.kuleuven.assemassit.Exceptions.UIException;
 import be.kuleuven.assemassit.UI.IOCall;
 import be.kuleuven.assemassit.UI.UI;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,8 +14,8 @@ import java.util.Optional;
 public class PerformAssemblyTasksActionUI implements UI {
   private final PerformAssemblyTasksController performAssemblyTasksController;
 
-  public PerformAssemblyTasksActionUI(ControllerFactory controllerFactory) {
-    this.performAssemblyTasksController = controllerFactory.createPerformAssemblyTasksController();
+  public PerformAssemblyTasksActionUI(ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
+    this.performAssemblyTasksController = controllerFactoryMiddleWare.createPerformAssemblyTasksController();
   }
 
   private static Optional<Integer> displayChooseWorkPost(Map<Integer, String> workPosts) {
@@ -73,55 +75,60 @@ public class PerformAssemblyTasksActionUI implements UI {
 
   public void run() {
     while (true) {
+      try {
+        //Get data for 1.
+        Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
+        //1. The system asks the user what work post he is currently residing at.
+        //2. The user selects the corresponding work post.
+        Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
 
-      //Get data for 1.
-      Map<Integer, String> allWorkPosts = performAssemblyTasksController.giveAllWorkPosts();
-      //1. The system asks the user what work post he is currently residing at.
-      //2. The user selects the corresponding work post.
-      Optional<Integer> chosenWorkPostIdOptional = displayChooseWorkPost(allWorkPosts);
-
-      if (chosenWorkPostIdOptional.isEmpty()) {
-        IOCall.out("No work post was chosen.");
-        break;
-      }
-
-      int chosenWorkPostId = chosenWorkPostIdOptional.get();
-
-      // 8. The use case continues in step 4.
-      while (true) {
-        // Get data for 3.
-        Map<Integer, String> allAssemblyTasks = performAssemblyTasksController.givePendingAssemblyTasks(chosenWorkPostId);
-
-        if (allAssemblyTasks.isEmpty()) {
-          IOCall.out("There are currently no pending tasks for this work post");
+        if (chosenWorkPostIdOptional.isEmpty()) {
+          IOCall.out("No work post was chosen.");
           break;
         }
 
-        //3. The system presents an overview of the pending assembly tasks for the car at the current work post.
-        //4. The user selects one of the assembly tasks.
-        Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
+        int chosenWorkPostId = chosenWorkPostIdOptional.get();
 
-        if (chosenAssemblyTaskIdOptional.isEmpty()) {
-          IOCall.out("No task was chosen.");
-          break;
+        // 8. The use case continues in step 4.
+        while (true) {
+          // Get data for 3.
+          Map<Integer, String> allAssemblyTasks = performAssemblyTasksController.givePendingAssemblyTasks(chosenWorkPostId);
+
+          if (allAssemblyTasks.isEmpty()) {
+            IOCall.out("There are currently no pending tasks for this work post");
+            break;
+          }
+
+          //3. The system presents an overview of the pending assembly tasks for the car at the current work post.
+          //4. The user selects one of the assembly tasks.
+          Optional<Integer> chosenAssemblyTaskIdOptional = displayChooseAssemblyTask(allAssemblyTasks);
+
+          if (chosenAssemblyTaskIdOptional.isEmpty()) {
+            IOCall.out("No task was chosen.");
+            break;
+          }
+
+          int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
+
+          performAssemblyTasksController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
+
+          //5. The system shows the assembly task information, including the sequence of actions to perform.
+          List<String> actions = performAssemblyTasksController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
+
+          IOCall.out();
+          IOCall.out("Execute the following actions:");
+          displayActions(actions);
+
+          //6. The user performs the assembly tasks and indicates when the assembly task is fished together with the time it took him to finish the job.
+          //7. If all the assembly tasks at the assembly line are finished, the assembly line is shifted automatically and the production schedule is updated The system presents an updated overview of pending assembly tasks for the car at the current work post.
+          int duration = displayInputMinutes();
+          performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(chosenWorkPostId, duration);
         }
-
-        int chosenAssemblyTaskId = chosenAssemblyTaskIdOptional.get();
-
-        performAssemblyTasksController.setActiveTask(chosenWorkPostId, chosenAssemblyTaskId);
-
-        //5. The system shows the assembly task information, including the sequence of actions to perform.
-        List<String> actions = performAssemblyTasksController.giveAssemblyTaskActions(chosenWorkPostId, chosenAssemblyTaskId);
-
-        IOCall.out();
-        IOCall.out("Execute the following actions:");
-        displayActions(actions);
-
-        //6. The user performs the assembly tasks and indicates when the assembly task is fished together with the time it took him to finish the job.
-        //7. If all the assembly tasks at the assembly line are finished, the assembly line is shifted automatically and the production schedule is updated The system presents an updated overview of pending assembly tasks for the car at the current work post.
-        int duration = displayInputMinutes();
-        performAssemblyTasksController.completeAssemblyTaskAndMoveIfPossible(chosenWorkPostId, duration);
+      } catch (InputMismatchException | UIException ex) {
+        IOCall.out("ERROR, only integers are allowed here!");
+        IOCall.next();
       }
     }
+
   }
 }

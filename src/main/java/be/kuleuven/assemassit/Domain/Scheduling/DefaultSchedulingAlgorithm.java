@@ -13,6 +13,16 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
   DefaultSchedulingAlgorithm() {
   }
 
+  /**
+   * Return the estimated delivery date of the last order in the queue
+   *
+   * @param carAssemblyProcessesQueue      the queue of planned cars that need to be manufactured
+   * @param manufacturingTimeInMinutes     the duration of the build of exactly one car
+   * @param endTime                        the closing time of the company
+   * @param startTime                      the opening time of the company
+   * @param maxTimeNeededForWorkPostOnLine the max time needed to finish one task on a work post
+   * @return the estimated delivery time of the last order in the queue
+   */
   @Override
   public LocalDateTime giveEstimatedDeliveryTime(
     Queue<CarAssemblyProcess> carAssemblyProcessesQueue,
@@ -49,7 +59,6 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
     }
 
     // car can not be manufactured today
-    // Math.ceil(list - (1) / (2)) = days needed
     int daysNeeded = Math.max(0, (carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay - 1);
 
 

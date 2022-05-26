@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.AdaptSchedulingAlgorithmController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,21 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AdaptSchedulingAlgorithmTest {
 
-  private ControllerFactory factory;
+  private ControllerFactoryMiddleWare factoryMiddleWare;
   private AdaptSchedulingAlgorithmController adaptSchedulingAlgorithmController;
 
   @BeforeEach
   public void beforeEach() {
-    factory = new ControllerFactory();
-    factory.createLoginController().logInGarageHolder(0);
+    factoryMiddleWare = new ControllerFactoryMiddleWare();
+    factoryMiddleWare.createLoginController().logInGarageHolder(0);
 
     for (int i = 0; i < 4; i++) {
       createBatchWithColor(i);
     }
-    factory.logoutCarMechanic();
+    factoryMiddleWare.logoutCarMechanic();
 
-    factory.loginManager();
-    adaptSchedulingAlgorithmController = factory.createAdaptSchedulingAlgorithmController();
+    factoryMiddleWare.loginManager();
+    adaptSchedulingAlgorithmController = factoryMiddleWare.createAdaptSchedulingAlgorithmController();
 
   }
 
@@ -291,17 +291,17 @@ public class AdaptSchedulingAlgorithmTest {
 
 
   private void createBatchWithColor(int colorId) {
-    factory.logoutManager();
+    factoryMiddleWare.logoutManager();
 
-    factory.createLoginController().logInGarageHolder(0);
-    OrderNewCarController orderNewCarController = factory.createOrderNewCarController();
+    factoryMiddleWare.createLoginController().logInGarageHolder(0);
+    OrderNewCarController orderNewCarController = factoryMiddleWare.createOrderNewCarController();
 
     for (int i = 0; i < 3; i++) {
       placeCarOrderWithColor(orderNewCarController, 0, i);
     }
 
-    factory.logoutGarageHolder();
-    factory.loginManager();
+    factoryMiddleWare.logoutGarageHolder();
+    factoryMiddleWare.loginManager();
   }
 
   private int placeCarOrderWithColor(OrderNewCarController orderNewCarController, int modelID, int colorID) {

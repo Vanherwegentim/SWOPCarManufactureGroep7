@@ -1,7 +1,7 @@
 package be.kuleuven.assemassit;
 
 import be.kuleuven.assemassit.Controller.CheckOrderDetailsController;
-import be.kuleuven.assemassit.Controller.ControllerFactory;
+import be.kuleuven.assemassit.Controller.ControllerFactoryMiddleWare;
 import be.kuleuven.assemassit.Controller.LoginController;
 import be.kuleuven.assemassit.Controller.OrderNewCarController;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
@@ -18,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OrderNewCarTest {
   private OrderNewCarController orderNewCarController;
   private CheckOrderDetailsController checkOrderDetailsController;
-  private ControllerFactory factory;
-  private  LoginController loginController;
+  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
+  private LoginController loginController;
 
   @BeforeEach
   public void beforeEach() {
-    factory = new ControllerFactory();
+    controllerFactoryMiddleWare = new ControllerFactoryMiddleWare();
 
-    loginController = factory.createLoginController();
+    loginController = controllerFactoryMiddleWare.createLoginController();
     loginController.logInGarageHolder(0);
-    orderNewCarController = factory.createOrderNewCarController();
-    checkOrderDetailsController = factory.createCheckOrderDetailsController();
+    orderNewCarController = controllerFactoryMiddleWare.createOrderNewCarController();
+    checkOrderDetailsController = controllerFactoryMiddleWare.createCheckOrderDetailsController();
   }
 
   @Test
@@ -305,6 +305,6 @@ public class OrderNewCarTest {
 
     loginController.logOffGarageHolder();
 
-    assertThrows(IllegalStateException.class, () -> factory.createOrderNewCarController());
+    assertThrows(IllegalStateException.class, () -> controllerFactoryMiddleWare.createOrderNewCarController());
   }
 }
