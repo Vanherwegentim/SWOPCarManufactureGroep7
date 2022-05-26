@@ -11,6 +11,12 @@ import java.util.Scanner;
 public class GarageHolderRepository {
   private List<GarageHolder> garageHolders;
 
+  /**
+   * Get a list of the current garage holder
+   *
+   * @return the list of garage holder
+   * @creates | result
+   */
   public List<GarageHolder> getGarageHolders() {
     if (garageHolders == null)
       readGarageHoldersFromFile();

@@ -8,11 +8,24 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @immutable
+ */
 public class ProductionStatistics {
 
+  /**
+   * @representationObject
+   * @invar | finishedCars != null
+   */
   private List<CarAssemblyProcess> finishedCars;
 
+  /**
+   * @param finishedCars the list of finished cars by the company
+   */
   public ProductionStatistics(List<CarAssemblyProcess> finishedCars) {
+    if (finishedCars == null)
+      throw new IllegalArgumentException();
+
     this.finishedCars = finishedCars;
   }
 

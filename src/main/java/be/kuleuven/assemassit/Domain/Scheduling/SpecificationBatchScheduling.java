@@ -15,13 +15,32 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
+  /**
+   * @representationObject
+   * @invar | batchCarOptions != null
+   */
   private final List<CarOption> batchCarOptions;
 
+  /**
+   * @param batchCarOptions the list of car options that are handled as a batch in the scheduling algorithm
+   */
   public SpecificationBatchScheduling(List<CarOption> batchCarOptions) {
     super();
+    if (batchCarOptions == null)
+      throw new IllegalArgumentException();
     this.batchCarOptions = batchCarOptions;
   }
 
+  /**
+   * Move the assembly line forward
+   *
+   * @param previousOvertimeInMinutes the over time that was done by the crew in the previous work day
+   * @param endTime                   the closing time of the company
+   * @param carAssemblyProcessesQueue the queue of scheduled cars to be manufactured
+   * @param finishedCars              the list of cars that are already finished
+   * @param workPostsInOrder          the list of work posts in the correct order
+   * @return the newly spend over time (-1 if day is not finished, 0 if day ended within working hours)
+   */
   @Override
   public int moveAssemblyLine(
     int previousOvertimeInMinutes,
@@ -85,6 +104,16 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
     return overtime;
   }
 
+  /**
+   * Return the estimated delivery date of the last order in the queue
+   *
+   * @param carAssemblyProcessesQueue      the queue of planned cars that need to be manufactured
+   * @param manufacturingTimeInMinutes     the duration of the build of exactly one car
+   * @param endTime                        the closing time of the company
+   * @param startTime                      the opening time of the company
+   * @param maxTimeNeededForWorkPostOnLine the max time needed to finish one task on a work post
+   * @return the estimated delivery time of the last order in the queue
+   */
   @Override
   public LocalDateTime giveEstimatedDeliveryTime(Queue<CarAssemblyProcess> carAssemblyProcessesQueue, int manufacturingTimeInMinutes, LocalTime endTime, LocalTime startTime, int maxTimeNeededForWorkPostOnLine) {
 

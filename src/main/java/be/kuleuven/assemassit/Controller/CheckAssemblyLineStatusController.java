@@ -9,12 +9,24 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CheckAssemblyLineStatusController {
+  /**
+   * @invar | assemblyLine != null
+   */
   private final AssemblyLine assemblyLine;
 
+  /**
+   * @param assemblyLine The current assembly line of the program
+   * @throws IllegalArgumentException | assemblyLine == null
+   * @post | getAssemblyLine().equals(assemblyLine)
+   */
   protected CheckAssemblyLineStatusController(AssemblyLine assemblyLine) {
     if (assemblyLine == null)
       throw new IllegalArgumentException("AssemblyLine can not be null");
     this.assemblyLine = assemblyLine;
+  }
+
+  protected AssemblyLine getAssemblyLine() {
+    return this.assemblyLine;
   }
 
   /**
@@ -78,12 +90,15 @@ public class CheckAssemblyLineStatusController {
   }
 
   /**
-   * This method makes sure that it is visible which tasks are pending, done and active
+   * Generate a map of all work posts, the key of the map is the work post id, the value is the work post name
    *
-   * @param workPostsWithActiveTasks
-   * @param workPostPairs
-   * @return a map with ids as key and a list of assemblyTasks as value
+   * @return map of work posts
    */
+  public Map<Integer, String> giveAllWorkPosts() {
+    return Stream.of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
+      .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
+  }
+
   private HashMap<String, List<String>> evaluateAssemblyLineStatusOverview(
     HashMap<String, AssemblyTask> workPostsWithActiveTasks, HashMap<String, List<AssemblyTask>> workPostPairs) {
     HashMap<String, List<String>> output = new LinkedHashMap<>();
@@ -108,16 +123,6 @@ public class CheckAssemblyLineStatusController {
     }
 
     return output;
-  }
-
-  /**
-   * Generate a map of all work posts, the key of the map is the work post id, the value is the work post name
-   *
-   * @return map of work posts
-   */
-  public Map<Integer, String> giveAllWorkPosts() {
-    return Stream.of(assemblyLine.getAccessoriesPost(), assemblyLine.getCarBodyPost(), assemblyLine.getDrivetrainPost())
-      .collect(Collectors.toMap(WorkPost::getId, (wp -> wp.getWorkPostType().toString())));
   }
 
 

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * @invar | this.getFinishedCars() != null
  * @invar | this.getSchedulingAlgorithm() != null
  * @invar | this.giveSchedulingAlgorithmNames() != null
- * @invar | this.getObservers() != null
  */
 public class AssemblyLine {
 
@@ -34,7 +33,6 @@ public class AssemblyLine {
    * @invar | finishedCars != null
    * @invar | (startTime == null || endTime == null) || startTime.isBefore(endTime)
    * @invar | schedulingAlgorithm != null
-   * @invar | observers != null
    * @representationObject
    */
   private final WorkPost carBodyPost;
@@ -81,7 +79,22 @@ public class AssemblyLine {
     this(new AssemblyLineTime(openingTime, closingTime, new OvertimeRepository()));
   }
 
+  /**
+   * @param assemblyLineTime the instance of the assembly line time class
+   * @throws IllegalArgumentException | assemblyLineTime == null
+   * @post | getCarBodyPost() != null
+   * @post | getDriveTrainPost() != null
+   * @post | getAccessoriesPost() != null
+   * @post | getCarAssemblyProcessesQueue() != null
+   * @post | getFinishedCars() != null
+   * @post | getOverTimeRepository() != null
+   * @post | getOverTime() >= 0
+   * @post | getObservers() != null
+   * @mutates | this
+   */
   public AssemblyLine(AssemblyLineTime assemblyLineTime) {
+    if (assemblyLineTime == null)
+      throw new IllegalArgumentException();
     this.carBodyPost = new WorkPost(0, Arrays.asList(AssemblyTaskType.ASSEMBLE_CAR_BODY, AssemblyTaskType.PAINT_CAR), WorkPostType.CAR_BODY_POST, 60);
     this.drivetrainPost = new WorkPost(1, Arrays.asList(AssemblyTaskType.INSERT_ENGINE, AssemblyTaskType.INSERT_GEARBOX), WorkPostType.DRIVETRAIN_POST, 60);
     this.accessoriesPost = new WorkPost(2, Arrays.asList(AssemblyTaskType.INSTALL_AIRCO, AssemblyTaskType.INSTALL_SEATS, AssemblyTaskType.MOUNT_WHEELS, AssemblyTaskType.INSTALL_SPOILER), WorkPostType.ACCESSORIES_POST, 60);

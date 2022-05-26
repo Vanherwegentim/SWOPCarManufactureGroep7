@@ -5,16 +5,36 @@ import be.kuleuven.assemassit.Domain.ProductionStatistics;
 import java.time.LocalDate;
 
 public class CheckProductionStatisticsController {
+
+  /**
+   * @invar | productionStatistics != null
+   */
   private ProductionStatistics productionStatistics;
 
+  /**
+   * @param productionStatistics the statistics DTO of the production history
+   * @throws IllegalArgumentException | productionStatistics == null
+   * @post | getProductionStatistics().equals(productionStatistics)
+   */
   protected CheckProductionStatisticsController(ProductionStatistics productionStatistics) {
+    if (productionStatistics == null)
+      throw new IllegalArgumentException();
     this.productionStatistics = productionStatistics;
   }
 
+  protected ProductionStatistics getProductionStatistics() {
+    return this.productionStatistics;
+  }
+
   /**
-   * Get all the statistics
+   * Get all the statistics of the company, this includes:
+   * - average amount of cars made in a day
+   * - median amount of cars made in a day
+   * - exact amount of cars made in the last 2 days
+   * - average delay at the moment
+   * - median delay at the moment
    *
-   * @return all the statistics
+   * @return a string that contains the requested statistics
    */
   public String getStatistics() {
     String stats = "CAR STATISTICS:" + System.lineSeparator() +
@@ -35,9 +55,5 @@ public class CheckProductionStatisticsController {
     stats = stats + string;
 
     return stats;
-
-
   }
-
-
 }
