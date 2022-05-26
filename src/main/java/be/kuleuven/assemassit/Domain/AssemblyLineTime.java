@@ -4,13 +4,33 @@ import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.LocalTime;
 
+/**
+ * @mutable
+ * @invar | getOverTimeRepository() != null
+ */
 public class AssemblyLineTime {
 
+  /**
+   * @representationObject
+   * @invar | overTimeRepository != null
+   */
   private LocalTime openingTime;
+  /**
+   * @representationObject
+   */
   private LocalTime closingTime;
+  /**
+   * @representationObject
+   */
   private OvertimeRepository overTimeRepository;
   private int overtime;
 
+  /**
+   * @post | getOpeningTime() != null
+   * @post | getClosingtime() != null
+   * @post | getOvertimeRepository() != null
+   * @post | getOverTime() == getOvertimeRepository().getOverTime()
+   */
   public AssemblyLineTime() {
     this.openingTime = LocalTime.of(6, 0);
     this.closingTime = LocalTime.of(22, 0);
@@ -18,13 +38,28 @@ public class AssemblyLineTime {
     this.overtime = overTimeRepository.getOverTime();
   }
 
+  /**
+   * @throws IllegalArgumentException | overTimeRepository == null
+   * @post | getOpeningTime() != null
+   * @post | getClosingtime() != null
+   * @post | getOvertimeRepository().equals(overTimeRepository)
+   * @post | getOverTime() == getOvertimeRepository().getOverTime()
+   */
   public AssemblyLineTime(LocalTime openingTime, LocalTime closingTime, OvertimeRepository overTimeRepository) {
+    if (overTimeRepository == null)
+      throw new IllegalArgumentException();
     this.openingTime = openingTime;
     this.closingTime = closingTime;
     this.overTimeRepository = overTimeRepository;
   }
 
-
+  /**
+   * Update the overtime that will be used for the scheduling of the next day
+   *
+   * @param overtime the new overtime
+   * @mutates | this
+   * @post | getOvertime() == overtime
+   */
   public void update(int overtime) {
     if (overtime < 0) {
       throw new IllegalArgumentException("Overtime can not be lower than 0");
@@ -42,7 +77,7 @@ public class AssemblyLineTime {
    *
    * @param startTime
    * @throws IllegalArgumentException startTime can not be null | startTime == null
-   * @post | this.startTime == startTime
+   * @post | getOpeningTime() == startTime
    */
   public void setOpeningTime(LocalTime startTime) {
     if (startTime == null) {

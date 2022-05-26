@@ -14,6 +14,16 @@ import java.util.Queue;
 
 public class FIFOScheduling extends DefaultSchedulingAlgorithm {
 
+  /**
+   * Move the assembly line forward
+   *
+   * @param previousOvertimeInMinutes the over time that was done by the crew in the previous work day
+   * @param endTime                   the closing time of the company
+   * @param carAssemblyProcessesQueue the queue of scheduled cars to be manufactured
+   * @param finishedCars              the list of cars that are already finished
+   * @param workPostsInOrder          the list of work posts in the correct order
+   * @return the newly spend over time (-1 if day is not finished, 0 if day ended within working hours)
+   */
   @Override
   public int moveAssemblyLine(
     int previousOvertimeInMinutes,

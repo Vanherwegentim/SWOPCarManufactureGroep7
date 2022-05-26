@@ -8,11 +8,24 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @immutable
+ */
 public class ProductionStatistics {
 
+  /**
+   * @representationObject
+   * @invar | finishedCars != null
+   */
   private List<CarAssemblyProcess> finishedCars;
 
+  /**
+   * @param finishedCars the list of finished cars by the company
+   */
   public ProductionStatistics(List<CarAssemblyProcess> finishedCars) {
+    if (finishedCars == null)
+      throw new IllegalArgumentException();
+
     this.finishedCars = finishedCars;
   }
 
@@ -101,8 +114,6 @@ public class ProductionStatistics {
     }
     return total;
   }
-
-  //Can a car be ready before it's estimated completion time? if so, add an if test
 
   /**
    * Returns the average of delays from all the car orders

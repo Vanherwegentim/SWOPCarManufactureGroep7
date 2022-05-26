@@ -48,6 +48,9 @@ public class OvertimeRepository {
     }
   }
 
+  /**
+   * Clear the file where the overtime is stored
+   */
   public void clearFile() {
     try {
       new FileWriter(FILE_PATH, false).close();
