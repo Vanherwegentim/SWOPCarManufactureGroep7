@@ -378,4 +378,15 @@ public class AssemblyLineTest {
   }
 
 
+  @Test
+  void assemblyLineTimeTest() {
+    assertEquals("AssemblyLineTime", assemblyLine.getAssemblyLineTime().getClass().getSimpleName());
+  }
+
+  @Test
+  void overtimeRepositoryTest() {
+    assertEquals("OvertimeRepository", assemblyLine.getOvertimeRepository().getClass().getSimpleName());
+  }
+
+
 }
