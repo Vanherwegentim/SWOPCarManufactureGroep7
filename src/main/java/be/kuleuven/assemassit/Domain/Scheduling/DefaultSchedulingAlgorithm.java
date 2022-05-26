@@ -59,7 +59,6 @@ public abstract class DefaultSchedulingAlgorithm implements SchedulingAlgorithm 
     }
 
     // car can not be manufactured today
-    // Math.ceil(list - (1) / (2)) = days needed
     int daysNeeded = Math.max(0, (carAssemblyProcessesQueue.size() - remainingCarsForToday) / amountOfCarsWholeDay - 1);
 
 

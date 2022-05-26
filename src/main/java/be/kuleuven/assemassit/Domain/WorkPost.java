@@ -127,7 +127,7 @@ public class WorkPost {
     if (assemblyTaskId < 0)
       throw new IllegalArgumentException("Assembly task ID can not be lower than 0");
     this.activeAssemblyTask = findAssemblyTask(assemblyTaskId);
-    if (activeAssemblyTask == null) { // this is actually already checked and thrown in findAssemblyTask
+    if (activeAssemblyTask == null) {
       throw new IllegalArgumentException("There is no Assembly Task with that id.");
     }
   }
