@@ -115,6 +115,7 @@ public class ProductionStatistics {
     return total;
   }
 
+
   /**
    * Returns the average of delays from all the car orders
    *

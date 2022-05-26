@@ -58,7 +58,6 @@ public class CarModelRepository {
       carModels.add(carModelB);
       carModels.add(carModelC);
     }
-    //readCarModelsFromFile();
 
     return List.copyOf(carModels);
   }

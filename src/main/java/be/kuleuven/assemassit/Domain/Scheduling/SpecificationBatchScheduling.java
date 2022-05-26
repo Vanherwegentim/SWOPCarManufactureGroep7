@@ -65,10 +65,8 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
 
       if (workPost != null) {
         for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
-          //assemblyTask.setCompletionTime(minutes);
         }
 
-        // last one
         if (!iterator.hasPrevious() && workPost.getCarAssemblyProcess() != null) {
           CarAssemblyProcess carAssemblyProcess = workPost.getCarAssemblyProcess();
           carAssemblyProcess.complete();
@@ -121,7 +119,6 @@ public class SpecificationBatchScheduling extends DefaultSchedulingAlgorithm {
 
     List<CarAssemblyProcess> carAssemblyProcessesList = carAssemblyProcessesQueue.stream().collect(Collectors.toList());
 
-    // this is not the most optimal way of doing this, but it is an option and it works
     Collections.sort(carAssemblyProcessesList, (p1, p2) -> {
       Car car1 = p1.getCarOrder().getCar();
       Car car2 = p2.getCarOrder().getCar();

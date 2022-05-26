@@ -5,6 +5,8 @@ import be.kuleuven.assemassit.Domain.Enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
@@ -102,9 +104,15 @@ public class SpecificationBatchSchedulingTest {
     specificationBatchScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
 
     assertFalse(assemblyLine.getCarBodyPost().getCarAssemblyProcess().equals(carAssemblyProcess1));
-    //if this next assertTrue fails, it means that must be something wrong with the batches
     assertTrue(assemblyLine.getCarBodyPost().getCarAssemblyProcess().equals(carAssemblyProcess3));
     specificationBatchScheduling.moveAssemblyLine(0, endTime, assemblyLine.getCarAssemblyProcessesQueueAsQueue(), assemblyLine.getFinishedCars(), assemblyLine.getWorkPosts());
     assertEquals(2, assemblyLine.getFinishedCars().size());
   }
+
+  @Test
+  public void giveEstimatedCompletionDateOfLatestProcess() {
+    assertEquals(LocalDateTime.of(LocalDate.of(1999, 8, 29), LocalTime.of(17, 22)), assemblyLine.giveEstimatedCompletionDateOfLatestProcess());
+  }
+
+
 }

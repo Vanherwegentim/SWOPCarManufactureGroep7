@@ -417,8 +417,7 @@ public class AssemblyLine {
       );
 
     if (newOvertime > 0) {
-      // overtime happened so we have to inform the car manufacturing company
-//      notifyObservers(newOvertime);
+      // Overtime happened so we have to inform the car manufacturing company
       assemblyLineTime.update(newOvertime);
     }
   }

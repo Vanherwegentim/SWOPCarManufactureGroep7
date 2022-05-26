@@ -343,6 +343,8 @@ public class AssemblyLineTest {
   @Test
   void giveCarAssemblyTask() {
     assemblyLine.getCarBodyPost().addProcessToWorkPost(carAssemblyProcess1);
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.giveCarAssemblyTask(-1, 0));
+    assertThrows(IllegalArgumentException.class, () -> assemblyLine.giveCarAssemblyTask(0, -1));
 
     assertEquals(carAssemblyProcess1.getAssemblyTasks().get(0), assemblyLine.giveCarAssemblyTask(0, carAssemblyProcess1.getAssemblyTasks().get(0).getId()));
   }
@@ -374,6 +376,7 @@ public class AssemblyLineTest {
     assemblyLine.addCarToFinishedCars(carAssemblyProcess1);
     assertEquals(List.of(carAssemblyProcess1), assemblyLine.getFinishedCars());
   }
+
 
   @Test
   void assemblyLineTimeTest() {
