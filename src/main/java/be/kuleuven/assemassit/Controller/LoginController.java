@@ -47,6 +47,10 @@ public class LoginController {
   }
 
   /**
+   * Get a map with an overview of the garage holders
+   * key: id of the garage holder
+   * value: name of the garage holder
+   *
    * @return a map with garage holders, the key is the id and de value is the name of the garage holder
    */
   public Map<Integer, String> giveGarageHolders() {
