@@ -75,6 +75,19 @@ public class AssemblyLine {
     this(new AssemblyLineTime());
   }
 
+  /**
+   * @param openingTime the opening time of the company
+   * @param closingTime the closing time of the company
+   * @post | getCarBodyPost() != null
+   * @post | getDriveTrainPost() != null
+   * @post | getAccessoriesPost() != null
+   * @post | getCarAssemblyProcessesQueue() != null
+   * @post | getFinishedCars() != null
+   * @post | getOverTimeRepository() != null
+   * @post | getOverTime() >= 0
+   * @post | getObservers() != null
+   * @mutates | this
+   */
   public AssemblyLine(LocalTime openingTime, LocalTime closingTime) {
     this(new AssemblyLineTime(openingTime, closingTime, new OvertimeRepository()));
   }
