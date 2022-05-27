@@ -18,7 +18,7 @@ public class MountWheelsAssemblyTask extends AssemblyTask {
   private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.MOUNT_WHEELS;
 
   /**
-   * @param wheel
+   * @param wheel the wheel car option
    * @throws IllegalArgumentException wheel is null | wheel == null
    * @mutates | this
    * @post | this.getWheel() == wheel

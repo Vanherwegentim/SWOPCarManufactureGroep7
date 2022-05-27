@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class InsertGearboxAssemblyTask extends AssemblyTask {
   /**
-   * @invaer | gearbox != null
+   * @invar | gearbox != null
    */
   private final Gearbox gearbox;
   private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSERT_GEARBOX;
 
   /**
-   * @param gearbox
+   * @param gearbox the gearbox car option
    * @throws IllegalArgumentException gearbox can not be null | gearbox == null
    * @mutates | this
    * @post | this.getGearbox() == gearbox

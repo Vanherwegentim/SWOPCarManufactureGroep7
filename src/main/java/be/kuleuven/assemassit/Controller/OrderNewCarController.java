@@ -18,7 +18,7 @@ public class OrderNewCarController {
   private final GarageHolder loggedInGarageHolder;
 
   /**
-   * @param carManufactoringCompany
+   * @param carManufactoringCompany the car manufactoring company instance that should be used for creating the controller
    * @post | this.carManufactoringCompany == carManufactoringCompany
    */
   public OrderNewCarController(CarManufactoringCompany carManufactoringCompany, GarageHolder loggedInGarageHolder) {
@@ -118,13 +118,14 @@ public class OrderNewCarController {
    * A new car order is made and the estimated delivery time is calculated
    *
    * @param carModelId the id of the car model
-   * @param body
-   * @param color
-   * @param engine
-   * @param gearbox
-   * @param seats
-   * @param airco
-   * @param wheels
+   * @param body       the body car option
+   * @param color      the color car option
+   * @param engine     the engine car option
+   * @param gearbox    the gearbox car option
+   * @param seats      the seat car option
+   * @param airco      the airco car option
+   * @param wheels     the wheel car option
+   * @param spoiler    the spoiler car option
    * @return the id of the new car order
    * @throws IllegalStateException loggedInGarageHolder == null
    */
@@ -138,7 +139,7 @@ public class OrderNewCarController {
   /**
    * The estimated delivery time is requested from a given carOrderId
    *
-   * @param carOrderId
+   * @param carOrderId the id of the car oder
    * @return the id of the new car order
    * @throws IllegalStateException no garage holder is logged in | loggedInGarageHolder == null
    */
@@ -155,15 +156,15 @@ public class OrderNewCarController {
   /**
    * Place a car order and get the estimated completion time of that order
    *
-   * @param carModelId
-   * @param body
-   * @param color
-   * @param engine
-   * @param gearbox
-   * @param seats
-   * @param airco
-   * @param wheels
-   * @param spoiler
+   * @param carModelId the id of the car model
+   * @param body       the body car option
+   * @param color      the color car option
+   * @param engine     the engine car option
+   * @param gearbox    the gearbox car option
+   * @param seats      the seat car option
+   * @param airco      the airco car option
+   * @param wheels     the wheel car option
+   * @param spoiler    the spoiler car option
    * @return the estimated completion time of the new car order
    */
   public LocalDateTime placeCarOrderAndReturnEstimatedCompletionTime(int carModelId, String body, String color, String engine, String gearbox, String seats, String airco, String wheels, String spoiler) {

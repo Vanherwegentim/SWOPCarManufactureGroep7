@@ -11,8 +11,8 @@ public class LoginController {
   /**
    * @PeerObject
    */
-  private ControllerFactoryMiddleWare controllerFactoryMiddleWare;
-  private GarageHolderRepository garageHolderRepository;
+  private final ControllerFactoryMiddleWare controllerFactoryMiddleWare;
+  private final GarageHolderRepository garageHolderRepository;
   private GarageHolder loggedInGarageHolder;
 
   public LoginController(GarageHolderRepository garageHolderRepository, ControllerFactoryMiddleWare controllerFactoryMiddleWare) {
@@ -23,7 +23,7 @@ public class LoginController {
   /**
    * log in a garage holder
    *
-   * @param garageHolderId
+   * @param garageHolderId the id of the garage holder
    * @throws IllegalArgumentException garageHolderId is below 0 | garageHolderId < 0
    */
   public void logInGarageHolder(int garageHolderId) {

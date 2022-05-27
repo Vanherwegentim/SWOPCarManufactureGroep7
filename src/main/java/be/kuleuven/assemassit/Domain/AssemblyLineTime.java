@@ -22,7 +22,7 @@ public class AssemblyLineTime {
   /**
    * @representationObject
    */
-  private OvertimeRepository overTimeRepository;
+  private final OvertimeRepository overTimeRepository;
   private int overtime;
 
   /**
@@ -75,7 +75,7 @@ public class AssemblyLineTime {
   /**
    * Sets the start time of the assembly line.
    *
-   * @param startTime
+   * @param startTime the start time of the assembly line
    * @throws IllegalArgumentException startTime can not be null | startTime == null
    * @post | getOpeningTime() == startTime
    */
@@ -94,7 +94,7 @@ public class AssemblyLineTime {
    * Sets the end time of the assembly line.
    * This is always set by the car manufacturing company and is not outside of the opening hours of the company.
    *
-   * @param endTime
+   * @param endTime the end time of the assembly line
    * @throws IllegalArgumentException endTime can not be null | endTime == null
    * @post | this.endTime == endTime
    */

@@ -175,22 +175,24 @@ public class CarModel {
   /**
    * Method checks if a give configuration of options is valid for the car model
    *
-   * @param body
-   * @param color
-   * @param engine
-   * @param gearbox
-   * @param seats
-   * @param airco
-   * @param wheels
+   * @param body    the body car option
+   * @param color   the color car option
+   * @param engine  the engine car option
+   * @param gearbox the gearbox car option
+   * @param seats   the seat car option
+   * @param airco   the airco car option
+   * @param wheels  the wheel car option
+   * @param spoiler the spoiler car option
    * @return true or false according to the validity of the configuration
-   * @inspects | this, body, color, engine, gearbox, seats, airco, wheels
+   * @inspects | this, body, color, engine, gearbox, seats, airco, wheels, spoiler
    * @post | result == (getBodyOptions.contains(body) &&
    * |getColorOptions.contains(color) &&
    * |getEngineOptions.contains(engine) &&
    * |getGearboxOptions.contains(gearbox) &&
    * |getSeatOptions.contains(seats) &&
    * |getAircoOptions.contains(airco) &&
-   * |getWheelOptions.contains(wheels))
+   * |getWheelOptions.contains(wheels)) &&
+   * |getSpoilerOptions.contains(spoiler)
    */
   public boolean isValidConfiguration(Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels, Spoiler spoiler) {
     return bodyOptions.contains(body) &&

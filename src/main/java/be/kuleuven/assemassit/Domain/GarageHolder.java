@@ -23,8 +23,8 @@ public class GarageHolder {
   private final List<CarOrder> carOrders = new ArrayList<>();
 
   /**
-   * @param id
-   * @param name
+   * @param id   the id of the garage holder
+   * @param name the name of the garage holder
    * @throws IllegalArgumentException name can not be null or empty | (name == null || name.isEmpty())
    */
   public GarageHolder(int id, String name) {
@@ -52,7 +52,7 @@ public class GarageHolder {
   }
 
   /**
-   * @param carOrder
+   * @param carOrder the car order to add to the list of the garage holder his car orders
    * @mutates | this
    * @inspects | carOrder
    */
@@ -61,7 +61,7 @@ public class GarageHolder {
   }
 
   /**
-   * @param orderId
+   * @param orderId the id of the car order
    * @return the completion time of the order
    * @throws IllegalArgumentException ID can not be lower than 0
    *                                  | orderId < 0
@@ -77,7 +77,7 @@ public class GarageHolder {
   }
 
   /**
-   * @param id
+   * @param id the id of the car order
    * @return the car order
    * @throws IllegalArgumentException ID can not be lower than 0
    *                                  | id < 0
@@ -94,6 +94,6 @@ public class GarageHolder {
     if (carOrder.isEmpty())
       return Optional.empty();
 
-    return Optional.of(carOrder.get());
+    return carOrder;
   }
 }

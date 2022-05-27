@@ -15,8 +15,8 @@ public class PerformAssemblyTasksController {
   private final CarManufactoringCompany carManufactoringCompany;
 
   /**
-   * @param assemblyLine
-   * @param carManufactoringCompany
+   * @param assemblyLine            the assembly line instance that should be used for creating the controller
+   * @param carManufactoringCompany the car manufactoring company instance that should be used for creating the controller
    * @throws IllegalArgumentException assembly line is null | assemblyLine == null
    * @throws IllegalArgumentException carManufactoringCompany is null | carManufactoringCompany == null
    */

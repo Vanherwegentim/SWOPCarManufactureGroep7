@@ -64,7 +64,7 @@ public class CarOrder {
   }
 
   /**
-   * @param completionTime
+   * @param completionTime the time when the car order is completed
    * @post | getCompletionTime() == completionTime
    */
   public void setCompletionTime(LocalDateTime completionTime) {
@@ -82,7 +82,7 @@ public class CarOrder {
   /**
    * Set the estimated completion time of an order which is calculated by the assembly line
    *
-   * @param estimatedCompletionTime
+   * @param estimatedCompletionTime the time when the car order is estimated to be completed
    * @post | getEstimatedCompletionTime() == estimatedCompletionTime
    */
   public void setEstimatedCompletionTime(LocalDateTime estimatedCompletionTime) {
