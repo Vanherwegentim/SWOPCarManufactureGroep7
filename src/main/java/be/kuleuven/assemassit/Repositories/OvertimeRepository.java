@@ -25,7 +25,6 @@ public class OvertimeRepository {
       throw new IllegalArgumentException("Over time can not be lower than zero");
 
     this.overTime = overTime;
-    writeOverTime();
   }
 
   private void readOverTime() {
@@ -39,7 +38,6 @@ public class OvertimeRepository {
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
       this.overTime = 0;
     }
-    clearFile();
   }
 
   private void writeOverTime() {
