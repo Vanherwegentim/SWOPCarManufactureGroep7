@@ -17,7 +17,7 @@ public class CarOptionRestriction {
   private final List<CarOption> restrictedCarOptions;
 
   /**
-   * @param restrictedCarOptions
+   * @param restrictedCarOptions a list of car options
    * @pre | restrictedCarOptions != null && restrictedCarOptions.size() > 0
    * @post | getRestrictedCarOptions().stream().allMatch(c -> restrictedCarOptions.contains(c)) &&
    * | restrictedCarOptions.stream().allMatch(c -> getRestrictedCarOptions().contains(c))

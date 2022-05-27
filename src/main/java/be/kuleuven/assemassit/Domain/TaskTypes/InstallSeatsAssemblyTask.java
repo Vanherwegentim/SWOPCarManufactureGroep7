@@ -18,7 +18,7 @@ public class InstallSeatsAssemblyTask extends AssemblyTask {
   private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_SEATS;
 
   /**
-   * @param seat
+   * @param seat the seat car option
    * @throws IllegalArgumentException seat is null | seat == null
    * @mutates | this
    * @post | this.getSeat() == seat

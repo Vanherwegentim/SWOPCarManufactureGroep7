@@ -44,6 +44,9 @@ public class CarOrder {
     this.id = CarOrder.idRunner++;
   }
 
+  /**
+   * Reset the counter of automatic IDs, this is for testing purposes
+   */
   public static void resetIdRunner() {
     CarOrder.idRunner = 0;
   }
@@ -61,7 +64,7 @@ public class CarOrder {
   }
 
   /**
-   * @param completionTime
+   * @param completionTime the time when the car order is completed
    * @post | getCompletionTime() == completionTime
    */
   public void setCompletionTime(LocalDateTime completionTime) {
@@ -79,7 +82,7 @@ public class CarOrder {
   /**
    * Set the estimated completion time of an order which is calculated by the assembly line
    *
-   * @param estimatedCompletionTime
+   * @param estimatedCompletionTime the time when the car order is estimated to be completed
    * @post | getEstimatedCompletionTime() == estimatedCompletionTime
    */
   public void setEstimatedCompletionTime(LocalDateTime estimatedCompletionTime) {

@@ -14,6 +14,7 @@ import java.util.Objects;
  * @invar | getColorOptions() != null && !getColorOptions().contains(null) && !getColorOptions().isEmpty()
  * @invar | getEngineOptions() != null && !getEngineOptions().contains(null) && !getEngineOptions().isEmpty()
  * @invar | getAircoOptions() != null && !getAircoOptions().contains(null) && !getAircoOptions().isEmpty()
+ * @invar | getSpoilerOptions() != null && !getSpoilerOptions().contains(null) && !getSpoilerOptions().isEmpty()
  */
 public class CarModel {
   private final int id;
@@ -28,6 +29,7 @@ public class CarModel {
    * @invar | colorOptions != null && !colorOptions.contains(null) && !colorOptions.isEmpty()
    * @invar | engineOptions != null && !engineOptions.contains(null) && !engineOptions.isEmpty()
    * @invar | aircoOptions != null && !aircoOptions.contains(null) && !aircoOptions.isEmpty()
+   * @invar | spoilerOptions != null && !spoilerOptions.contains(null) && !spoilerOptions.isEmpty()
    * @representationObject
    */
   private final List<Wheel> wheelOptions;
@@ -56,6 +58,9 @@ public class CarModel {
    */
   private final List<Airco> aircoOptions;
 
+  /**
+   * @representationObject
+   */
   private final List<Spoiler> spoilerOptions;
 
   /**
@@ -170,22 +175,24 @@ public class CarModel {
   /**
    * Method checks if a give configuration of options is valid for the car model
    *
-   * @param body
-   * @param color
-   * @param engine
-   * @param gearbox
-   * @param seats
-   * @param airco
-   * @param wheels
+   * @param body    the body car option
+   * @param color   the color car option
+   * @param engine  the engine car option
+   * @param gearbox the gearbox car option
+   * @param seats   the seat car option
+   * @param airco   the airco car option
+   * @param wheels  the wheel car option
+   * @param spoiler the spoiler car option
    * @return true or false according to the validity of the configuration
-   * @inspects | this, body, color, engine, gearbox, seats, airco, wheels
+   * @inspects | this, body, color, engine, gearbox, seats, airco, wheels, spoiler
    * @post | result == (getBodyOptions.contains(body) &&
    * |getColorOptions.contains(color) &&
    * |getEngineOptions.contains(engine) &&
    * |getGearboxOptions.contains(gearbox) &&
    * |getSeatOptions.contains(seats) &&
    * |getAircoOptions.contains(airco) &&
-   * |getWheelOptions.contains(wheels))
+   * |getWheelOptions.contains(wheels)) &&
+   * |getSpoilerOptions.contains(spoiler)
    */
   public boolean isValidConfiguration(Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels, Spoiler spoiler) {
     return bodyOptions.contains(body) &&

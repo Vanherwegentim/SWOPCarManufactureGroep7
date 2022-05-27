@@ -18,7 +18,7 @@ public class PaintCarAssemblyTask extends AssemblyTask {
   private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.PAINT_CAR;
 
   /**
-   * @param color
+   * @param color the color car option
    * @throws IllegalArgumentException color is null | color == null
    * @mutates | this
    * @post | this.getColor() == color

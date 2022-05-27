@@ -30,7 +30,7 @@ public class CarAssemblyProcess {
 
   /**
    * @param carOrder the order that should be connected to the car assembly process
-   * @throws | carOrder == null
+   * @throws NullPointerException | carOrder == null
    * @post | this.getId() > -1
    * @post | this.getCarOrder() == carOrder
    * @post | this.getAssemblyTasks() != null
@@ -57,6 +57,9 @@ public class CarAssemblyProcess {
     );
   }
 
+  /**
+   * Reset the counter of automatic IDs, this is for testing purposes
+   */
   public static void resetRunningId() {
     CarAssemblyProcess.idRunner = 0;
   }

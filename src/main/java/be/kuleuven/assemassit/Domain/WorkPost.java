@@ -37,7 +37,7 @@ public class WorkPost {
   private CarAssemblyProcess carAssemblyProcess;
 
   /**
-   * @param id
+   * @param id                                the id of the work post
    * @param assemblyTaskTypes                 the list of task types that can be handled by the work post
    * @param workPostType                      the type of the work post
    * @param expectedWorkPostDurationInMinutes the total duration of the work post to complete all possible tasks from process in minutes
@@ -64,7 +64,7 @@ public class WorkPost {
   }
 
   /**
-   * @param carAssemblyProcess
+   * @param carAssemblyProcess the instance of the car assembly process
    * @mutates | this
    * @inspects | carAssemblyProcess
    * @post | getCarAssemblyProcess().contains(carAssemblyProcess)
@@ -119,7 +119,7 @@ public class WorkPost {
   }
 
   /**
-   * @param assemblyTaskId
+   * @param assemblyTaskId the id of the assembly task
    * @throws IllegalArgumentException assembly task ID lower than 0 | assemblyTaskId < 0
    * @mutates | this
    */
@@ -166,6 +166,13 @@ public class WorkPost {
     return filteredTasks.stream().filter(AssemblyTask::getPending).toList();
   }
 
+  /**
+   * Give a list of all the finished assembly tasks
+   *
+   * @return the list of finished assembly tasks
+   * @creates | result
+   * @inspects | this
+   */
   public List<AssemblyTask> giveFinishedAssemblyTasks() {
 
     if (carAssemblyProcess == null)
@@ -191,7 +198,7 @@ public class WorkPost {
   }
 
   /**
-   * @param id
+   * @param id the id of the assembly task
    * @return the assembly task
    * @throws IllegalArgumentException ID is lower than 0 | id < 0
    * @throws IllegalArgumentException assembly task not found

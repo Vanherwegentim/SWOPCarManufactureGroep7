@@ -3,10 +3,8 @@ package be.kuleuven.assemassit.Domain;
 import be.kuleuven.assemassit.Domain.Enums.*;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Repositories.CarModelRepository;
-import be.kuleuven.assemassit.Repositories.OvertimeRepository;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,14 +123,15 @@ public class CarManufactoringCompany {
   /**
    * A new car order is made
    *
-   * @param carModelId
-   * @param body
-   * @param color
-   * @param engine
-   * @param gearbox
-   * @param seats
-   * @param airco
-   * @param wheels
+   * @param carModelId the id of the car model
+   * @param body       the body car option
+   * @param color      the color car option
+   * @param engine     the engine car option
+   * @param gearbox    the gearbox car option
+   * @param seats      the seat car option
+   * @param airco      the airco car option
+   * @param wheels     the wheel car option
+   * @param spoiler    the spoiler car option
    * @return the id of the newly created car order
    * @throws IllegalStateException    currentGarageHolder == null
    * @throws IllegalArgumentException if there is a non-valid option provided
