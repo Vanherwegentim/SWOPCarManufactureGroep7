@@ -1,6 +1,5 @@
 package be.kuleuven.assemassit.Domain.Scheduling;
 
-import be.kuleuven.assemassit.Domain.AssemblyTask;
 import be.kuleuven.assemassit.Domain.CarAssemblyProcess;
 import be.kuleuven.assemassit.Domain.Helper.CustomTime;
 import be.kuleuven.assemassit.Domain.Helper.EnhancedIterator;
@@ -44,9 +43,6 @@ public class FIFOScheduling extends DefaultSchedulingAlgorithm {
       workPost = iterator.next();
 
       if (workPost != null) {
-        for (AssemblyTask assemblyTask : workPost.getWorkPostAssemblyTasks()) {
-          //assemblyTask.setCompletionTime(minutes);
-        }
 
         // last one
         if (!iterator.hasPrevious() && workPost.getCarAssemblyProcess() != null) {

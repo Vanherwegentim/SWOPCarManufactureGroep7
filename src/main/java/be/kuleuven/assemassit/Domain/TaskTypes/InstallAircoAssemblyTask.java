@@ -18,7 +18,7 @@ public class InstallAircoAssemblyTask extends AssemblyTask {
   private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.INSTALL_AIRCO;
 
   /**
-   * @param airco
+   * @param airco the airco car option
    * @throws IllegalArgumentException airco is null | airco == null
    * @mutates | this
    * @post | this.getAirco() == airco

@@ -179,7 +179,7 @@ public class AssemblyLine {
   /**
    * Adds a car assembly process to the queue of pending car assembly processes
    *
-   * @param carAssemblyProcess
+   * @param carAssemblyProcess the carAssemblyProcess that will be appended to the carAssemblyProcessesQueue
    * @mutates | this
    */
   public void addCarAssemblyProcess(CarAssemblyProcess carAssemblyProcess) {
@@ -208,7 +208,7 @@ public class AssemblyLine {
   /**
    * Return the list of assembly tasks from an associated work post on the assembly line that are pending
    *
-   * @param workPostId
+   * @param workPostId the id of the work post of which you want to get the pending assembly tasks
    * @return The list of pending assembly tasks
    * @inspects | this
    * @creates | result
@@ -222,7 +222,7 @@ public class AssemblyLine {
   /**
    * Return the list of assembly tasks from an associated work post on the assembly line that are finished
    *
-   * @param workPostId
+   * @param workPostId the id of the work post of which you want to get the finished assembly tasks
    * @return The list of pending assembly tasks
    * @inspects | this
    * @creates | result

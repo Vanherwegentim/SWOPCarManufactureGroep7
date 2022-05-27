@@ -51,13 +51,14 @@ public class Car {
 
   /**
    * @param carModel the corresponding car model that the car is based on
-   * @param body
-   * @param color
-   * @param engine
-   * @param gearbox
-   * @param seats
-   * @param airco
-   * @param wheels`
+   * @param body     the body car option
+   * @param color    the color car option
+   * @param engine   the engine car option
+   * @param gearbox  the gearbox car option
+   * @param seats    the seat car option
+   * @param airco    the airco car option
+   * @param wheels   the wheel car option
+   * @param spoiler  the spoiler car option
    * @throws IllegalArgumentException | carModel == null
    * @throws IllegalArgumentException | body == null || color == null || engine == null || gearbox == null || seats == null || airco == null || wheels == null
    * @post | this.carModel == carModel
@@ -68,6 +69,7 @@ public class Car {
    * @post | this.seats == seats
    * @post | this.airco == airco
    * @post | this.wheels == wheels
+   * @post | this.spoiler == spoiler
    */
   public Car(CarModel carModel, Body body, Color color, Engine engine, Gearbox gearbox, Seat seats, Airco airco, Wheel wheels, Spoiler spoiler) {
     if (carModel == null)

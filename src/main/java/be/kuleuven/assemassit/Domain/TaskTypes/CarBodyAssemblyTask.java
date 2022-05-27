@@ -18,7 +18,7 @@ public class CarBodyAssemblyTask extends AssemblyTask {
   private final AssemblyTaskType assemblyTaskType = AssemblyTaskType.ASSEMBLE_CAR_BODY;
 
   /**
-   * @param body
+   * @param body the body car option
    * @throws IllegalArgumentException body can not be null | body == null
    * @mutates | this
    * @post | this.getBody() == body
