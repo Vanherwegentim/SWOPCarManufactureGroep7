@@ -290,10 +290,7 @@ public class OrderNewCarTest {
       actualDate = actualDate.plusDays(1).withHour(9).withMinute(0);
     }
 
-    //todo nakijken:
-    //om 26/4 21:50
-    //Expected :27/04/2022 at 9:00
-    //Actual   :27/04/2022 at 8:00
+
     assertEquals(actualDate.format(formatter), estimatedTime.format(formatter));
   }
 

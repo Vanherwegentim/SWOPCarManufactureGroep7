@@ -2,8 +2,6 @@ package be.kuleuven.assemassit.Repositories;
 
 import be.kuleuven.assemassit.Domain.GarageHolder;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,7 +24,7 @@ public class GarageHolderRepository {
 
   private void readGarageHoldersFromFile() {
     List<GarageHolder> garageHolders = new ArrayList<>();
-    try (Scanner input = new Scanner(new FileReader("src/main/resources/garage-holders.txt"))) {
+    try (Scanner input = new Scanner(getClass().getResourceAsStream("/garage-holders.txt"))) {
 
       while (input.hasNext()) {
         int id = input.nextInt();
@@ -35,7 +33,8 @@ public class GarageHolderRepository {
       }
 
       this.garageHolders = garageHolders;
-    } catch (FileNotFoundException e) {
+    } catch (Exception e) {
+      System.out.println(e);
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
     }
   }
