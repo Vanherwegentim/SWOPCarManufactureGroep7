@@ -1,13 +1,11 @@
 package be.kuleuven.assemassit.Repositories;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class OvertimeRepository {
-  private final String FILE_PATH = "src/main/resources/over-time.txt";
+  private final String FILE_PATH = "/over-time.txt";
   private int overTime = -1;
 
   public int getOverTime() {
@@ -27,21 +25,19 @@ public class OvertimeRepository {
       throw new IllegalArgumentException("Over time can not be lower than zero");
 
     this.overTime = overTime;
-    writeOverTime();
   }
 
   private void readOverTime() {
-    try (Scanner input = new Scanner(new FileReader(FILE_PATH))) {
+    try (Scanner input = new Scanner(getClass().getResourceAsStream(FILE_PATH))) {
       if (input.hasNext()) {
         this.overTime = input.nextInt();
       } else {
         this.overTime = 0;
       }
-    } catch (FileNotFoundException e) {
+    } catch (NullPointerException e) {
       System.out.println("The application experienced unexpected behaviour, please contact the system administrator");
       this.overTime = 0;
     }
-    clearFile();
   }
 
   private void writeOverTime() {

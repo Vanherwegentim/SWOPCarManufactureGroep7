@@ -26,7 +26,6 @@ public class AssemblyLineTimeTest {
 
     assemblyLineTime.update(5);
     assertEquals(5, assemblyLineTime.getOvertime());
-    assertEquals(5, overtimeRepository.getOverTime());
     overtimeRepository.clearFile();
   }
 
