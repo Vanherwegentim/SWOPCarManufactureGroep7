@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class OvertimeRepository {
-  private final String FILE_PATH = "/garage-holders.txt";
+  private final String FILE_PATH = "/over-time.txt";
   private int overTime = -1;
 
   public int getOverTime() {
